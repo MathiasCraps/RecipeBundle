@@ -4,9 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+var recipes = [
+  {
+    title: 'Recept 1',
+    content: 'Lorem ipsum fanta.'
+  }, {
+    title: 'Recept 2',
+    content: 'Lorem ipsum soda.'
+  }, {
+    title: 'Recept 1',
+    content: 'Lorem ipsum cola.'
+  }, {
+    title: 'Recept 1',
+    content: 'Lorem ipsum pretzel.'
+  }
+]
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App recipes={recipes} />
   </React.StrictMode>,
   document.getElementById('root')
 );
