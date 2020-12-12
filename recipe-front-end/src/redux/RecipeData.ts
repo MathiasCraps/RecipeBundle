@@ -25,7 +25,7 @@ var baseRecipes: Recipe[] = [
 ];
 
 // remove me when real data is used
-export const duplicatedTestData = [
+export const testData = [
     ...baseRecipes,
     ...baseRecipes,
     ...baseRecipes,

@@ -1,11 +1,21 @@
+import { Box, Center, Heading, SimpleGrid } from "@chakra-ui/react";
 import React from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import RecipePreview from './components/RecipePreview';
-import { Recipe } from './interfaces/Recipe';
-import { Box, SimpleGrid, Heading, Center } from "@chakra-ui/react";
+import { Recipe } from "./interfaces/Recipe";
+import { ReduxModel, ViewType } from './redux/Store';
 
 interface AppProps {
   recipes: Recipe[];
+  view: ViewType;
+}
+
+function mapStateToProps(props: ReduxModel) {
+  return {
+    recipes: props.recipes,
+    view: props.view
+  };
 }
 
 function App(props: AppProps) {
@@ -26,4 +36,4 @@ function App(props: AppProps) {
     </Box>);
 }
 
-export default App;
+export default connect(mapStateToProps, {})(App);

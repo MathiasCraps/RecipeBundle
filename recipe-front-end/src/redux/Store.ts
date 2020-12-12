@@ -1,7 +1,10 @@
 import { createStore } from 'redux';
+import { Recipe } from '../interfaces/Recipe';
+import { testData } from './RecipeData';
 
 export interface ReduxModel {
     view: ViewType;
+    recipes: Recipe[];
 }
 
 export enum ViewType {
@@ -19,7 +22,8 @@ export interface ChangeViewAction {
 }
 
 const defaultState: ReduxModel = {
-    view: ViewType.Overview
+    view: ViewType.Overview,
+    recipes: testData
 }
 
 function handleState(oldState: ReduxModel = defaultState, action: ChangeViewAction) {
