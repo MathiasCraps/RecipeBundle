@@ -18,15 +18,28 @@ var recipes: Recipe[] = [
     content: 'Lorem ipsum soda.',
     ...sharedProperties
   }, {
-    title: 'Recept 1',
+    title: 'Recept 3',
     content: 'Lorem ipsum cola.',
     ...sharedProperties
   }, {
-    title: 'Recept 1',
+    title: 'Recept 4',
     content: 'Lorem ipsum pretzel.',
     ...sharedProperties
   }
 ];
+
+// remove me when real data is used
+var duplicatedTestData = [
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes,
+  ...recipes
+]
 
 ReactDOM.render(
   <React.StrictMode>
