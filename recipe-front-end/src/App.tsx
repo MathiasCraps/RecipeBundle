@@ -9,7 +9,7 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
-  return (<SimpleGrid
+  return (<SimpleGrid paddingTop="2em"
     margin="auto"
     maxWidth="60em"
     columns={[1, 2, 3, 4]}
