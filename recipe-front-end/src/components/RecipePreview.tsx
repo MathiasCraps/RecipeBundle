@@ -20,7 +20,6 @@ function mapStateToProps(state: ReduxModel, ownProps: OriginalProps) {
 
 function RecipePreview(props: Props) {
   return (<Box
-    // borderWidth="1px"
     className="recipeBox"
     cursor="pointer"
     p="0.5em"

@@ -54,3 +54,19 @@
 .recipeBox:hover img {
   filter: opacity(0.9)
 }
+
+.close-button-recipe-overview {
+  position: absolute;
+  right: 1em;
+  top: 3em;
+}
+
+/* todo: fix me with chakra global styles */
+
+h3 {
+  margin-top: 1em!important;
+}
+
+p {
+  margin-bottom: 1em!important;
+}

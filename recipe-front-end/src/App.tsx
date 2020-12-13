@@ -22,16 +22,12 @@ function mapStateToProps(props: ReduxModel) {
 }
 
 function App(props: AppProps) {
-  return (<Box>
-    {(props.activeRecipe) ? <RecipeOverview /> : undefined}
-
-    <header>
-      <Center bgColor="gray.100" p="0.5em">
-        <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
-      </Center>
-    </header>
-    <RecipeList recipes={props.recipes}></RecipeList>
-  </Box>);
+  return props.activeRecipe ? <RecipeOverview /> : (<Box><header>
+  <Center bgColor="gray.100" p="0.5em">
+    <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
+  </Center>
+</header>
+<RecipeList recipes={props.recipes}></RecipeList></Box>)
 }
 
 export default connect(mapStateToProps, {})(App);
