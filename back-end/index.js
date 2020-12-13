@@ -9,6 +9,8 @@ app.get('/getRecipes', async (error, response) => {
     response.json(JSON.parse(rawData));
 });
 
+app.use(express.static('public'));
+
 app.listen(port, () => {
     console.log(`Server active at http://localhost:${port}`)
 });
