@@ -28,13 +28,17 @@ function RecipeOverview(props: Props) {
         closeOnEsc={true}
         isFullHeight={true}
         motionPreset="slideInBottom"
+        scrollBehavior="inside"
         onClose={() => props.changeActiveView(ViewType.Overview, undefined)}>
         <DrawerContent>
             <Box maxWidth="80em" marginLeft="auto" marginRight="auto">
                 <DrawerCloseButton size="sm" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
                 <Heading as="h2">{props.recipe.title}</Heading>
                 <Image src={props.recipe.image} alt="" />
-                <p>{props.recipe.content}</p>
+                <Heading as="h3">Ingrediënten</Heading>
+                {props.recipe.steps.map((step) => <p>{step}</p>)}
+                <Heading as="h3">Instructies</Heading>
+                {props.recipe.steps.map((step) => <p>{step}</p>)}
             </Box>
         </DrawerContent>
     </Drawer>);

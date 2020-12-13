@@ -1,0 +1,106 @@
+[
+    {
+        "title": "Herfstpasta",
+        "ingredients": [
+            "1 eetlepel olijfolie",
+            "1 dikke prei, in ringetjes",
+            "1 teen knoflook, gesnipperd",
+            "1 klein rood pepertje, gesnipperd",
+            "1 kleine pompoen (±650 gram), in kleine blokjes",
+            "1 blik (400 gram) tomatenblokjes",
+            "150 gram rode linzen, gewassen",
+            "1 eetlepel gedroogde rozemarijn",
+            "Zout naar smaak",
+            "500 milliliter water",
+            "350 gram volkoren pasta",
+            "Vers gemalen zwarte peper naar smaak",
+            "Verse peterselie of selderijblad naar smaak"
+        ],
+        "steps": [
+            "Verhit de olie in een pan met dikke bodem (grote sauspan) en bak de prei even aan met de knoflook en rode peper. Voeg de pompoen toe en bak nog een paar minuten al roerend. Roer het blik tomaten, de linzen, rozemarijn, zout en het water erdoor en breng aan de kook. Kook 12-15 minuten of tot alles gaar is.",
+            "Kook intussen de pasta beetgaar.",
+            "Pureer ⅓ van de saus met een staafmixer of blender en roer dat weer door de rest. Breng op smaak met zwarte peper. Strooi wat verse groene kruiden over de borden en serveer. Voor 4 personen.",
+            "Tip: Mocht er wat saus over zijn dan kun je dit verdunnen met wat bouillon en als soep serveren."
+        ],
+        "image": "http://localhost:8080/images/herfstpasta-pompoen.jpg"
+    },
+    {
+        "title": "Stoofpot",
+        "ingredients": [
+            "250 gram zilvervliesrijst of quinoa",
+            "1 eetlepel zonnebloemolie",
+            "1 ui, fijngesneden",
+            "1 teen knoflook",
+            "1 wortel, in blokjes",
+            "1 pompoen (ongeveer 600 gram), in blokjes",
+            "1 blik tomatenblokjes op sap (400gram)",
+            "75 gram pindakaas met stukjes",
+            "2 eetlepels sojasaus",
+            "1 eetlepel kerriepoeder",
+            "½ theelepel chilipoeder",
+            "2 theelepels peterselie",
+            "500 milliliter groentebouillon",
+            "1 blik kidneybonen (265 gram uitlekgewicht), uitgelekt",
+            "150 gram tuinerwten (diepvries)",
+            "50 gram dry roasted peanuts"
+        ],
+        "steps": [
+            "Kook de rijst/quinoa volgens de gebruiksaanwijzing op de verpakking.",
+            "Verhit de olie in een ruime pan en smoor de ui 3-5 minuten met de deksel op de pan. Pers de knoflook erboven uit en voeg de wortel en pompoen toe. Bak dit nog 5 minuten, roer tussendoor.",
+            "Voeg de tomatenblokjes, pindakaas, sojasaus, kerrie, chilipoeder, peterselie en bouillon toe. Roer goed door, breng aan de kook, zet het vuur laag en laat 20 minuten zachtjes stoven. Voeg in de laatste 5 minuten de kidneybonen en tuinerwten toe.",
+            "Serveer de stoofpot met de rijst of quinoa, bestrooid met de pinda’s.",
+            "Tip: bij sommige supermarkten kun je pompoen uit de vriezer kopen, is wat duurder maar scheelt een boel snijwerk. Halveer dan de hoeveelheid bouillon."
+        ],
+        "image": "http://localhost:8080/images/pompoen-pindastoofpot.jpg"
+    },
+    {
+        "title": "Wraps",
+        "ingredients": [
+            "1 middelgrote pompoen",
+            "1 eetlepel olie",
+            "1 ui",
+            "3 teentjes knoflook",
+            "50 milliliter water",
+            "1 blik (à 400 gram) tomatenblokjes",
+            "1 theelepel komijn",
+            "1 theelepel oregano",
+            "1 theelepel paprikapoeder",
+            "½ theelepel cayennepeper",
+            "Zout naar smaak",
+            "1 blik (à 400 gram) kidneybonen",
+            "8 tortilla wraps",
+            "1 rijpe avocado",
+            "1 pot (à 300 gram) milde of hete salsa"
+        ],
+        "steps": [
+            "Spoel de pompoen goed af; de pompoen hoeft namelijk niet geschild te worden, op lelijke plekjes in de schil na. Snijd met een groot mes voorzichtig de top van de pompoen af en snijd de pompoen door midden. Snijd de helften nog eens door en verwijder de zaden en draden met een lepel. Maak blokjes van het vruchtvlees en snijd de ui fijn. Verhit de olie in een grote pan. Fruit de ui ongeveer 5 minuten. Pers de knoflook hierboven uit en bak nog één minuut mee. Voeg de pompoenblokjes en het water toe en laat dit ongeveer 10 minuten stoven.",
+            "Verwarm intussen de oven voor op 100 ºC of gebruik later in het recept de magnetron om de tortilla’s op te warmen.",
+            "Voeg de tomatenblokjes, komijn, oregano, paprikapoeder, cayennepeper en zout naar smaak aan de pompoen toe. Roer door en laat nog 10 minuten stoven. Laat het blik kidneybonen uitlekken en voeg de bonen toe. Verwarm deze nog een paar minuten mee.",
+            "Warm de wraps ongeveer een minuut op in de voorverwarmde oven zodat ze warm en soepel worden. Snijd ondertussen de avocado in plakken: snijd deze door de helft, verwijder de pit en trek de schil eraf, snijd dan de plakken.",
+            "Serveer de tortilla’s met de groenten/bonenvulling, schijfjes avocado en salsa.",
+            "Tip: In plaats van de ovenstand kun je de wraps ook eerst vullen en vervolgens 5 minuten onder de voorverwarmde gril zetten. Ze krijgen dan een knapperige bovenkant.`"
+        ],
+        "image": "http://localhost:8080/images/wraps.jpg"
+    },
+    {
+        "title": "Perencake",
+        "ingredients": [
+            "250 gram bloem",
+            "20 gram maïzena",
+            "1 zakje (16 gram) bakpoeder",
+            "150 gram suiker",
+            "1 zakje (8 gram) vanillesuiker",
+            "snufje zout",
+            "75 gram koolzaad- of zonnebloemolie",
+            "150 gram ongezoete plantaardige melk",
+            "1 grote peer"
+        ],
+        "steps": [
+            "Verwarm de oven voor op 175 graden. Bekleed een kleine ronde cakevorm (doorsnede 18 cm) met bakpapier.",
+            "Meng eerst de droge ingrediënten door elkaar. Klop dan met een handmixer of garde de olie en melk erdoor. Schrik niet, het moet een dik beslag worden. Verdeel het beslag over de vorm. Schil de peer, verdeel hem in kwarten en verwijder het klokhuis. Snijd de kwarten in plakjes en leg die mooi verdeeld op het beslag.",
+            "Bak de cake in ongeveer 45 minuten gaar en goudbruin. Laat hem even afkoelen op een rooster alvorens hem op te dienen.",
+            "Tip: Het is ook lekker om de peren in blokjes te snijden en ze door het beslag te mengen. Zwarte bessen (diepvries) of pruimen zijn ook lekker door het beslag in plaats van peren. Het is ook lekker om amandelschaafsel over de cake te strooien voordat deze de oven in gaat."
+        ],
+        "image": "http://localhost:8080/images/perencake.jpg"
+    }
+]
