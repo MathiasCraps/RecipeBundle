@@ -13,6 +13,6 @@ export function RecipeList(props: Props) {
     maxWidth="60em"
     columns={[1, 2, 3, 4]}
     spacing="1em">
-    {props.recipes.map((data, index) => (<RecipePreview {...data} key={index}></RecipePreview>))}
+    {props.recipes.map((recipe, index) => (<RecipePreview recipe={recipe} key={index}></RecipePreview>))}
   </SimpleGrid>);
 }

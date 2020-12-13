@@ -5,6 +5,7 @@ import { testData } from './RecipeData';
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
+    activeRecipe: Recipe | undefined;
 }
 
 export enum ViewType {
@@ -19,11 +20,13 @@ export enum Actions {
 export interface ChangeViewAction {
     type: Actions.CHANGE_VIEW;
     view: ViewType
+    recipe: Recipe | undefined
 }
 
 const defaultState: ReduxModel = {
     view: ViewType.Overview,
-    recipes: testData
+    recipes: testData,
+    activeRecipe: undefined
 }
 
 function handleState(oldState: ReduxModel = defaultState, action: ChangeViewAction) {
@@ -31,7 +34,7 @@ function handleState(oldState: ReduxModel = defaultState, action: ChangeViewActi
         case Actions.CHANGE_VIEW:
             if (oldState.view !== action.view) {
                 return {
-                    ...oldState, view: action.view
+                    ...oldState, view: action.view, activeRecipe: action.recipe
                 }
             }
     }

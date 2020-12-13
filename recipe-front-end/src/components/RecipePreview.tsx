@@ -2,35 +2,32 @@ import { Box, Image, Heading, propNames } from "@chakra-ui/react";
 import { changeActiveView } from "../redux/Actions";
 import { ReduxModel, ViewType } from "../redux/Store";
 import { connect } from 'react-redux';
+import { Recipe } from "../interfaces/Recipe";
 
-interface RecipePreviewProps {
-  title: string;
-  content: string;
-  image: string;
+interface OriginalProps {
+  recipe: Recipe;
 }
 
 interface props {
   changeActiveView: typeof changeActiveView;
 }
 
-type RecipedPreviewUnion = RecipePreviewProps & props;
+type Props = OriginalProps & props;
 
-function mapStateToProps(state: ReduxModel, ownProps: RecipePreviewProps) {
-  console.log(arguments);
+function mapStateToProps(state: ReduxModel, ownProps: OriginalProps) {
   return ownProps;
 }
 
-function RecipePreview(props: RecipedPreviewUnion) {
+function RecipePreview(props: Props) {
   return (<Box
     borderWidth="1px"
     cursor="pointer"
     p="0.5em"
     borderRadius="lg"
-    onClick={() => props.changeActiveView(ViewType.RecipeView)}
+    onClick={() => props.changeActiveView(ViewType.RecipeView, props.recipe)}
   >
-    <Heading as="h2">{props.title}</Heading>
-    <Image src={props.image} maxWidth="100%" alt="" />
-    <div>{props.content}</div>
+    <Heading as="h2">{props.recipe.title}</Heading>
+    <Image src={props.recipe.image} maxWidth="100%" alt="" />
   </Box>);
 }
 
