@@ -1,6 +1,4 @@
-import { createStore } from 'redux';
 import { Recipe } from '../interfaces/Recipe';
-import { testData } from './RecipeData';
 
 export interface ReduxModel {
     view: ViewType;
@@ -25,11 +23,11 @@ export interface ChangeViewAction {
 
 const defaultState: ReduxModel = {
     view: ViewType.Overview,
-    recipes: testData,
+    recipes: [],
     activeRecipe: undefined
 }
 
-function handleState(oldState: ReduxModel = defaultState, action: ChangeViewAction) {
+export function handleState(oldState: ReduxModel = defaultState, action: ChangeViewAction): ReduxModel {
     switch (action.type) {
         case Actions.CHANGE_VIEW:
             if (oldState.view !== action.view) {
@@ -41,6 +39,3 @@ function handleState(oldState: ReduxModel = defaultState, action: ChangeViewActi
 
     return oldState;
 }
-
-
-export const store = createStore(handleState);
