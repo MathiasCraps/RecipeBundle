@@ -1,6 +1,6 @@
 [
     {
-        "title": "Herfstpasta",
+        "title": "Herfstpasta met pompoen",
         "ingredients": [
             "1 eetlepel olijfolie",
             "1 dikke prei, in ringetjes",
@@ -25,7 +25,7 @@
         "image": "http://localhost:8080/images/herfstpasta-pompoen.jpg"
     },
     {
-        "title": "Stoofpot",
+        "title": "Pompoen pindastoofpot",
         "ingredients": [
             "250 gram zilvervliesrijst of quinoa",
             "1 eetlepel zonnebloemolie",
@@ -54,7 +54,7 @@
         "image": "http://localhost:8080/images/pompoen-pindastoofpot.jpg"
     },
     {
-        "title": "Wraps",
+        "title": "Wraps met kidneybonen, pompoen, avocado & salsa",
         "ingredients": [
             "1 middelgrote pompoen",
             "1 eetlepel olie",
