@@ -1,29 +1,37 @@
+import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
+import { connect } from 'react-redux';
 import './App.css';
-import RecipePreview from './components/RecipePreview';
-import { Recipe } from './interfaces/Recipe';
-import { Box, SimpleGrid, Heading, Center } from "@chakra-ui/react";
+import { RecipeList } from "./components/RecipeList";
+import RecipeOverview from "./components/RecipeOverview";
+import { Recipe } from "./interfaces/Recipe";
+import { ReduxModel, ViewType } from './redux/Store';
 
 interface AppProps {
   recipes: Recipe[];
+  view: ViewType;
+  activeRecipe: Recipe | undefined;
+}
+
+function mapStateToProps(props: ReduxModel) {
+  return {
+    recipes: props.recipes,
+    view: props.view,
+    activeRecipe: props.activeRecipe
+  };
 }
 
 function App(props: AppProps) {
-  return (
-    <Box>
-      <header>
-        <Center bgColor="gray.100" p="0.5em">
-          <Heading as="h1">Rebundle</Heading>
-        </Center>
-      </header>
-      <SimpleGrid paddingTop="2em"
-        margin="auto"
-        maxWidth="60em"
-        columns={[1, 2, 3, 4]}
-        spacing="1em">
-        {props.recipes.map((data, index) => (<RecipePreview {...data} key={index}></RecipePreview>))}
-      </SimpleGrid>
-    </Box>);
+  return (<Box>
+    {(props.activeRecipe) ? <RecipeOverview /> : undefined}
+
+    <header>
+      <Center bgColor="gray.100" p="0.5em">
+        <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
+      </Center>
+    </header>
+    <RecipeList recipes={props.recipes}></RecipeList>
+  </Box>);
 }
 
-export default App;
+export default connect(mapStateToProps, {})(App);
