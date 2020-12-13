@@ -20,13 +20,14 @@ function mapStateToProps(state: ReduxModel, ownProps: OriginalProps) {
 
 function RecipePreview(props: Props) {
   return (<Box
-    borderWidth="1px"
+    // borderWidth="1px"
+    className="recipeBox"
     cursor="pointer"
     p="0.5em"
     borderRadius="lg"
     onClick={() => props.changeActiveView(ViewType.RecipeView, props.recipe)}
   >
-    <Heading as="h2">{props.recipe.title}</Heading>
+    <strong className="recipe-preview-size">{props.recipe.title}</strong>
     <Image src={props.recipe.image} maxWidth="100%" alt="" />
   </Box>);
 }
