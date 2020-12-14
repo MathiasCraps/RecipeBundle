@@ -51,7 +51,8 @@
   position: relative;
 }
 
-.recipeBox:hover img {
+.recipeBox:hover img,
+.recipeBox a:focus img {
   filter: opacity(0.9)
 }
 

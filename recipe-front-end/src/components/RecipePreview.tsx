@@ -25,9 +25,10 @@ function RecipePreview(props: Props) {
     p="0.5em"
     borderRadius="lg"
     onClick={() => props.changeActiveView(ViewType.RecipeView, props.recipe)}
-  >
+  ><a href="#">
     <strong className="recipe-preview-size">{props.recipe.title}</strong>
     <Image src={props.recipe.image} width="100%" alt="" />
+    </a>
   </Box>);
 }
 
