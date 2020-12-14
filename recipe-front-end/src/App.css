@@ -36,3 +36,38 @@
     transform: rotate(360deg);
   }
 }
+
+.recipe-preview-size {
+  position: absolute;
+  font-size: 1.7em;
+  top: 0.8em;
+  left: 0.8em;
+  z-index: 9;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+}
+
+.recipeBox {
+  position: relative;
+}
+
+.recipeBox:hover img,
+.recipeBox a:focus img {
+  filter: opacity(0.85);
+}
+
+.close-button-recipe-overview {
+  position: absolute;
+  right: 1em;
+  top: 3em;
+}
+
+/* todo: fix me with chakra global styles */
+
+h3 {
+  margin-top: 1em!important;
+}
+
+p {
+  margin-bottom: 1em!important;
+}

@@ -1,4 +1,4 @@
-import { Drawer, Box, Heading, Image, DrawerContent, DrawerCloseButton } from "@chakra-ui/react";
+import { Box, Heading, Image, SlideFade, CloseButton } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
 import { Recipe } from "../interfaces/Recipe";
@@ -22,28 +22,17 @@ function mapStateToProps(state: ReduxModel) {
 }
 
 function RecipeOverview(props: Props) {
-    return (<Drawer
-        isOpen={Boolean(props.recipe)}
-        size="full"
-        closeOnEsc={true}
-        isFullHeight={true}
-        motionPreset="slideInBottom"
-        scrollBehavior="inside"
-        onClose={() => props.changeActiveView(ViewType.Overview, undefined)}>
-        <DrawerContent>
-            <Box maxWidth="80em" marginLeft="auto" marginRight="auto">
-                <DrawerCloseButton size="sm" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
-                <Heading as="h2">{props.recipe.title}</Heading>
-                <Image src={props.recipe.image} alt="" />
-                <Heading as="h3">Ingrediënten</Heading>
-                {props.recipe.steps.map((step) => <p>{step}</p>)}
-                <Heading as="h3">Instructies</Heading>
-                {props.recipe.steps.map((step) => <p>{step}</p>)}
-            </Box>
-        </DrawerContent>
-    </Drawer>);
+    return (<SlideFade in={true}>
+        <Box padding="2em" maxWidth="80em" margin="auto">
+            <CloseButton className="close-button-recipe-overview" autoFocus={true} size="sm" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
+            <Heading as="h2">{props.recipe.title}</Heading>
+            <Image src={props.recipe.image} alt="" />
+            <Heading as="h3">Ingrediënten</Heading>
+            {props.recipe.steps.map((step) => <p>{step}</p>)}
+            <Heading as="h3">Instructies</Heading>
+            {props.recipe.steps.map((step) => <p>{step}</p>)}
+        </Box>
+    </SlideFade>);
 }
-
-
 
 export default connect(mapStateToProps, { changeActiveView })(RecipeOverview);
