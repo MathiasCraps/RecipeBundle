@@ -53,7 +53,7 @@
 
 .recipeBox:hover img,
 .recipeBox a:focus img {
-  filter: opacity(0.9)
+  filter: opacity(0.85);
 }
 
 .close-button-recipe-overview {
