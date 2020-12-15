@@ -31,9 +31,9 @@ function RecipeOverview(props: Props) {
             <Heading as="h2">{props.recipe.title}</Heading>
             <Image src={props.recipe.image} alt="" />
             <Heading as="h3">Ingrediënten</Heading>
-            {props.recipe.steps.map((step) => <p>{step}</p>)}
+            {props.recipe.steps.map((step, index) => <p key={index}>{step}</p>)}
             <Heading as="h3">Instructies</Heading>
-            {props.recipe.steps.map((step) => <p>{step}</p>)}
+            {props.recipe.steps.map((step, index) => <p key={index}>{step}</p>)}
         </Box>
     </SlideFade>);
 }
