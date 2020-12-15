@@ -11,7 +11,12 @@ import { Recipe } from "./interfaces/Recipe";
 async function start() {
   const data = await fetch('http://localhost:8080/getRecipes')
   const recipes: Recipe[] = await data.json();
-  const replicatedSet = [...recipes, ...recipes, ...recipes, ...recipes, ...recipes];
+
+  let replicatedSet: Recipe[] = [];
+  for (let i = 0; i < 5; i++) {
+    replicatedSet = replicatedSet.concat(JSON.parse(JSON.stringify(recipes)));
+  }
+
   const store = createStore(handleState, {
     view: ViewType.Overview,
     recipes: replicatedSet,
