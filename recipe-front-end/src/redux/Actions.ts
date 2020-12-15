@@ -8,3 +8,15 @@ export function changeActiveView(view: ViewType, recipe: Recipe | undefined): Ch
         recipe
     };
 }
+
+export enum Direction {
+    PREVIOUS,
+    NEXT
+}
+
+export function switchActiveRecipe(recipe: Recipe, direction: Direction) {
+    return {
+        type: Actions.SWITCH_ACTIVE_RECIPE,
+        direction
+    }
+}
