@@ -25,9 +25,10 @@ function AccountMenu(props: Props) {
         <DrawerOverlay>
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>Log in</DrawerHeader>
+                <DrawerHeader>Welcome <b>ninja</b> 🐱‍👤</DrawerHeader>
                 <DrawerBody>
-                    <a href='#'>Log in via Github. <img src='images/github.png' /></a>
+                    <p>Not you?</p>
+                    <a href='#'>Log in via Github and unlock amazing features <img src='images/github.png' /></a>
         </DrawerBody>
             </DrawerContent>
         </DrawerOverlay>
