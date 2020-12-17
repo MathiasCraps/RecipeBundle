@@ -1,12 +1,12 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import React from 'react';
-import { createStore } from 'redux';
 import ReactDOM from 'react-dom';
-import { Provider,  } from 'react-redux';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import App from "./App";
 import './index.css';
-import { handleState, ViewType } from './redux/Store';
 import { Recipe } from "./interfaces/Recipe";
+import { defaultState, handleState } from './redux/Store';
 
 async function start() {
   const data = await fetch('http://localhost:8080/getRecipes')
@@ -18,9 +18,8 @@ async function start() {
   }
 
   const store = createStore(handleState, {
-    view: ViewType.Overview,
+    ...defaultState,
     recipes: replicatedSet,
-    activeRecipe: undefined
   });
   
   ReactDOM.render(

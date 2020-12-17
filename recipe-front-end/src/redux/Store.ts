@@ -5,6 +5,8 @@ export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
     activeRecipe: Recipe | undefined;
+    loginMenuOpened: boolean;
+    loggedIn: boolean; // todo: replace in future with user data object. Specifics still t.b.d.
 }
 
 export enum ViewType {
@@ -14,7 +16,8 @@ export enum ViewType {
 
 export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
-    SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE'
+    SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
+    TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU'
 };
 
 export interface ChangeViewAction {
@@ -28,13 +31,21 @@ export interface SwitchActiveRecipeAction {
     direction: Direction;
 }
 
-const defaultState: ReduxModel = {
-    view: ViewType.Overview,
-    recipes: [],
-    activeRecipe: undefined
+export interface ToggleLoginFormAction {
+    type: Actions.TOGGLE_LOGIN_MENU;
 }
 
-export function handleState(oldState: ReduxModel = defaultState, action: ChangeViewAction | SwitchActiveRecipeAction): ReduxModel {
+export const defaultState: ReduxModel = {
+    view: ViewType.Overview,
+    recipes: [],
+    activeRecipe: undefined,
+    loginMenuOpened: false,
+    loggedIn: false
+}
+
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction;
+
+export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
         case Actions.CHANGE_VIEW:
             if (oldState.view !== action.view) {
@@ -47,12 +58,18 @@ export function handleState(oldState: ReduxModel = defaultState, action: ChangeV
             if (oldState.activeRecipe) {
                 const recipeIndex = oldState.recipes.indexOf(oldState.activeRecipe);
                 const adjustedRecipe = recipeIndex + (action.direction === Direction.PREVIOUS ? -1 : +1);
-                const boundariesClamped = Math.min(oldState.recipes.length - 1, Math.max(0, adjustedRecipe))
-    
+                const boundariesClamped = Math.min(oldState.recipes.length - 1, Math.max(0, adjustedRecipe))    
                 return {
                     ...oldState,
                     activeRecipe: oldState.recipes[boundariesClamped]
                 }    
+            }
+            break;
+        case Actions.TOGGLE_LOGIN_MENU:
+            const reversedoOldMenuState = !oldState.loginMenuOpened;
+            return {
+                ...oldState,
+                loginMenuOpened: reversedoOldMenuState
             }
     }
 

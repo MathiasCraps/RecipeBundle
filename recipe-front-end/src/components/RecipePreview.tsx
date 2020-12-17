@@ -1,8 +1,8 @@
-import { Box, Image, Heading, propNames } from "@chakra-ui/react";
-import { changeActiveView } from "../redux/Actions";
-import { ReduxModel, ViewType } from "../redux/Store";
+import { Box, Image } from "@chakra-ui/react";
 import { connect } from 'react-redux';
 import { Recipe } from "../interfaces/Recipe";
+import { changeActiveView } from "../redux/Actions";
+import { ReduxModel, ViewType } from "../redux/Store";
 
 interface OriginalProps {
   recipe: Recipe;
