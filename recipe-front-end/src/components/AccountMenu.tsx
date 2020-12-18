@@ -1,6 +1,7 @@
 import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
+import { Localisation } from "../localisation/AppTexts";
 import { toggleLoginForm } from "../redux/Actions";
 import { ReduxModel } from "../redux/Store";
 
@@ -25,10 +26,10 @@ function AccountMenu(props: Props) {
         <DrawerOverlay>
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>Welcome <b>ninja</b> 🐱‍👤</DrawerHeader>
+                <DrawerHeader>{Localisation.WELCOME} <b>{Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
                 <DrawerBody>
-                    <p>Not you?</p>
-                    <a href='#'>Log in via Github and unlock amazing features <img src='images/github.png' /></a>
+                    <p>{Localisation.NOT_YOU}</p>
+                    <a href='#'>{Localisation.LOGIN_FOR_MORE_FEATURES} <img src='images/github.png' /></a>
         </DrawerBody>
             </DrawerContent>
         </DrawerOverlay>
