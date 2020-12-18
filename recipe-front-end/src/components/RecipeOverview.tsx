@@ -24,8 +24,6 @@ function mapStateToProps(state: ReduxModel) {
     };
 }
 
-
-
 function RecipeOverview(props: Props) {
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
