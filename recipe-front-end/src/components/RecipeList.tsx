@@ -4,7 +4,7 @@ import { Recipe } from "../interfaces/Recipe";
 import RecipePreview from "./RecipePreview";
 
 interface Props {
-    recipes: Recipe[];
+  recipes: Recipe[];
 }
 
 var options = {
@@ -17,7 +17,7 @@ var options = {
 }
 
 export function RecipeList(props: Props) {
-    return (<SimpleGrid {...options}>
+  return (<SimpleGrid {...options}>
     {props.recipes.map((recipe, index) => (<RecipePreview recipe={recipe} key={index}></RecipePreview>))}
   </SimpleGrid>);
 }

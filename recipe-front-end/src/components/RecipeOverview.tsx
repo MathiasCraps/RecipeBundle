@@ -7,24 +7,22 @@ import { Localisation } from "../localisation/AppTexts";
 import { changeActiveView, Direction, switchActiveRecipe } from "../redux/Actions";
 import { ReduxModel, ViewType } from "../redux/Store";
 
-interface OriginalProps {
+interface RecipeOverviewProps {
     recipe: Recipe;
 }
 
-interface props {
+interface ReduxProps {
     changeActiveView: typeof changeActiveView;
     switchActiveRecipe: typeof switchActiveRecipe;
 }
 
-type Props = OriginalProps & props;
+type Props = RecipeOverviewProps & ReduxProps;
 
 function mapStateToProps(state: ReduxModel) {
     return {
         recipe: state.activeRecipe!
     };
 }
-
-
 
 function RecipeOverview(props: Props) {
     useEffect(() => {
@@ -45,7 +43,7 @@ function RecipeOverview(props: Props) {
                     break;
             }
             if (direction !== undefined) {
-                props.switchActiveRecipe(props.recipe, direction)
+                props.switchActiveRecipe(direction)
             }
 
         }
@@ -57,10 +55,10 @@ function RecipeOverview(props: Props) {
     })
     return (<SlideFade in={true}>
         <Box padding="2em" maxWidth="80em" margin="auto">
-            <a href="#" onClick={() => props.switchActiveRecipe(props.recipe, Direction.PREVIOUS)} >
+            <a href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
             </a>
-            <a href="#" onClick={() => props.switchActiveRecipe(props.recipe, Direction.NEXT)}>
+            <a href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
             </a>
             <CloseButton className="close-button-recipe-overview" autoFocus={true} size="sm" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />

@@ -14,7 +14,7 @@ export enum Direction {
     NEXT
 }
 
-export function switchActiveRecipe(recipe: Recipe, direction: Direction): SwitchActiveRecipeAction {
+export function switchActiveRecipe(direction: Direction): SwitchActiveRecipeAction {
     return {
         type: Actions.SWITCH_ACTIVE_RECIPE,
         direction
