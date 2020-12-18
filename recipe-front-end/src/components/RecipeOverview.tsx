@@ -7,16 +7,16 @@ import { Localisation } from "../localisation/AppTexts";
 import { changeActiveView, Direction, switchActiveRecipe } from "../redux/Actions";
 import { ReduxModel, ViewType } from "../redux/Store";
 
-interface OriginalProps {
+interface RecipeOverviewProps {
     recipe: Recipe;
 }
 
-interface props {
+interface ReduxProps {
     changeActiveView: typeof changeActiveView;
     switchActiveRecipe: typeof switchActiveRecipe;
 }
 
-type Props = OriginalProps & props;
+type Props = RecipeOverviewProps & ReduxProps;
 
 function mapStateToProps(state: ReduxModel) {
     return {
