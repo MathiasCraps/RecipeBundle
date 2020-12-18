@@ -43,7 +43,7 @@ function RecipeOverview(props: Props) {
                     break;
             }
             if (direction !== undefined) {
-                props.switchActiveRecipe(props.recipe, direction)
+                props.switchActiveRecipe(direction)
             }
 
         }
@@ -55,10 +55,10 @@ function RecipeOverview(props: Props) {
     })
     return (<SlideFade in={true}>
         <Box padding="2em" maxWidth="80em" margin="auto">
-            <a href="#" onClick={() => props.switchActiveRecipe(props.recipe, Direction.PREVIOUS)} >
+            <a href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
             </a>
-            <a href="#" onClick={() => props.switchActiveRecipe(props.recipe, Direction.NEXT)}>
+            <a href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
             </a>
             <CloseButton className="close-button-recipe-overview" autoFocus={true} size="sm" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
