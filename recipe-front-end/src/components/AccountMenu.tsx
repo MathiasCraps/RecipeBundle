@@ -33,7 +33,9 @@ function AccountMenu(props: Props) {
                 <DrawerHeader>{Localisation.WELCOME} <b>{Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
                 <DrawerBody>
                     <p>{Localisation.NOT_YOU}</p>
-                    <a href='#'>{Localisation.LOGIN_FOR_MORE_FEATURES} <img src='images/github.png' /></a>
+                    <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}`}>
+                        {Localisation.LOGIN_FOR_MORE_FEATURES} <img src='images/github.png' />
+                    </a>
                 </DrawerBody>
             </DrawerContent>
         </DrawerOverlay>
