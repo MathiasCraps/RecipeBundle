@@ -29,6 +29,10 @@
   font-size: 1.5em;
 }
 
+.recipe-overview {
+  position: relative;
+}
+
 /* todo: fix me with chakra global styles */
 
 h3 {

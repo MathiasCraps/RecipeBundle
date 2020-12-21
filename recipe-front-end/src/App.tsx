@@ -34,16 +34,14 @@ function mapStateToProps(props: ReduxModel): AppProps {
 }
 
 function App(props: Props) {
-  return props.activeRecipe ? <RecipeOverview /> : (<Box>
-    <header>
-      <Center bgColor="gray.100" p="0.5em">
-        <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
-        <a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label="Account beheren"><FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} /></a>
-      </Center>
-    </header>
+  return (<Box><header>
+    <Center bgColor="gray.100" p="0.5em">
+      <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
+      <a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label="Account beheren"><FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} /></a>
+    </Center>
     <AccountMenu />
-    <RecipeList recipes={props.recipes}></RecipeList>
-  </Box >)
+    {props.activeRecipe ? <RecipeOverview /> : (<RecipeList recipes={props.recipes} />)}
+  </header></Box>)
 }
 
 export default connect(mapStateToProps, { toggleLoginForm })(App);
