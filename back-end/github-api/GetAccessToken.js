@@ -28,13 +28,13 @@ module.exports.requestAccessToken = function (clientCode) {
                 }
     
                 if (data.access_token) {
-                    resolve({ accessToken: data.access_token});
+                    resolve(data.access_token);
                 }
             });
         });
     
         httpRequest.on('error', function (errorEvent) {
-            reject({ error: true });
+            reject(errorEvent);
         });
     
         httpRequest.write(postData);

@@ -7,6 +7,7 @@ const { executeQuery } = require('./sql-utils/Database');
 var session = require('express-session');
 const process = require('process');
 const { requestAccessToken } = require('./github-api/GetAccessToken');
+const { requestUserApi } = require('./github-api/UserApiRequest');
 
 dotenv.config();
 
@@ -46,8 +47,10 @@ app.get('/getSessionData', async (request, response) => {
         }
     }
 
+    const result = await requestUserApi(request.session.accessToken);
+    response.json(result);
+
     // todo: finish the logic
-    // 1) finish request with GitHub's request
     // 2) integrate database functionality
 });
 
