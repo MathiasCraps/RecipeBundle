@@ -4,23 +4,60 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const { executeQuery } = require('./sql-utils/Database');
+var session = require('express-session');
+const process = require('process');
+const { requestAccessToken } = require('./github-api/GetAccessToken');
+const { requestUserApi } = require('./github-api/UserApiRequest');
+
+dotenv.config();
 
 const app = express();
 const port = 8080;
 
 app.use(express.static('public'));
-app.use(cors());
+app.use(cors(), session({
+    secret: process.env.SESSION_SECRET
+}));
 
-app.get('/getRecipes', async (error, response) => {
+app.get('/getRecipes', async (request, response) => {
     const rawData = fs.readFileSync('testData.json', 'utf8');
     response.json(JSON.parse(rawData));
 });
 
+
+app.get('/getSessionData', async (request, response) => {
+    const auth = request.query.code;
+    if (!auth) {
+        response.json({
+            loggedIn: false
+        });
+    }
+
+    if (!request.session.accessToken) {
+        try {
+            const accessToken = await requestAccessToken(auth);
+            request.session.accessToken = accessToken;
+            console.log('success', accessToken);
+        } catch (err) {
+            console.log('error', err);
+            response.json({
+                loggedIn: false
+            });
+            return;
+        }
+    }
+
+    const result = await requestUserApi(request.session.accessToken);
+    response.json(result);
+
+    // todo: finish the logic
+    // 2) integrate database functionality
+});
+
+
 app.listen(port, () => {
     console.log(`Server active at http://localhost:${port}`)
 });
-
-dotenv.config();
 
 const pool = new Pool({
     user: process.env.PGUSER,

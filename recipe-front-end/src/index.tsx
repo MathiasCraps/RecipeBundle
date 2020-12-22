@@ -6,8 +6,13 @@ import { createStore } from 'redux';
 import App from "./App";
 import { Recipe } from "./interfaces/Recipe";
 import { defaultState, handleState } from './redux/Store';
+import { GetParamsObject, parseGetParams } from "./utils/UrlUtils";
 
 async function start() {
+  const getParams = parseGetParams(window.location.search);
+  const callbackCode = getParams.filter((getParams: GetParamsObject) => {
+    return getParams.key === 'code';
+  });
   const data = await fetch('http://localhost:8080/getRecipes')
   const recipes: Recipe[] = await data.json();
 
