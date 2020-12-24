@@ -18,7 +18,7 @@ export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU'
-};
+}
 
 export interface ChangeViewAction {
     type: Actions.CHANGE_VIEW;
@@ -66,11 +66,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             }
             break;
         case Actions.TOGGLE_LOGIN_MENU:
-            const reversedoOldMenuState = !oldState.loginMenuOpened;
             return {
                 ...oldState,
-                loginMenuOpened: reversedoOldMenuState
+                loginMenuOpened: !oldState.loginMenuOpened
             }
+        default:
+            // not supported yet
     }
 
     return oldState;

@@ -25,7 +25,7 @@ module.exports.requestUserApi = function (token) {
             })
         });
     
-        httpRequest.on('error', function (errorEvent) {
+        httpRequest.on('error', function () {
             reject({ error: true });
         });
     

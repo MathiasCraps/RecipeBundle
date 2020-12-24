@@ -7,7 +7,7 @@ interface Props {
   recipes: Recipe[];
 }
 
-var options = {
+const options = {
   paddingTop: "2em",
   margin: "auto",
   maxWidth: "80em",
@@ -16,7 +16,7 @@ var options = {
   spacing: "1em"
 }
 
-export function RecipeList(props: Props) {
+export function RecipeList(props: Props): React.ReactElement {
   return (<SimpleGrid {...options}>
     {props.recipes.map((recipe, index) => (<RecipePreview recipe={recipe} key={index}></RecipePreview>))}
   </SimpleGrid>);
