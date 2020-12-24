@@ -41,6 +41,8 @@ function RecipeOverview(props: Props) {
                 case "ArrowRight":
                     direction = Direction.NEXT;
                     break;
+                default:
+                    // ignore
             }
             if (direction !== undefined) {
                 props.switchActiveRecipe(direction)
