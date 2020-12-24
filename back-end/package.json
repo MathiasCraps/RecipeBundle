@@ -18,7 +18,9 @@
   },
   "scripts": {
     "test": "test",
-    "start": "nodemon ."
+    "start": "nodemon .",
+    "lint-list": "eslint src",
+    "lint-fix": "eslint src --fix"
   },
   "author": "",
   "license": "ISC"
