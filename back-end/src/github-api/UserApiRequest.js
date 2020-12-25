@@ -2,7 +2,7 @@ const https = require('https');
 
 module.exports.requestUserApi = function (token) {
     return new Promise((resolve, reject) => {
-        const url = 'https://api.github.com/user'
+        const url = 'https://api.github.com/user/emails'
     
         var options = {
             method: 'GET',
