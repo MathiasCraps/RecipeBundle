@@ -16,3 +16,13 @@ export function parseGetParams(getParamsString: string): GetParams {
     return queryMap;
 }
 
+export function makeQueryString(paramsObject: GetParams): string {
+    const keys = Object.keys(paramsObject);
+    return keys.map((key) => {
+        const value: string | undefined = paramsObject[key];
+        const seperator = (typeof value === 'string') ? '=' : '';
+        const normalizedValue = value || '';
+
+        return encodeURI(key) + seperator + encodeURI(normalizedValue);
+    }).join('&');
+}
