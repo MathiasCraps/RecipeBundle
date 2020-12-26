@@ -47,8 +47,27 @@ app.get('/getSessionData', async (request, response) => {
         }
     }
 
-    const result = await requestUserApi(request.session.accessToken);
-    response.json(result);
+    const baseUserInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user');
+    const eMailInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user/emails');
+    const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
+    if (!mail) {
+      return response.json({
+        loggedIn: false
+      });
+    }
+
+    const name = baseUserInfo.name || 'GitHub enabled ninja';
+    const userData = {
+      mail,
+      name
+    }
+    
+    console.log('user is', userData);
+
+    response.json({
+      loggedIn: true,
+      name: name
+    });
 
     // todo: finish the logic
     // 2) integrate database functionality
