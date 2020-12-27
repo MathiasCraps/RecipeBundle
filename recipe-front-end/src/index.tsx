@@ -11,11 +11,11 @@ import { parseGetParams } from "./utils/UrlUtils";
 async function start() {
   const getParams = parseGetParams(window.location.search);
   if (getParams.code) {
-    const apiKey = await fetch(`http://localhost:8080/getSessionData?code=${getParams.code}`);
+    const apiKey = await fetch(`/getSessionData?code=${getParams.code}`);
     console.log(apiKey);
   }
 
-  const data = await fetch('http://localhost:8080/getRecipes')
+  const data = await fetch('/getRecipes')
   const recipes: Recipe[] = await data.json();
 
   let replicatedSet: Recipe[] = [];
