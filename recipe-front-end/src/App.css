@@ -35,6 +35,10 @@
 
 /* todo: fix me with chakra global styles */
 
+a {
+  text-decoration: underline!important;
+}
+
 h3 {
   margin-top: 1em!important;
 }

@@ -18,7 +18,8 @@ export enum ViewType {
 export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
-    TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU'
+    TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU',
+    LOG_OUT = 'LOG_OUT'
 }
 
 export interface ChangeViewAction {
@@ -36,6 +37,10 @@ export interface ToggleLoginFormAction {
     type: Actions.TOGGLE_LOGIN_MENU;
 }
 
+export interface LogoutAction {
+    type: Actions.LOG_OUT;
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -45,7 +50,7 @@ export const defaultState: ReduxModel = {
     userName: undefined
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -71,6 +76,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 loginMenuOpened: !oldState.loginMenuOpened
+            }
+        case Actions.LOG_OUT:
+            return {
+                ...oldState,
+                loggedIn: false,
+                userName: undefined
             }
         default:
             // not supported yet

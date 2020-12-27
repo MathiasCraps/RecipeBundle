@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { toggleLoginForm } from "../../redux/Actions";
 import { ReduxModel } from "../../redux/Store";
-import { LoggedInText } from "./LoggedInText";
+import LoggedInText from "./LoggedInText";
 import { NotLoggedIn } from "./NotLoggedInText";
 
 interface AccountMenuProps {

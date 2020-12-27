@@ -8,5 +8,6 @@ export enum Localisation {
     NINJA = "Ninja",
     NOT_YOU = "Ben jij dit niet?",
     LOGIN_FOR_MORE_FEATURES = "Log in via Github en ontgrendel meer.",
-    LOGGED_IN_ENCOURAGING = "Ingelogd? Goed bezig."
+    LOGGED_IN_ENCOURAGING = "Ingelogd? Goed bezig.",
+    LOG_OUT = 'Toch liever ninja? Log uit.'
 }
