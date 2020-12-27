@@ -7,6 +7,7 @@ export interface ReduxModel {
     activeRecipe: Recipe | undefined;
     loginMenuOpened: boolean;
     loggedIn: boolean; // todo: replace in future with user data object. Specifics still t.b.d.
+    userName: string | undefined;
 }
 
 export enum ViewType {
@@ -40,7 +41,8 @@ export const defaultState: ReduxModel = {
     recipes: [],
     activeRecipe: undefined,
     loginMenuOpened: false,
-    loggedIn: false
+    loggedIn: false,
+    userName: undefined
 }
 
 type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction;
