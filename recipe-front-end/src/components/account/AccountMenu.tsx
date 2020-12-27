@@ -36,7 +36,9 @@ function AccountMenu(props: Props) {
         <DrawerOverlay>
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>{Localisation.WELCOME} <b>{props.loggedIn ? props.userName : Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
+                <DrawerHeader>
+                    <b>{`${Localisation.WELCOME} ` + ((props.loggedIn) ? `${props.userName} 🐱‍👓` : `${Localisation.NINJA} 🐱‍👤`)}</b>
+                </DrawerHeader>
                 <DrawerBody>
                     {props.loggedIn ? <LoggedInText /> : <NotLoggedIn />}
                 </DrawerBody>
