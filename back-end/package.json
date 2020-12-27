@@ -18,6 +18,7 @@
   },
   "scripts": {
     "test": "test",
+    "debug": "nodemon --inspect=0.0.0.0:9229 .",
     "start": "nodemon .",
     "lint-list": "eslint src",
     "lint-fix": "eslint src --fix"

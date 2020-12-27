@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../localisation/AppTexts";
 import { toggleLoginForm } from "../redux/Actions";
 import { ReduxModel } from "../redux/Store";
+import { makeQueryString } from "../utils/UrlUtils";
 
 interface AccountMenuProps {
     loginMenuOpened: boolean;
@@ -22,6 +23,11 @@ function mapStateToProps(reduxStore: ReduxModel): AccountMenuProps {
 }
 
 function AccountMenu(props: Props) {
+    const queryParams = makeQueryString({
+        client_id: process.env.REACT_APP_GITHUB_CLIENT_ID,
+        scope: 'user:email'
+    });
+
     return (<Drawer
         isOpen={props.loginMenuOpened}
         placement="right"
@@ -33,7 +39,7 @@ function AccountMenu(props: Props) {
                 <DrawerHeader>{Localisation.WELCOME} <b>{Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
                 <DrawerBody>
                     <p>{Localisation.NOT_YOU}</p>
-                    <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}`}>
+                    <a href={`https://github.com/login/oauth/authorize?${queryParams}`}>
                         {Localisation.LOGIN_FOR_MORE_FEATURES} <img src='images/github.png' />
                     </a>
                 </DrawerBody>

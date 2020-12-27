@@ -10,7 +10,11 @@ import { parseGetParams } from "./utils/UrlUtils";
 
 async function start() {
   const getParams = parseGetParams(window.location.search);
-  getParams; // todo: integrate
+  if (getParams.code) {
+    const apiKey = await fetch(`http://localhost:8080/getSessionData?code=${getParams.code}`);
+    console.log(apiKey);
+  }
+
   const data = await fetch('http://localhost:8080/getRecipes')
   const recipes: Recipe[] = await data.json();
 

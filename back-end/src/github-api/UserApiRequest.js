@@ -1,9 +1,7 @@
 const https = require('https');
 
-module.exports.requestUserApi = function (token) {
+module.exports.requestUserApi = function (token, url) {
     return new Promise((resolve, reject) => {
-        const url = 'https://api.github.com/user'
-    
         var options = {
             method: 'GET',
             headers: {
@@ -11,7 +9,7 @@ module.exports.requestUserApi = function (token) {
                 'Accept': 'application/vnd.github.v3+json',
                 'user-agent': 'curl/7.22.0'
             }
-        }
+        };
     
         var httpRequest = https.request(url, options, (resp) => {
             let body = '';
