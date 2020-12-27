@@ -26,6 +26,14 @@ app.get('/getRecipes', async (request, response) => {
 
 
 app.get('/getSessionData', async (request, response) => {
+    const session = request.session;
+    if (session.userName) {
+        return response.json({
+            loggedIn: true,
+            userName: session.userName
+        });
+    }
+
     const auth = request.query.code;
     if (!auth) {
         response.json({
@@ -36,8 +44,7 @@ app.get('/getSessionData', async (request, response) => {
     if (!request.session.accessToken) {
         try {
             const accessToken = await requestAccessToken(auth);
-            request.session.accessToken = accessToken;
-            console.log('success', accessToken);
+            session.accessToken = accessToken;
         } catch (err) {
             console.log('error', err);
             response.json({
@@ -57,12 +64,8 @@ app.get('/getSessionData', async (request, response) => {
     }
 
     const name = baseUserInfo.name || 'GitHub enabled ninja';
-    const userData = {
-      mail,
-      name
-    }
-    
-    console.log('user is', userData);
+    session.userName = name;
+    session.email = mail;
 
     response.json({
       loggedIn: true,
