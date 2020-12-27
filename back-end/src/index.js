@@ -35,12 +35,15 @@ app.get('/getSessionData', async (request, response) => {
     }
 
     const auth = request.query.code;
+
+    // no auth callback code found. Abort the request
     if (!auth) {
         response.json({
             loggedIn: false
         });
     }
 
+    // in case we do not already have an accesToken, retrieve it
     if (!request.session.accessToken) {
         try {
             const accessToken = await requestAccessToken(auth);
@@ -57,6 +60,8 @@ app.get('/getSessionData', async (request, response) => {
     const baseUserInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user');
     const eMailInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user/emails');
     const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
+
+    // nothing useful to use, abort
     if (!mail) {
       return response.json({
         loggedIn: false
@@ -73,7 +78,7 @@ app.get('/getSessionData', async (request, response) => {
     });
 
     // todo: finish the logic
-    // 2) integrate database functionality
+    // integrate database functionality
 });
 
 
