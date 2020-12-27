@@ -24,6 +24,12 @@ app.get('/getRecipes', async (request, response) => {
     response.json(JSON.parse(rawData));
 });
 
+app.get('/logout', async(request, response) => {
+    request.session.destroy((error) => {
+      error && console.log('error', error);
+      response.json({ loggedIn: false})
+    })
+});
 
 app.get('/getSessionData', async (request, response) => {
     const session = request.session;

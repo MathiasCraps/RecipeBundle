@@ -28,10 +28,9 @@ export function toggleLoginForm(): ToggleLoginFormAction  {
 }
 
 export function doLogOut(): LogoutAction {
-    // todo: implement in back-end
-    // convert to redux-thunk
-    // fetch('/logout');
-    
+    // convert to redux-thunk (so log-out only happens when it is ready)
+    fetch('/logout');
+
     return {
         type: Actions.LOG_OUT
     };
