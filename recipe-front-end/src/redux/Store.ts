@@ -81,7 +81,8 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 loggedIn: false,
-                userName: undefined
+                userName: undefined,
+                loginMenuOpened: false
             }
         default:
             // not supported yet
