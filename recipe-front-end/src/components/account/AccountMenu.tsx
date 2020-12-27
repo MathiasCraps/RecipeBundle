@@ -1,10 +1,10 @@
 import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
-import { Localisation } from "../localisation/AppTexts";
-import { toggleLoginForm } from "../redux/Actions";
-import { ReduxModel } from "../redux/Store";
-import { makeQueryString } from "../utils/UrlUtils";
+import { Localisation } from "../../localisation/AppTexts";
+import { toggleLoginForm } from "../../redux/Actions";
+import { ReduxModel } from "../../redux/Store";
+import { makeQueryString } from "../../utils/UrlUtils";
 
 interface AccountMenuProps {
     loginMenuOpened: boolean;
