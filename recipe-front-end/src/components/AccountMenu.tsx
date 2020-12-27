@@ -8,6 +8,8 @@ import { makeQueryString } from "../utils/UrlUtils";
 
 interface AccountMenuProps {
     loginMenuOpened: boolean;
+    loggedIn: boolean;
+    userName: string | undefined;
 }
 
 interface ReduxActionProps {
@@ -18,7 +20,9 @@ type Props = AccountMenuProps & ReduxActionProps;
 
 function mapStateToProps(reduxStore: ReduxModel): AccountMenuProps {
     return {
-        loginMenuOpened: reduxStore.loginMenuOpened
+        loginMenuOpened: reduxStore.loginMenuOpened,
+        loggedIn: reduxStore.loggedIn,
+        userName: reduxStore.userName
     };
 }
 
@@ -36,7 +40,7 @@ function AccountMenu(props: Props) {
         <DrawerOverlay>
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>{Localisation.WELCOME} <b>{Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
+                <DrawerHeader>{Localisation.WELCOME} <b>{props.loggedIn ? props.userName : Localisation.NINJA}</b> 🐱‍👤</DrawerHeader>
                 <DrawerBody>
                     <p>{Localisation.NOT_YOU}</p>
                     <a href={`https://github.com/login/oauth/authorize?${queryParams}`}>
