@@ -15,8 +15,8 @@ const app = express();
 const port = 8080;
 
 app.use(express.static(__dirname + '/public'));
-app.use(cors(), session({
-    secret: process.env.SESSION_SECRET
+app.use(session({
+  secret: process.env.SESSION_SECRET,
 }));
 
 app.get('/getRecipes', async (request, response) => {
