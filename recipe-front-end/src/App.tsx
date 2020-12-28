@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import { connect } from 'react-redux';
 import './App.css';
-import AccountMenu from "./components/AccountMenu";
+import AccountMenu from "./components/account/AccountMenu";
 import { RecipeList } from "./components/RecipeList";
 import RecipeOverview from "./components/RecipeOverview";
 import { Recipe } from "./interfaces/Recipe";

@@ -15,8 +15,8 @@ const app = express();
 const port = 8080;
 
 app.use(express.static(__dirname + '/public'));
-app.use(cors(), session({
-    secret: process.env.SESSION_SECRET
+app.use(session({
+  secret: process.env.SESSION_SECRET,
 }));
 
 app.get('/getRecipes', async (request, response) => {
@@ -24,20 +24,36 @@ app.get('/getRecipes', async (request, response) => {
     response.json(JSON.parse(rawData));
 });
 
+app.get('/logout', async(request, response) => {
+    request.session.destroy((error) => {
+      error && console.log('error', error);
+      response.json({ loggedIn: false})
+    })
+});
 
 app.get('/getSessionData', async (request, response) => {
+    const session = request.session;
+    if (session.userName) {
+        return response.json({
+            loggedIn: true,
+            userName: session.userName
+        });
+    }
+
     const auth = request.query.code;
+
+    // no auth callback code found. Abort the request
     if (!auth) {
         response.json({
             loggedIn: false
         });
     }
 
+    // in case we do not already have an accesToken, retrieve it
     if (!request.session.accessToken) {
         try {
             const accessToken = await requestAccessToken(auth);
-            request.session.accessToken = accessToken;
-            console.log('success', accessToken);
+            session.accessToken = accessToken;
         } catch (err) {
             console.log('error', err);
             response.json({
@@ -50,6 +66,8 @@ app.get('/getSessionData', async (request, response) => {
     const baseUserInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user');
     const eMailInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user/emails');
     const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
+
+    // nothing useful to use, abort
     if (!mail) {
       return response.json({
         loggedIn: false
@@ -57,20 +75,16 @@ app.get('/getSessionData', async (request, response) => {
     }
 
     const name = baseUserInfo.name || 'GitHub enabled ninja';
-    const userData = {
-      mail,
-      name
-    }
-    
-    console.log('user is', userData);
+    session.userName = name;
+    session.email = mail;
 
     response.json({
       loggedIn: true,
-      name: name
+      userName: name
     });
 
     // todo: finish the logic
-    // 2) integrate database functionality
+    // integrate database functionality
 });
 
 
