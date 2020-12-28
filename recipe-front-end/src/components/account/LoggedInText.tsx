@@ -1,11 +1,19 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { doLogOut } from "../../redux/Actions";
+import { LogoutAction } from "../../redux/Store";
 
 interface Props {
-    doLogOut: typeof doLogOut;
+    doLogOut: () => void;
+}
+
+function mapDispatchToProps(dispatch: Dispatch<LogoutAction>): Props {
+    return {
+        doLogOut: doLogOut(dispatch)
+    }
 }
 
 function LoggedInText(props: Props) {
@@ -15,4 +23,4 @@ function LoggedInText(props: Props) {
     </Box>)
 }
 
-export default connect(null, { doLogOut })(LoggedInText);
+export default connect(null, mapDispatchToProps)(LoggedInText);

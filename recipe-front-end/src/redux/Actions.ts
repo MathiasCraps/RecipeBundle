@@ -1,5 +1,6 @@
+import { Dispatch } from "redux";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, ViewType, ChangeViewAction, SwitchActiveRecipeAction, ToggleLoginFormAction, LogoutAction } from "./Store";
+import { Actions, ChangeViewAction, LogoutAction, SwitchActiveRecipeAction, ToggleLoginFormAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -27,11 +28,13 @@ export function toggleLoginForm(): ToggleLoginFormAction  {
     }
 }
 
-export function doLogOut(): LogoutAction {
-    // convert to redux-thunk (so log-out only happens when it is ready)
-    fetch('/logout');
-
-    return {
-        type: Actions.LOG_OUT
-    };
+export function doLogOut(dispatch: Dispatch<LogoutAction>): () => Promise<void> {
+    return async function(): Promise<void> {
+        try {
+            await fetch('/logout');
+            dispatch({ type: Actions.LOG_OUT });
+        } catch (err) {
+            console.log('logout failed', err);
+        }
+    }    
 } 
