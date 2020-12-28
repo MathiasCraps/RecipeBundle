@@ -80,7 +80,7 @@ app.get('/getSessionData', async (request, response) => {
 
     response.json({
       loggedIn: true,
-      name: name
+      userName: name
     });
 
     // todo: finish the logic
