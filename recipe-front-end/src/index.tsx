@@ -2,12 +2,14 @@ import { ChakraProvider } from "@chakra-ui/react";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import App from "./App";
 import { Recipe } from "./interfaces/Recipe";
 import { UserData } from "./interfaces/UserData";
 import { defaultState, handleState } from './redux/Store';
 import { parseGetParams } from "./utils/UrlUtils";
+
 
 async function start() {
   const getParams = parseGetParams(window.location.search);
@@ -28,7 +30,7 @@ async function start() {
     recipes: replicatedSet,
     loggedIn: userData.loggedIn,
     userName: userData.userName
-  });
+  }, applyMiddleware(thunk));
   
   ReactDOM.render(
     <React.StrictMode>
