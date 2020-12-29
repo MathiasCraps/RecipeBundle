@@ -14,6 +14,10 @@ dotenv.config();
 const app = express();
 const port = 8080;
 
+interface test {
+  title?: number;
+}
+
 app.use(express.static(__dirname + '/public'));
 app.use(session({
   secret: process.env.SESSION_SECRET,
