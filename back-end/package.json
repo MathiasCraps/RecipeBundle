@@ -27,8 +27,16 @@
   },
   "nodemonConfig": {
     "restartable": "rs",
-    "ignore": [".git", "node_modules/", "dist/", "coverage/", "public/"],
-    "watch": ["src/"],
+    "ignore": [
+      ".git",
+      "node_modules/",
+      "dist/",
+      "coverage/",
+      "public/"
+    ],
+    "watch": [
+      "src/"
+    ],
     "execMap": {
       "ts": "node -r ts-node/register"
     },
