@@ -8,18 +8,12 @@ import { UserMailScope } from "./github-api/api-model/UserMailScope";
 import { UserScope } from "./github-api/api-model/UserScope";
 import { Pool } from "pg";
 import { executeQuery } from "./sql-utils/Database"
+import { SessionData } from "./model/SessionData";
 
 dotenv.config();
 
 const app = express();
 const port = 8080;
-
-interface SessionData {
-    loggedIn?: boolean;
-    userName?: string;
-    email?: string;
-    accessToken?: string;
-}
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({
