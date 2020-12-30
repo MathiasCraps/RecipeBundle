@@ -1,26 +1,29 @@
-const express = require('express');
-const fs = require('fs')
-const cors = require('cors');
-const { Pool } = require('pg');
-const dotenv = require('dotenv');
-const { executeQuery } = require('./sql-utils/Database');
-var session = require('express-session');
-const process = require('process');
-const { requestAccessToken } = require('./github-api/GetAccessToken');
-const { requestUserApi } = require('./github-api/UserApiRequest');
+import express from "express";
+import dotenv from "dotenv";
+import fs from "fs";
+import session from "express-session";
+import { requestAccessToken } from "./github-api/GetAccessToken";
+import { requestUserApi } from "./github-api/UserApiRequest";
+import { UserMailScope } from "./github-api/api-model/UserMailScope";
+import { UserScope } from "./github-api/api-model/UserScope";
+import { Pool } from "pg";
+import { executeQuery } from "./sql-utils/Database"
 
 dotenv.config();
 
 const app = express();
 const port = 8080;
 
-interface test {
-  title?: number;
+interface SessionData {
+    loggedIn?: boolean;
+    userName?: string;
+    email?: string;
+    accessToken?: string;
 }
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET as string,
 }));
 
 app.get('/getRecipes', async (request, response) => {
@@ -36,12 +39,13 @@ app.get('/logout', async(request, response) => {
 });
 
 app.get('/getSessionData', async (request, response) => {
-    const session = request.session;
+    const session: SessionData = request.session as SessionData;
     if (session.userName) {
-        return response.json({
+        response.json({
             loggedIn: true,
             userName: session.userName
         });
+        return;
     }
 
     const auth = request.query.code;
@@ -51,41 +55,49 @@ app.get('/getSessionData', async (request, response) => {
         response.json({
             loggedIn: false
         });
+        return;
     }
 
     // in case we do not already have an accesToken, retrieve it
-    if (!request.session.accessToken) {
+    if (!session.accessToken) {
         try {
-            const accessToken = await requestAccessToken(auth);
-            session.accessToken = accessToken;
+            const accessToken = await requestAccessToken(auth as string);
+            session.accessToken = accessToken as string;
         } catch (err) {
             console.log('error', err);
             response.json({
                 loggedIn: false
             });
-            return;
+            return;            
         }
     }
 
-    const baseUserInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user');
-    const eMailInfo = await requestUserApi(request.session.accessToken, 'https://api.github.com/user/emails');
-    const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
-
-    // nothing useful to use, abort
-    if (!mail) {
-      return response.json({
-        loggedIn: false
-      });
+    try {
+        const baseUserInfo = await requestUserApi(session.accessToken, 'https://api.github.com/user') as UserScope;
+        const eMailInfo = await requestUserApi(session.accessToken, 'https://api.github.com/user/emails') as UserMailScope[];
+        const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
+    
+        // nothing useful to use, abort
+        if (!mail) {
+          response.json({
+            loggedIn: false
+          });
+          return;
+        }
+    
+        const name = baseUserInfo.name || 'GitHub enabled ninja';
+        session.userName = name;
+        session.email = mail;
+    
+        response.json({
+          loggedIn: true,
+          userName: name
+        });
+    } catch (err) {
+        response.json({
+            loggedIn: false
+        })
     }
-
-    const name = baseUserInfo.name || 'GitHub enabled ninja';
-    session.userName = name;
-    session.email = mail;
-
-    response.json({
-      loggedIn: true,
-      userName: name
-    });
 
     // todo: finish the logic
     // integrate database functionality
@@ -96,12 +108,12 @@ app.listen(port, () => {
     console.log(`Server active at http://localhost:${port}`)
 });
 
-const pool = new Pool({
+const pool: Pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
-    port: process.env.PGPORT
+    port: process.env.PGPORT as unknown as number
 });
 
 pool.connect(async (error, client, done) => {
