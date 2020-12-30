@@ -4,8 +4,8 @@ import fs from "fs";
 import session from "express-session";
 import { requestAccessToken } from "./github-api/GetAccessToken";
 import { requestUserApi } from "./github-api/UserApiRequest";
-import { UserMailScope } from "./github-api/api-model/UserMailScope";
-import { UserScope } from "./github-api/api-model/UserScope";
+import { UserMailScope } from "./model/github-api/UserMailScope";
+import { UserScope } from "./model/github-api/UserScope";
 import { Pool } from "pg";
 import { executeQuery } from "./sql-utils/Database"
 import { SessionData } from "./model/SessionData";
