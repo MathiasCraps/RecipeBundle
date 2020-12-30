@@ -1,6 +1,6 @@
-const https = require('https');
+import https from "https";
 
-module.exports.requestAccessToken = function (clientCode) {
+export function requestAccessToken (clientCode: string) {
     return new Promise((resolve, reject) => {
         var postData = [
             `client_id=${process.env.GITHUB_CLIENT_ID}`,

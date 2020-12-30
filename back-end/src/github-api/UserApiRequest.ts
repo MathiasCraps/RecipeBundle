@@ -1,6 +1,6 @@
-const https = require('https');
+import https from "https";
 
-module.exports.requestUserApi = function (token, url) {
+export function requestUserApi (token: string, url: string) {
     return new Promise((resolve, reject) => {
         var options = {
             method: 'GET',
