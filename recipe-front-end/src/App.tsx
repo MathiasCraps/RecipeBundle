@@ -1,4 +1,5 @@
-import { Box, Center, Heading } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import { Box, Center, Heading, Icon } from "@chakra-ui/react";
 import { faUserAlt, faUserNinja } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
@@ -37,7 +38,10 @@ function App(props: Props) {
   return (<Box><header>
     <Center bgColor="gray.100" p="0.5em">
       <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
-      <a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label="Account beheren"><FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} /></a>
+      <Box className="headers-side-icons">
+        <a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label="Account beheren"><FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} /></a>
+        {props.loggedIn && <a href="#" onClick={() => console.log('clicked')} className="user-add-recipe"><AddIcon size="xl" /></a>}
+      </Box>
     </Center>
     <AccountMenu />
     {props.activeRecipe ? <RecipeOverview /> : (<RecipeList recipes={props.recipes} />)}
