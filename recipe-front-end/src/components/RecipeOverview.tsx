@@ -67,7 +67,7 @@ function RecipeOverview(props: Props) {
             <Heading as="h2">{props.recipe.title}</Heading>
             <Image src={props.recipe.image} alt="" />
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-            {props.recipe.steps.map((step, index) => <p key={index}>{step}</p>)}
+            <ul>{props.recipe.ingredients.map((step, index) => <li key={index}>{step}</li>)}</ul>
             <Heading as="h3">{Localisation.STEPS}</Heading>
             {props.recipe.steps.map((step, index) => <p key={index}>{step}</p>)}
         </Box>
