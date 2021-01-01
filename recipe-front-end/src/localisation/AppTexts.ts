@@ -9,5 +9,7 @@ export enum Localisation {
     NOT_YOU = "Ben jij dit niet?",
     LOGIN_FOR_MORE_FEATURES = "Log in via Github en ontgrendel meer.",
     LOGGED_IN_ENCOURAGING = "Ingelogd? Goed bezig.",
-    LOG_OUT = 'Toch liever ninja? Log uit.'
+    LOG_OUT = 'Toch liever ninja? Log uit.',
+    ADD_OWN_RECIPE = 'Eigen recept toevoegen',
+    ACCOUNT_MANAGEMENT = 'Account beheren'
 }

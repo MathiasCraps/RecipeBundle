@@ -1,7 +1,9 @@
+import { Tooltip } from "@chakra-ui/react";
 import { faUserAlt, faUserNinja } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { connect } from "react-redux";
+import { Localisation } from "../../localisation/AppTexts";
 import { toggleLoginForm } from "../../redux/Actions";
 import { ReduxModel } from "../../redux/Store";
 
@@ -22,9 +24,10 @@ function mapStateToProps(reduxStore: ReduxModel): OwnProps {
 }
 
 export function UserMenuButton(props: Props) {
-    return (<a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label="Account beheren">
+    return (<Tooltip label={Localisation.ACCOUNT_MANAGEMENT} fontSize="md">
+    <a href="#" onClick={() => props.toggleLoginForm()} className="user-account-button" aria-label={Localisation.ACCOUNT_MANAGEMENT}>
         <FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} />
-    </a>);
+    </a></Tooltip>);
 }
 
 export default connect(mapStateToProps, { toggleLoginForm })(UserMenuButton);

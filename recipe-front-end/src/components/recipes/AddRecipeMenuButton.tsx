@@ -1,9 +1,10 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/react";
+import { Box, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
 import { ReduxModel } from "../../redux/Store";
 import { toggleAddMenuForm } from "../../redux/Actions";
+import { Localisation } from "../../localisation/AppTexts";
 
 interface OwnProps {
     loggedIn: boolean;
@@ -26,9 +27,10 @@ function AddRecipeMenuButton(props: Props) {
         return <Box></Box>
     }
 
-    return (<a href="#" onClick={() => props.toggleAddMenuForm()} className="user-add-recipe">
+    return (<Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
+    <a href="#" onClick={() => props.toggleAddMenuForm()} className="user-add-recipe">
         <AddIcon size="xl" />
-    </a>)
+    </a></Tooltip>)
 }
 
 export default connect(mapStateToProps, { toggleAddMenuForm })(AddRecipeMenuButton);
