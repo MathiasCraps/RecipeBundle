@@ -43,6 +43,10 @@
   position: relative;
 }
 
+li {
+  margin-left: 1.2em;
+}
+
 /* todo: fix me with chakra global styles */
 
 a {
