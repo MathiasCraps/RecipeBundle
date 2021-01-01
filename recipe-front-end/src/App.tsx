@@ -9,6 +9,7 @@ import RecipeOverview from "./components/RecipeOverview";
 import AddRecipeMenuButton from "./components/recipe-management/AddRecipeMenuButton";
 import { Recipe } from "./interfaces/Recipe";
 import { ReduxModel, ViewType } from './redux/Store';
+import AddRecipeMenu from "./components/recipe-management/AddRecipeMenu";
 
 interface AppProps {
   recipes: Recipe[];
@@ -34,6 +35,7 @@ function App(props: AppProps) {
       </Box>
     </Center>
     <AccountMenu />
+    <AddRecipeMenu />
     {props.activeRecipe ? <RecipeOverview /> : (<RecipeList recipes={props.recipes} />)}
   </header></Box>)
 }
