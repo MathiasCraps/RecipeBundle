@@ -3,13 +3,14 @@ import { Box } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
 import { ReduxModel } from "../../redux/Store";
+import { toggleAddMenuForm } from "../../redux/Actions";
 
 interface OwnProps {
     loggedIn: boolean;
 }
 
 interface ReduxActionProps {
-    toDo?(): void;
+    toggleAddMenuForm: typeof toggleAddMenuForm;
 }
 
 type Props = OwnProps & ReduxActionProps;
@@ -25,9 +26,9 @@ function AddRecipeMenuButton(props: Props) {
         return <Box></Box>
     }
 
-    return (<a href="#" onClick={() => console.log('clicked')} className="user-add-recipe">
+    return (<a href="#" onClick={() => props.toggleAddMenuForm()} className="user-add-recipe">
         <AddIcon size="xl" />
     </a>)
 }
 
-export default connect(mapStateToProps, {})(AddRecipeMenuButton);
+export default connect(mapStateToProps, { toggleAddMenuForm })(AddRecipeMenuButton);

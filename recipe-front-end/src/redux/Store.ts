@@ -7,6 +7,7 @@ export interface ReduxModel {
     activeRecipe: Recipe | undefined;
     loginMenuOpened: boolean;
     loggedIn: boolean; // todo: replace in future with user data object. Specifics still t.b.d.
+    addMenuOpened: boolean;
     userName: string | undefined;
 }
 
@@ -19,6 +20,7 @@ export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU',
+    TOGGLE_ADD_RECIPE_MENU = 'TOGGLE_ADD_RECIPE_MENU',
     LOG_OUT = 'LOG_OUT'
 }
 
@@ -37,6 +39,10 @@ export interface ToggleLoginFormAction {
     type: Actions.TOGGLE_LOGIN_MENU;
 }
 
+export interface ToggleAddRecipeFormAction {
+    type: Actions.TOGGLE_ADD_RECIPE_MENU
+}
+
 export interface LogoutAction {
     type: Actions.LOG_OUT;
 }
@@ -46,11 +52,12 @@ export const defaultState: ReduxModel = {
     recipes: [],
     activeRecipe: undefined,
     loginMenuOpened: false,
+    addMenuOpened: false,
     loggedIn: false,
     userName: undefined
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction | ToggleAddRecipeFormAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -83,6 +90,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 loggedIn: false,
                 userName: undefined,
                 loginMenuOpened: false
+            }
+        case Actions.TOGGLE_ADD_RECIPE_MENU:
+            return {
+                ...oldState,
+                loginMenuOpened: false,
+                addMenuOpened: !oldState.addMenuOpened
             }
         default:
             // not supported yet

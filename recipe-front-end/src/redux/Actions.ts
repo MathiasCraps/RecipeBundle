@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, ChangeViewAction, LogoutAction, SwitchActiveRecipeAction, ToggleLoginFormAction, ViewType } from "./Store";
+import { Actions, ChangeViewAction, LogoutAction, SwitchActiveRecipeAction, ToggleAddRecipeFormAction, ToggleLoginFormAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -37,4 +37,10 @@ export function doLogOut(dispatch: Dispatch<LogoutAction>): () => Promise<void> 
             console.log('logout failed', err);
         }
     }    
-} 
+}
+
+export function toggleAddMenuForm(): ToggleAddRecipeFormAction {
+    return {
+        type: Actions.TOGGLE_ADD_RECIPE_MENU
+    }
+}
