@@ -6,7 +6,7 @@ import AccountMenu from "./components/account/AccountMenu";
 import UserMenuButton from "./components/account/UserMenuButton";
 import { RecipeList } from "./components/RecipeList";
 import RecipeOverview from "./components/RecipeOverview";
-import AddRecipeMenuButton from "./components/recipes/AddRecipeMenuButton";
+import AddRecipeMenuButton from "./components/recipe-management/AddRecipeMenuButton";
 import { Recipe } from "./interfaces/Recipe";
 import { ReduxModel, ViewType } from './redux/Store';
 
