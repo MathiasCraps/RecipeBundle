@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { toggleLoginForm } from "../../redux/Actions";
-import { ReduxModel, UserData } from "../../redux/Store";
+import { OpenedMenu, ReduxModel, UserData } from "../../redux/Store";
 import LoggedInText from "./LoggedInText";
 import { NotLoggedIn } from "./NotLoggedInText";
 
@@ -20,7 +20,7 @@ type Props = AccountMenuProps & ReduxActionProps;
 
 function mapStateToProps(reduxStore: ReduxModel): AccountMenuProps {
     return {
-        loginMenuOpened: reduxStore.loginMenuOpened,
+        loginMenuOpened: reduxStore.openedMenu === OpenedMenu.SESSION,
         user: reduxStore.user
     };
 }

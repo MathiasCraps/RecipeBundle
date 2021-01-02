@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { toggleAddMenuForm } from "../../redux/Actions";
-import { ReduxModel } from "../../redux/Store";
+import { OpenedMenu, ReduxModel } from "../../redux/Store";
 
 interface IngredientInput {
     value: string;
@@ -25,7 +25,7 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isOpened: reduxModel.addMenuOpened
+        isOpened: reduxModel.openedMenu === OpenedMenu.ADD_RECIPE
     }
 }
 

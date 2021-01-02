@@ -5,13 +5,18 @@ export interface UserData {
     loggedIn: boolean;
     name: string | undefined;
 }
+
+export enum OpenedMenu {
+    NONE,
+    SESSION,
+    ADD_RECIPE
+}
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
     activeRecipe: Recipe | undefined;
-    loginMenuOpened: boolean;
+    openedMenu: OpenedMenu;
     user: UserData;
-    addMenuOpened: boolean;
 }
 
 export enum ViewType {
@@ -54,8 +59,7 @@ export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
     activeRecipe: undefined,
-    loginMenuOpened: false,
-    addMenuOpened: false,
+    openedMenu: OpenedMenu.NONE,
     user: {
         loggedIn: false,
         name: undefined
@@ -87,7 +91,7 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
         case Actions.TOGGLE_LOGIN_MENU:
             return {
                 ...oldState,
-                loginMenuOpened: !oldState.loginMenuOpened
+                openedMenu: (oldState.openedMenu === OpenedMenu.SESSION) ? OpenedMenu.NONE : OpenedMenu.SESSION
             }
         case Actions.LOG_OUT:
             return {
@@ -96,13 +100,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                     loggedIn: false,
                     name: undefined
                 },
-                loginMenuOpened: false
+                openedMenu: OpenedMenu.NONE
             }
         case Actions.TOGGLE_ADD_RECIPE_MENU:
             return {
                 ...oldState,
-                loginMenuOpened: false,
-                addMenuOpened: !oldState.addMenuOpened
+                openedMenu: (oldState.openedMenu === OpenedMenu.ADD_RECIPE) ? OpenedMenu.NONE : OpenedMenu.ADD_RECIPE
             }
         default:
             // not supported yet
