@@ -27,8 +27,7 @@ export enum ViewType {
 export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
-    TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU',
-    TOGGLE_ADD_RECIPE_MENU = 'TOGGLE_ADD_RECIPE_MENU',
+    TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT'
 }
 
@@ -43,12 +42,9 @@ export interface SwitchActiveRecipeAction {
     direction: Direction;
 }
 
-export interface ToggleLoginFormAction {
-    type: Actions.TOGGLE_LOGIN_MENU;
-}
-
-export interface ToggleAddRecipeFormAction {
-    type: Actions.TOGGLE_ADD_RECIPE_MENU
+export interface ToggleMenuAction {
+    type: Actions.TOGGLE_MENU;
+    menu: OpenedMenu;
 }
 
 export interface LogoutAction {
@@ -66,7 +62,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction | ToggleAddRecipeFormAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -88,10 +84,10 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 }    
             }
             break;
-        case Actions.TOGGLE_LOGIN_MENU:
+        case Actions.TOGGLE_MENU:
             return {
                 ...oldState,
-                openedMenu: (oldState.openedMenu === OpenedMenu.SESSION) ? OpenedMenu.NONE : OpenedMenu.SESSION
+                openedMenu: action.menu
             }
         case Actions.LOG_OUT:
             return {
@@ -101,11 +97,6 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                     name: undefined
                 },
                 openedMenu: OpenedMenu.NONE
-            }
-        case Actions.TOGGLE_ADD_RECIPE_MENU:
-            return {
-                ...oldState,
-                openedMenu: (oldState.openedMenu === OpenedMenu.ADD_RECIPE) ? OpenedMenu.NONE : OpenedMenu.ADD_RECIPE
             }
         default:
             // not supported yet

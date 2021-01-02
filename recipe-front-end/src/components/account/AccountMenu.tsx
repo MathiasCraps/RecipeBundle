@@ -2,7 +2,7 @@ import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, Dra
 import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { toggleLoginForm } from "../../redux/Actions";
+import { switchMenu } from "../../redux/Actions";
 import { OpenedMenu, ReduxModel, UserData } from "../../redux/Store";
 import LoggedInText from "./LoggedInText";
 import { NotLoggedIn } from "./NotLoggedInText";
@@ -13,7 +13,7 @@ interface AccountMenuProps {
 }
 
 interface ReduxActionProps {
-    toggleLoginForm: typeof toggleLoginForm;
+    switchMenu: typeof switchMenu;
 }
 
 type Props = AccountMenuProps & ReduxActionProps;
@@ -30,7 +30,7 @@ function AccountMenu(props: Props) {
         isOpen={props.loginMenuOpened}
         placement="right"
         isFullHeight={true}
-        onClose={() => { props.toggleLoginForm() }}>
+        onClose={() => { props.switchMenu(OpenedMenu.NONE) }}>
         <DrawerOverlay>
             <DrawerContent>
                 <DrawerCloseButton />
@@ -45,4 +45,4 @@ function AccountMenu(props: Props) {
     </Drawer>);
 }
 
-export default connect(mapStateToProps, { toggleLoginForm })(AccountMenu);
+export default connect(mapStateToProps, { switchMenu })(AccountMenu);
