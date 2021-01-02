@@ -2,8 +2,8 @@ import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalF
 import React, { ChangeEvent, useState } from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { toggleAddMenuForm } from "../../redux/Actions";
-import { ReduxModel } from "../../redux/Store";
+import { switchMenu } from "../../redux/Actions";
+import { OpenedMenu, ReduxModel } from "../../redux/Store";
 
 interface IngredientInput {
     value: string;
@@ -17,7 +17,7 @@ interface ComponentProps {
 }
 
 interface ReduxProps {
-    toggleAddMenuForm: typeof toggleAddMenuForm;
+    switchMenu: typeof switchMenu;
 }
 
 type Props = ComponentProps & ReduxProps;
@@ -25,7 +25,7 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isOpened: reduxModel.addMenuOpened
+        isOpened: reduxModel.openedMenu === OpenedMenu.ADD_RECIPE
     }
 }
 
@@ -57,7 +57,7 @@ export function AddRecipeMenu(props: Props) {
         identifier: ++index
     }]);
 
-    return (<Modal isOpen={props.isOpened} onClose={() => props.toggleAddMenuForm()}>
+    return (<Modal isOpen={props.isOpened} onClose={() => props.switchMenu(OpenedMenu.NONE)}>
         <ModalOverlay />
         <ModalContent>
             <ModalHeader>{Localisation.ADD_OWN_RECIPE}</ModalHeader>
@@ -79,10 +79,10 @@ export function AddRecipeMenu(props: Props) {
                 <Button colorScheme="blue" mr={3} onClick={() => alert('Nice! But not yet implemented. :(')}>
                     {Localisation.ADD_RECIPE}
             </Button>
-                <Button variant="ghost" onClick={() => props.toggleAddMenuForm()}>{Localisation.CANCEL}</Button>
+                <Button variant="ghost" onClick={() => props.switchMenu(OpenedMenu.NONE)}>{Localisation.CANCEL}</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>)
 }
 
-export default connect(mapStateToProps, { toggleAddMenuForm })(AddRecipeMenu);
+export default connect(mapStateToProps, { switchMenu })(AddRecipeMenu);

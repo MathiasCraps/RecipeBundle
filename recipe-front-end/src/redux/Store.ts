@@ -1,14 +1,22 @@
 import { Recipe } from '../interfaces/Recipe';
 import { Direction } from './Actions';
 
+export interface UserData {
+    loggedIn: boolean;
+    name: string | undefined;
+}
+
+export enum OpenedMenu {
+    NONE,
+    SESSION,
+    ADD_RECIPE
+}
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
     activeRecipe: Recipe | undefined;
-    loginMenuOpened: boolean;
-    loggedIn: boolean; // todo: replace in future with user data object. Specifics still t.b.d.
-    addMenuOpened: boolean;
-    userName: string | undefined;
+    openedMenu: OpenedMenu;
+    user: UserData;
 }
 
 export enum ViewType {
@@ -19,8 +27,7 @@ export enum ViewType {
 export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
-    TOGGLE_LOGIN_MENU = 'TOGGLE_LOGIN_MENU',
-    TOGGLE_ADD_RECIPE_MENU = 'TOGGLE_ADD_RECIPE_MENU',
+    TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT'
 }
 
@@ -35,12 +42,9 @@ export interface SwitchActiveRecipeAction {
     direction: Direction;
 }
 
-export interface ToggleLoginFormAction {
-    type: Actions.TOGGLE_LOGIN_MENU;
-}
-
-export interface ToggleAddRecipeFormAction {
-    type: Actions.TOGGLE_ADD_RECIPE_MENU
+export interface ToggleMenuAction {
+    type: Actions.TOGGLE_MENU;
+    menu: OpenedMenu;
 }
 
 export interface LogoutAction {
@@ -51,13 +55,14 @@ export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
     activeRecipe: undefined,
-    loginMenuOpened: false,
-    addMenuOpened: false,
-    loggedIn: false,
-    userName: undefined
+    openedMenu: OpenedMenu.NONE,
+    user: {
+        loggedIn: false,
+        name: undefined
+    }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction | ToggleAddRecipeFormAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -79,23 +84,19 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 }    
             }
             break;
-        case Actions.TOGGLE_LOGIN_MENU:
+        case Actions.TOGGLE_MENU:
             return {
                 ...oldState,
-                loginMenuOpened: !oldState.loginMenuOpened
+                openedMenu: action.menu
             }
         case Actions.LOG_OUT:
             return {
                 ...oldState,
-                loggedIn: false,
-                userName: undefined,
-                loginMenuOpened: false
-            }
-        case Actions.TOGGLE_ADD_RECIPE_MENU:
-            return {
-                ...oldState,
-                loginMenuOpened: false,
-                addMenuOpened: !oldState.addMenuOpened
+                user: {
+                    loggedIn: false,
+                    name: undefined
+                },
+                openedMenu: OpenedMenu.NONE
             }
         default:
             // not supported yet

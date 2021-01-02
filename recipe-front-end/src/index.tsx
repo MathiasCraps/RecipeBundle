@@ -6,7 +6,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
 import { Recipe } from "./interfaces/Recipe";
-import { UserData } from "./interfaces/UserData";
+import { BackEndUserData } from "./interfaces/UserData";
 import { defaultState, handleState } from './redux/Store';
 import { parseGetParams } from "./utils/UrlUtils";
 
@@ -15,7 +15,7 @@ async function start() {
   const getParams = parseGetParams(window.location.search);
   const codeQuery = getParams.code ? `?code=${getParams.code}` : '';
   const apiKey = await fetch(`/getSessionData${codeQuery}`);
-  const userData: UserData = await apiKey.json();
+  const userData: BackEndUserData = await apiKey.json();
 
   const data = await fetch('/getRecipes')
   const recipes: Recipe[] = await data.json();
@@ -28,8 +28,10 @@ async function start() {
   const store = createStore(handleState, {
     ...defaultState,
     recipes: replicatedSet,
-    loggedIn: userData.loggedIn,
-    userName: userData.userName
+    user: {
+      loggedIn: userData.loggedIn,
+      name: userData.userName
+    }
   }, applyMiddleware(thunk));
   
   ReactDOM.render(

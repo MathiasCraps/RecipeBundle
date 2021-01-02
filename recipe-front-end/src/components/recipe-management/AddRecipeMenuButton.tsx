@@ -2,8 +2,8 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Box, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
-import { ReduxModel } from "../../redux/Store";
-import { toggleAddMenuForm } from "../../redux/Actions";
+import { OpenedMenu, ReduxModel } from "../../redux/Store";
+import { switchMenu } from "../../redux/Actions";
 import { Localisation } from "../../localisation/AppTexts";
 
 interface OwnProps {
@@ -11,14 +11,14 @@ interface OwnProps {
 }
 
 interface ReduxActionProps {
-    toggleAddMenuForm: typeof toggleAddMenuForm;
+    switchMenu: typeof switchMenu;
 }
 
 type Props = OwnProps & ReduxActionProps;
 
 function mapStateToProps(reduxStore: ReduxModel): OwnProps {
     return {
-        loggedIn: reduxStore.loggedIn
+        loggedIn: reduxStore.user.loggedIn
     }
 }
 
@@ -28,9 +28,9 @@ function AddRecipeMenuButton(props: Props) {
     }
 
     return (<Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
-    <a href="#" onClick={() => props.toggleAddMenuForm()} className="user-add-recipe">
+    <a href="#" onClick={() => props.switchMenu(OpenedMenu.ADD_RECIPE)} className="user-add-recipe">
         <AddIcon size="xl" />
     </a></Tooltip>)
 }
 
-export default connect(mapStateToProps, { toggleAddMenuForm })(AddRecipeMenuButton);
+export default connect(mapStateToProps, { switchMenu })(AddRecipeMenuButton);
