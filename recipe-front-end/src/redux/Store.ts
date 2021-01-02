@@ -1,14 +1,17 @@
 import { Recipe } from '../interfaces/Recipe';
 import { Direction } from './Actions';
 
+export interface UserData {
+    loggedIn: boolean;
+    name: string | undefined;
+}
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
     activeRecipe: Recipe | undefined;
     loginMenuOpened: boolean;
-    loggedIn: boolean; // todo: replace in future with user data object. Specifics still t.b.d.
+    user: UserData;
     addMenuOpened: boolean;
-    userName: string | undefined;
 }
 
 export enum ViewType {
@@ -53,8 +56,10 @@ export const defaultState: ReduxModel = {
     activeRecipe: undefined,
     loginMenuOpened: false,
     addMenuOpened: false,
-    loggedIn: false,
-    userName: undefined
+    user: {
+        loggedIn: false,
+        name: undefined
+    }
 }
 
 type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleLoginFormAction | LogoutAction | ToggleAddRecipeFormAction;
@@ -87,8 +92,10 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
         case Actions.LOG_OUT:
             return {
                 ...oldState,
-                loggedIn: false,
-                userName: undefined,
+                user: {
+                    loggedIn: false,
+                    name: undefined
+                },
                 loginMenuOpened: false
             }
         case Actions.TOGGLE_ADD_RECIPE_MENU:

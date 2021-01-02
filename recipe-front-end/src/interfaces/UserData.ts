@@ -1,4 +1,4 @@
-export interface UserData {
+export interface BackEndUserData {
     loggedIn: boolean;
     userName: string | undefined;
 }

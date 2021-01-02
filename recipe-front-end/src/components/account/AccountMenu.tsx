@@ -3,14 +3,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { toggleLoginForm } from "../../redux/Actions";
-import { ReduxModel } from "../../redux/Store";
+import { ReduxModel, UserData } from "../../redux/Store";
 import LoggedInText from "./LoggedInText";
 import { NotLoggedIn } from "./NotLoggedInText";
 
 interface AccountMenuProps {
     loginMenuOpened: boolean;
-    loggedIn: boolean;
-    userName: string | undefined;
+    user: UserData;
 }
 
 interface ReduxActionProps {
@@ -22,8 +21,7 @@ type Props = AccountMenuProps & ReduxActionProps;
 function mapStateToProps(reduxStore: ReduxModel): AccountMenuProps {
     return {
         loginMenuOpened: reduxStore.loginMenuOpened,
-        loggedIn: reduxStore.loggedIn,
-        userName: reduxStore.userName
+        user: reduxStore.user
     };
 }
 
@@ -37,10 +35,10 @@ function AccountMenu(props: Props) {
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>
-                    <b>{`${Localisation.WELCOME} ` + ((props.loggedIn) ? `${props.userName} 🐱‍👓` : `${Localisation.NINJA} 🐱‍👤`)}</b>
+                    <b>{`${Localisation.WELCOME} ` + ((props.user.loggedIn) ? `${props.user.name} 🐱‍👓` : `${Localisation.NINJA} 🐱‍👤`)}</b>
                 </DrawerHeader>
                 <DrawerBody>
-                    {props.loggedIn ? <LoggedInText /> : <NotLoggedIn />}
+                    {props.user.loggedIn ? <LoggedInText /> : <NotLoggedIn />}
                 </DrawerBody>
             </DrawerContent>
         </DrawerOverlay>

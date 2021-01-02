@@ -19,7 +19,7 @@ type Props = OwnProps & ReduxActionProps;
 
 function mapStateToProps(reduxStore: ReduxModel): OwnProps {
     return {
-        loggedIn: reduxStore.loggedIn
+        loggedIn: reduxStore.user.loggedIn
     }
 }
 
