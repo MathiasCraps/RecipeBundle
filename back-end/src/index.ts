@@ -123,6 +123,26 @@ pool.connect(async (error, client, done) => {
         token varchar(500) NOT NULL
     )`);
 
+    await executeQuery(client, `CREATE TABLE IF NOT EXISTS Recipes (
+        id serial PRIMARY KEY,
+        recipe_name varchar(500) NOT NULL,
+        ingredients varchar(500) NOT NULL,
+        steps varchar(500) NOT NULL
+    )`);
+
+    await executeQuery(client, `CREATE TABLE IF NOT EXISTS Ingredients (
+        id serial PRIMARY KEY,
+        ingredient_name varchar(500) NOT NULL
+    )`);
+
+    await executeQuery(client, `CREATE TABLE IF NOT EXISTS RecipesIngredientsMatch (
+        recipe_id INT NOT NULL,
+        ingredient_id INT NOT NULL,
+        PRIMARY KEY (recipe_id, ingredient_id),
+        FOREIGN KEY (recipe_id) REFERENCES Recipes (id),
+        FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id)
+    )`);
+
     // integrate later
     // await executeQuery(client, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
 
