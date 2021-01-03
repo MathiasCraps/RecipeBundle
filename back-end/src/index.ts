@@ -1,14 +1,17 @@
-import express from "express";
 import dotenv from "dotenv";
-import fs from "fs";
+import express from "express";
 import session from "express-session";
+import fs from "fs";
+import { Pool } from "pg";
 import { requestAccessToken } from "./github-api/GetAccessToken";
 import { requestUserApi } from "./github-api/UserApiRequest";
 import { UserMailScope } from "./model/github-api/UserMailScope";
 import { UserScope } from "./model/github-api/UserScope";
-import { Pool } from "pg";
-import { executeQuery } from "./sql-utils/Database"
+import { Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
+import { addRecipe } from "./sql/AddRecipe";
+import { createTables } from "./sql/CreateTables";
+import { getAllRecipes } from "./sql/GetRecipes";
 
 dotenv.config();
 
@@ -21,8 +24,7 @@ app.use(session({
 }));
 
 app.get('/getRecipes', async (request, response) => {
-    const rawData = fs.readFileSync('testData.json', 'utf8');
-    response.json(JSON.parse(rawData));
+    response.json(await getAllRecipes());
 });
 
 app.get('/logout', async(request, response) => {
@@ -102,7 +104,7 @@ app.listen(port, () => {
     console.log(`Server active at http://localhost:${port}`)
 });
 
-const pool: Pool = new Pool({
+export const pool: Pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
@@ -117,14 +119,22 @@ pool.connect(async (error, client, done) => {
         throw new Error('Connecting the database failed');
     }
 
-    await executeQuery(client, `CREATE TABLE IF NOT EXISTS Users (
-        id serial PRIMARY KEY,
-        name varchar(500) NOT NULL,
-        token varchar(500) NOT NULL
-    )`);
+    // ensure tables are created
+    try {
+        const hasBeenCreated = await createTables(client);
+        if (hasBeenCreated) {
+            const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
+
+            for (let recipe of defaultRecipes) {
+                await addRecipe(client, recipe);
+            }
+        }
+    } catch (err) {
+        console.log('error setting up tables', err);
+    }
 
     // integrate later
     // await executeQuery(client, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
 
-    client.release();
+    done();
 });
