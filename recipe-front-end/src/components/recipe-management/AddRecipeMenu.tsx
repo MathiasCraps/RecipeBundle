@@ -30,7 +30,7 @@ function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
 }
 
 export function AddRecipeMenu(props: Props) {
-    function changeInputs(event: ChangeEvent<HTMLInputElement>, index: number) {
+    function updateIngredientsInputs(event: ChangeEvent<HTMLInputElement>, index: number) {
         const copyOfIngredients = [...ingredients]; // always make a copy for immutability
 
         copyOfIngredients[index].value = event.target.value; // update the entry
@@ -52,10 +52,12 @@ export function AddRecipeMenu(props: Props) {
         setIngredients(emptiedFilter);
     }
 
-    const [ingredients, setIngredients] = useState([{
-        value: '',
-        identifier: ++index
-    }]);
+    const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index}]);
+    const [title, setTitle] = useState('');
+    const [steps, setSteps] = useState('');
+    const [imagePath, setImagePath] = useState('');
+
+    const canBeSubmitted = Boolean(ingredients.length > 1 && title && steps && imagePath);
 
     return (<Modal isOpen={props.isOpened} onClose={() => props.switchMenu(OpenedMenu.NONE)}>
         <ModalOverlay />
@@ -63,20 +65,20 @@ export function AddRecipeMenu(props: Props) {
             <ModalHeader>{Localisation.ADD_OWN_RECIPE}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <Input placeholder={Localisation.TITLE} />
+                <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
                 <br/><br/>
                 <h2>{Localisation.INGREDIENTS}</h2>
                 {ingredients.map((ingredient: IngredientInput, index: number) => {
-                    return <Input placeholder={Localisation.INGREDIENT} key={index} value={ingredient.value} onChange={(event) => changeInputs(event, index)} />
+                    return <Input placeholder={Localisation.INGREDIENT} key={index} value={ingredient.value} onChange={(event) => updateIngredientsInputs(event, index)} />
                 })}
                 
                 <br/><br/><br/>
-                <Textarea placeholder={Localisation.STEP} />
-                <input type="file" accept="image/jpeg, image/png"/>
+                <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
+                <input type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={() => alert('Nice! But not yet implemented. :(')}>
+                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => alert('Nice! But not yet implemented. :(')}>
                     {Localisation.ADD_RECIPE}
             </Button>
                 <Button variant="ghost" onClick={() => props.switchMenu(OpenedMenu.NONE)}>{Localisation.CANCEL}</Button>
