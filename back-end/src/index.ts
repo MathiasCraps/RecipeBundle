@@ -12,6 +12,7 @@ import { SessionData } from "./model/SessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
+import { isRecipe } from "./validation/TypeGuards";
 
 dotenv.config();
 
@@ -33,6 +34,9 @@ app.get('/logout', async(request, response) => {
       response.json({ loggedIn: false})
     })
 });
+
+app.post('/addRecipe', async (request, response) => {
+})
 
 app.get('/getSessionData', async (request, response) => {
     const session: SessionData = request.session as SessionData;
