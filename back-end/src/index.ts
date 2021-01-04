@@ -54,7 +54,7 @@ app.get('/getSessionData', async (request, response) => {
         return;
     }
 
-    // in case we do not already have an accesToken, retrieve it
+    // in case we do not already have an accessToken, retrieve it
     if (!session.accessToken) {
         try {
             const accessToken = await requestAccessToken(auth as string);
