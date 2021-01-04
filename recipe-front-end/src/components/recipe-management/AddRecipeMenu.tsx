@@ -1,6 +1,7 @@
 import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea } from "@chakra-ui/react";
 import React, { ChangeEvent, useState } from "react";
 import { connect } from "react-redux";
+import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { switchMenu } from "../../redux/Actions";
 import { OpenedMenu, ReduxModel } from "../../redux/Store";
@@ -52,6 +53,29 @@ export function AddRecipeMenu(props: Props) {
         setIngredients(emptiedFilter);
     }
 
+    function postRecipe() {
+        if (!canBeSubmitted) {
+            return;
+        }
+
+        const recipeData: Recipe = {
+            title,
+            ingredients: ingredients.map((ingredient) => {
+                return {quantity: 'Een onsje', name: ingredient.value} // todo: remove me by adding quantity option to interface!
+            }),
+            steps,
+            image: imagePath // todo: this is incorrect. Fix me with correct behavior
+        }
+
+        fetch('/addRecipe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(recipeData)
+        })
+    }
+
     const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index}]);
     const [title, setTitle] = useState('');
     const [steps, setSteps] = useState('');
@@ -78,7 +102,7 @@ export function AddRecipeMenu(props: Props) {
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => alert('Nice! But not yet implemented. :(')}>
+                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
                     {Localisation.ADD_RECIPE}
             </Button>
                 <Button variant="ghost" onClick={() => props.switchMenu(OpenedMenu.NONE)}>{Localisation.CANCEL}</Button>
