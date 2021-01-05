@@ -58,11 +58,12 @@ export function AddRecipeMenu(props: Props) {
             return;
         }
 
+        const transformedIngredients = ingredients.slice(0, ingredients.length - 1).map((ingredient) => {
+            return {quantity: '1 stuk', name: ingredient.value} // todo: remove me by adding quantity option to interface!
+        })
         const recipeData: Recipe = {
             title,
-            ingredients: ingredients.map((ingredient) => {
-                return {quantity: 'Een onsje', name: ingredient.value} // todo: remove me by adding quantity option to interface!
-            }),
+            ingredients: transformedIngredients,
             steps,
             image: imagePath // todo: this is incorrect. Fix me with correct behavior
         }
