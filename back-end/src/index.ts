@@ -13,6 +13,7 @@ import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
 import { isRecipe } from "./validation/TypeGuards";
+const bodyParser = require('body-parser');
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(session({
   secret: process.env.SESSION_SECRET as string,
 }));
+
+app.use(bodyParser.json());
 
 app.get('/getRecipes', async (request, response) => {
     response.json(await getAllRecipes());
