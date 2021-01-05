@@ -39,6 +39,35 @@ app.get('/logout', async(request, response) => {
 });
 
 app.post('/addRecipe', async (request, response) => {
+    const user = (request.session as SessionData).userName
+    if (!user) {
+        response.json({error: 'Not logged in'});
+    }
+    
+    const recipe = request.body;
+    if (!isRecipe(recipe)) {
+        response.json({error: 'Invalid recipe.'});
+        return;
+    }
+
+    pool.connect(async (error, client, done) => {
+        const DB_ERROR = {error: 'Could not write to database'};
+        if (error) {
+            response.json(DB_ERROR);
+            return;
+        }
+
+        try {
+            recipe.image = 'http://localhost:8080/images/no-image-provided.png'; // todo: allow uploading image and use that instead
+            await addRecipe(client, recipe);
+            response.json({success: true})    
+        } catch (err) {
+            console.log('err', err);
+            response.json(DB_ERROR);
+        }
+    });
+
+
 })
 
 app.get('/getSessionData', async (request, response) => {
