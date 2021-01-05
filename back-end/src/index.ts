@@ -12,6 +12,8 @@ import { SessionData } from "./model/SessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
+import { isRecipe } from "./validation/TypeGuards";
+const bodyParser = require('body-parser');
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(session({
   secret: process.env.SESSION_SECRET as string,
 }));
 
+app.use(bodyParser.json());
+
 app.get('/getRecipes', async (request, response) => {
     response.json(await getAllRecipes());
 });
@@ -33,6 +37,38 @@ app.get('/logout', async(request, response) => {
       response.json({ loggedIn: false})
     })
 });
+
+app.post('/addRecipe', async (request, response) => {
+    const user = (request.session as SessionData).userName
+    if (!user) {
+        response.json({error: 'Not logged in'});
+    }
+    
+    const recipe = request.body;
+    if (!isRecipe(recipe)) {
+        response.json({error: 'Invalid recipe.'});
+        return;
+    }
+
+    pool.connect(async (error, client, done) => {
+        const DB_ERROR = {error: 'Could not write to database'};
+        if (error) {
+            response.json(DB_ERROR);
+            return;
+        }
+
+        try {
+            recipe.image = 'http://localhost:8080/images/no-image-provided.png'; // todo: allow uploading image and use that instead
+            await addRecipe(client, recipe);
+            response.json({success: true})    
+        } catch (err) {
+            console.log('err', err);
+            response.json(DB_ERROR);
+        }
+    });
+
+
+})
 
 app.get('/getSessionData', async (request, response) => {
     const session: SessionData = request.session as SessionData;
@@ -54,7 +90,7 @@ app.get('/getSessionData', async (request, response) => {
         return;
     }
 
-    // in case we do not already have an accesToken, retrieve it
+    // in case we do not already have an accessToken, retrieve it
     if (!session.accessToken) {
         try {
             const accessToken = await requestAccessToken(auth as string);
