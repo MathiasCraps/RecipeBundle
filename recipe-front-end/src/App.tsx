@@ -1,7 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
 import { connect } from 'react-redux';
-import './App.css';
+import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import UserMenuButton from "./components/account/UserMenuButton";
 import { RecipeList } from "./components/RecipeList";
