@@ -43,6 +43,34 @@
   position: relative;
 }
 
+.recipe-overview-previous {
+  left: 1em;
+}
+
+.recipe-overview-next {
+  right: 1em;
+}
+
+.recipe-overview-previous,
+.recipe-overview-next {
+  position: fixed;
+  top: 50%;
+  z-index: 10;
+  display: none;
+
+  @media (min-width: 85em) {
+      & {
+        display: block;
+      }
+  }
+
+  &:focus,
+  &:hover {
+    background-color: #E2E8F0;
+    border-radius: 0.5em;
+  }
+}
+
 li {
   margin-left: 1.2em;
 }
