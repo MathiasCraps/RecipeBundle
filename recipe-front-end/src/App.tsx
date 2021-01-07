@@ -27,7 +27,7 @@ function mapStateToProps(props: ReduxModel): AppProps {
 
 function App(props: AppProps) {
   return (<Box><header>
-    <Center bgColor="gray.100" p="0.5em">
+    <Center className="top-header">
       <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
       <Box className="headers-side-icons">
         <UserMenuButton />
