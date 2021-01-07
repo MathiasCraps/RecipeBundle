@@ -31,11 +31,6 @@
   font-size: 1.5em;
 }
 
-.user-add-recipe {
-  position: relative;
-  margin-left: 0.75em;
-}
-
 .headers-side-icons {
   position: absolute;
   right: 1em;
@@ -91,19 +86,11 @@ li {
   margin-left: 1.2em;
 }
 
-.headers-side-icons {
-  position: fixed;
-  bottom: 1em;
-  z-index: 100;
-}
-
 .user-account-button,
 .user-add-recipe {
-  font-size: 1em!important;
-    background-color: #ffffff;
-    padding: 1em;
-    border-radius: 1em;
-    box-shadow: 1px 1px 3px #999;
+  font-size: 1.5em;
+  padding: 1em;
+  border-radius: 1em;
 }
 
 /* todo: fix me with chakra global styles */
