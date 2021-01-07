@@ -23,7 +23,6 @@ function RecipePreview(props: Props) {
   return (<Box
     className="recipeBox"
     cursor="pointer"
-    p="0.5em"
     borderRadius="lg"
     onClick={() => props.changeActiveView(ViewType.RecipeView, props.recipe)}
   ><a href="#">

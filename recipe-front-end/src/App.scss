@@ -1,3 +1,7 @@
+#root {
+  background-color: #f5f5f5;
+}
+
 .recipe-preview-size {
   position: absolute;
   font-size: 1.7em;
@@ -29,8 +33,6 @@
 
 .user-add-recipe {
   position: relative;
-  top: -0.25em;
-  font-size: 0.9em;
   margin-left: 0.75em;
 }
 
@@ -87,6 +89,21 @@
 
 li {
   margin-left: 1.2em;
+}
+
+.headers-side-icons {
+  position: fixed;
+  bottom: 1em;
+  z-index: 100;
+}
+
+.user-account-button,
+.user-add-recipe {
+  font-size: 1em!important;
+    background-color: #ffffff;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 1px 1px 3px #999;
 }
 
 /* todo: fix me with chakra global styles */
