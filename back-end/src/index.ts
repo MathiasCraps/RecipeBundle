@@ -59,12 +59,13 @@ app.post('/addRecipe', async (request, response) => {
 
         try {
             recipe.image = 'http://localhost:8080/images/no-image-provided.png'; // todo: allow uploading image and use that instead
-            await addRecipe(client, recipe);
-            response.json({success: true})    
+            await addRecipe(pool, recipe);
+            response.json({success: true});
         } catch (err) {
             console.log('err', err);
             response.json(DB_ERROR);
         }
+        client.release();
     });
 
 
@@ -151,18 +152,18 @@ export const pool: Pool = new Pool({
 pool.connect(async (error, client, done) => {
     if (error) {
         console.log(error);
-        done();
+        client.release();
         throw new Error('Connecting the database failed');
     }
 
     // ensure tables are created
     try {
-        const hasBeenCreated = await createTables(client);
+        const hasBeenCreated = await createTables(pool);
         if (hasBeenCreated) {
             const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
 
             for (let recipe of defaultRecipes) {
-                await addRecipe(client, recipe);
+                await addRecipe(pool, recipe);
             }
         }
     } catch (err) {
@@ -170,7 +171,7 @@ pool.connect(async (error, client, done) => {
     }
 
     // integrate later
-    // await executeQuery(client, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
+    // await executeQuery(pool, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
 
-    done();
+    client.release();
 });

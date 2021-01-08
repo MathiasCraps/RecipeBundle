@@ -1,14 +1,14 @@
-import { PoolClient, QueryConfig, QueryResult } from "pg";
+import { Pool, QueryConfig, QueryResult } from "pg";
 
-export async function executeQuery(client: PoolClient, query: string | QueryConfig): Promise<QueryResult> {
+export async function executeQuery(pool: Pool, query: string | QueryConfig): Promise<QueryResult> {
     try {
-        await client.query('BEGIN');
-        const result = await client.query(query);
-        await client.query('COMMIT');
+        await pool.query('BEGIN');
+        const result = await pool.query(query);
+        await pool.query('COMMIT');
 
         return result;
     } catch (err) {
-        await client.query('ROLLBACK');
+        await pool.query('ROLLBACK');
         throw err;
     }
 }
