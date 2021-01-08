@@ -1,7 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
 import { connect } from 'react-redux';
-import './App.css';
+import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import UserMenuButton from "./components/account/UserMenuButton";
 import { RecipeList } from "./components/RecipeList";
@@ -27,7 +27,7 @@ function mapStateToProps(props: ReduxModel): AppProps {
 
 function App(props: AppProps) {
   return (<Box><header>
-    <Center bgColor="gray.100" p="0.5em">
+    <Center className="top-header">
       <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
       <Box className="headers-side-icons">
         <UserMenuButton />

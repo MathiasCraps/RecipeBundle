@@ -1,5 +1,5 @@
 import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea } from "@chakra-ui/react";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
@@ -65,15 +65,19 @@ export function AddRecipeMenu(props: Props) {
             title,
             ingredients: transformedIngredients,
             steps,
-            image: imagePath // todo: this is incorrect. Fix me with correct behavior
+            image: ''
         }
+
+        const formData = new FormData()
+        formData.append('userfile', ref.current!.files![0]);
+        formData.append('recipe', JSON.stringify(recipeData))
 
         fetch('/addRecipe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(recipeData)
+            body: formData
         })
     }
 
@@ -81,6 +85,7 @@ export function AddRecipeMenu(props: Props) {
     const [title, setTitle] = useState('');
     const [steps, setSteps] = useState('');
     const [imagePath, setImagePath] = useState('');
+    const ref = useRef<HTMLInputElement>(null)
 
     const canBeSubmitted = Boolean(ingredients.length > 1 && title && steps && imagePath);
 
@@ -99,7 +104,7 @@ export function AddRecipeMenu(props: Props) {
                 
                 <br/><br/><br/>
                 <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
-                <input type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
+                <input ref={ref} type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
             </ModalBody>
 
             <ModalFooter>

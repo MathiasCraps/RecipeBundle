@@ -55,23 +55,25 @@ function RecipeOverview(props: Props) {
             document.body.removeEventListener('keyup', handleKeyPress);
         }
     })
-    return (<SlideFade in={true}>
-        <Box className="recipe-overview" padding="2em" maxWidth="80em" margin="auto">
-            <a href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
-                <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
-            </a>
-            <a href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
-                <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
-            </a>
-            <CloseButton className="close-button-recipe-overview" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
-            <Heading as="h2">{props.recipe.title}</Heading>
-            <Image src={props.recipe.image} alt="" />
-            <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-            <ul>{props.recipe.ingredients.map((ingredient, index) => <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity}</li>)}</ul>
-            <Heading as="h3">{Localisation.STEPS}</Heading>
-            {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
-        </Box>
-    </SlideFade>);
+    return (<Box>
+    <CloseButton className="close-button-recipe-overview" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
+        <SlideFade in={true}>
+            <Box className="recipe-overview" padding="2em" maxWidth="80em" margin="auto">
+                <a className="recipe-overview-previous" href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
+                    <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
+                </a>
+                <a className="recipe-overview-next" href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
+                    <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
+                </a>
+                <Heading as="h2">{props.recipe.title}</Heading>
+                <Image src={props.recipe.image} alt="" />
+                <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
+                <ul>{props.recipe.ingredients.map((ingredient, index) => <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity}</li>)}</ul>
+                <Heading as="h3">{Localisation.STEPS}</Heading>
+                {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+            </Box>
+        </SlideFade>
+    </Box>);
 }
 
 export default connect(mapStateToProps, { changeActiveView, switchActiveRecipe })(RecipeOverview);
