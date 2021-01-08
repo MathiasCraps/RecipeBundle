@@ -15,11 +15,11 @@ html, body, #root {
 
 .recipeBox {
   position: relative;
-}
 
-.recipeBox:hover img,
-.recipeBox a:focus img {
-  filter: opacity(0.85);
+  a:hover img,
+  a:focus img {
+    filter: opacity(0.85);
+  }
 }
 
 .close-button-recipe-overview {
