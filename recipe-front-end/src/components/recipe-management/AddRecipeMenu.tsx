@@ -96,6 +96,8 @@ export function AddRecipeMenu(props: Props) {
                 status: 'error'
             })
         }
+
+        props.switchMenu(OpenedMenu.NONE);
     }
 
     const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index}]);
