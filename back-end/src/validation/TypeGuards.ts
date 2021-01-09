@@ -1,10 +1,10 @@
 import { Recipe } from "../model/RecipeData";
 
 export function isRecipe(data: unknown): data is Recipe {
-    const castedRecipe = data as Recipe;
-    if (typeof castedRecipe !== 'object' || castedRecipe === null) {
-        return false; // not an object
+    const recipe = data as Recipe;
+    if (typeof recipe !== 'object') {
+        return false;
     }
 
-    return Boolean(castedRecipe.title && castedRecipe.ingredients && castedRecipe.steps && castedRecipe.image);
+    return Boolean(recipe.title && recipe.ingredients?.length && recipe.steps);
 }
