@@ -13,12 +13,16 @@ import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
 import { isRecipe } from "./validation/TypeGuards";
+const multer = require('multer');
 const bodyParser = require('body-parser');
 
 dotenv.config();
 
 const app = express();
 const port = 8080;
+const upload = multer();
+
+const BASE_FILE_UPLOAD_DIRECTORY = `${__dirname}/public/uploads/`;
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({
@@ -26,6 +30,8 @@ app.use(session({
 }));
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.single('userfile'));
 
 app.get('/getRecipes', async (request, response) => {
     response.json(await getAllRecipes());
@@ -38,37 +44,62 @@ app.get('/logout', async(request, response) => {
     })
 });
 
+function getExtension(mimeType: string): string {
+    switch(mimeType) {
+        case 'image/jpeg':
+            return 'jpg';
+        case 'image/png':
+            return 'png';
+    }
+    return '';
+}
+
 app.post('/addRecipe', async (request, response) => {
-    const user = (request.session as SessionData).userName
+    const user = (request.session as SessionData).userName;
     if (!user) {
         response.json({error: 'Not logged in'});
-    }
-    
-    const recipe = request.body;
-    if (!isRecipe(recipe)) {
-        response.json({error: 'Invalid recipe.'});
         return;
     }
 
-    pool.connect(async (error, client, done) => {
-        const DB_ERROR = {error: 'Could not write to database'};
-        if (error) {
-            response.json(DB_ERROR);
+    let recipe: Recipe;
+    try {
+        recipe = JSON.parse(request.body.recipe);
+        if (!isRecipe(recipe)) {
+            throw new Error('Invalid');
+        }    
+    } catch (err) {
+        response.json({error: 'Invalid recipe data'});
+        return;
+    }
+
+    const file = request.file;
+    const trustedExtension = getExtension(file?.mimetype);
+    if (!file || !file.buffer || !trustedExtension) {
+        response.json({error: 'Invalid image'});
+        return;
+    }
+
+    const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
+    const FILE_NAME = `${RANDOM_NAME}.${trustedExtension}`;
+    fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file.buffer, async(err) => {
+        if (err) {
+            response.json({
+                error: 'Could not write image'
+            });
             return;
         }
 
         try {
-            recipe.image = 'http://localhost:8080/images/no-image-provided.png'; // todo: allow uploading image and use that instead
-            await addRecipe(client, recipe);
-            response.json({success: true})    
+            recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`;
+            await addRecipe(pool, recipe);
+            response.json({success: true});    
         } catch (err) {
+            // todo for later: remove added image should writing to the database not work
             console.log('err', err);
-            response.json(DB_ERROR);
+            response.json({error: 'Could not write to database'});
         }
-    });
-
-
-})
+    });  
+});
 
 app.get('/getSessionData', async (request, response) => {
     const session: SessionData = request.session as SessionData;
@@ -137,7 +168,7 @@ app.get('/getSessionData', async (request, response) => {
 
 
 app.listen(port, () => {
-    console.log(`Server active at http://localhost:${port}`)
+    console.log(`Server active at ${process.env.DOMAIN}`)
 });
 
 export const pool: Pool = new Pool({
@@ -151,18 +182,18 @@ export const pool: Pool = new Pool({
 pool.connect(async (error, client, done) => {
     if (error) {
         console.log(error);
-        done();
+        client.release();
         throw new Error('Connecting the database failed');
     }
 
     // ensure tables are created
     try {
-        const hasBeenCreated = await createTables(client);
+        const hasBeenCreated = await createTables(pool);
         if (hasBeenCreated) {
             const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
 
             for (let recipe of defaultRecipes) {
-                await addRecipe(client, recipe);
+                await addRecipe(pool, recipe);
             }
         }
     } catch (err) {
@@ -170,7 +201,7 @@ pool.connect(async (error, client, done) => {
     }
 
     // integrate later
-    // await executeQuery(client, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
+    // await executeQuery(pool, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
 
-    done();
+    client.release();
 });

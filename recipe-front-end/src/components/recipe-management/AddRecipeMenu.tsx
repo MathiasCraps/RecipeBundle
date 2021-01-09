@@ -1,9 +1,10 @@
-import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea } from "@chakra-ui/react";
+import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useToast } from "@chakra-ui/react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { AddRecipeResponse } from "../../interfaces/AddRecipeResponse";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { switchMenu } from "../../redux/Actions";
+import { switchMenu, updateRecipes } from "../../redux/Actions";
 import { OpenedMenu, ReduxModel } from "../../redux/Store";
 
 interface IngredientInput {
@@ -19,6 +20,7 @@ interface ComponentProps {
 
 interface ReduxProps {
     switchMenu: typeof switchMenu;
+    updateRecipes: typeof updateRecipes;
 }
 
 type Props = ComponentProps & ReduxProps;
@@ -31,6 +33,8 @@ function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
 }
 
 export function AddRecipeMenu(props: Props) {
+    const toast = useToast();
+    
     function updateIngredientsInputs(event: ChangeEvent<HTMLInputElement>, index: number) {
         const copyOfIngredients = [...ingredients]; // always make a copy for immutability
 
@@ -53,7 +57,7 @@ export function AddRecipeMenu(props: Props) {
         setIngredients(emptiedFilter);
     }
 
-    function postRecipe() {
+    async function postRecipe() {
         if (!canBeSubmitted) {
             return;
         }
@@ -72,13 +76,42 @@ export function AddRecipeMenu(props: Props) {
         formData.append('userfile', ref.current!.files![0]);
         formData.append('recipe', JSON.stringify(recipeData))
 
-        fetch('/addRecipe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: formData
-        })
+        try {
+            const response = await fetch('/addRecipe', {
+                method: 'POST',
+                body: formData
+            });
+            const responseData = await response.json() as AddRecipeResponse;
+
+            if (responseData.error) {
+                throw new Error(responseData.error);
+            }
+
+            try {
+                const updatedDataResponse = await fetch('/getRecipes');
+                const updatedData = await updatedDataResponse.json() as Recipe[];
+                
+                props.updateRecipes(updatedData)    
+            } catch (err) {
+                console.error(err);
+            }
+            
+            toast({
+                description: Localisation.ADDING_WAS_SUCCESS,
+                status: 'success'
+            });
+        } catch (err) {
+            toast({
+                description: Localisation.ADDING_FAILED,
+                status: 'error'
+            })
+        }
+
+        setIngredients([{value: '', identifier: ++index}]);
+        setTitle('');
+        setSteps('');
+        setImagePath('');
+        props.switchMenu(OpenedMenu.NONE);
     }
 
     const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index}]);
@@ -117,4 +150,4 @@ export function AddRecipeMenu(props: Props) {
     </Modal>)
 }
 
-export default connect(mapStateToProps, { switchMenu })(AddRecipeMenu);
+export default connect(mapStateToProps, { switchMenu, updateRecipes })(AddRecipeMenu);

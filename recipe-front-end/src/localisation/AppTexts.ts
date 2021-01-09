@@ -17,4 +17,6 @@ export enum Localisation {
     ACCOUNT_MANAGEMENT = 'Account beheren',
     CANCEL = 'Annuleren',
     TITLE = 'Titel',
+    ADDING_WAS_SUCCESS = 'Gelukt! Bedankt voor je inzending.',
+    ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.'
 }

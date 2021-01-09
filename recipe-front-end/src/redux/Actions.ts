@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, ChangeViewAction, LogoutAction, OpenedMenu, SwitchActiveRecipeAction, ToggleMenuAction, ViewType } from "./Store";
+import { Actions, ChangeViewAction, LogoutAction, OpenedMenu, SwitchActiveRecipeAction, ToggleMenuAction, UpdateRecipesAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -22,7 +22,7 @@ export function switchActiveRecipe(direction: Direction): SwitchActiveRecipeActi
     }
 }
 
-export function switchMenu(menu: OpenedMenu): ToggleMenuAction  {
+export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
         type: Actions.TOGGLE_MENU,
         menu
@@ -38,4 +38,11 @@ export function doLogOut(dispatch: Dispatch<LogoutAction>): () => Promise<void> 
             console.log('logout failed', err);
         }
     }    
+}
+
+export function updateRecipes(recipes: Recipe[]): UpdateRecipesAction {
+    return {
+        type: Actions.UPDATE_RECIPES,
+        recipes
+    }
 }
