@@ -81,7 +81,7 @@ app.post('/addRecipe', async (request, response) => {
 
     const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
     const FILE_NAME = `${RANDOM_NAME}.${trustedExtension}`;
-    fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file.buffer, (err) => {
+    fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file.buffer, async(err) => {
         if (err) {
             response.json({
                 error: 'Could not write image'
@@ -89,24 +89,15 @@ app.post('/addRecipe', async (request, response) => {
             return;
         }
 
-        pool.connect(async (error, client) => {
-            const DB_ERROR = {error: 'Could not write to database'};
+        try {
+            recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`;
+            await addRecipe(pool, recipe);
+            response.json({success: true});    
+        } catch (err) {
             // todo for later: remove added image should writing to the database not work
-            if (error) {
-                response.json(DB_ERROR);
-                return;
-            }
-
-            try {
-                recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`; // todo: allow uploading image and use that instead
-                await addRecipe(pool, recipe);
-                response.json({success: true});
-            } catch (err) {
-                console.log('err', err);
-                response.json(DB_ERROR);
-            }
-            client.release();
-        });
+            console.log('err', err);
+            response.json({error: 'Could not write to database'});
+        }
     });  
 });
 
