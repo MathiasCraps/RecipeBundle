@@ -74,9 +74,6 @@ export function AddRecipeMenu(props: Props) {
 
         fetch('/addRecipe', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: formData
         })
     }
