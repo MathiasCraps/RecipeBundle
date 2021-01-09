@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AddRecipeResponse } from "../../interfaces/AddRecipeResponse";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { switchMenu } from "../../redux/Actions";
+import { switchMenu, updateRecipes } from "../../redux/Actions";
 import { OpenedMenu, ReduxModel } from "../../redux/Store";
 
 interface IngredientInput {
@@ -20,6 +20,7 @@ interface ComponentProps {
 
 interface ReduxProps {
     switchMenu: typeof switchMenu;
+    updateRecipes: typeof updateRecipes;
 }
 
 type Props = ComponentProps & ReduxProps;
@@ -86,6 +87,15 @@ export function AddRecipeMenu(props: Props) {
                 throw new Error(responseData.error);
             }
 
+            try {
+                const updatedDataResponse = await fetch('/getRecipes');
+                const updatedData = await updatedDataResponse.json() as Recipe[];
+                
+                props.updateRecipes(updatedData)    
+            } catch (err) {
+                console.error(err);
+            }
+            
             toast({
                 description: Localisation.ADDING_WAS_SUCCESS,
                 status: 'success'
@@ -140,4 +150,4 @@ export function AddRecipeMenu(props: Props) {
     </Modal>)
 }
 
-export default connect(mapStateToProps, { switchMenu })(AddRecipeMenu);
+export default connect(mapStateToProps, { switchMenu, updateRecipes })(AddRecipeMenu);

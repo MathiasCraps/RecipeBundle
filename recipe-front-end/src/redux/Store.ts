@@ -28,7 +28,8 @@ export enum Actions {
     CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_MENU = 'SWITCH_MENU',
-    LOG_OUT = 'LOG_OUT'
+    LOG_OUT = 'LOG_OUT',
+    UPDATE_RECIPES = 'UPDATE_RECIPES'
 }
 
 export interface ChangeViewAction {
@@ -51,6 +52,11 @@ export interface LogoutAction {
     type: Actions.LOG_OUT;
 }
 
+export interface UpdateRecipesAction {
+    type: Actions.UPDATE_RECIPES;
+    recipes: Recipe[];
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -62,7 +68,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -97,6 +103,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                     name: undefined
                 },
                 openedMenu: OpenedMenu.NONE
+            }
+        case Actions.UPDATE_RECIPES:
+            return {
+                ...oldState,
+                recipes: action.recipes
             }
         default:
             // not supported yet
