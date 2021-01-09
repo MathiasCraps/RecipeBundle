@@ -97,6 +97,10 @@ export function AddRecipeMenu(props: Props) {
             })
         }
 
+        setIngredients([{value: '', identifier: ++index}]);
+        setTitle('');
+        setSteps('');
+        setImagePath('');
         props.switchMenu(OpenedMenu.NONE);
     }
 
