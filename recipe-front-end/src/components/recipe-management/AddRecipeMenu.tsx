@@ -132,53 +132,72 @@ export function AddRecipeMenu(props: Props) {
         <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
         <SlideFade in={true}><Box className="add-recipe-box" padding="2em" maxWidth="80em">
             <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
-            <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
-            <br /><br />
-            <h2>{Localisation.INGREDIENTS}</h2>
-            {ingredients.map((ingredient: IngredientInput) => {
-                const {name, quantityNumber, quantityDescription} = ingredient;
-                return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
-                    <label>
-                        <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt}/></Button>
-                        <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash}/></Button>
-                        <strong>{name}</strong>, {quantityNumber} {quantityDescription}
-                    </label>
-                </Box>)
-            })}
+            <Box className="box">
+                <label>
+                    <b>{Localisation.TITLE}</b>
+                    <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
+                </label>
+            </Box>
 
-            
-            {editingIngredient && <IngredientsModal 
-                onConfirm={(ingredientInput: IngredientInput) => {
-                    const identifier = ingredientInput.identifier;
-                    const shallowCopy = [...ingredients];
-                    const entryToReplace = shallowCopy.filter((ingredient) => ingredient.identifier === identifier);
-                    const indexOfEntryToReplace = shallowCopy.indexOf(entryToReplace[0]);
+            <Box className="box"><b>{Localisation.INGREDIENTS}</b>
+                {ingredients.map((ingredient: IngredientInput) => {
+                    const { name, quantityNumber, quantityDescription } = ingredient;
+                    return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
+                        <label>
+                            <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt} /></Button>
+                            <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
+                            <strong>{name}</strong>, {quantityNumber} {quantityDescription}
+                        </label>
+                    </Box>)
+                })}
 
-                    if (indexOfEntryToReplace !== -1) {
-                        shallowCopy[indexOfEntryToReplace] = ingredientInput;
-                    } else {
-                        shallowCopy.push(ingredientInput);
-                    }
 
-                    setEditingIngredient(undefined);
-                    setIngredients(shallowCopy);
-                }}
-                onCancel={() => {
-                    setEditingIngredient(undefined)
-                }}
-            ingredientInputs={editingIngredient} />}
-            
+                {editingIngredient && <IngredientsModal
+                    onConfirm={(ingredientInput: IngredientInput) => {
+                        const identifier = ingredientInput.identifier;
+                        const shallowCopy = [...ingredients];
+                        const entryToReplace = shallowCopy.filter((ingredient) => ingredient.identifier === identifier);
+                        const indexOfEntryToReplace = shallowCopy.indexOf(entryToReplace[0]);
 
-            <Button onClick={() =>setEditingIngredient(createEmptyIngredient())}><FontAwesomeIcon icon={faPlus}/></Button>
-            <br /><br /><br />
-            <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
-            <input ref={ref} type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
+                        if (indexOfEntryToReplace !== -1) {
+                            shallowCopy[indexOfEntryToReplace] = ingredientInput;
+                        } else {
+                            shallowCopy.push(ingredientInput);
+                        }
 
-            <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
-                {Localisation.ADD_RECIPE}
-            </Button>
-            <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
-        </Box></SlideFade></Box>)
+                        setEditingIngredient(undefined);
+                        setIngredients(shallowCopy);
+                    }}
+                    onCancel={() => {
+                        setEditingIngredient(undefined)
+                    }}
+                    ingredientInputs={editingIngredient} />}
+
+                <Button onClick={() => setEditingIngredient(createEmptyIngredient())}><FontAwesomeIcon icon={faPlus} /></Button>
+            </Box>
+
+            <Box className="box">
+                <label>
+                    <b>{Localisation.STEPS}</b>
+                <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
+                </label>
+            </Box>
+
+            <Box className="box">
+                <label>
+                    <b>{Localisation.ADD_PHOTO}</b><br />
+                    <input ref={ref} type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
+                </label>
+            </Box>
+            <Box className="box">
+                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
+                    {Localisation.ADD_RECIPE}
+                </Button>
+                <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
+            </Box>
+        </Box>
+        </SlideFade>
+    </Box>)
 }
 
 export default connect(mapStateToProps, { changeActiveView, updateRecipes })(AddRecipeMenu);

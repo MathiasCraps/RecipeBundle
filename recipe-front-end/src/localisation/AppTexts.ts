@@ -17,6 +17,7 @@ export enum Localisation {
     INGREDIENT_NAME = 'Naam ingrediënt',
     ADD = 'Toevoegen',
     QUANTITY = 'Hoeveelheid',
+    ADD_PHOTO = 'Foto toevoegen',
     EDIT_INGREDIENT = 'Ingrediënt bewerken',
     ACCOUNT_MANAGEMENT = 'Account beheren',
     CANCEL = 'Annuleren',
