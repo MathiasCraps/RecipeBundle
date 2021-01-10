@@ -140,7 +140,7 @@ export function AddRecipeMenu(props: Props) {
             </Box>
 
             <Box className="box"><b>{Localisation.INGREDIENTS}</b>
-                {ingredients.map((ingredient: IngredientInput) => {
+                <Box>{ingredients.map((ingredient: IngredientInput) => {
                     const { name, quantityNumber, quantityDescription } = ingredient;
                     return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
                         <label>
@@ -153,7 +153,7 @@ export function AddRecipeMenu(props: Props) {
                             <strong>{name}</strong>, {quantityNumber} {quantityDescription}
                         </label>
                     </Box>)
-                })}
+                })}</Box>
 
 
                 {editingIngredient && <IngredientsModal
@@ -182,7 +182,7 @@ export function AddRecipeMenu(props: Props) {
 
             <Box className="box">
                 <label>
-                    <b>{Localisation.STEPS}</b>
+                    <Box><b>{Localisation.STEPS}</b></Box>
                     <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
                 </label>
             </Box>
