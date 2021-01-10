@@ -1,4 +1,4 @@
-import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay } from "@chakra-ui/react";
+import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Localisation } from "../../localisation/AppTexts";
 import { IngredientInput } from "./AddRecipeMenu";
@@ -34,11 +34,11 @@ export function IngredientsModal(props: OwnProps) {
                         type='number'
                         placeholder={Localisation.QUANTITY} 
                 />
-                <select onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                <Select placeholed={Localisation.QUANTITY} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                     {quantityDescriptions.map((description, index) => {
                         return <option selected={description === props.ingredientInputs.quantityDescription} key={index} value={description}>{description}</option>
                     })}
-                </select>
+                </Select>
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={(e) => props.onConfirm({
