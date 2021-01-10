@@ -35,8 +35,9 @@ function App(props: AppProps) {
       </Box>
     </Center>
     <AccountMenu />
-    <AddRecipeMenu />
-    {props.activeRecipe ? <RecipeOverview /> : (<RecipeList recipes={props.recipes} />)}
+    {props.view === ViewType.AddRecipe && <AddRecipeMenu /> }
+    {props.view === ViewType.RecipeView && <RecipeOverview /> }
+    {props.view === ViewType.Overview && <RecipeList recipes={props.recipes} />}
   </header></Box>)
 }
 

@@ -56,7 +56,7 @@ function RecipeOverview(props: Props) {
         }
     })
     return (<Box>
-    <CloseButton className="close-button-recipe-overview" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
+    <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
         <SlideFade in={true}>
             <Box className="recipe-overview" padding="2em" maxWidth="80em" margin="auto">
                 <a className="recipe-overview-previous" href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
