@@ -22,7 +22,7 @@ html, body, #root {
   }
 }
 
-.close-button-recipe-overview {
+.close-button-top-left {
   position: fixed;
   top: 1em;
   left: 2em;
@@ -46,7 +46,10 @@ html, body, #root {
   right: 1em;
 }
 
+.add-recipe-box,
 .recipe-overview {
+  max-width: 80em;
+  margin: auto;
   top: 2em;
   padding: 0.5em;
   position: relative;

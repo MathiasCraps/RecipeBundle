@@ -21,7 +21,8 @@ export interface ReduxModel {
 
 export enum ViewType {
     Overview,
-    RecipeView
+    RecipeView,
+    AddRecipe
 }
 
 export enum Actions {

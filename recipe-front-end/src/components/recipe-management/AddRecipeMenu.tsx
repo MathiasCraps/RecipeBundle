@@ -1,11 +1,11 @@
-import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useToast } from "@chakra-ui/react";
+import { Box, Button, CloseButton, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SlideFade, Textarea, useToast } from "@chakra-ui/react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { AddRecipeResponse } from "../../interfaces/AddRecipeResponse";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { switchMenu, updateRecipes } from "../../redux/Actions";
-import { OpenedMenu, ReduxModel } from "../../redux/Store";
+import { changeActiveView, updateRecipes } from "../../redux/Actions";
+import { OpenedMenu, ReduxModel, ViewType } from "../../redux/Store";
 
 interface IngredientInput {
     value: string;
@@ -19,7 +19,7 @@ interface ComponentProps {
 }
 
 interface ReduxProps {
-    switchMenu: typeof switchMenu;
+    changeActiveView: typeof changeActiveView;
     updateRecipes: typeof updateRecipes;
 }
 
@@ -28,27 +28,31 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isOpened: reduxModel.openedMenu === OpenedMenu.ADD_RECIPE
+        isOpened: reduxModel.view === ViewType.AddRecipe
     }
 }
 
 export function AddRecipeMenu(props: Props) {
     const toast = useToast();
-    
+
+    function close() {
+        props.changeActiveView(ViewType.Overview, undefined);
+    }
+
     function updateIngredientsInputs(event: ChangeEvent<HTMLInputElement>, index: number) {
         const copyOfIngredients = [...ingredients]; // always make a copy for immutability
 
         copyOfIngredients[index].value = event.target.value; // update the entry
 
-        const entryCount0Based = copyOfIngredients.length -1;
+        const entryCount0Based = copyOfIngredients.length - 1;
         const lastEntry = copyOfIngredients[entryCount0Based];
         if (lastEntry.value) {
-            copyOfIngredients[entryCount0Based +1] = {
+            copyOfIngredients[entryCount0Based + 1] = {
                 value: '',
                 identifier: ++index
             }
         }
-        
+
         const emptiedFilter = copyOfIngredients.filter((entry, index) => {
             const lastEntry = (index + 1) === copyOfIngredients.length;
             return entry.value || lastEntry;
@@ -63,7 +67,7 @@ export function AddRecipeMenu(props: Props) {
         }
 
         const transformedIngredients = ingredients.slice(0, ingredients.length - 1).map((ingredient) => {
-            return {quantity: '1 stuk', name: ingredient.value} // todo: remove me by adding quantity option to interface!
+            return { quantity: '1 stuk', name: ingredient.value } // todo: remove me by adding quantity option to interface!
         })
         const recipeData: Recipe = {
             title,
@@ -90,12 +94,12 @@ export function AddRecipeMenu(props: Props) {
             try {
                 const updatedDataResponse = await fetch('/getRecipes');
                 const updatedData = await updatedDataResponse.json() as Recipe[];
-                
-                props.updateRecipes(updatedData)    
+
+                props.updateRecipes(updatedData)
             } catch (err) {
                 console.error(err);
             }
-            
+
             toast({
                 description: Localisation.ADDING_WAS_SUCCESS,
                 status: 'success'
@@ -107,14 +111,14 @@ export function AddRecipeMenu(props: Props) {
             })
         }
 
-        setIngredients([{value: '', identifier: ++index}]);
+        setIngredients([{ value: '', identifier: ++index }]);
         setTitle('');
         setSteps('');
         setImagePath('');
-        props.switchMenu(OpenedMenu.NONE);
+        close();
     }
 
-    const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index}]);
+    const [ingredients, setIngredients] = useState([{ value: '', identifier: ++index }]);
     const [title, setTitle] = useState('');
     const [steps, setSteps] = useState('');
     const [imagePath, setImagePath] = useState('');
@@ -122,32 +126,25 @@ export function AddRecipeMenu(props: Props) {
 
     const canBeSubmitted = Boolean(ingredients.length > 1 && title && steps && imagePath);
 
-    return (<Modal isOpen={props.isOpened} onClose={() => props.switchMenu(OpenedMenu.NONE)}>
-        <ModalOverlay />
-        <ModalContent>
-            <ModalHeader>{Localisation.ADD_OWN_RECIPE}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-                <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
-                <br/><br/>
-                <h2>{Localisation.INGREDIENTS}</h2>
-                {ingredients.map((ingredient: IngredientInput, index: number) => {
-                    return <Input placeholder={Localisation.INGREDIENT} key={index} value={ingredient.value} onChange={(event) => updateIngredientsInputs(event, index)} />
-                })}
-                
-                <br/><br/><br/>
-                <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
-                <input ref={ref} type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
-            </ModalBody>
+    return (<Box>
+        <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
+        <SlideFade in={true}><Box className="add-recipe-box" padding="2em" maxWidth="80em">
+            <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
+            <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
+            <br /><br />
+            <h2>{Localisation.INGREDIENTS}</h2>
+            {ingredients.map((ingredient: IngredientInput, index: number) => {
+                return <Input placeholder={Localisation.INGREDIENT} key={index} value={ingredient.value} onChange={(event) => updateIngredientsInputs(event, index)} />
+            })}
+            <br /><br /><br />
+            <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
+            <input ref={ref} type="file" accept="image/jpeg, image/png" onChange={(event) => setImagePath(event.target.value)} />
 
-            <ModalFooter>
-                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
-                    {Localisation.ADD_RECIPE}
+            <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
+                {Localisation.ADD_RECIPE}
             </Button>
-                <Button variant="ghost" onClick={() => props.switchMenu(OpenedMenu.NONE)}>{Localisation.CANCEL}</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>)
+            <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
+        </Box></SlideFade></Box>)
 }
 
-export default connect(mapStateToProps, { switchMenu, updateRecipes })(AddRecipeMenu);
+export default connect(mapStateToProps, { changeActiveView, updateRecipes })(AddRecipeMenu);
