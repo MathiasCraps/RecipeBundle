@@ -1,5 +1,5 @@
 import { Box, Button, CloseButton, Heading, Input, SlideFade, Textarea, useToast } from "@chakra-ui/react";
-import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
@@ -51,6 +51,11 @@ export function AddRecipeMenu(props: Props) {
 
     function close() {
         props.changeActiveView(ViewType.Overview, undefined);
+    }
+
+    function removeIngredient(requestedRemoveIngredient: IngredientInput) {
+        const shallowClone = [...ingredients];
+        setIngredients(shallowClone.filter((ingredient) => ingredient.identifier !== requestedRemoveIngredient.identifier));
     }
 
     async function postRecipe() {
@@ -130,11 +135,12 @@ export function AddRecipeMenu(props: Props) {
             <Input placeholder={Localisation.TITLE} value={title} onChange={(event) => setTitle(event.target.value)} />
             <br /><br />
             <h2>{Localisation.INGREDIENTS}</h2>
-            {ingredients.map((ingredient: IngredientInput, index: number) => {
+            {ingredients.map((ingredient: IngredientInput) => {
                 const {name, quantityNumber, quantityDescription} = ingredient;
-                return (<Box className="edit-ingredient-container" key={index}>
+                return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
                     <label>
                         <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt}/></Button>
+                        <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash}/></Button>
                         <strong>{name}</strong>, {quantityNumber} {quantityDescription}
                     </label>
                 </Box>)
