@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, Heading, Input, SlideFade, Textarea, useToast } from "@chakra-ui/react";
+import { Box, Button, CloseButton, Heading, Input, SlideFade, Textarea, Tooltip, useToast } from "@chakra-ui/react";
 import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
@@ -144,8 +144,12 @@ export function AddRecipeMenu(props: Props) {
                     const { name, quantityNumber, quantityDescription } = ingredient;
                     return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
                         <label>
-                            <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt} /></Button>
-                            <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
+                            <Tooltip label={Localisation.EDIT_INGREDIENT} fontSize="md">
+                                <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt} /></Button>
+                            </Tooltip>
+                            <Tooltip label={Localisation.REMOVE_INGREDIENT} fontSize="md">
+                                <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
+                            </Tooltip>
                             <strong>{name}</strong>, {quantityNumber} {quantityDescription}
                         </label>
                     </Box>)
@@ -179,7 +183,7 @@ export function AddRecipeMenu(props: Props) {
             <Box className="box">
                 <label>
                     <b>{Localisation.STEPS}</b>
-                <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
+                    <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
                 </label>
             </Box>
 

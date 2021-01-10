@@ -19,6 +19,7 @@ export enum Localisation {
     QUANTITY = 'Hoeveelheid',
     ADD_PHOTO = 'Foto toevoegen',
     EDIT_INGREDIENT = 'Ingrediënt bewerken',
+    REMOVE_INGREDIENT = 'Ingrediënt verwijderen',
     ACCOUNT_MANAGEMENT = 'Account beheren',
     CANCEL = 'Annuleren',
     TITLE = 'Titel',
