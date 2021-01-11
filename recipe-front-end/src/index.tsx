@@ -17,6 +17,11 @@ async function start() {
   const apiKey = await fetch(`/getSessionData${codeQuery}`);
   const userData: BackEndUserData = await apiKey.json();
 
+  if (codeQuery && userData.loggedIn) {
+    window.location.href = '/';
+    return;
+  }
+
   const data = await fetch('/getRecipes')
   const recipes: Recipe[] = await data.json();
 
