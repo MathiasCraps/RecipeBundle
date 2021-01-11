@@ -3,12 +3,9 @@ import express from "express";
 import session from "express-session";
 import fs from "fs";
 import { Pool } from "pg";
-import { requestAccessToken } from "./github-api/GetAccessToken";
-import { requestUserApi } from "./github-api/UserApiRequest";
-import { UserMailScope } from "./model/github-api/UserMailScope";
-import { UserScope } from "./model/github-api/UserScope";
 import { Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
+import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
@@ -103,67 +100,23 @@ app.post('/addRecipe', async (request, response) => {
 
 app.get('/getSessionData', async (request, response) => {
     const session: SessionData = request.session as SessionData;
-    if (session.userName) {
-        response.json({
-            loggedIn: true,
-            userName: session.userName
-        });
-        return;
-    }
-
-    const auth = request.query.code;
-
-    // no auth callback code found. Abort the request
-    if (!auth) {
-        response.json({
-            loggedIn: false
-        });
-        return;
-    }
-
-    // in case we do not already have an accessToken, retrieve it
-    if (!session.accessToken) {
-        try {
-            const accessToken = await requestAccessToken(auth as string);
-            session.accessToken = accessToken as string;
-        } catch (err) {
-            console.log('error', err);
-            response.json({
-                loggedIn: false
-            });
-            return;            
-        }
-    }
+    const auth = request.query.code as string;
 
     try {
-        const baseUserInfo = await requestUserApi(session.accessToken, 'https://api.github.com/user') as UserScope;
-        const eMailInfo = await requestUserApi(session.accessToken, 'https://api.github.com/user/emails') as UserMailScope[];
-        const mail = eMailInfo.filter((mailInfo) => mailInfo.primary)[0]?.email;
-    
-        // nothing useful to use, abort
-        if (!mail) {
-          response.json({
-            loggedIn: false
-          });
-          return;
+        const sessionData = await getSessionData(session, auth);
+        
+        if (auth) {
+            response.redirect('/');
+            return;
         }
-    
-        const name = baseUserInfo.name || 'GitHub enabled ninja';
-        session.userName = name;
-        session.email = mail;
-    
-        response.json({
-          loggedIn: true,
-          userName: name
+
+        return response.json({
+            loggedIn: true,
+            userName: sessionData.userName
         });
     } catch (err) {
-        response.json({
-            loggedIn: false
-        })
+        return response.json({ loggedIn: false });
     }
-
-    // todo: finish the logic
-    // integrate database functionality
 });
 
 
