@@ -103,13 +103,7 @@ app.get('/getSessionData', async (request, response) => {
     const auth = request.query.code as string;
 
     try {
-        const sessionData = await getSessionData(session, auth);
-        
-        if (auth) {
-            response.redirect('/');
-            return;
-        }
-
+        const sessionData = await getSessionData(session, auth);      
         return response.json({
             loggedIn: true,
             userName: sessionData.userName
