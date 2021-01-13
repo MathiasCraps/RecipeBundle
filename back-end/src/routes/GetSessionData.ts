@@ -1,10 +1,13 @@
+import { Pool } from "pg";
 import { requestAccessToken } from "../github-api/GetAccessToken";
 import { requestUserApi } from "../github-api/UserApiRequest";
 import { UserMailScope } from "../model/github-api/UserMailScope";
 import { UserScope } from "../model/github-api/UserScope";
 import { SessionData } from "../model/SessionData";
+import { createUser } from "../sql/CreateUser";
+import { getUser } from "../sql/GetUser";
 
-export async function getSessionData(session: SessionData, auth: string | undefined): Promise<SessionData> {
+export async function getSessionData(pool: Pool, session: SessionData, auth: string | undefined): Promise<SessionData> {
     if (session.loggedIn) {
         return session;
     }
@@ -38,11 +41,13 @@ export async function getSessionData(session: SessionData, auth: string | undefi
         session.email = mail;
         session.loggedIn = true;
 
+        let userId = await getUser(pool, mail);
+        if (typeof userId !== 'number') {
+            userId = await createUser(pool, baseUserInfo.name, mail)
+        }
+        session.userId = userId;
         return session;
     } catch (err) {
         throw err;
     }
-
-    // todo: finish the logic
-    // integrate database functionality
 }

@@ -10,14 +10,16 @@ export async function createTables(pool: Pool) {
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Users (
         id serial PRIMARY KEY,
         name varchar(500) NOT NULL,
-        email varchar(500) NOT NULL
+        email varchar(500) NOT NULL,
+        created_at timestamp DEFAULT current_timestamp
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Recipes (
         id serial PRIMARY KEY,
         recipe_name varchar(500) NOT NULL,
         steps varchar(10000) NOT NULL,
-        image varchar(500) NOT NULL
+        image varchar(500) NOT NULL,
+        created_at timestamp DEFAULT current_timestamp
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Ingredients (
