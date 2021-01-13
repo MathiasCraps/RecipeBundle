@@ -103,7 +103,7 @@ app.get('/getSessionData', async (request, response) => {
     const auth = request.query.code as string;
 
     try {
-        const sessionData = await getSessionData(session, auth);      
+        const sessionData = await getSessionData(pool, session, auth);      
         return response.json({
             loggedIn: true,
             userName: sessionData.userName
@@ -146,9 +146,6 @@ pool.connect(async (error, client, done) => {
     } catch (err) {
         console.log('error setting up tables', err);
     }
-
-    // integrate later
-    // await executeQuery(pool, `INSERT INTO Users VALUES (100001, 'Ninja', 'topSecret')`);
 
     client.release();
 });

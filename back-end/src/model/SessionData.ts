@@ -3,4 +3,5 @@ export interface SessionData {
     userName?: string;
     email?: string;
     accessToken?: string;
+    userId?: number;
 }
