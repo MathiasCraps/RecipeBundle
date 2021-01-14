@@ -1,6 +1,7 @@
 export interface Ingredient {
-    quantity: string;
     name: string;
+    quantity_number: number | null;
+    quantity_description: string;
 }
 
 export interface Recipe {
