@@ -11,7 +11,8 @@ export async function getAllRecipes(): Promise<Recipe[]> {
             const recipeId = recipe.id;
             const ingredients = (await executeQuery(pool, {
                 name: 'get-ingredients-recipe',
-                text: `SELECT Ingredients.ingredient_name, RecipesIngredientsMatch.quantity FROM Ingredients
+                text: `SELECT Ingredients.ingredient_name, RecipesIngredientsMatch.quantity_name, RecipesIngredientsMatch.quantity_number 
+                FROM Ingredients
                 INNER JOIN RecipesIngredientsMatch ON RecipesIngredientsMatch.ingredient_id = Ingredients.id
                 WHERE RecipesIngredientsMatch.recipe_id = $1`,
                 values: [recipeId]
@@ -21,7 +22,11 @@ export async function getAllRecipes(): Promise<Recipe[]> {
                 title: recipe.recipe_name,
                 steps: recipe.steps,
                 ingredients: ingredients.map((ingredient: any) => {
-                    return { quantity: ingredient.quantity, name: ingredient.ingredient_name }
+                    return { 
+                        quantity_number: Number(ingredient.quantity_number),
+                        quantity_description: ingredient.quantity_name, 
+                        name: ingredient.ingredient_name 
+                    };
                 }),
                 image: recipe.image
             })
