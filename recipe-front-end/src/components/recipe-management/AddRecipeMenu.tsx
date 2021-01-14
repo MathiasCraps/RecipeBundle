@@ -64,7 +64,6 @@ export function AddRecipeMenu(props: Props) {
         }
 
         const transformedIngredients: Ingredient[] = ingredients
-            .slice(0, ingredients.length - 1)
             .map((ingredient) => {
                 return {
                     name: ingredient.name,
