@@ -8,8 +8,8 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
         text: 'INSERT INTO Recipes (recipe_name, steps, image) VALUES ($1, $2, $3) RETURNING id;',
         values: [recipeData.title, recipeData.steps, recipeData.image]
     });
-    const recipeId = insertedRecipe.rows[0].id;
 
+    const recipeId = insertedRecipe.rows[0].id;
     for (let ingredient of recipeData.ingredients) {
         let ingredientResult = await executeQuery(pool, {
             name: 'add-ingredient',
@@ -20,8 +20,9 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
 
         await executeQuery(pool, {
             name: 'match-ingredient-and-recipe',
-            text: 'INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity) VALUES($1, $2, $3);',
-            values: [recipeId, id, ingredient.quantity]
+            text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number, quantity_name) 
+                VALUES($1, $2, $3, $4);`,
+            values: [recipeId, id, ingredient.quantity_number, ingredient.quantity_description]
         });
     }
 }
