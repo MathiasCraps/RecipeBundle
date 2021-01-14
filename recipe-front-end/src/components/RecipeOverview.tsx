@@ -68,7 +68,9 @@ function RecipeOverview(props: Props) {
                 <Heading as="h2">{props.recipe.title}</Heading>
                 <Image src={props.recipe.image} alt="" />
                 <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-                <ul>{props.recipe.ingredients.map((ingredient, index) => <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity}</li>)}</ul>
+                <ul>{props.recipe.ingredients.map((ingredient, index) => (
+                <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
+                </li>))}</ul>
                 <Heading as="h3">{Localisation.STEPS}</Heading>
                 {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
             </Box>
