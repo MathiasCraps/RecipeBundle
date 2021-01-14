@@ -4,51 +4,63 @@
         "ingredients": [
             {
                 "name": "olijfolie",
-                "quantity": "1 eetlepel"
+                "quantity_number": 1,
+                "quantity_description": "eetlepel"
             },
             {
                 "name": "prei",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "knoflook",
-                "quantity": "1 teen"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "pompoen",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "tomatenblokjes",
-                "quantity": "1 blik"
+                "quantity_number": 1,
+                "quantity_description": "blik"
             },
             {
                 "name": "rode linzen",
-                "quantity": "150 gram"
+                "quantity_number": 150,
+                "quantity_description": "gram"
             },
             {
                 "name": "rozemarijn",
-                "quantity": "1 eetlepel"
+                "quantity_number": 1,
+                "quantity_description": "eetlepel"
             },
             {
                 "name": "zout",
-                "quantity": "naar smaak"
+                "quantity_number": 0,
+                "quantity_description": "naar smaak"
             },
             {
                 "name": "water",
-                "quantity": "500 milliter"
+                "quantity_number": 500,
+                "quantity_description": "milliliter"
             },
             {
                 "name": "volkkoren pasta",
-                "quantity": "350 gram"
+                "quantity_number": 350,
+                "quantity_description": "gran"
             },
             {
                 "name": "zwarte paper",
-                "quantity": "naar smaak"
+                "quantity_number": 0,
+                "quantity_description": "naar smaak"
             },
             {
                 "name": "Peterselie",
-                "quantity": "naar smaak"
+                "quantity_number": 0,
+                "quantity_description": "naar smaak"
             }
         ],
         "steps": "Verhit de olie in een pan met dikke bodem (grote sauspan) en bak de prei even aan met de knoflook en rode peper. Voeg de pompoen toe en bak nog een paar minuten al roerend. Roer het blik tomaten, de linzen, rozemarijn, zout en het water erdoor en breng aan de kook. Kook 12-15 minuten of tot alles gaar is. \\nKook intussen de pasta beetgaar.\\nPureer ⅓ van de saus met een staafmixer of blender en roer dat weer door de rest. Breng op smaak met zwarte peper. Strooi wat verse groene kruiden over de borden en serveer. Voor 4 personen. \\nTip: Mocht er wat saus over zijn dan kun je dit verdunnen met wat bouillon en als soep serveren.",
@@ -59,63 +71,78 @@
         "ingredients": [
             {
                 "name": "zilvervliesrijst",
-                "quantity": "250 gram"
+                "quantity_number": 250,
+                "quantity_description": "gram"
             },
             {
                 "name": "zonnebloemolie",
-                "quantity": "1 eetlepel"
+                "quantity_number": 1,
+                "quantity_description": "eetlepel"
             },
             {
                 "name": "ui",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "knoflook",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "wortel",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "pompoen",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "tomatenstukjes",
-                "quantity": "1 blik"
+                "quantity_number": 1,
+                "quantity_description": "blik"
             },
             {
                 "name": "pindakaas",
-                "quantity": "75 gram"
+                "quantity_number": 75,
+                "quantity_description": "gram"
             },
             {
                 "name": "sojasaus",
-                "quantity": "2 eetlepels"
+                "quantity_number": 2,
+                "quantity_description": "eetlepels"
             },
             {
                 "name": "chilipoeder",
-                "quantity": "0.5 theelepel"
+                "quantity_number": 0.5,
+                "quantity_description": "theelepel"
             },
             {
                 "name": "peterselie",
-                "quantity": "2 eetlepels"
+                "quantity_number": 2,
+                "quantity_description": "eetlepels"
             },
             {
                 "name": "groentebouillon",
-                "quantity": "500 ml"
+                "quantity_number": 500,
+                "quantity_description": "milliliter"
             },
             {
                 "name": "kidneybonen",
-                "quantity": "1 blik"
+                "quantity_number": 1,
+                "quantity_description": "blik"
             },
             {
                 "name": "tuinerwten",
-                "quantity": "150 gram"
+                "quantity_number": 150,
+                "quantity_description": "gram"
             },
             {
                 "name": "pindanoten",
-                "quantity": "50 gram"
+                "quantity_number": 50,
+                "quantity_description": "gram"
             }
         ],
         "steps": "Kook de rijst/quinoa volgens de gebruiksaanwijzing op de verpakking.\\nVerhit de olie in een ruime pan en smoor de ui 3-5 minuten met de deksel op de pan. Pers de knoflook erboven uit en voeg de wortel en pompoen toe. Bak dit nog 5 minuten, roer tussendoor.\\nVoeg de tomatenblokjes, pindakaas, sojasaus, kerrie, chilipoeder, peterselie en bouillon toe. Roer goed door, breng aan de kook, zet het vuur laag en laat 20 minuten zachtjes stoven. Voeg in de laatste 5 minuten de kidneybonen en tuinerwten toe.\\nServeer de stoofpot met de rijst of quinoa, bestrooid met de pinda’s.\\nTip: bij sommige supermarkten kun je pompoen uit de vriezer kopen, is wat duurder maar scheelt een boel snijwerk. Halveer dan de hoeveelheid bouillon.",
@@ -126,63 +153,78 @@
         "ingredients": [
             {
                 "name": "pompoen",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "olijfolie",
-                "quantity": "1 eetlepel"
+                "quantity_number": 1,
+                "quantity_description": "eetlepel"
             },
             {
                 "name": "ui",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "knoflook",
-                "quantity": "3 stuks"
+                "quantity_number": 3,
+                "quantity_description": "stuks"
             },
             {
                 "name": "water",
-                "quantity": "50 ml"
+                "quantity_number": 50,
+                "quantity_description": "milliliter"
             },
             {
                 "name": "tomatenstukjes",
-                "quantity": "1 blik"
+                "quantity_number": 1,
+                "quantity_description": "blik"
             },
             {
                 "name": "komijn",
-                "quantity": "1 theelepel"
+                "quantity_number": 1,
+                "quantity_description": "theelepel"
             },
             {
                 "name": "oregano",
-                "quantity": "1 theelepel"
+                "quantity_number": 1,
+                "quantity_description": "theelepel"
             },
             {
                 "name": "paprikapoeder",
-                "quantity": "1 theelepel"
+                "quantity_number": 1,
+                "quantity_description": "theelepel"
             },
             {
                 "name": "cayennepeper",
-                "quantity": "0.5 theelepel"
+                "quantity_number": 0.5,
+                "quantity_description": "theelepel"
             },
             {
                 "name": "zout",
-                "quantity": "naar smaak"
+                "quantity_number": 0,
+                "quantity_description": "naar smaak"
             },
             {
                 "name": "kidneybonen",
-                "quantity": "1 blik"
+                "quantity_number": 1,
+                "quantity_description": "blik"
             },
             {
                 "name": "wraps",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "avocado",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             },
             {
                 "name": "salsa",
-                "quantity": "1 pot"
+                "quantity_number": 1,
+                "quantity_description": "pot"
             }
         ],
         "steps": "Spoel de pompoen goed af; de pompoen hoeft namelijk niet geschild te worden, op lelijke plekjes in de schil na. Snijd met een groot mes voorzichtig de top van de pompoen af en snijd de pompoen door midden. Snijd de helften nog eens door en verwijder de zaden en draden met een lepel. Maak blokjes van het vruchtvlees en snijd de ui fijn. Verhit de olie in een grote pan. Fruit de ui ongeveer 5 minuten. Pers de knoflook hierboven uit en bak nog één minuut mee. Voeg de pompoenblokjes en het water toe en laat dit ongeveer 10 minuten stoven.\\nVerwarm intussen de oven voor op 100 ºC of gebruik later in het recept de magnetron om de tortilla’s op te warmen.\\nVoeg de tomatenblokjes, komijn, oregano, paprikapoeder, cayennepeper en zout naar smaak aan de pompoen toe. Roer door en laat nog 10 minuten stoven. Laat het blik kidneybonen uitlekken en voeg de bonen toe. Verwarm deze nog een paar minuten mee.\\nWarm de wraps ongeveer een minuut op in de voorverwarmde oven zodat ze warm en soepel worden. Snijd ondertussen de avocado in plakken: snijd deze door de helft, verwijder de pit en trek de schil eraf, snijd dan de plakken.\\nServeer de tortilla’s met de groenten/bonenvulling, schijfjes avocado en salsa.\\nTip: In plaats van de ovenstand kun je de wraps ook eerst vullen en vervolgens 5 minuten onder de voorverwarmde gril zetten. Ze krijgen dan een knapperige bovenkant.",
@@ -193,39 +235,48 @@
         "ingredients": [
             {
                 "name": "bloem",
-                "quantity": "250 gram"
+                "quantity_number": 250,
+                "quantity_description": "gram"
             },
             {
                 "name": "maïzena",
-                "quantity": "20 gram"
+                "quantity_number": 20,
+                "quantity_description": "gram"
             },
             {
                 "name": "bakpoeder",
-                "quantity": "1 pakje"
+                "quantity_number": 1,
+                "quantity_description": "zakje"
             },
             {
                 "name": "suiker",
-                "quantity": "150 gram"
+                "quantity_number": 150,
+                "quantity_description": "gram"
             },
             {
                 "name": "vanillesuiker",
-                "quantity": "1 pakje"
+                "quantity_number": 1,
+                "quantity_description": "pakje"
             },
             {
                 "name": "zout",
-                "quantity": "een snufje"
+                "quantity_number": 0,
+                "quantity_description": "een snufje"
             },
             {
                 "name": "zonnebloemolie",
-                "quantity": "75 gram"
+                "quantity_number": 75,
+                "quantity_description": "gram"
             },
             {
                 "name": "ongezoete plantaardige melk",
-                "quantity": "150 gram"
+                "quantity_number": 150,
+                "quantity_description": "gram"
             },
             {
                 "name": "peer",
-                "quantity": "1 stuk"
+                "quantity_number": 1,
+                "quantity_description": "stuk"
             }
         ],
         "steps": "Verwarm de oven voor op 175 graden. Bekleed een kleine ronde cakevorm (doorsnede 18 cm) met bakpapier.\\nMeng eerst de droge ingrediënten door elkaar. Klop dan met een handmixer of garde de olie en melk erdoor. Schrik niet, het moet een dik beslag worden. Verdeel het beslag over de vorm. Schil de peer, verdeel hem in kwarten en verwijder het klokhuis. Snijd de kwarten in plakjes en leg die mooi verdeeld op het beslag.\\nBak de cake in ongeveer 45 minuten gaar en goudbruin. Laat hem even afkoelen op een rooster alvorens hem op te dienen.\\nTip: Het is ook lekker om de peren in blokjes te snijden en ze door het beslag te mengen. Zwarte bessen (diepvries) of pruimen zijn ook lekker door het beslag in plaats van peren. Het is ook lekker om amandelschaafsel over de cake te strooien voordat deze de oven in gaat.",
