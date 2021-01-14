@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { AddRecipeResponse } from "../../interfaces/AddRecipeResponse";
-import { Recipe } from "../../interfaces/Recipe";
+import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView, updateRecipes } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
@@ -63,12 +63,16 @@ export function AddRecipeMenu(props: Props) {
             return;
         }
 
-        const transformedIngredients = ingredients.slice(0, ingredients.length - 1).map((ingredient) => {
-            return {
-                name: ingredient.name,
-                quantity: `${ingredient.quantityNumber} ${ingredient.quantityDescription}`
-            };
-        });
+        const transformedIngredients: Ingredient[] = ingredients
+            .slice(0, ingredients.length - 1)
+            .map((ingredient) => {
+                return {
+                    name: ingredient.name,
+                    quantity_description: ingredient.quantityDescription,
+                    quantity_number: ingredient.quantityNumber
+                };
+            }
+        );
         const recipeData: Recipe = {
             title,
             ingredients: transformedIngredients,
