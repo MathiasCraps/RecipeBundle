@@ -2,10 +2,10 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, CloseButton, Heading, Image, SlideFade } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Recipe } from "../interfaces/Recipe";
-import { Localisation } from "../localisation/AppTexts";
-import { changeActiveView, Direction, switchActiveRecipe } from "../redux/Actions";
-import { ReduxModel, ViewType } from "../redux/Store";
+import { Recipe } from "../../interfaces/Recipe";
+import { Localisation } from "../../localisation/AppTexts";
+import { changeActiveView, Direction, switchActiveRecipe } from "../../redux/Actions";
+import { ReduxModel, ViewType } from "../../redux/Store";
 
 interface RecipeOverviewProps {
     recipe: Recipe;
