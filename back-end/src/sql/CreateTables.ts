@@ -30,7 +30,8 @@ export async function createTables(pool: Pool) {
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS RecipesIngredientsMatch (
         recipe_id INT NOT NULL,
         ingredient_id INT NOT NULL,
-        quantity varchar(500) NOT NULL,
+        quantity_number NUMERIC(10, 2) NOT NULL,
+        quantity_name varchar(500) NOT NULL,
         PRIMARY KEY (recipe_id, ingredient_id),
         FOREIGN KEY (recipe_id) REFERENCES Recipes (id),
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id)
