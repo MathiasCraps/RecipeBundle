@@ -33,6 +33,10 @@ html, body, #root {
   font-size: 1.5em;
 }
 
+.plan-menu-btn {
+  font-size: 1.5em;
+}
+
 .top-header {
   background-color: white;
   box-shadow: 1px 1px 3px #b3b3b3;
@@ -47,7 +51,8 @@ html, body, #root {
 }
 
 .add-recipe-box,
-.recipe-overview {
+.recipe-overview,
+.week-planner-menu {
   max-width: 80em;
   margin: auto;
   top: 2em;
