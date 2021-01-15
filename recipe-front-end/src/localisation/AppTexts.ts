@@ -24,5 +24,6 @@ export enum Localisation {
     CANCEL = 'Annuleren',
     TITLE = 'Titel',
     ADDING_WAS_SUCCESS = 'Gelukt! Bedankt voor je inzending.',
-    ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.'
+    ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.',
+    MENU_PLANNER = 'Menuplanner'
 }
