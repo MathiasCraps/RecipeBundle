@@ -25,5 +25,14 @@ export enum Localisation {
     TITLE = 'Titel',
     ADDING_WAS_SUCCESS = 'Gelukt! Bedankt voor je inzending.',
     ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.',
-    MENU_PLANNER = 'Menuplanner'
+    MENU_PLANNER = 'Menuplanner',
+    DISH_SINGULAR = 'Gerecht',
+    DISH_PLURAL = 'Gerechten',
+    MONDAY = 'Maandag',
+    TUESDAY = 'Dinsdag',
+    WEDNESDAY = 'Woensdag',
+    THURSDAY = 'Donderdag',
+    FRIDAY = 'Vrijdag',
+    SATURDAY = 'Zaterdag',
+    SUNDAY = 'Zondag'
 }
