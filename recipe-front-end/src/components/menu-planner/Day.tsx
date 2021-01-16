@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { DayMenu, ReduxModel } from "../../redux/Store";
+import { FULL_DAY_IN_MS } from "../../utils/DateUtils";
 
 interface OwnProps {
     date: Date;
@@ -16,7 +17,7 @@ interface ReduxProps {
 
 function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
     const fromTime = new Date(forDate.getFullYear(), forDate.getMonth(), forDate.getDate()).getTime();
-    const toTime = fromTime + (24 * 60 * 60 * 1e3);
+    const toTime = fromTime + FULL_DAY_IN_MS;
 
     return menus.filter((item) => {
         return item.date >= fromTime && item.date < toTime;

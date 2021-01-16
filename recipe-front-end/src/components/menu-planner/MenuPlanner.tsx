@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView } from '../../redux/Actions';
 import { ReduxModel, ViewType } from "../../redux/Store";
+import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import Day from "./Day";
 
 interface OwnProps {
@@ -25,24 +26,25 @@ const WEEKDAYS = [Localisation.MONDAY, Localisation.TUESDAY, Localisation.WEDNES
 type Props = OwnProps & ReduxProps;
 
 function MenuPlanner(props: Props) {
-    const currentTime = new Date();
-    const firstDayOfCurrentWeek = currentTime.getDate() - currentTime.getDay() + 1;
-    const weekday = currentTime.getDay() - 1;
+    const currentDay = calculateStartOfDate(new Date());
+    const currentWeekDay = currentDay.getDay() - 1;
+    const firstDayOfCurrentWeek = currentDay.getTime() - (FULL_DAY_IN_MS * currentWeekDay);
 
     return (<Box>
+        {firstDayOfCurrentWeek}
         <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
         <SlideFade in={true}>
             <Box className="week-planner-menu" padding="2em" maxWidth="80em">
                 <Heading as="h2">{Localisation.MENU_PLANNER}</Heading>
                 <Box className='week'>
                     {WEEKDAYS.map((day, index) => {
-                        const date = new Date(currentTime.getFullYear(), currentTime.getMonth(), firstDayOfCurrentWeek + index);
+                        const date = new Date(firstDayOfCurrentWeek + (FULL_DAY_IN_MS * index));
                         return (<Day
                             key={index}
                             date={date}
                             dayOfWeek={index}
                             menuOfTheDay={[]} // overriden by redux
-                            isCurrentDay={weekday === index}
+                            isCurrentDay={index === currentWeekDay}
                         />)
                     })}
                 </Box>
