@@ -61,6 +61,7 @@ html, body, #root {
   background-color: white;
   z-index: 0;
   box-shadow: 1px 1px 3px #b3b3b3;
+  overflow: hidden;
 
   h2 {
     font-size: 1.2em;
@@ -142,6 +143,35 @@ li {
   font-size: 1.5em;
   padding: 0 0.75em 0 0.75em;
   border-radius: 1em;
+}
+
+.week {
+  clear: both;
+}
+
+.day {
+  width: 100%;
+  float: left;
+  border: 1px solid lightgray;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: 40em) {
+      width: calc(100% / 7);
+  }
+
+  .planner-day-display {
+    font-size: 1.5em;
+    text-align: center;
+  }
+}
+
+.current-day {
+  background-color: lightgreen;
 }
 
 /* todo: fix me with chakra global styles */
