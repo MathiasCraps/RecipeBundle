@@ -11,18 +11,27 @@ export enum OpenedMenu {
     SESSION,
     ADD_RECIPE
 }
+
+export interface DayMenu {
+    date: number;
+    recipe: Recipe;
+}
+
+
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
     activeRecipe: Recipe | undefined;
     openedMenu: OpenedMenu;
     user: UserData;
+    menuPlanning: DayMenu[]
 }
 
 export enum ViewType {
     Overview,
     RecipeView,
-    AddRecipe
+    AddRecipe,
+    MenuPlanner
 }
 
 export enum Actions {
@@ -63,6 +72,7 @@ export const defaultState: ReduxModel = {
     recipes: [],
     activeRecipe: undefined,
     openedMenu: OpenedMenu.NONE,
+    menuPlanning: [],
     user: {
         loggedIn: false,
         name: undefined

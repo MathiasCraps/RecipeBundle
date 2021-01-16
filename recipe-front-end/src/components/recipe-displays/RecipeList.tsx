@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import React from "react";
-import { Recipe } from "../interfaces/Recipe";
+import { Recipe } from "../../interfaces/Recipe";
 import RecipePreview from "./RecipePreview";
 
 interface Props {
