@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, ChangeViewAction, LogoutAction, OpenedMenu, SwitchActiveRecipeAction, ToggleMenuAction, UpdateRecipesAction, ViewType } from "./Store";
+import { Actions, AddMenuAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, SwitchActiveRecipeAction, ToggleMenuAction, UpdateRecipesAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -46,3 +46,10 @@ export function updateRecipes(recipes: Recipe[]): UpdateRecipesAction {
         recipes
     }
 }
+
+export function addMenu(menu: DayMenu): AddMenuAction {
+    return {
+        type: Actions.ADD_MENU,
+        menu
+    }
+} 
