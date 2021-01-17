@@ -27,11 +27,11 @@ type Props = OwnProps & ReduxProps;
 
 function MenuPlanner(props: Props) {
     const currentDay = calculateStartOfDate(new Date());
-    const currentWeekDay = currentDay.getDay() - 1;
+    const rawCurrentDay = currentDay.getDay();
+    const currentWeekDay = rawCurrentDay === 0 ? 6 : currentDay.getDay() - 1;
     const firstDayOfCurrentWeek = currentDay.getTime() - (FULL_DAY_IN_MS * currentWeekDay);
 
     return (<Box>
-        {firstDayOfCurrentWeek}
         <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
         <SlideFade in={true}>
             <Box className="week-planner-menu" padding="2em" maxWidth="80em">
@@ -43,7 +43,6 @@ function MenuPlanner(props: Props) {
                             key={index}
                             date={date}
                             dayOfWeek={index}
-                            menuOfTheDay={[]} // overriden by redux
                             isCurrentDay={index === currentWeekDay}
                         />)
                     })}

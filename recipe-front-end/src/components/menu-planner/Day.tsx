@@ -1,9 +1,14 @@
 import { Box, Center, Tooltip, useMediaQuery } from "@chakra-ui/react";
-import React from "react";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
+import { addMenu } from "../../redux/Actions";
 import { DayMenu, ReduxModel } from "../../redux/Store";
 import { FULL_DAY_IN_MS } from "../../utils/DateUtils";
+import { AddMenyOverlay } from "./AddMenuOverlay";
 
 interface OwnProps {
     date: Date;
@@ -13,6 +18,11 @@ interface OwnProps {
 
 interface ReduxProps {
     menuOfTheDay: DayMenu[];
+    recipes: Recipe[];
+}
+
+interface ReduxActionProps {
+    addMenu: typeof addMenu;
 }
 
 function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
@@ -21,16 +31,17 @@ function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
 
     return menus.filter((item) => {
         return item.date >= fromTime && item.date < toTime;
-    })
+    });
 }
 
 function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): ReduxProps {
     return {
-        menuOfTheDay: filterForDate(reduxStore.menuPlanning, ownProps.date)
+        menuOfTheDay: filterForDate(reduxStore.menuPlanning, ownProps.date),
+        recipes: reduxStore.recipes
     };
 }
 
-type Props = OwnProps & ReduxProps;
+type Props = OwnProps & ReduxProps & ReduxActionProps;
 
 function Day(props: Props) {
     const classes = `day ${props.isCurrentDay ? 'current-day' : ''}`;
@@ -39,6 +50,7 @@ function Day(props: Props) {
         ? Localisation.DISH_SINGULAR
         : Localisation.DISH_PLURAL
     const hasRecipes = Boolean(props.menuOfTheDay.length);
+    const [isOpened, setIsOpened] = useState(false);
 
     return (<Box className={classes}>
         <Box className='planner-day-display'>{props.date.getDate()}</Box>
@@ -50,8 +62,26 @@ function Day(props: Props) {
             {isSmallView && (<Center>
                 {props.menuOfTheDay.map((menu, index) => <Box key={index}>{menu.recipe.title}</Box>)}
             </Center>)}
+
+            <Center>
+                <a href='#' onClick={() => setIsOpened(true)}><FontAwesomeIcon icon={faPlus} />
+                    {Localisation.ADD}
+                </a>
+            </Center>
+
+            <AddMenyOverlay isOpened={isOpened}
+                date={props.date}
+                recipes={props.recipes}
+                onSubmit={(selectedRecipe: Recipe) => {
+                    setIsOpened(false);
+                    props.addMenu({
+                        date: props.date.getTime(),
+                        recipe: selectedRecipe
+                    });
+                }}
+                onCancel={() => setIsOpened(false)} />
         </Box>
     </Box>);
 }
 
-export default connect(mapStateToProps, null)(Day);
+export default connect(mapStateToProps, { addMenu })(Day);
