@@ -34,5 +34,6 @@ export enum Localisation {
     THURSDAY = 'Donderdag',
     FRIDAY = 'Vrijdag',
     SATURDAY = 'Zaterdag',
-    SUNDAY = 'Zondag'
+    SUNDAY = 'Zondag',
+    DO_SEARCH = 'Zoeken maar'
 }

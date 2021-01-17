@@ -39,7 +39,8 @@ export enum Actions {
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
-    UPDATE_RECIPES = 'UPDATE_RECIPES'
+    UPDATE_RECIPES = 'UPDATE_RECIPES',
+    ADD_MENU = 'ADD_MENU'
 }
 
 export interface ChangeViewAction {
@@ -67,6 +68,11 @@ export interface UpdateRecipesAction {
     recipes: Recipe[];
 }
 
+export interface AddMenuAction {
+    type: Actions.ADD_MENU;
+    menu: DayMenu;
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -79,7 +85,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction | AddMenuAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -119,6 +125,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 recipes: action.recipes
+            }
+        case Actions.ADD_MENU:
+            return {
+                ...oldState,
+                menuPlanning: oldState.menuPlanning.concat([action.menu])
             }
         default:
             // not supported yet
