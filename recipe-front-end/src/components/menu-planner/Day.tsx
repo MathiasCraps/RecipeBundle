@@ -1,4 +1,4 @@
-import { Box, Center, Tooltip, useMediaQuery } from "@chakra-ui/react";
+import { Tooltip, useMediaQuery } from "@chakra-ui/react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
@@ -7,17 +7,17 @@ import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { addMenu } from "../../redux/Actions";
 import { DayMenu, ReduxModel } from "../../redux/Store";
-import { FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import { AddMenyOverlay } from "./AddMenuOverlay";
 
 interface OwnProps {
     date: Date;
     isCurrentDay: boolean;
     dayOfWeek: number;
+    menuOfTheDay: DayMenu[];
+    onFocus(): void;
 }
 
 interface ReduxProps {
-    menuOfTheDay: DayMenu[];
     recipes: Recipe[];
 }
 
@@ -25,18 +25,9 @@ interface ReduxActionProps {
     addMenu: typeof addMenu;
 }
 
-function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
-    const fromTime = new Date(forDate.getFullYear(), forDate.getMonth(), forDate.getDate()).getTime();
-    const toTime = fromTime + FULL_DAY_IN_MS;
-
-    return menus.filter((item) => {
-        return item.date >= fromTime && item.date < toTime;
-    });
-}
 
 function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): ReduxProps {
     return {
-        menuOfTheDay: filterForDate(reduxStore.menuPlanning, ownProps.date),
         recipes: reduxStore.recipes
     };
 }
@@ -44,7 +35,7 @@ function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): ReduxProps
 type Props = OwnProps & ReduxProps & ReduxActionProps;
 
 function Day(props: Props) {
-    const classes = `day ${props.isCurrentDay ? 'current-day' : ''}`;
+    const classes = `day ${props.isCurrentDay ? 'selected-day' : ''}`;
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const dishedDescription = (props.menuOfTheDay.length === 1)
         ? Localisation.DISH_SINGULAR
@@ -52,22 +43,22 @@ function Day(props: Props) {
     const hasRecipes = Boolean(props.menuOfTheDay.length);
     const [isOpened, setIsOpened] = useState(false);
 
-    return (<Box className={classes}>
-        <Box className='planner-day-display'>{props.date.getDate()}</Box>
-        <Box>
+    return (<div className={classes} onMouseEnter={() => props.onFocus()}>
+        <div className='planner-day-display'>{props.date.getDate()}</div>
+        <div>
             {!isSmallView && (<Tooltip label={props.menuOfTheDay.map((menu) => menu.recipe.title).join('')} fontSize="md">
-                <Center>{hasRecipes ? `${props.menuOfTheDay.length} ${dishedDescription.toLowerCase()}` : '-'}</Center>
+                {hasRecipes ? `${props.menuOfTheDay.length} ${dishedDescription.toLowerCase()}` : '-'}
             </Tooltip>)}
 
-            {isSmallView && (<Center>
-                {props.menuOfTheDay.map((menu, index) => <Box key={index}>{menu.recipe.title}</Box>)}
-            </Center>)}
+            {isSmallView && (<div>
+                {props.menuOfTheDay.map((menu, index) => <div key={index}>{menu.recipe.title}</div>)}
+            </div>)}
 
-            <Center>
+            {isSmallView && (<div>
                 <a href='#' onClick={() => setIsOpened(true)}><FontAwesomeIcon icon={faPlus} />
                     {Localisation.ADD}
                 </a>
-            </Center>
+            </div>)}
 
             <AddMenyOverlay isOpened={isOpened}
                 date={props.date}
@@ -80,8 +71,8 @@ function Day(props: Props) {
                     });
                 }}
                 onCancel={() => setIsOpened(false)} />
-        </Box>
-    </Box>);
+        </div>
+    </div>);
 }
 
 export default connect(mapStateToProps, { addMenu })(Day);
