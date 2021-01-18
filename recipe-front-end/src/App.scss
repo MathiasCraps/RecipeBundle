@@ -149,10 +149,22 @@ li {
   clear: both;
 }
 
+.menu-selected-day {
+  clear: both;
+  background-color: #EDF2F7;
+  padding: 1em;
+  border: 2px solid #E2E8F0;
+
+  a {
+    display: block;
+    margin-top: em;
+  }
+}
+
 .day {
   width: 100%;
   float: left;
-  border: 1px solid lightgray;
+  border: 1px solid #F7FAFC;
   height: 100%;
 
   img {
@@ -170,8 +182,10 @@ li {
   }
 }
 
-.current-day {
-  background-color: lightgreen;
+.selected-day {
+  background-color: #E2E8F0;
+  border: 2px solid #E2E8F0;
+  border-bottom: none;
 }
 
 .search-result {

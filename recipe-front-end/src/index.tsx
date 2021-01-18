@@ -33,10 +33,10 @@ async function start() {
   const store = createStore(handleState, {
     ...defaultState,
     menuPlanning: [{
-      date: new Date(2021, 0, 16).getTime(),
+      date: new Date(2021, 0, 18).getTime(),
       recipe: recipes[0]
     }, {
-      date: new Date(2021, 0, 17).getTime(),
+      date: new Date(2021, 0, 19).getTime(),
       recipe: recipes[1]
     }],
     recipes: replicatedSet,
