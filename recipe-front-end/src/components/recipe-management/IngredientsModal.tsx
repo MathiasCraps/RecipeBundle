@@ -41,13 +41,13 @@ export function IngredientsModal(props: OwnProps) {
                 </Select>
             </ModalBody>
             <ModalFooter>
-                <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={(e) => props.onConfirm({
+                <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
                     name,
                     quantityNumber,
                     quantityDescription,
                     identifier: props.ingredientInputs.identifier
                 })}>{Localisation.ADD}</Button>
-                <Button variant="ghost" onClick={(e) => props.onCancel()}>{Localisation.CANCEL}</Button>
+                <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>);

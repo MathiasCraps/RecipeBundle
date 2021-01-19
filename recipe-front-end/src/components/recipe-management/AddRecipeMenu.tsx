@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, Heading, Input, SlideFade, Textarea, Tooltip, useToast } from "@chakra-ui/react";
+import { Box, Button, Heading, Input, Textarea, Tooltip, useToast } from "@chakra-ui/react";
 import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
