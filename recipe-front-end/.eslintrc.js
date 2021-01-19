@@ -33,6 +33,7 @@ module.exports = {
         "default-case-last": "warn",
         "no-implicit-coercion": "warn",
         "no-implied-eval": "error",
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
     }
 };

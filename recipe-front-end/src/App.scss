@@ -50,9 +50,7 @@ html, body, #root {
   right: 1em;
 }
 
-.add-recipe-box,
-.recipe-overview,
-.week-planner-menu {
+.card-content {
   max-width: 80em;
   margin: auto;
   top: 2em;
@@ -149,6 +147,11 @@ li {
   clear: both;
 }
 
+.small-selected-day a {
+  display: inline-block;
+  margin-top: 0.5em;
+}
+
 .menu-selected-day {
   clear: both;
   background-color: #EDF2F7;
@@ -156,8 +159,8 @@ li {
   border: 2px solid #E2E8F0;
 
   a {
-    display: block;
-    margin-top: em;
+    display: inline-block;
+    margin-top: 0.5em;
   }
 }
 
