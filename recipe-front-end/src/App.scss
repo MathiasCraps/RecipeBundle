@@ -147,6 +147,11 @@ li {
   clear: both;
 }
 
+.small-selected-day a {
+  display: inline-block;
+  margin-top: 0.5em;
+}
+
 .menu-selected-day {
   clear: both;
   background-color: #EDF2F7;
@@ -154,8 +159,8 @@ li {
   border: 2px solid #E2E8F0;
 
   a {
-    display: block;
-    margin-top: em;
+    display: inline-block;
+    margin-top: 0.5em;
   }
 }
 
