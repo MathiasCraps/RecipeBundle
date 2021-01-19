@@ -8,6 +8,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { addMenu, changeActiveView } from '../../redux/Actions';
 import { DayMenu, ReduxModel, ViewType } from "../../redux/Store";
 import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
+import ContentContainer from "../common/ContentContainer";
 import { AddMenyOverlay } from "./AddMenuOverlay";
 import Day from "./Day";
 
@@ -81,54 +82,49 @@ function MenuPlanner(props: Props) {
         })
     })
 
-    return (<Box>
-        <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
-        <SlideFade in={true}>
-            <Box className="week-planner-menu" padding="2em" maxWidth="80em">
-                <Heading as="h2">{Localisation.MENU_PLANNER}</Heading>
-                <Box className='week'>
-                    {WEEKDAYS.map((day, index) => {
-                        const date = new Date(firstDayOfCurrentWeek + (FULL_DAY_IN_MS * index));
-                        const menu = filterForDate(props.menus, date);
-                        return (<Day
-                            key={index}
-                            date={date}
-                            dayOfWeek={index}
-                            menuOfTheDay={menu}
-                            onFocus={() => {
-                                setFocusedDay(index);
-                            }}
-                            isCurrentDay={focusedDay === index}
-                        />)
-                    })}
-                </Box>
-                <Box>
-                    {Boolean(!isSmallView) && (<div className="menu-selected-day">
-                        <Heading as="h2">{Localisation.MENU_OF_THE_DAY}</Heading>
-                        {focusedRecipes.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
-                        {focusedRecipes.map((data, index) => {
-                            return <div key={index}>{data.recipe.title}</div>
-                        })}
-                        <a ref={currentDayFocus} href='#' onClick={() => setIsOpened(true)}>
-                            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
-                        </a>
-                    </div>)}
+    return (<ContentContainer>
+        <Heading as="h2">{Localisation.MENU_PLANNER}</Heading>
+        <Box className='week'>
+            {WEEKDAYS.map((day, index) => {
+                const date = new Date(firstDayOfCurrentWeek + (FULL_DAY_IN_MS * index));
+                const menu = filterForDate(props.menus, date);
+                return (<Day
+                    key={index}
+                    date={date}
+                    dayOfWeek={index}
+                    menuOfTheDay={menu}
+                    onFocus={() => {
+                        setFocusedDay(index);
+                    }}
+                    isCurrentDay={focusedDay === index}
+                />)
+            })}
+        </Box>
+        <Box>
+            {Boolean(!isSmallView) && (<div className="menu-selected-day">
+                <Heading as="h2">{Localisation.MENU_OF_THE_DAY}</Heading>
+                {focusedRecipes.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
+                {focusedRecipes.map((data, index) => {
+                    return <div key={index}>{data.recipe.title}</div>
+                })}
+                <a ref={currentDayFocus} href='#' onClick={() => setIsOpened(true)}>
+                    <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
+                </a>
+            </div>)}
 
-                    <AddMenyOverlay isOpened={isOpened}
-                        date={new Date(calculatedFocusedDay)}
-                        recipes={props.recipes}
-                        onSubmit={(selectedRecipe: Recipe) => {
-                            setIsOpened(false);
-                            props.addMenu({
-                                date: calculatedFocusedDay,
-                                recipe: selectedRecipe
-                            });
-                        }}
-                        onCancel={() => setIsOpened(false)} />
-                </Box>
-            </Box>
-        </SlideFade>
-    </Box>)
+            <AddMenyOverlay isOpened={isOpened}
+                date={new Date(calculatedFocusedDay)}
+                recipes={props.recipes}
+                onSubmit={(selectedRecipe: Recipe) => {
+                    setIsOpened(false);
+                    props.addMenu({
+                        date: calculatedFocusedDay,
+                        recipe: selectedRecipe
+                    });
+                }}
+                onCancel={() => setIsOpened(false)} />
+        </Box>
+    </ContentContainer>)
 }
 
 

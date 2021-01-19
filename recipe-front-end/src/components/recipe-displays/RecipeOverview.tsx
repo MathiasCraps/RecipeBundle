@@ -1,11 +1,12 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, CloseButton, Heading, Image, SlideFade } from "@chakra-ui/react";
+import { Heading, Image } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView, Direction, switchActiveRecipe } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
+import ContentContainer from "../common/ContentContainer";
 
 interface RecipeOverviewProps {
     recipe: Recipe;
@@ -55,27 +56,22 @@ function RecipeOverview(props: Props) {
             document.body.removeEventListener('keyup', handleKeyPress);
         }
     })
-    return (<Box>
-    <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
-        <SlideFade in={true}>
-            <Box className="recipe-overview" padding="2em" maxWidth="80em" margin="auto">
-                <a className="recipe-overview-previous" href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
-                    <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
-                </a>
-                <a className="recipe-overview-next" href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
-                    <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
-                </a>
-                <Heading as="h2">{props.recipe.title}</Heading>
-                <Image src={props.recipe.image} alt="" />
-                <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-                <ul>{props.recipe.ingredients.map((ingredient, index) => (
-                <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
-                </li>))}</ul>
-                <Heading as="h3">{Localisation.STEPS}</Heading>
-                {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
-            </Box>
-        </SlideFade>
-    </Box>);
+    return (<ContentContainer>
+        <a className="recipe-overview-previous" href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
+            <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
+        </a>
+        <a className="recipe-overview-next" href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
+            <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
+        </a>
+        <Heading as="h2">{props.recipe.title}</Heading>
+        <Image src={props.recipe.image} alt="" />
+        <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
+        <ul>{props.recipe.ingredients.map((ingredient, index) => (
+            <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
+            </li>))}</ul>
+        <Heading as="h3">{Localisation.STEPS}</Heading>
+        {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+    </ContentContainer>);
 }
 
 export default connect(mapStateToProps, { changeActiveView, switchActiveRecipe })(RecipeOverview);
