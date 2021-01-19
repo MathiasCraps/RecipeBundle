@@ -109,8 +109,8 @@ function MenuPlanner(props: Props) {
                         {focusedRecipes.map((data, index) => {
                             return <div key={index}>{data.recipe.title}</div>
                         })}
-                        <a ref={currentDayFocus} href='#' onClick={() => setIsOpened(true)}><FontAwesomeIcon icon={faPlus} />
-                            {Localisation.ADD}
+                        <a ref={currentDayFocus} href='#' onClick={() => setIsOpened(true)}>
+                            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
                         </a>
                     </div>)}
 
