@@ -1,4 +1,5 @@
 import { Recipe } from '../interfaces/Recipe';
+import { removeFromArray } from '../utils/ArrayUtils';
 import { Direction } from './Actions';
 
 export interface UserData {
@@ -40,7 +41,8 @@ export enum Actions {
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
     UPDATE_RECIPES = 'UPDATE_RECIPES',
-    ADD_MENU = 'ADD_MENU'
+    ADD_MENU = 'ADD_MENU',
+    REMOVE_MENU = 'REMOVE_MENU'
 }
 
 export interface ChangeViewAction {
@@ -73,6 +75,11 @@ export interface AddMenuAction {
     menu: DayMenu;
 }
 
+export interface RemoveMenuAction {
+    type: Actions.REMOVE_MENU;
+    menu: DayMenu;
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -85,7 +92,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction | AddMenuAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction | AddMenuAction | RemoveMenuAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -130,6 +137,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 menuPlanning: oldState.menuPlanning.concat([action.menu])
+            }
+        case Actions.REMOVE_MENU:
+            return {
+                ...oldState,
+                menuPlanning: removeFromArray(action.menu, [...oldState.menuPlanning])
             }
         default:
             // not supported yet

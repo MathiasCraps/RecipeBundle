@@ -100,10 +100,9 @@ function MenuPlanner(props: Props) {
                     }}
                     isCurrentDay={focusedDay === index} />
 
-                    {isSmallView && (<>
-                        {menu.map((menu, index) => <div key={index}>{menu.recipe.title}</div>)}
-                        {addRecipeButton}
-                    </>)}
+                    {isSmallView && (<DayDetails menu={menu} >
+                        <div onClick={() => setFocusedDay(index)}>{addRecipeButton}</div>
+                    </DayDetails>)}
                 </div>)
             })}
         </Box>
