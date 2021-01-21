@@ -37,5 +37,13 @@ export async function createTables(pool: Pool) {
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id)
     )`);
 
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS MenuPlanning (
+        user_id INT NOT NULL,
+        recipe_id INT NOT NULL,
+        planned_time INT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES Users (id),
+        FOREIGN KEY (recipe_id) REFERENCES Recipes (id)
+    )`);
+
     return true;
 }
