@@ -2,7 +2,7 @@ import { DayMenu, Recipe } from "../model/RecipeData";
 
 export function isRecipe(data: unknown): data is Recipe {
     const recipe = data as Recipe;
-    if (typeof recipe !== 'object') {
+    if (typeof recipe !== 'object' || recipe === null) {
         return false;
     }
 
