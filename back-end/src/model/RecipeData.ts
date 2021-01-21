@@ -10,3 +10,8 @@ export interface Recipe {
     steps: string;
     image: string;
 }
+
+export interface DayMenu {
+    date: number;
+    recipe: Recipe;
+}
