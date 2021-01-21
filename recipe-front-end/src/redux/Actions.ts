@@ -47,16 +47,44 @@ export function updateRecipes(recipes: Recipe[]): UpdateRecipesAction {
     }
 }
 
-export function addMenu(menu: DayMenu): AddMenuAction {
-    return {
-        type: Actions.ADD_MENU,
-        menu
+export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => Promise<void> {
+    return async function(menu: DayMenu): Promise<void> {
+        try {
+            await fetch('/addMenu', {
+                method: 'POST',
+                body: JSON.stringify(menu),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            dispatch({
+                type: Actions.ADD_MENU,
+                menu
+            })
+        } catch (err) {
+            console.log('adding menu failed', err);
+        }
     }
 }
 
-export function removeMenu(menu: DayMenu): RemoveMenuAction {
-    return {
-        type: Actions.REMOVE_MENU,
-        menu
+export function removeMenu(dispatch: Dispatch<RemoveMenuAction>): (menu: DayMenu) => Promise<void> {
+    return async function(menu: DayMenu): Promise<void> {
+        try {
+            await fetch('/removeMenu', {
+                method: 'POST',
+                body: JSON.stringify(menu),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            dispatch({
+                type: Actions.REMOVE_MENU,
+                menu
+            })
+        } catch(err) {
+            console.log('removing menu failed', err);
+        }
     }
 }

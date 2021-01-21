@@ -1,8 +1,10 @@
 import { Center, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { addMenu } from "../../redux/Actions";
+import { AddMenuAction, DayMenu } from "../../redux/Store";
 
 interface OwnProps {
     date: Date;
@@ -12,7 +14,13 @@ interface OwnProps {
 }
 
 interface ReduxActionProps {
-    addMenu: typeof addMenu;
+    addMenu: (menu: DayMenu) => Promise<void>;
+}
+
+function mapDispatchToProps(dispatch: Dispatch<AddMenuAction>): ReduxActionProps {
+    return {
+        addMenu: addMenu(dispatch)
+    }
 }
 
 type Props = OwnProps & ReduxActionProps;
@@ -35,4 +43,4 @@ function Day(props: Props) {
     </div>);
 }
 
-export default connect(null, { addMenu })(Day);
+export default connect(null, mapDispatchToProps)(Day);
