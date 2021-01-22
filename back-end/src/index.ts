@@ -9,7 +9,7 @@ import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
-import { addMenu } from "./sql/UpdateMenu";
+import { modifyMenu } from "./sql/UpdateMenu";
 import { isDayMenu, isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -127,7 +127,29 @@ app.post('/addMenu', async(request, response) => {
     }
     
     try {
-        await addMenu(pool, request.body, session.userId!);
+        await modifyMenu(pool, request.body, session.userId!, 'add');
+        return response.json({
+            success: true
+        });
+    } catch (err) {
+        console.log(err);
+        return response.json({error: 'Writing to database failed'});
+    }
+});
+
+app.post('/removeMenu', async(request, response) => {
+    const session: SessionData = request.session as SessionData;
+
+    if (!session.loggedIn) {
+        return response.json({error: 'Not logged in'});
+    }
+    
+    if (!isDayMenu(request.body)) {
+        return response.json({error: 'Invalid data'});
+    }
+    
+    try {
+        await modifyMenu(pool, request.body, session.userId!, 'remove');
         return response.json({
             success: true
         });
