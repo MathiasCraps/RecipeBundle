@@ -1,11 +1,12 @@
 import { pool } from "..";
-import { Recipe } from "../model/RecipeData";
+import { ApplicationData, DayMenu, Recipe } from "../model/RecipeData";
 import { executeQuery } from "../sql-utils/Database";
 
-export async function getAllRecipes(): Promise<Recipe[]> {
+export async function getAllRecipes(): Promise<ApplicationData> {
     return new Promise(async (resolve, reject) => {
         const recipes = (await executeQuery(pool, 'SELECT * FROM Recipes')).rows;
         const results: Recipe[] = [];
+        const menus: DayMenu[] = [];
 
         for (let recipe of recipes) {
             const recipeId = recipe.id;
@@ -18,6 +19,12 @@ export async function getAllRecipes(): Promise<Recipe[]> {
                 values: [recipeId]
             })).rows;
 
+            const menusFromDatabase = (await executeQuery(pool, {
+                name: 'get-menus',
+                text: `SELECT planned_time FROM MenuPlanning WHERE recipe_id = $1`,
+                values: [recipeId]
+            })).rows;
+
             results.push({
                 title: recipe.recipe_name,
                 steps: recipe.steps,
@@ -25,13 +32,24 @@ export async function getAllRecipes(): Promise<Recipe[]> {
                     return { 
                         quantity_number: Number(ingredient.quantity_number),
                         quantity_description: ingredient.quantity_name, 
-                        name: ingredient.ingredient_name 
+                        name: ingredient.ingredient_name,
                     };
                 }),
-                image: recipe.image
-            })
+                image: recipe.image,
+                id: recipeId
+            });
+
+            menus.push(...menusFromDatabase.map((menu: any) => {
+                return {
+                    recipeId,
+                    date: Number(menu.planned_time)
+                };
+            }));
         }
 
-        resolve(results);
+        resolve({
+            menus: menus,
+            recipes: results
+        });
     });
 }
