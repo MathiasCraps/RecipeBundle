@@ -15,9 +15,8 @@ export enum OpenedMenu {
 
 export interface DayMenu {
     date: number;
-    recipe: Recipe;
+    recipeId: number;
 }
-
 
 export interface ReduxModel {
     view: ViewType;
@@ -77,7 +76,7 @@ export interface AddMenuAction {
 
 export interface RemoveMenuAction {
     type: Actions.REMOVE_MENU;
-    menu: DayMenu;
+    menu: number;
 }
 
 export const defaultState: ReduxModel = {
