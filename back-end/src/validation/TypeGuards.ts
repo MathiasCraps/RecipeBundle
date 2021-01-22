@@ -15,5 +15,5 @@ export function isDayMenu(data: unknown): data is DayMenu {
         return false;
     }
 
-    return Boolean(typeof dayMenu.date === 'number' && isRecipe(dayMenu.recipe));
+    return Boolean(typeof dayMenu.date === 'number' && typeof dayMenu.recipeId === 'number');
 }
