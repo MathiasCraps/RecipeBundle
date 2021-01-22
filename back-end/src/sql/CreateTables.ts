@@ -40,7 +40,7 @@ export async function createTables(pool: Pool) {
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS MenuPlanning (
         user_id INT NOT NULL,
         recipe_id INT NOT NULL,
-        planned_time INT NOT NULL,
+        planned_time NUMERIC NOT NULL,
         FOREIGN KEY (user_id) REFERENCES Users (id),
         FOREIGN KEY (recipe_id) REFERENCES Recipes (id)
     )`);
