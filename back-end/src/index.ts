@@ -9,7 +9,8 @@ import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
-import { isRecipe } from "./validation/TypeGuards";
+import { addMenu } from "./sql/UpdateMenu";
+import { isDayMenu, isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
 
@@ -110,6 +111,29 @@ app.get('/getSessionData', async (request, response) => {
         });
     } catch (err) {
         return response.json({ loggedIn: false });
+    }
+});
+
+app.post('/addMenu', async(request, response) => {
+    const session: SessionData = request.session as SessionData;
+
+    if (!session.loggedIn) {
+        return response.json({error: 'Not logged in'});
+    }
+
+    
+    if (!isDayMenu(request.body)) {
+        return response.json({error: 'Invalid data'});
+    }
+    
+    try {
+        await addMenu(pool, request.body, session.userId!);
+        return response.json({
+            success: true
+        });
+    } catch (err) {
+        console.log(err);
+        return response.json({error: 'Writing to database failed'});
     }
 });
 
