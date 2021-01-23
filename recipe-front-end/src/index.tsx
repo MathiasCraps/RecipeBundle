@@ -8,6 +8,7 @@ import App from "./App";
 import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { DayMenu, defaultState, handleState, ReduxModel } from './redux/Store';
+import { filterUndefined } from "./utils/ArrayUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
@@ -21,14 +22,6 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     ...menu,
     recipe: entry
   };
-}
-
-function filterUndefined(value: any) {
-  if (value === undefined) {
-    return false;
-  }
-
-  return true;
 }
 
 async function start() {
@@ -47,21 +40,6 @@ async function start() {
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, applicationData.recipes))
     .filter(filterUndefined) as DayMenu[];
-
-  let replicatedSet: Recipe[] = [];
-  for (let i = 0; i < 5; i++) {
-    replicatedSet = replicatedSet.concat(JSON.parse(JSON.stringify(applicationData.recipes)));
-  }
-
-  console.log('hello', {
-    ...defaultState,
-    user: {
-      loggedIn: userData.loggedIn,
-      name: userData.userName
-    },
-    recipes: applicationData.recipes,
-    menuPlanning: linkedMenu
-  })
 
   const store = createStore(handleState, {
     ...defaultState,

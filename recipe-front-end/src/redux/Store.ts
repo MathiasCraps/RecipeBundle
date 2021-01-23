@@ -39,7 +39,7 @@ export enum Actions {
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
-    UPDATE_RECIPES = 'UPDATE_RECIPES',
+    ADD_RECIPE = 'ADD_RECIPE',
     ADD_MENU = 'ADD_MENU',
     REMOVE_MENU = 'REMOVE_MENU'
 }
@@ -64,9 +64,9 @@ export interface LogoutAction {
     type: Actions.LOG_OUT;
 }
 
-export interface UpdateRecipesAction {
-    type: Actions.UPDATE_RECIPES;
-    recipes: Recipe[];
+export interface AddRecipeAction {
+    type: Actions.ADD_RECIPE;
+    recipe: Recipe;
 }
 
 export interface AddMenuAction {
@@ -91,7 +91,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | UpdateRecipesAction | AddMenuAction | RemoveMenuAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | AddRecipeAction | AddMenuAction | RemoveMenuAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -127,10 +127,10 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 },
                 openedMenu: OpenedMenu.NONE
             }
-        case Actions.UPDATE_RECIPES:
+        case Actions.ADD_RECIPE:
             return {
                 ...oldState,
-                recipes: action.recipes
+                recipes: oldState.recipes.concat([action.recipe]) 
             }
         case Actions.ADD_MENU:
             return {
