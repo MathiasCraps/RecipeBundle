@@ -5,11 +5,24 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { Recipe } from "./interfaces/Recipe";
+import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
-import { defaultState, handleState } from './redux/Store';
+import { DayMenu, defaultState, handleState, ReduxModel } from './redux/Store';
+import { filterUndefined } from "./utils/ArrayUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 
+function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
+  const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
+
+  if (!entry) {
+    return undefined;
+  }
+
+  return {
+    ...menu,
+    recipe: entry
+  };
+}
 
 async function start() {
   const getParams = parseGetParams(window.location.search);
@@ -23,29 +36,21 @@ async function start() {
   }
 
   const data = await fetch('/getRecipes')
-  const recipes: Recipe[] = await data.json();
-
-  let replicatedSet: Recipe[] = [];
-  for (let i = 0; i < 5; i++) {
-    replicatedSet = replicatedSet.concat(JSON.parse(JSON.stringify(recipes)));
-  }
+  const applicationData: ApplicationData = await data.json();
+  const linkedMenu: DayMenu[] = applicationData.menus
+    .map((menu) => findMenu(menu, applicationData.recipes))
+    .filter(filterUndefined) as DayMenu[];
 
   const store = createStore(handleState, {
     ...defaultState,
-    menuPlanning: [{
-      date: new Date(2021, 0, 18).getTime(),
-      recipe: recipes[0]
-    }, {
-      date: new Date(2021, 0, 19).getTime(),
-      recipe: recipes[1]
-    }],
-    recipes: replicatedSet,
     user: {
       loggedIn: userData.loggedIn,
       name: userData.userName
-    }
+    },
+    recipes: applicationData.recipes,
+    menuPlanning: linkedMenu
   }, applyMiddleware(thunk));
-  
+
   ReactDOM.render(
     <React.StrictMode>
       <ChakraProvider>

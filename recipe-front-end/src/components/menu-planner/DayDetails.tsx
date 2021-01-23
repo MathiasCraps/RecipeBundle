@@ -3,9 +3,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { removeMenu } from "../../redux/Actions";
-import { DayMenu } from "../../redux/Store";
+import { DayMenu, RemoveMenuAction } from "../../redux/Store";
 
 interface OwnProps {
     menu: DayMenu[];
@@ -13,8 +14,15 @@ interface OwnProps {
 }
 
 interface ReduxProps {
-    removeMenu: typeof removeMenu;
+    removeMenu: (menu: DayMenu) => void;
 }
+
+function mapDispatchToProps(dispatch: Dispatch<RemoveMenuAction>): ReduxProps {
+    return {
+        removeMenu: removeMenu(dispatch)
+    }
+}
+
 
 type Props = OwnProps & ReduxProps;
 
@@ -33,4 +41,4 @@ function DayDetails(props: Props) {
     </div>
 }
 
-export default connect(null, { removeMenu })(DayDetails);
+export default connect(null, mapDispatchToProps)(DayDetails);

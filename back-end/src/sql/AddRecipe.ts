@@ -25,4 +25,6 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
             values: [recipeId, id, ingredient.quantity_number, ingredient.quantity_description]
         });
     }
+
+    return recipeId;
 }

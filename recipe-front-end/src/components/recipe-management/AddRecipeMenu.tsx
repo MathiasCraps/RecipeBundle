@@ -3,11 +3,11 @@ import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
-import { AddRecipeResponse } from "../../interfaces/AddRecipeResponse";
+import { Dispatch } from "redux";
 import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { changeActiveView, updateRecipes } from "../../redux/Actions";
-import { ReduxModel, ViewType } from "../../redux/Store";
+import { addRecipe, AddRecipeReturn, changeActiveView } from "../../redux/Actions";
+import { AddRecipeAction, ReduxModel, ViewType } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import { IngredientsModal } from "./IngredientsModal";
 
@@ -26,7 +26,7 @@ interface ComponentProps {
 
 interface ReduxProps {
     changeActiveView: typeof changeActiveView;
-    updateRecipes: typeof updateRecipes;
+    addRecipe: AddRecipeReturn;
 }
 
 type Props = ComponentProps & ReduxProps;
@@ -35,6 +35,13 @@ type Props = ComponentProps & ReduxProps;
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
         isOpened: reduxModel.view === ViewType.AddRecipe
+    }
+}
+
+function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction>): ReduxProps {
+    return { 
+        changeActiveView, 
+        addRecipe: addRecipe(dispatch) 
     }
 }
 
@@ -77,7 +84,8 @@ export function AddRecipeMenu(props: Props) {
             title,
             ingredients: transformedIngredients,
             steps,
-            image: ''
+            image: '',
+            id: -1
         }
 
         const formData = new FormData()
@@ -85,24 +93,7 @@ export function AddRecipeMenu(props: Props) {
         formData.append('recipe', JSON.stringify(recipeData))
 
         try {
-            const response = await fetch('/addRecipe', {
-                method: 'POST',
-                body: formData
-            });
-            const responseData = await response.json() as AddRecipeResponse;
-
-            if (responseData.error) {
-                throw new Error(responseData.error);
-            }
-
-            try {
-                const updatedDataResponse = await fetch('/getRecipes');
-                const updatedData = await updatedDataResponse.json() as Recipe[];
-
-                props.updateRecipes(updatedData)
-            } catch (err) {
-                console.error(err);
-            }
+            await props.addRecipe(recipeData, formData);
 
             toast({
                 description: Localisation.ADDING_WAS_SUCCESS,
@@ -204,4 +195,4 @@ export function AddRecipeMenu(props: Props) {
     </ContentContainer>)
 }
 
-export default connect(mapStateToProps, { changeActiveView, updateRecipes })(AddRecipeMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeMenu);

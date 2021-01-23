@@ -1,3 +1,8 @@
+export interface ApplicationData {
+    menus: DayMenu[];
+    recipes: Recipe[];
+}
+
 export interface Ingredient {
     name: string;
     quantity_number: number | null;
@@ -9,4 +14,10 @@ export interface Recipe {
     ingredients: Ingredient[];
     steps: string;
     image: string;
+    id: number;
+}
+
+export interface DayMenu {
+    date: number;
+    recipeId: number;
 }

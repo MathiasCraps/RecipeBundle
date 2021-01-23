@@ -3,10 +3,11 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { addMenu, changeActiveView } from '../../redux/Actions';
-import { DayMenu, ReduxModel } from "../../redux/Store";
+import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
 import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
 import { AddMenyOverlay } from "./AddMenuOverlay";
@@ -21,7 +22,7 @@ interface OwnProps {
 
 interface ReduxProps {
     changeActiveView: typeof changeActiveView;
-    addMenu: typeof addMenu;
+    addMenu: (menu: DayMenu) => Promise<void>;
 }
 
 function mapStateToProps(store: ReduxModel): OwnProps {
@@ -39,6 +40,13 @@ function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
     return menus.filter((item) => {
         return item.date >= fromTime && item.date < toTime;
     });
+}
+
+function mapDispatchToProps(dispatch: Dispatch<AddMenuAction>): ReduxProps {
+    return {
+        addMenu: addMenu(dispatch),
+        changeActiveView: changeActiveView
+    }
 }
 
 const WEEKDAYS = [Localisation.MONDAY, Localisation.TUESDAY, Localisation.WEDNESDAY, Localisation.THURSDAY, Localisation.FRIDAY, Localisation.SATURDAY, Localisation.SUNDAY];
@@ -127,4 +135,4 @@ function MenuPlanner(props: Props) {
 }
 
 
-export default connect(mapStateToProps, { changeActiveView, addMenu })(MenuPlanner);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuPlanner);

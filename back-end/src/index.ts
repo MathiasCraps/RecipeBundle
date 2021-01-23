@@ -9,7 +9,8 @@ import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
-import { isRecipe } from "./validation/TypeGuards";
+import { modifyMenu } from "./sql/UpdateMenu";
+import { isDayMenu, isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
 
@@ -88,8 +89,8 @@ app.post('/addRecipe', async (request, response) => {
 
         try {
             recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`;
-            await addRecipe(pool, recipe);
-            response.json({success: true});    
+            const recipeId = await addRecipe(pool, recipe);
+            response.json({success: true, recipeId });    
         } catch (err) {
             // todo for later: remove added image should writing to the database not work
             console.log('err', err);
@@ -110,6 +111,51 @@ app.get('/getSessionData', async (request, response) => {
         });
     } catch (err) {
         return response.json({ loggedIn: false });
+    }
+});
+
+app.post('/addMenu', async(request, response) => {
+    const session: SessionData = request.session as SessionData;
+
+    if (!session.loggedIn) {
+        return response.json({error: 'Not logged in'});
+    }
+
+    
+    if (!isDayMenu(request.body)) {
+        return response.json({error: 'Invalid data'});
+    }
+    
+    try {
+        await modifyMenu(pool, request.body, session.userId!, 'add');
+        return response.json({
+            success: true
+        });
+    } catch (err) {
+        console.log(err);
+        return response.json({error: 'Writing to database failed'});
+    }
+});
+
+app.post('/removeMenu', async(request, response) => {
+    const session: SessionData = request.session as SessionData;
+
+    if (!session.loggedIn) {
+        return response.json({error: 'Not logged in'});
+    }
+    
+    if (!isDayMenu(request.body)) {
+        return response.json({error: 'Invalid data'});
+    }
+    
+    try {
+        await modifyMenu(pool, request.body, session.userId!, 'remove');
+        return response.json({
+            success: true
+        });
+    } catch (err) {
+        console.log(err);
+        return response.json({error: 'Writing to database failed'});
     }
 });
 

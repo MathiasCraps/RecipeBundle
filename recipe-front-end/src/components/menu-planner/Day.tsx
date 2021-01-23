@@ -2,20 +2,13 @@ import { Center, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { addMenu } from "../../redux/Actions";
 
-interface OwnProps {
+interface Props {
     date: Date;
     isCurrentDay: boolean;
     amountOfRecipes: number;
     onFocus(): void;
 }
-
-interface ReduxActionProps {
-    addMenu: typeof addMenu;
-}
-
-type Props = OwnProps & ReduxActionProps;
 
 function Day(props: Props) {
     const classes = `day ${props.isCurrentDay ? 'selected-day' : ''}`;
@@ -35,4 +28,4 @@ function Day(props: Props) {
     </div>);
 }
 
-export default connect(null, { addMenu })(Day);
+export default connect(null, null)(Day);
