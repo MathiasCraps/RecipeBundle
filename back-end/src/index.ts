@@ -89,8 +89,8 @@ app.post('/addRecipe', async (request, response) => {
 
         try {
             recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`;
-            await addRecipe(pool, recipe);
-            response.json({success: true});    
+            const recipeId = await addRecipe(pool, recipe);
+            response.json({success: true, recipeId });    
         } catch (err) {
             // todo for later: remove added image should writing to the database not work
             console.log('err', err);
