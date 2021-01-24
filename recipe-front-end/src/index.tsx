@@ -24,7 +24,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   };
 }
 
-async function start() {
+(async function start() {
   const getParams = parseGetParams(window.location.search);
   const codeQuery = getParams.code ? `?code=${getParams.code}` : '';
   const apiKey = await fetch(`/getSessionData${codeQuery}`);
@@ -61,6 +61,4 @@ async function start() {
     </React.StrictMode>,
     document.getElementById('root')
   );
-}
-
-start();
+})();
