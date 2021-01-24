@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, ViewType } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -117,5 +117,12 @@ export function removeMenu(dispatch: Dispatch<RemoveMenuAction>): (menu: DayMenu
         } catch (err) {
             console.log('removing menu failed', err);
         }
+    }
+}
+
+export function updateActiveDay(day: number | undefined): UpdateActiveDayAction {
+    return {
+        type: Actions.UPDATE_ACTIVE_DAY,
+        day
     }
 }
