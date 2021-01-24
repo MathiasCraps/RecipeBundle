@@ -6,31 +6,43 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { removeMenu } from "../../redux/Actions";
-import { DayMenu, RemoveMenuAction } from "../../redux/Store";
+import { DayMenu, ReduxModel, RemoveMenuAction } from "../../redux/Store";
+import { filterForDate } from "./MenuPlanner";
 
 interface OwnProps {
-    menu: DayMenu[];
     children: React.ReactNode;
+    date: Date;
 }
 
 interface ReduxProps {
+    menuOfTheDay: DayMenu[];
+}
+
+interface ReduxActions {
     removeMenu: (menu: DayMenu) => void;
 }
 
-function mapDispatchToProps(dispatch: Dispatch<RemoveMenuAction>): ReduxProps {
+function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): ReduxProps {
+    const date = ownProps.date;
+    return {
+        menuOfTheDay: filterForDate(reduxStore.menuPlanning, date)
+    }
+}
+
+function mapDispatchToProps(dispatch: Dispatch<RemoveMenuAction>): ReduxActions {
     return {
         removeMenu: removeMenu(dispatch)
     }
 }
 
 
-type Props = OwnProps & ReduxProps;
+type Props = OwnProps & ReduxProps & ReduxActions;
 
 function DayDetails(props: Props) {
     return <div className="menu-selected-day">
         <Heading as="h2">{Localisation.MENU_OF_THE_DAY}</Heading>
-        {props.menu.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
-        {props.menu.map((data, index) => {
+        {props.menuOfTheDay.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
+        {props.menuOfTheDay.map((data, index) => {
             return <div key={index}>{data.recipe.title}
                 <Tooltip label={Localisation.REMOVE}>
                     <a href="#" onClick={() => props.removeMenu(data)}><FontAwesomeIcon icon={faTrash} /></a>
@@ -41,4 +53,4 @@ function DayDetails(props: Props) {
     </div>
 }
 
-export default connect(null, mapDispatchToProps)(DayDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(DayDetails);

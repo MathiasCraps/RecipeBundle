@@ -2,18 +2,44 @@ import { Box, Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, M
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { KeyboardEvent, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
+import { addMenu } from "../../redux/Actions";
+import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
 
-interface Props {
+interface OwnProps {
     isOpened: boolean;
-    date: Date;
-    recipes: Recipe[];
     onCancel: () => void;
     onSubmit: (selectedRecipe: Recipe) => void;
 }
 
-export function AddMenyOverlay(props: Props) {
+interface ReduxProps {
+    recipes: Recipe[];
+    date: Date;
+}
+
+interface ReduxActionProps {
+    addMenu: (menu: DayMenu) => Promise<void>;
+}
+
+function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
+    return {
+        recipes: reduxStore.recipes,
+        date: new Date(reduxStore.activeDay!)
+    }
+}
+
+function map(dispatch: Dispatch<AddMenuAction>) {
+    return {
+        addMenu: addMenu(dispatch),
+    };
+}
+
+type Props = OwnProps & ReduxProps & ReduxActionProps;
+
+function AddMenuOverlay(props: Props) {
     const [results, setResults] = useState<Recipe[]>([]);
     const [focusedSuggestion, setFocusedSuggestion] = useState<Recipe>();
 
@@ -28,6 +54,10 @@ export function AddMenyOverlay(props: Props) {
     }
 
     function onConfirm() {
+        props.addMenu({
+            date: props.date.getTime(),
+            recipe: focusedSuggestion!
+        });
         props.onSubmit(focusedSuggestion!);
         reset();
 
@@ -103,3 +133,5 @@ export function AddMenyOverlay(props: Props) {
         </ModalContent>
     </Modal>);
 }
+
+export default connect(mapStateToProps, map)(AddMenuOverlay);
