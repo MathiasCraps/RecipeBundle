@@ -24,7 +24,8 @@ export interface ReduxModel {
     activeRecipe: Recipe | undefined;
     openedMenu: OpenedMenu;
     user: UserData;
-    menuPlanning: DayMenu[]
+    menuPlanning: DayMenu[];
+    activeDay: number | undefined;
 }
 
 export enum ViewType {
@@ -41,7 +42,8 @@ export enum Actions {
     LOG_OUT = 'LOG_OUT',
     ADD_RECIPE = 'ADD_RECIPE',
     ADD_MENU = 'ADD_MENU',
-    REMOVE_MENU = 'REMOVE_MENU'
+    REMOVE_MENU = 'REMOVE_MENU',
+    UPDATE_ACTIVE_DAY = 'UPDATE_ACTIVE_DAY'
 }
 
 export interface ChangeViewAction {
@@ -79,6 +81,11 @@ export interface RemoveMenuAction {
     menu: DayMenu;
 }
 
+export interface UpdateActiveDayAction {
+    type: Actions.UPDATE_ACTIVE_DAY;
+    day: number | undefined;
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -88,10 +95,11 @@ export const defaultState: ReduxModel = {
     user: {
         loggedIn: false,
         name: undefined
-    }
+    },
+    activeDay: undefined
 }
 
-type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | AddRecipeAction | AddMenuAction | RemoveMenuAction;
+type ReduxAction = ChangeViewAction | SwitchActiveRecipeAction | ToggleMenuAction | LogoutAction | AddRecipeAction | AddMenuAction | RemoveMenuAction | UpdateActiveDayAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -141,6 +149,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 menuPlanning: removeFromArray(action.menu, [...oldState.menuPlanning])
+            }
+        case Actions.UPDATE_ACTIVE_DAY:
+            return {
+                ...oldState,
+                activeDay: action.day
             }
         default:
             // not supported yet
