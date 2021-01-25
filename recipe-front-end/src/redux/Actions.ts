@@ -46,18 +46,17 @@ export function doLogOut(dispatch: Dispatch<LogoutAction>): () => Promise<void> 
 export type AddRecipeReturn = (recipe: Recipe, formData: FormData) => Promise<void>;
 export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn {
     return async function (recipe: Recipe, formData: FormData): Promise<void> {
-        const response = await fetch('/addRecipe', {
+        const response = await waitForDataAsJson<AddRecipeResponse>('/addRecipe', {
             method: 'POST',
             body: formData
         });
-        const responseData = await response.json() as AddRecipeResponse;
 
-        if (responseData.error) {
-            throw new Error(responseData.error);
+        if (response.error) {
+            throw new Error(response.error);
         }
 
         try {
-            const id = responseData.recipeId;
+            const id = response.recipeId;
             if (typeof id !== 'number') {
                 throw new Error('No id');
             }
