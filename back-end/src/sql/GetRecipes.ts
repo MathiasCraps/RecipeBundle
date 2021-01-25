@@ -21,7 +21,7 @@ export async function getAllRecipes(): Promise<ApplicationData> {
 
             const menusFromDatabase = (await executeQuery(pool, {
                 name: 'get-menus',
-                text: `SELECT planned_time FROM MenuPlanning WHERE recipe_id = $1`,
+                text: `SELECT planned_time, menu_id FROM MenuPlanning WHERE recipe_id = $1`,
                 values: [recipeId]
             })).rows;
 
@@ -41,6 +41,7 @@ export async function getAllRecipes(): Promise<ApplicationData> {
 
             menus.push(...menusFromDatabase.map((menu: any) => {
                 return {
+                    menuId: menu.menu_id,
                     recipeId,
                     date: Number(menu.planned_time)
                 };

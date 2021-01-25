@@ -15,6 +15,7 @@ export enum OpenedMenu {
 
 export interface DayMenu {
     date: number;
+    menuId: number;
     recipe: Recipe;
 }
 
