@@ -127,9 +127,10 @@ app.post('/addMenu', async(request, response) => {
     }
     
     try {
-        await modifyMenu(pool, request.body, session.userId!, 'add');
+        const menuId = await modifyMenu(pool, request.body, session.userId!, 'add');
         return response.json({
-            success: true
+            success: true,
+            menuId
         });
     } catch (err) {
         console.log(err);
@@ -144,7 +145,7 @@ app.post('/removeMenu', async(request, response) => {
         return response.json({error: 'Not logged in'});
     }
     
-    if (!isDayMenu(request.body)) {
+    if (typeof request.body.menuId !== 'number') {
         return response.json({error: 'Invalid data'});
     }
     
