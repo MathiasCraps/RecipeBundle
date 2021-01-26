@@ -63,7 +63,7 @@ function Day(props: Props) {
             props.updateActiveDay(dateNumber);
         }}
         className={classes} 
-        onMouseMove={() => props.updateActiveDay(props.date.getTime())}>
+        onClick={() => props.updateActiveDay(props.date.getTime())}>
         <div className='planner-day-display'>{props.date.getDate()}</div>
         <div>
             <Center className="small-selected-day">
