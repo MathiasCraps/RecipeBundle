@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
+import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import { waitForDataAsJson } from "../utils/FetchUtils";
 import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, ViewType } from "./Store";
 
@@ -136,11 +137,29 @@ export function updateActiveDay(day: number | undefined): UpdateActiveDayAction 
 export type UpdateMenuDayReturn = (menuId: number, toDay: number) => Promise<void>;
 export function updatePlannedMenuDay(dispatch: Dispatch<UpdateMenuDayAction>): UpdateMenuDayReturn {
     return async function (menuId: number, toDay: number) {
-        //todo: push to back-end
-        dispatch({
-            type: Actions.UPDATE_MENU_DAY,
-            menuId,
-            toDay
-        });
+        try {
+            const response = await waitForDataAsJson<UpdateMenuResponse>('/updateMenu', {
+                method: 'POST',
+                body: JSON.stringify({
+                    menuId: menuId,
+                    date: toDay
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.error) {
+                throw new Error('Update failed');
+            }
+    
+            dispatch({
+                type: Actions.UPDATE_MENU_DAY,
+                menuId,
+                toDay
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
