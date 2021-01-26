@@ -3,7 +3,7 @@ import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, ViewType } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -130,5 +130,17 @@ export function updateActiveDay(day: number | undefined): UpdateActiveDayAction 
     return {
         type: Actions.UPDATE_ACTIVE_DAY,
         day
+    }
+}
+
+export type UpdateMenuDayReturn = (menuId: number, toDay: number) => Promise<void>;
+export function updatePlannedMenuDay(dispatch: Dispatch<UpdateMenuDayAction>): UpdateMenuDayReturn {
+    return async function (menuId: number, toDay: number) {
+        //todo: push to back-end
+        dispatch({
+            type: Actions.UPDATE_MENU_DAY,
+            menuId,
+            toDay
+        });
     }
 }

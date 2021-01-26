@@ -1,9 +1,10 @@
 import { Center, useMediaQuery } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { updateActiveDay } from "../../redux/Actions";
-import { DayMenu, ReduxModel } from "../../redux/Store";
+import { updateActiveDay, UpdateMenuDayReturn, updatePlannedMenuDay } from "../../redux/Actions";
+import { DayMenu, ReduxModel, UpdateActiveDayAction, UpdateMenuDayAction } from "../../redux/Store";
 import { filterForDate } from "./MenuPlanner";
 
 interface OwnProps {
@@ -16,7 +17,8 @@ interface ReduxProps {
 }
 
 interface ReduxActions {
-    updateActiveDay: typeof updateActiveDay;
+    updateActiveDay: (date: number) => UpdateActiveDayAction;
+    updatePlannedMenuDay: UpdateMenuDayReturn;
 }
 
 type Props = OwnProps & ReduxProps & ReduxActions;
@@ -28,8 +30,16 @@ function mapStateToProps(reduxState: ReduxModel, ownProps: OwnProps): ReduxProps
     }
 }
 
+function mapDispatchToProps(dispatch: Dispatch<UpdateActiveDayAction | UpdateMenuDayAction>): ReduxActions {
+    return {
+        updateActiveDay: (date: number) => dispatch(updateActiveDay(date)),
+        updatePlannedMenuDay: updatePlannedMenuDay(dispatch)
+    }
+}
+
 function Day(props: Props) {
-    const classes = `day ${props.isActiveDay ? 'selected-day' : ''}`;
+    const [isAboutToDrop, setIsAboutToDrop] = useState(false);
+    const classes = `day ${props.isActiveDay ? 'selected-day' : ''} ${isAboutToDrop ? 'active-drop' : ''}`;
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const amountOfRecipes = props.menuForThisDay.length;
     const dishedDescription = (amountOfRecipes === 1)
@@ -37,7 +47,23 @@ function Day(props: Props) {
         : Localisation.DISH_PLURAL
     const hasRecipes = amountOfRecipes > 0;
 
-    return (<div className={classes} onMouseEnter={() => props.updateActiveDay(props.date.getTime())}>
+    return (<div
+        onDragOver={(e) => {
+            setIsAboutToDrop(true);
+            e.preventDefault();
+        }}
+        onDragLeave={(e) => {
+            setIsAboutToDrop(false);
+        }}
+        onDrop={(e) => {
+            setIsAboutToDrop(false);
+            const menuId = Number(e.dataTransfer.getData('menuId'));
+            const dateNumber = props.date.getTime();
+            props.updatePlannedMenuDay(menuId, dateNumber);
+            props.updateActiveDay(dateNumber);
+        }}
+        className={classes} 
+        onMouseMove={() => props.updateActiveDay(props.date.getTime())}>
         <div className='planner-day-display'>{props.date.getDate()}</div>
         <div>
             <Center className="small-selected-day">
@@ -47,4 +73,4 @@ function Day(props: Props) {
     </div>);
 }
 
-export default connect(mapStateToProps, { updateActiveDay })(Day);
+export default connect(mapStateToProps, mapDispatchToProps)(Day);
