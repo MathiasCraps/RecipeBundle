@@ -9,6 +9,7 @@ import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { DayMenu, defaultState, handleState, ReduxModel } from './redux/Store';
 import { filterUndefined } from "./utils/ArrayUtils";
+import { calculateStartOfDate } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
@@ -47,6 +48,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       loggedIn: userData.loggedIn,
       name: userData.userName
     },
+    activeDay: calculateStartOfDate(new Date()).getTime(), // use today as starting date
     recipes: applicationData.recipes,
     menuPlanning: linkedMenu
   }, applyMiddleware(thunk));

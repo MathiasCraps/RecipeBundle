@@ -169,6 +169,11 @@ li {
   float: left;
   border: 1px solid #F7FAFC;
   height: 100%;
+  cursor: pointer;
+
+  &.active-drop {
+    background-color: #CBD5E0;
+  }
 
   img {
     width: 100%;
@@ -190,6 +195,17 @@ li {
     background-color: #E2E8F0;
     border: 2px solid #E2E8F0;
     border-bottom: none;
+  }
+}
+
+.day-menu-item {
+  user-select: none;
+  cursor: grab;
+  display: inline-block;
+
+  &.is-dragging {
+    border: 1px dashed black;
+    padding: 0.1em;
   }
 }
 

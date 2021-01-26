@@ -19,5 +19,6 @@ export interface Recipe {
 
 export interface DayMenu {
     date: number;
+    menuId: number;
     recipeId: number;
 }

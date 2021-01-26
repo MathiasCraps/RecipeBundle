@@ -9,6 +9,7 @@ import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { getAllRecipes } from "./sql/GetRecipes";
+import { updateDateMenu } from "./sql/UpdateDateMenu";
 import { modifyMenu } from "./sql/UpdateMenu";
 import { isDayMenu, isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
@@ -127,9 +128,10 @@ app.post('/addMenu', async(request, response) => {
     }
     
     try {
-        await modifyMenu(pool, request.body, session.userId!, 'add');
+        const menuId = await modifyMenu(pool, request.body, session.userId!, 'add');
         return response.json({
-            success: true
+            success: true,
+            menuId
         });
     } catch (err) {
         console.log(err);
@@ -144,7 +146,7 @@ app.post('/removeMenu', async(request, response) => {
         return response.json({error: 'Not logged in'});
     }
     
-    if (!isDayMenu(request.body)) {
+    if (typeof request.body.menuId !== 'number') {
         return response.json({error: 'Invalid data'});
     }
     
@@ -156,6 +158,27 @@ app.post('/removeMenu', async(request, response) => {
     } catch (err) {
         console.log(err);
         return response.json({error: 'Writing to database failed'});
+    }
+});
+
+app.post('/updateMenu', async(request, response) => {
+    const session: SessionData = request.session as SessionData;
+
+    if (!session.loggedIn) {
+        return response.json({error: 'Not logged in'});
+    }
+
+    const { menuId, date } = request.body;
+    
+    if (typeof menuId !== 'number' || typeof date !== 'number') {
+        return response.json({error: 'Invalid data'});
+    }
+
+    try {
+        await updateDateMenu(pool, menuId, date, session.userId!)
+        return response.json({success: true});
+    } catch (err) {
+        return response.json({error: true});
     }
 });
 

@@ -1,7 +1,10 @@
 import { Dispatch } from "redux";
+import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
-import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, ViewType } from "./Store";
+import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
+import { waitForDataAsJson } from "../utils/FetchUtils";
+import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -44,18 +47,17 @@ export function doLogOut(dispatch: Dispatch<LogoutAction>): () => Promise<void> 
 export type AddRecipeReturn = (recipe: Recipe, formData: FormData) => Promise<void>;
 export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn {
     return async function (recipe: Recipe, formData: FormData): Promise<void> {
-        const response = await fetch('/addRecipe', {
+        const response = await waitForDataAsJson<AddRecipeResponse>('/addRecipe', {
             method: 'POST',
             body: formData
         });
-        const responseData = await response.json() as AddRecipeResponse;
 
-        if (responseData.error) {
-            throw new Error(responseData.error);
+        if (response.error) {
+            throw new Error(response.error);
         }
 
         try {
-            const id = responseData.recipeId;
+            const id = response.recipeId;
             if (typeof id !== 'number') {
                 throw new Error('No id');
             }
@@ -75,7 +77,7 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
 export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => Promise<void> {
     return async function (menu: DayMenu): Promise<void> {
         try {
-            await fetch('/addMenu', {
+            const data = await waitForDataAsJson<AddMenuResponse>('/addMenu', {
                 method: 'POST',
                 body: JSON.stringify({
                     date: menu.date,
@@ -85,6 +87,12 @@ export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => P
                     'Content-Type': 'application/json'
                 }
             });
+
+            if (data.error || typeof data.menuId !== 'number') {
+                throw new Error('failed to post');
+            }
+
+            menu.menuId = data.menuId;
 
             dispatch({
                 type: Actions.ADD_MENU,
@@ -102,8 +110,7 @@ export function removeMenu(dispatch: Dispatch<RemoveMenuAction>): (menu: DayMenu
             await fetch('/removeMenu', {
                 method: 'POST',
                 body: JSON.stringify({
-                    date: menu.date,
-                    recipeId: menu.recipe.id
+                    menuId: menu.menuId
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -124,5 +131,35 @@ export function updateActiveDay(day: number | undefined): UpdateActiveDayAction 
     return {
         type: Actions.UPDATE_ACTIVE_DAY,
         day
+    }
+}
+
+export type UpdateMenuDayReturn = (menuId: number, toDay: number) => Promise<void>;
+export function updatePlannedMenuDay(dispatch: Dispatch<UpdateMenuDayAction>): UpdateMenuDayReturn {
+    return async function (menuId: number, toDay: number) {
+        try {
+            const response = await waitForDataAsJson<UpdateMenuResponse>('/updateMenu', {
+                method: 'POST',
+                body: JSON.stringify({
+                    menuId: menuId,
+                    date: toDay
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.error) {
+                throw new Error('Update failed');
+            }
+    
+            dispatch({
+                type: Actions.UPDATE_MENU_DAY,
+                menuId,
+                toDay
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
