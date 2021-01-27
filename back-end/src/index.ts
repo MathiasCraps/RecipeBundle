@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import fs from "fs";
 import { Pool } from "pg";
+import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
 import { Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
@@ -27,6 +28,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(session({
   secret: process.env.SESSION_SECRET as string,
 }));
+
+app.post('*', verifyLoggedIn);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -117,11 +120,6 @@ app.get('/getSessionData', async (request, response) => {
 
 app.post('/addMenu', async(request, response) => {
     const session: SessionData = request.session as SessionData;
-
-    if (!session.loggedIn) {
-        return response.json({error: 'Not logged in'});
-    }
-
     
     if (!isDayMenu(request.body)) {
         return response.json({error: 'Invalid data'});
@@ -139,13 +137,8 @@ app.post('/addMenu', async(request, response) => {
     }
 });
 
-app.post('/removeMenu', async(request, response) => {
-    const session: SessionData = request.session as SessionData;
-
-    if (!session.loggedIn) {
-        return response.json({error: 'Not logged in'});
-    }
-    
+app.post('/removeMenu', async(request, response) => { 
+    const session = (request.session) as SessionData;  
     if (typeof request.body.menuId !== 'number') {
         return response.json({error: 'Invalid data'});
     }
@@ -163,11 +156,6 @@ app.post('/removeMenu', async(request, response) => {
 
 app.post('/updateMenu', async(request, response) => {
     const session: SessionData = request.session as SessionData;
-
-    if (!session.loggedIn) {
-        return response.json({error: 'Not logged in'});
-    }
-
     const { menuId, date } = request.body;
     
     if (typeof menuId !== 'number' || typeof date !== 'number') {
