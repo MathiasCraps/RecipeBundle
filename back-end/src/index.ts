@@ -26,7 +26,7 @@ const BASE_FILE_UPLOAD_DIRECTORY = `${__dirname}/public/uploads/`;
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-  secret: process.env.SESSION_SECRET as string,
+  secret: String(process.env.SESSION_SECRET),
 }));
 
 app.post('*', verifyLoggedIn);
@@ -180,7 +180,7 @@ export const pool: Pool = new Pool({
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
-    port: process.env.PGPORT as unknown as number
+    port: Number(process.env.PGPORT)
 });
 
 pool.connect(async (error, client, done) => {
