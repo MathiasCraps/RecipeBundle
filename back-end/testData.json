@@ -64,7 +64,7 @@
             }
         ],
         "steps": "Verhit de olie in een pan met dikke bodem (grote sauspan) en bak de prei even aan met de knoflook en rode peper. Voeg de pompoen toe en bak nog een paar minuten al roerend. Roer het blik tomaten, de linzen, rozemarijn, zout en het water erdoor en breng aan de kook. Kook 12-15 minuten of tot alles gaar is. \\nKook intussen de pasta beetgaar.\\nPureer ⅓ van de saus met een staafmixer of blender en roer dat weer door de rest. Breng op smaak met zwarte peper. Strooi wat verse groene kruiden over de borden en serveer. Voor 4 personen. \\nTip: Mocht er wat saus over zijn dan kun je dit verdunnen met wat bouillon en als soep serveren.",
-        "image": "http://localhost:8080/images/herfstpasta-pompoen.jpg"
+        "image": "images/herfstpasta-pompoen.jpg"
     },
     {
         "title": "Pompoen pindastoofpot",
@@ -146,7 +146,7 @@
             }
         ],
         "steps": "Kook de rijst/quinoa volgens de gebruiksaanwijzing op de verpakking.\\nVerhit de olie in een ruime pan en smoor de ui 3-5 minuten met de deksel op de pan. Pers de knoflook erboven uit en voeg de wortel en pompoen toe. Bak dit nog 5 minuten, roer tussendoor.\\nVoeg de tomatenblokjes, pindakaas, sojasaus, kerrie, chilipoeder, peterselie en bouillon toe. Roer goed door, breng aan de kook, zet het vuur laag en laat 20 minuten zachtjes stoven. Voeg in de laatste 5 minuten de kidneybonen en tuinerwten toe.\\nServeer de stoofpot met de rijst of quinoa, bestrooid met de pinda’s.\\nTip: bij sommige supermarkten kun je pompoen uit de vriezer kopen, is wat duurder maar scheelt een boel snijwerk. Halveer dan de hoeveelheid bouillon.",
-        "image": "http://localhost:8080/images/pompoen-pindastoofpot.jpg"
+        "image": "images/pompoen-pindastoofpot.jpg"
     },
     {
         "title": "Wraps met kidneybonen, pompoen, avocado & salsa",
@@ -228,7 +228,7 @@
             }
         ],
         "steps": "Spoel de pompoen goed af; de pompoen hoeft namelijk niet geschild te worden, op lelijke plekjes in de schil na. Snijd met een groot mes voorzichtig de top van de pompoen af en snijd de pompoen door midden. Snijd de helften nog eens door en verwijder de zaden en draden met een lepel. Maak blokjes van het vruchtvlees en snijd de ui fijn. Verhit de olie in een grote pan. Fruit de ui ongeveer 5 minuten. Pers de knoflook hierboven uit en bak nog één minuut mee. Voeg de pompoenblokjes en het water toe en laat dit ongeveer 10 minuten stoven.\\nVerwarm intussen de oven voor op 100 ºC of gebruik later in het recept de magnetron om de tortilla’s op te warmen.\\nVoeg de tomatenblokjes, komijn, oregano, paprikapoeder, cayennepeper en zout naar smaak aan de pompoen toe. Roer door en laat nog 10 minuten stoven. Laat het blik kidneybonen uitlekken en voeg de bonen toe. Verwarm deze nog een paar minuten mee.\\nWarm de wraps ongeveer een minuut op in de voorverwarmde oven zodat ze warm en soepel worden. Snijd ondertussen de avocado in plakken: snijd deze door de helft, verwijder de pit en trek de schil eraf, snijd dan de plakken.\\nServeer de tortilla’s met de groenten/bonenvulling, schijfjes avocado en salsa.\\nTip: In plaats van de ovenstand kun je de wraps ook eerst vullen en vervolgens 5 minuten onder de voorverwarmde gril zetten. Ze krijgen dan een knapperige bovenkant.",
-        "image": "http://localhost:8080/images/wraps.jpg"
+        "image": "images/wraps.jpg"
     },
     {
         "title": "Perencake",
@@ -280,6 +280,6 @@
             }
         ],
         "steps": "Verwarm de oven voor op 175 graden. Bekleed een kleine ronde cakevorm (doorsnede 18 cm) met bakpapier.\\nMeng eerst de droge ingrediënten door elkaar. Klop dan met een handmixer of garde de olie en melk erdoor. Schrik niet, het moet een dik beslag worden. Verdeel het beslag over de vorm. Schil de peer, verdeel hem in kwarten en verwijder het klokhuis. Snijd de kwarten in plakjes en leg die mooi verdeeld op het beslag.\\nBak de cake in ongeveer 45 minuten gaar en goudbruin. Laat hem even afkoelen op een rooster alvorens hem op te dienen.\\nTip: Het is ook lekker om de peren in blokjes te snijden en ze door het beslag te mengen. Zwarte bessen (diepvries) of pruimen zijn ook lekker door het beslag in plaats van peren. Het is ook lekker om amandelschaafsel over de cake te strooien voordat deze de oven in gaat.",
-        "image": "http://localhost:8080/images/perencake.jpg"
+        "image": "images/perencake.jpg"
     }
 ]
