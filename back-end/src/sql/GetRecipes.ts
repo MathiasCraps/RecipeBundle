@@ -35,7 +35,7 @@ export async function getAllRecipes(): Promise<ApplicationData> {
                         name: ingredient.ingredient_name,
                     };
                 }),
-                image: recipe.image,
+                image: `${process.env.DOMAIN}/${recipe.image}`,
                 id: recipeId
             });
 
