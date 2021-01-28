@@ -92,7 +92,7 @@ app.post('/addRecipe', async (request, response) => {
         }
 
         try {
-            recipe.image = `${process.env.DOMAIN}/uploads/${FILE_NAME}`;
+            recipe.image = `uploads/${FILE_NAME}`;
             const recipeId = await addRecipe(pool, recipe);
             response.json({success: true, recipeId });    
         } catch (err) {
