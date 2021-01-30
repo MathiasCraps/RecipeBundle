@@ -38,11 +38,22 @@ html, body, #root {
 
   @media (max-width: 40em) {
     position: fixed;
-    bottom: 1em;
+    bottom: 1.5em;
+    right: 1.5em;
     background-color: white;
-    padding: 0.3em;
-    border-radius: 0.3em;
+    border-radius: 1em;
     box-shadow: 1px 1px 3px #b3b3b3;
+
+    height: 1.9em;
+    width: 1.9em;
+
+    svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -(21px/2);
+      margin-top: -(24px/2);
+    }
   }
 }
 
