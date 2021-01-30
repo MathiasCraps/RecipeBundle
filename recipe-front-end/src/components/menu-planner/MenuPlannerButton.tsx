@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { ReduxModel, ViewType } from "../../redux/Store";
 import { changeActiveView } from "../../redux/Actions";
+import { CSS_PRIMARY_BUTTON } from '../common/CssClassNames';
 
 interface OwnProps {
     loggedIn: boolean;
@@ -29,7 +30,7 @@ function MenuPlannerButton(props: Props) {
     }
 
     return (<Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
-        <a href="#" onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} className="plan-menu-btn">
+        <a href="#" onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} className={`plan-menu-btn ${CSS_PRIMARY_BUTTON}`}>
             <FontAwesomeIcon icon={faCalendarWeek} />
         </a>
     </Tooltip>)

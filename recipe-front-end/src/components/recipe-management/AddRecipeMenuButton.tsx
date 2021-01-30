@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
+import { CSS_PRIMARY_BUTTON } from '../common/CssClassNames';
 
 interface OwnProps {
     loggedIn: boolean;

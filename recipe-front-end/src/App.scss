@@ -35,7 +35,9 @@ html, body, #root {
 
 .plan-menu-btn {
   font-size: 1.5em;
+}
 
+.primary-bottom-buttom {
   @media (max-width: 40em) {
     position: fixed;
     bottom: 1.5em;
