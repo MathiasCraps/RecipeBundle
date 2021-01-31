@@ -38,5 +38,7 @@ export enum Localisation {
     SUNDAY = 'Zondag',
     DO_SEARCH = 'Zoeken maar',
     MENU_OF_THE_DAY = 'Menu van de dag',
-    NOTHING_PLANNED_TODAY = 'Niets gepland vandaag.'
+    NOTHING_PLANNED_TODAY = 'Niets gepland vandaag.',
+    MORE_OPTIONS = 'Toon meer opties',
+    LESS_OPTIONS = 'Toon minder opties'
 }

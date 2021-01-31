@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { ReduxModel, ViewType } from "../../redux/Store";
 import { changeActiveView } from "../../redux/Actions";
+import { ReduxModel, ViewType } from "../../redux/Store";
 
 interface OwnProps {
     loggedIn: boolean;
@@ -28,11 +28,13 @@ function MenuPlannerButton(props: Props) {
         return <span></span>;
     }
 
-    return (<Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
-        <a href="#" onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} className="plan-menu-btn">
+    return <Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
+        <button className='action-item'
+            onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)}
+            aria-label={Localisation.MENU_PLANNER}>
             <FontAwesomeIcon icon={faCalendarWeek} />
-        </a>
-    </Tooltip>)
+        </button>
+    </Tooltip>
 }
 
 export default connect(mapStateToProps, { changeActiveView })(MenuPlannerButton);

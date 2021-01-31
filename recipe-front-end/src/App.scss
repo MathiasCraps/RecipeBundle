@@ -29,12 +29,50 @@ html, body, #root {
   z-index: 200;
 }
 
-.user-account-button {
-  font-size: 1.5em;
+.actionsContainer {
+  @media (max-width: 40em) {
+    position: fixed;
+    bottom: 1.5em;
+    right: 1.5em;
+  }
 }
 
-.plan-menu-btn {
+
+.action-item {  
   font-size: 1.5em;
+  height: 2em;
+  width: 2em;
+
+  @media (max-width: 40em) {
+    display: block;
+    margin-bottom: 0.5em;
+    position: relative;
+    background-color: white;
+    border-radius: 3em;
+    box-shadow: 1px 1px 3px #b3b3b3;
+    align-content: center;
+    justify-content: center;
+
+    svg {
+      align-self: center;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #E2E8F0;
+    }
+  }
+
+  @media (min-width: 40em) {
+    width: 2em;
+  }
+}
+
+.actionsContainer {
+  display: flex;
+  @media (max-width: 40em) {
+    flex-direction: column;
+  }
 }
 
 .top-header {
@@ -134,13 +172,6 @@ html, body, #root {
 
 li {
   margin-left: 1.2em;
-}
-
-.user-account-button,
-.user-add-recipe {
-  font-size: 1.5em;
-  padding: 0 0.75em 0 0.75em;
-  border-radius: 1em;
 }
 
 .week {

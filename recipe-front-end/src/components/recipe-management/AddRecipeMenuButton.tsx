@@ -28,10 +28,13 @@ function AddRecipeMenuButton(props: Props) {
         return <span></span>
     }
 
-    return (<Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
-    <a href="#" onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)} className="user-add-recipe">
-        <FontAwesomeIcon icon={faPlus} />
-    </a></Tooltip>)
+    return <Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
+        <button className='action-item'
+            onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)}
+            aria-label={Localisation.ADD_OWN_RECIPE}>
+            <FontAwesomeIcon icon={faPlus} />
+        </button>
+    </Tooltip>
 }
 
 export default connect(mapStateToProps, { changeActiveView })(AddRecipeMenuButton);

@@ -23,11 +23,24 @@ function mapStateToProps(reduxStore: ReduxModel): OwnProps {
     }
 }
 
+/*
+
+    <Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
+        <button className='action-item' onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} >
+            <FontAwesomeIcon className="plan-menu-btn" icon={faCalendarWeek} />
+        </button>
+    </Tooltip>
+
+*/
+
 export function UserMenuButton(props: Props) {
-    return (<Tooltip label={Localisation.ACCOUNT_MANAGEMENT} fontSize="md">
-    <a href="#" onClick={() => props.switchMenu(OpenedMenu.SESSION)} className="user-account-button" aria-label={Localisation.ACCOUNT_MANAGEMENT}>
-        <FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} />
-    </a></Tooltip>);
+    return <Tooltip label={Localisation.ACCOUNT_MANAGEMENT} fontSize="md">
+        <button className='action-item'
+            onClick={() => props.switchMenu(OpenedMenu.SESSION)}
+            aria-label={Localisation.ACCOUNT_MANAGEMENT}>
+            <FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} />
+        </button>
+    </Tooltip>;
 }
 
 export default connect(mapStateToProps, { switchMenu })(UserMenuButton);
