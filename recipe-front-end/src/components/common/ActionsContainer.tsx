@@ -1,41 +1,33 @@
 import { useMediaQuery } from '@chakra-ui/react';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from "react";
+import React from "react";
 import { connect } from 'react-redux';
+import { ReduxModel } from '../../redux/Store';
 import UserMenuButton from '../account/UserMenuButton';
 import MenuPlannerButton from '../menu-planner/MenuPlannerButton';
 import AddRecipeMenuButton from '../recipe-management/AddRecipeMenuButton';
-import { CSS_PRIMARY_BUTTON } from './CssClassNames';
+import HamburgerMain from './HamburgerMain';
 
 interface ReduxProps {
-    isOpened: boolean;
+    extraActionsVisible: boolean;
 }
 
-function mapStateToProps(): ReduxProps {
+function mapStateToProps(reduxData: ReduxModel): ReduxProps {
     return {
-        isOpened: true
+        extraActionsVisible: reduxData.mobileFabOpened
     }
 }
 
 function ActionsContainer(props: ReduxProps) {
     const [isBigScreen] = useMediaQuery("(min-width: 40em)");
-    const [isOpened, setIsOpened] = useState(false)
 
     return <div className='actionsContainer'>
-        {(isOpened || isBigScreen) && <div className='burger-more-options'>
+        {(props.extraActionsVisible || isBigScreen) && <div className='burger-more-options'>
             <UserMenuButton />
             <MenuPlannerButton />
             <AddRecipeMenuButton />
         </div>}
         
-        {!isBigScreen &&<div className='action-item'>
-            <a className={CSS_PRIMARY_BUTTON}
-                href='#'
-                onClick={() => setIsOpened(!isOpened)}>
-                <FontAwesomeIcon icon={isOpened ? faTimes : faBars} />
-            </a>
-        </div>}
+        {!isBigScreen && <HamburgerMain isOpened={props.extraActionsVisible}/>}
     </div>
 }
 
