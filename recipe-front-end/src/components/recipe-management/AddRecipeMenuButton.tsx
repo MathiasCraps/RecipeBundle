@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
-import { CSS_PRIMARY_BUTTON } from '../common/CssClassNames';
 
 interface OwnProps {
     loggedIn: boolean;
@@ -29,10 +28,11 @@ function AddRecipeMenuButton(props: Props) {
         return <span></span>
     }
 
-    return <div className='action-item'><Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
-        <a href="#" onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)} className="user-add-recipe">
+    return <Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
+        <button className='action-item' onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)}>
             <FontAwesomeIcon icon={faPlus} />
-        </a></Tooltip></div>
+        </button>
+    </Tooltip>
 }
 
 export default connect(mapStateToProps, { changeActiveView })(AddRecipeMenuButton);

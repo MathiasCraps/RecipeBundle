@@ -1,1 +1,0 @@
-export const CSS_PRIMARY_BUTTON = 'primary-bottom-buttom';

@@ -29,14 +29,6 @@ html, body, #root {
   z-index: 200;
 }
 
-.user-account-button {
-  font-size: 1.5em;
-}
-
-.plan-menu-btn {
-  font-size: 1.5em;
-}
-
 .actionsContainer {
   @media (max-width: 40em) {
     position: fixed;
@@ -46,13 +38,17 @@ html, body, #root {
 }
 
 
-.action-item {
+.action-item {  
+  font-size: 1.5em;
+  height: 2em;
+  width: 2em;
+
   @media (max-width: 40em) {
-    font-size: 1em;
+    display: block;
     margin-bottom: 0.5em;
     position: relative;
     background-color: white;
-    border-radius: 2em;
+    border-radius: 3em;
     box-shadow: 1px 1px 3px #b3b3b3;
     text-align: center;
 
@@ -67,13 +63,10 @@ html, body, #root {
     &:focus {
       background-color: #E2E8F0;
     }
-
-    height: 3em;
-    width: 3em;
   }
 
   @media (min-width: 40em) {
-    display: inline-block;
+    width: 2em;
   }
 }
 
@@ -174,15 +167,6 @@ html, body, #root {
 
 li {
   margin-left: 1.2em;
-}
-
-.user-account-button,
-.user-add-recipe {
-  @media (min-width: 40em) {
-    font-size: 1.5em;
-    padding: 0 0.75em 0 0.75em;
-    border-radius: 1em;      
-  }
 }
 
 .week {

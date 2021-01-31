@@ -28,11 +28,11 @@ function MenuPlannerButton(props: Props) {
         return <span></span>;
     }
 
-    return <div className='action-item'><Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
-        <a href="#" onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} className="plan-menu-btn">
+    return <Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
+        <button className='action-item' onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} >
             <FontAwesomeIcon icon={faCalendarWeek} />
-        </a>
-    </Tooltip></div>
+        </button>
+    </Tooltip>
 }
 
 export default connect(mapStateToProps, { changeActiveView })(MenuPlannerButton);
