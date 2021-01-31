@@ -29,7 +29,9 @@ function MenuPlannerButton(props: Props) {
     }
 
     return <Tooltip label={Localisation.MENU_PLANNER} fontSize="md">
-        <button className='action-item' onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)} >
+        <button className='action-item'
+            onClick={() => props.changeActiveView(ViewType.MenuPlanner, undefined)}
+            aria-label={Localisation.MENU_PLANNER}>
             <FontAwesomeIcon icon={faCalendarWeek} />
         </button>
     </Tooltip>

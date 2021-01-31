@@ -29,7 +29,9 @@ function AddRecipeMenuButton(props: Props) {
     }
 
     return <Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
-        <button className='action-item' onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)}>
+        <button className='action-item'
+            onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)}
+            aria-label={Localisation.ADD_OWN_RECIPE}>
             <FontAwesomeIcon icon={faPlus} />
         </button>
     </Tooltip>

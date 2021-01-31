@@ -35,7 +35,9 @@ function mapStateToProps(reduxStore: ReduxModel): OwnProps {
 
 export function UserMenuButton(props: Props) {
     return <Tooltip label={Localisation.ACCOUNT_MANAGEMENT} fontSize="md">
-        <button className='action-item' onClick={() => props.switchMenu(OpenedMenu.SESSION)} aria-label={Localisation.ACCOUNT_MANAGEMENT}>
+        <button className='action-item'
+            onClick={() => props.switchMenu(OpenedMenu.SESSION)}
+            aria-label={Localisation.ACCOUNT_MANAGEMENT}>
             <FontAwesomeIcon icon={props.loggedIn ? faUserAlt : faUserNinja} />
         </button>
     </Tooltip>;

@@ -17,8 +17,11 @@ interface ReduxActions {
 type Props = OwnProps & ReduxActions;
 
 function HamburgerMain(props: Props) {
-    return <Tooltip label={props.isOpened ? Localisation.LESS_OPTIONS : Localisation.MORE_OPTIONS}>
-        <button className='action-item' onClick={() => props.updateMobileFapOpened(!props.isOpened)}>
+    const label = props.isOpened ? Localisation.LESS_OPTIONS : Localisation.MORE_OPTIONS;
+    return <Tooltip label={label}>
+        <button className='action-item' 
+        onClick={() => props.updateMobileFapOpened(!props.isOpened)}
+        aria-label={label}>
             <FontAwesomeIcon icon={props.isOpened ? faTimes : faBars} />
         </button>
     </Tooltip>
