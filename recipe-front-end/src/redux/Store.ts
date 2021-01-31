@@ -27,6 +27,7 @@ export interface ReduxModel {
     user: UserData;
     menuPlanning: DayMenu[];
     activeDay: number | undefined;
+    mobileFabOpened: boolean;
 }
 
 export enum ViewType {
@@ -45,7 +46,8 @@ export enum Actions {
     ADD_MENU = 'ADD_MENU',
     REMOVE_MENU = 'REMOVE_MENU',
     UPDATE_ACTIVE_DAY = 'UPDATE_ACTIVE_DAY',
-    UPDATE_MENU_DAY = 'UPDATE_MENU_DAY'
+    UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
+    MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED'
 }
 
 export interface ChangeViewAction {
@@ -94,6 +96,11 @@ export interface UpdateMenuDayAction {
     menuId: number;
 }
 
+export interface UpdateMobileFapOpenedAction {
+    type: Actions.MOBILE_FAB_OPENED;
+    isOpened: boolean;
+}
+
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -104,7 +111,8 @@ export const defaultState: ReduxModel = {
         loggedIn: false,
         name: undefined
     },
-    activeDay: undefined
+    activeDay: undefined,
+    mobileFabOpened: false
 }
 
 export type ReduxAction = ChangeViewAction | 
@@ -115,14 +123,15 @@ export type ReduxAction = ChangeViewAction |
     AddMenuAction | 
     RemoveMenuAction | 
     UpdateActiveDayAction | 
-    UpdateMenuDayAction;
+    UpdateMenuDayAction |
+    UpdateMobileFapOpenedAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
         case Actions.CHANGE_VIEW:
             if (oldState.view !== action.view) {
                 return {
-                    ...oldState, view: action.view, activeRecipe: action.recipe
+                    ...oldState, view: action.view, activeRecipe: action.recipe, mobileFabOpened: false
                 }
             }
             break;
@@ -133,7 +142,8 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 const boundariesClamped = Math.min(oldState.recipes.length - 1, Math.max(0, adjustedRecipe))    
                 return {
                     ...oldState,
-                    activeRecipe: oldState.recipes[boundariesClamped]
+                    activeRecipe: oldState.recipes[boundariesClamped],
+                    mobileFabOpened: false
                 }    
             }
             break;
@@ -175,6 +185,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 menuPlanning: updateDayMenuWithDate(oldState.menuPlanning, action.menuId, action.toDay)
+            }
+        case Actions.MOBILE_FAB_OPENED:
+            return {
+                ...oldState,
+                mobileFabOpened: action.isOpened
             }
         default:
             // not supported yet
