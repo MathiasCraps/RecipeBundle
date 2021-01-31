@@ -44,19 +44,17 @@ html, body, #root {
   width: 2em;
 
   @media (max-width: 40em) {
-    display: block;
+    display: flex;
     margin-bottom: 0.5em;
     position: relative;
     background-color: white;
     border-radius: 3em;
     box-shadow: 1px 1px 3px #b3b3b3;
-    text-align: center;
+    align-content: center;
+    justify-content: center;
 
-    &::after {
-      content: '';
-      display: inline-block;
-      height: 100%;
-      vertical-align: middle;
+    svg {
+      align-self: center;
     }
 
     &:hover,
