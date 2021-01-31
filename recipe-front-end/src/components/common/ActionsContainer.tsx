@@ -8,26 +8,29 @@ import AddRecipeMenuButton from '../recipe-management/AddRecipeMenuButton';
 import HamburgerMain from './HamburgerMain';
 
 interface ReduxProps {
-    extraActionsVisible: boolean;
+    loggedIn: boolean;
+    actionsOpened: boolean;
 }
 
 function mapStateToProps(reduxData: ReduxModel): ReduxProps {
     return {
-        extraActionsVisible: reduxData.mobileFabOpened
+        loggedIn: reduxData.user.loggedIn,
+        actionsOpened: reduxData.mobileFabOpened
     }
 }
 
 function ActionsContainer(props: ReduxProps) {
     const [isBigScreen] = useMediaQuery("(min-width: 40em)");
+    const showActions = !props.loggedIn || props.actionsOpened || isBigScreen;
 
     return <div className='actionsContainer'>
-        {(props.extraActionsVisible || isBigScreen) && <div className='burger-more-options'>
+        {showActions && <div className='burger-more-options'>
             <UserMenuButton />
             <MenuPlannerButton />
             <AddRecipeMenuButton />
         </div>}
         
-        {!isBigScreen && <HamburgerMain isOpened={props.extraActionsVisible}/>}
+        {!isBigScreen && props.loggedIn && <HamburgerMain isOpened={props.actionsOpened}/>}
     </div>
 }
 
