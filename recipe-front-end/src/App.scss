@@ -63,6 +63,11 @@ html, body, #root {
       vertical-align: middle;
     }
 
+    &:hover,
+    &:focus {
+      background-color: #E2E8F0;
+    }
+
     height: 3em;
     width: 3em;
   }
