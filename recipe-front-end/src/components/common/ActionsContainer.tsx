@@ -23,14 +23,13 @@ function ActionsContainer(props: ReduxProps) {
     const [isBigScreen] = useMediaQuery("(min-width: 40em)");
     const showActions = !props.loggedIn || props.actionsOpened || isBigScreen;
 
-    return <div className='actionsContainer'>
+    return <div className='actionsContainer'>     
+        {!isBigScreen && props.loggedIn && <HamburgerMain isOpened={props.actionsOpened}/>}
         {showActions && <div className='burger-more-options'>
             <UserMenuButton />
             <MenuPlannerButton />
             <AddRecipeMenuButton />
         </div>}
-        
-        {!isBigScreen && props.loggedIn && <HamburgerMain isOpened={props.actionsOpened}/>}
     </div>
 }
 

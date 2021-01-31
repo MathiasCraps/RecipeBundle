@@ -44,7 +44,7 @@ html, body, #root {
   width: 2em;
 
   @media (max-width: 40em) {
-    display: flex;
+    display: block;
     margin-bottom: 0.5em;
     position: relative;
     background-color: white;
@@ -65,6 +65,13 @@ html, body, #root {
 
   @media (min-width: 40em) {
     width: 2em;
+  }
+}
+
+.actionsContainer {
+  display: flex;
+  @media (max-width: 40em) {
+    flex-direction: column;
   }
 }
 
