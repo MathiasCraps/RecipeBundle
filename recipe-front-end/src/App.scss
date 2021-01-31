@@ -37,25 +37,38 @@ html, body, #root {
   font-size: 1.5em;
 }
 
-.primary-bottom-buttom {
+.actionsContainer {
   @media (max-width: 40em) {
     position: fixed;
     bottom: 1.5em;
     right: 1.5em;
+  }
+}
+
+
+.action-item {
+  @media (max-width: 40em) {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+    position: relative;
     background-color: white;
-    border-radius: 1em;
+    border-radius: 2em;
     box-shadow: 1px 1px 3px #b3b3b3;
+    text-align: center;
 
-    height: 1.9em;
-    width: 1.9em;
-
-    svg {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin-left: -(21px/2);
-      margin-top: -(24px/2);
+    &::after {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
     }
+
+    height: 3em;
+    width: 3em;
+  }
+
+  @media (min-width: 40em) {
+    display: inline-block;
   }
 }
 
@@ -160,9 +173,11 @@ li {
 
 .user-account-button,
 .user-add-recipe {
-  font-size: 1.5em;
-  padding: 0 0.75em 0 0.75em;
-  border-radius: 1em;
+  @media (min-width: 40em) {
+    font-size: 1.5em;
+    padding: 0 0.75em 0 0.75em;
+    border-radius: 1em;      
+  }
 }
 
 .week {
