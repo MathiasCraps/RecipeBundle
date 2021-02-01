@@ -11,6 +11,7 @@ import { DayMenu, defaultState, handleState, ReduxModel } from './redux/Store';
 import { filterUndefined } from "./utils/ArrayUtils";
 import { calculateStartOfDate } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
+import { DragDropContext } from 'react-beautiful-dnd';
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -57,7 +58,9 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     <React.StrictMode>
       <ChakraProvider>
         <Provider store={store}>
+          <DragDropContext onDragEnd={(result, provided) => console.log('dragEnd', result, provided)}>
           <App />
+          </DragDropContext>
         </Provider>
       </ChakraProvider>
     </React.StrictMode>,
