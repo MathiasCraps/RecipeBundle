@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { updateMobileFapOpened } from '../../redux/Actions';
+import { AnimatedAppear } from './AnimatedAppear';
 
 interface OwnProps {
     isOpened: boolean;
@@ -18,13 +19,15 @@ type Props = OwnProps & ReduxActions;
 
 function HamburgerMain(props: Props) {
     const label = props.isOpened ? Localisation.LESS_OPTIONS : Localisation.MORE_OPTIONS;
-    return <Tooltip label={label}>
-        <button className='action-item' 
-        onClick={() => props.updateMobileFapOpened(!props.isOpened)}
-        aria-label={label}>
-            <FontAwesomeIcon icon={props.isOpened ? faTimes : faBars} />
-        </button>
-    </Tooltip>
+    return <AnimatedAppear>
+        <Tooltip label={label}>
+            <button className='action-item'
+                onClick={() => props.updateMobileFapOpened(!props.isOpened)}
+                aria-label={label}>
+                <FontAwesomeIcon icon={props.isOpened ? faTimes : faBars} />
+            </button>
+        </Tooltip>
+    </AnimatedAppear>
 }
 
 export default connect(null, { updateMobileFapOpened })(HamburgerMain)
