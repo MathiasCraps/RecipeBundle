@@ -27,7 +27,7 @@ function mapStateToProps(state: ReduxModel) {
 
 function RecipeOverview(props: Props) {
     const [originalTouch, setOriginalTouch] = useState(0);
-    const [moved, setMoved] = useState(0);
+    const [direction, setDirection] = useState<Direction>();
 
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
@@ -66,30 +66,29 @@ function RecipeOverview(props: Props) {
                 return;
             }
 
-            setMoved(e.touches[0].clientX);
-        }}
-        onTouchEndCapture={(e) => {
-            if (!moved) {
-                // there was no movement
-                return;
-            }
-
-            const xDifference = originalTouch - moved;
+            const xDifference = originalTouch - e.touches[0].clientX;
             const minimumMoveFactor = 50;
+
             if (xDifference > minimumMoveFactor) {
-                props.switchActiveRecipe(Direction.NEXT);
+                setDirection(Direction.NEXT);
             } else if (xDifference < -minimumMoveFactor) {
-                props.switchActiveRecipe(Direction.PREVIOUS);
+                setDirection(Direction.PREVIOUS);
+            }
+        }}
+        onTouchEndCapture={() => {
+            if (direction !== undefined) {
+                props.switchActiveRecipe(direction);
             }
 
             setOriginalTouch(0);
-            setMoved(0);
+            setDirection(0);
+            setDirection(undefined);
         }}
     ><ContentContainer>
-            <a className="recipe-overview-previous" href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
+            <a className={`recipe-overview-previous ${direction === Direction.PREVIOUS ? 'showTap' : ''}`} href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
             </a>
-            <a className="recipe-overview-next" href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
+            <a className={`recipe-overview-next ${direction === Direction.NEXT ? 'showTap' : ''}`} href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
             </a>
             <Heading as="h2">{props.recipe.title}</Heading>

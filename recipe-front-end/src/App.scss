@@ -129,11 +129,19 @@ html, body, #root {
 
 
 .recipe-overview-previous {
-  left: 1em;
+  left: 0em;
+
+  @media (min-width: 85em) {
+    left: 1em;
+  }
 }
 
 .recipe-overview-next {
-  right: 1em;
+  right: 0em;
+
+  @media (min-width: 85em) {
+    right: 1em;
+  }
 }
 
 .recipe-overview-previous,
@@ -142,6 +150,10 @@ html, body, #root {
   top: 50%;
   z-index: 10;
   display: none;
+
+  &.showTap {
+    display: block;
+  }
 
   @media (min-width: 85em) {
       display: block;
