@@ -69,6 +69,11 @@ function RecipeOverview(props: Props) {
             setMoved(e.touches[0].clientX);
         }}
         onTouchEndCapture={(e) => {
+            if (!moved) {
+                // there was no movement
+                return;
+            }
+
             const xDifference = originalTouch - moved;
             const minimumMoveFactor = 50;
             if (xDifference > minimumMoveFactor) {
