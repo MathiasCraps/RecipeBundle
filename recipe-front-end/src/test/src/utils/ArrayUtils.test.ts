@@ -1,4 +1,4 @@
-import { removeFromArray } from '../utils/ArrayUtils';
+import { removeFromArray } from '../../../utils/ArrayUtils';
 
 const ORIGINAL_ARRAY_INPUT = [5, 10, 15];
 
