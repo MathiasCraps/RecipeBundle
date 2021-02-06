@@ -34,7 +34,8 @@ export enum ViewType {
     Overview,
     RecipeView,
     AddRecipe,
-    MenuPlanner
+    MenuPlanner,
+    ShoppingList
 }
 
 export enum Actions {
