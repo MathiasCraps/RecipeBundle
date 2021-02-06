@@ -6,14 +6,6 @@ export function removeFromArray<T>(item: T, fromArray: T[]): T[] {
     return fromArray;
 }
 
-export function filterUndefined(value: any) {
-    if (value === undefined) {
-        return false;
-    }
-
-    return true;
-}
-
 export function updateDayMenuWithDate(dayMenu: DayMenu[], menuId: number, toDate: number): DayMenu[] {
     const shallowCopy = [...dayMenu];
     const entry = shallowCopy.find((dayMenu) => dayMenu.menuId === menuId);

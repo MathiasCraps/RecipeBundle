@@ -7,8 +7,7 @@ import thunk from 'redux-thunk';
 import App from "./App";
 import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
-import { DayMenu, defaultState, handleState, ReduxModel } from './redux/Store';
-import { filterUndefined } from "./utils/ArrayUtils";
+import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 
@@ -40,7 +39,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const applicationData: ApplicationData = await data.json();
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, applicationData.recipes))
-    .filter(filterUndefined) as DayMenu[];
+    .filter((value) => value !== undefined) as DayMenu[];
 
   const store = createStore(handleState, {
     ...defaultState,
