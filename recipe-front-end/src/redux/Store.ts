@@ -9,8 +9,7 @@ export interface UserData {
 
 export enum OpenedMenu {
     NONE,
-    SESSION,
-    ADD_RECIPE
+    SESSION
 }
 
 export interface DayMenu {

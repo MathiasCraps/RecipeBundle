@@ -1,11 +1,10 @@
-import { Tooltip } from "@chakra-ui/react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
+import MainMenuButton from "../common/ActionButton";
 
 interface OwnProps {
     loggedIn: boolean;
@@ -25,16 +24,9 @@ type Props = OwnProps & ReduxProps;
 
 function AddRecipeMenuButton(props: Props) {
     if (!props.loggedIn) {
-        return <span></span>
+        return <></>
     }
 
-    return <Tooltip label={Localisation.ADD_OWN_RECIPE} fontSize="md">
-        <button className='action-item'
-            onClick={() => props.changeActiveView(ViewType.AddRecipe, undefined)}
-            aria-label={Localisation.ADD_OWN_RECIPE}>
-            <FontAwesomeIcon icon={faPlus} />
-        </button>
-    </Tooltip>
-}
+    return <MainMenuButton label={Localisation.ADD_OWN_RECIPE} icon={faPlus} viewToOpen={ViewType.AddRecipe} />}
 
 export default connect(mapStateToProps, { changeActiveView })(AddRecipeMenuButton);
