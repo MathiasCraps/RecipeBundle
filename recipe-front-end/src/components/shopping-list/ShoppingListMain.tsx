@@ -81,6 +81,10 @@ export function ShoppingListMain(props: ReduxProps) {
         <div>
             <ul>
                 {sumsToRender.map((ingredient, index) => {
+                    if (!ingredient.quantity_number) {
+                        // no point in rendering this
+                        return undefined;
+                    } 
                     return <li key={index}><strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})</li>
                 })}
             </ul>
