@@ -5,6 +5,7 @@ import { changeActiveView } from "../../redux/Actions";
 import { ViewType } from "../../redux/Store";
 
 interface OwnProps {
+    classes?: string;
     children: React.ReactNode;
 }
 
@@ -15,7 +16,8 @@ interface ReduxActions {
 type Props = OwnProps & ReduxActions;
 
 function ContentContainer(props: Props) {
-    return <Box>
+    const classes = props.classes ? {className: props.classes} : {};
+    return <Box {...classes}>
         <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
         <SlideFade in={true}>
             <Box className="card-content" padding="2em" maxWidth="80em" margin="auto">
