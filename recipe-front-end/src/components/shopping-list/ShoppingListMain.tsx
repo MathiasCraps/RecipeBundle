@@ -34,7 +34,8 @@ export function ShoppingListMain(props: ReduxProps) {
     const endTime = new Date(startTime.getTime() + (FULL_DAY_IN_MS * 7));
 
     const menusToConsider = selectMenuFromRange(props.menus, startTime, endTime);
-    const rawSorted = sortByIngredient(menusToConsider);
+    const ingredientsFromRecipes = menusToConsider.map(e => e.recipe.ingredients).flat(1);
+    const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted);
 
     return <ContentContainer classes="shopping-list">
