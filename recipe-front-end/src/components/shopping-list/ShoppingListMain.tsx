@@ -5,9 +5,11 @@ import { Localisation } from '../../localisation/AppTexts';
 import { DayMenu, ReduxModel } from '../../redux/Store';
 import { calculateStartOfDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import ContentContainer from '../common/ContentContainer';
+import { combineToSingleValue } from './normalization/Combiner';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
+import { sortByIngredient, SortedRecipeMap } from './normalization/SortRecipeMap';
 
 interface ReduxProps {
     menus: DayMenu[];
@@ -18,45 +20,6 @@ export function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
         menus: reduxModel.menuPlanning
     };
 }
-
-type SortedRecipeMap = { [key: string]: Ingredient[] };
-function sortByIngredient(menus: DayMenu[]): SortedRecipeMap {
-    const recipeMap: SortedRecipeMap = {};
-
-    for (const dayMenu of menus) {
-        for (const ingredient of dayMenu.recipe.ingredients) {
-            if (!recipeMap[ingredient.name]) {
-                recipeMap[ingredient.name] = [];
-            }
-
-            recipeMap[ingredient.name].push(ingredient);
-        }
-    }
-
-    return recipeMap;
-}
-
-const rulesHandler = new RulesHandler([
-    new TableSpoonToGramRule(), 
-    new TeaSpoonToGramRule()
-]);
-
-function combineToSingleValue(sortedRecipeMap: SortedRecipeMap): Ingredient[] {
-    const keys = Object.keys(sortedRecipeMap);
-    return keys.map((key) => {
-        const recipeMap: Ingredient[] = sortedRecipeMap[key];
-        const ingredients = rulesHandler.normalize(recipeMap);
-        return {
-            name: key,
-            quantity_number: ingredients.reduce((previous, current) => {
-                return previous + current.quantity_number!;
-            }, 0),
-            quantity_description: ingredients[0].quantity_description
-        }
-    })
-}
-
-
 
 function selectMenuFromRange(menus: DayMenu[], fromTime: Date, toTime: Date) {
     return menus.filter((menu) => menu.date >= fromTime.getTime() && menu.date < toTime.getTime());
