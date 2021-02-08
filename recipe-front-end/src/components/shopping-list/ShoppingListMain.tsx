@@ -6,6 +6,7 @@ import { DayMenu, ReduxModel } from '../../redux/Store';
 import { calculateStartOfDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import ContentContainer from '../common/ContentContainer';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
+import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 
 interface ReduxProps {
@@ -37,7 +38,7 @@ function sortByIngredient(menus: DayMenu[]): SortedRecipeMap {
 
 const rulesHandler = new RulesHandler([
     new TableSpoonToGramRule(), 
-    new TableSpoonToGramRule()
+    new TeaSpoonToGramRule()
 ]);
 
 function combineToSingleValue(sortedRecipeMap: SortedRecipeMap): Ingredient[] {
