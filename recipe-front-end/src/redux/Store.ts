@@ -9,8 +9,7 @@ export interface UserData {
 
 export enum OpenedMenu {
     NONE,
-    SESSION,
-    ADD_RECIPE
+    SESSION
 }
 
 export interface DayMenu {
@@ -34,7 +33,8 @@ export enum ViewType {
     Overview,
     RecipeView,
     AddRecipe,
-    MenuPlanner
+    MenuPlanner,
+    ShoppingList
 }
 
 export enum Actions {

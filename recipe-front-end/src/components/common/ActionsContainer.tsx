@@ -6,6 +6,7 @@ import { ReduxModel } from '../../redux/Store';
 import UserMenuButton from '../account/UserMenuButton';
 import MenuPlannerButton from '../menu-planner/MenuPlannerButton';
 import AddRecipeMenuButton from '../recipe-management/AddRecipeMenuButton';
+import ShoppingListMenuButton from '../shopping-list/ShoppingListMenuButton';
 import HamburgerMain from './HamburgerMain';
 
 interface ReduxProps {
@@ -31,6 +32,7 @@ function ActionsContainer(props: ReduxProps) {
                 <UserMenuButton />
                 <MenuPlannerButton />
                 <AddRecipeMenuButton />
+                <ShoppingListMenuButton />
             </div>
         </AppearAnimation>}
     </div>

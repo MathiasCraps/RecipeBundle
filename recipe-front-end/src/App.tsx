@@ -8,6 +8,7 @@ import MenuPlanner from "./components/menu-planner/MenuPlanner";
 import { RecipeList } from "./components/recipe-displays/RecipeList";
 import RecipeOverview from "./components/recipe-displays/RecipeOverview";
 import AddRecipeMenu from "./components/recipe-management/AddRecipeMenu";
+import ShoppingListMain from './components/shopping-list/ShoppingListMain';
 import { Recipe } from "./interfaces/Recipe";
 import { ReduxModel, ViewType } from './redux/Store';
 
@@ -38,6 +39,7 @@ function App(props: AppProps) {
     {props.view === ViewType.RecipeView && <RecipeOverview /> }
     {props.view === ViewType.Overview && <RecipeList recipes={props.recipes} />}
     {props.view === ViewType.MenuPlanner && <MenuPlanner />}
+    {props.view === ViewType.ShoppingList && <ShoppingListMain />}
 
   </header></Box>)
 }

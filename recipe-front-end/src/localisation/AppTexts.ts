@@ -40,5 +40,7 @@ export enum Localisation {
     MENU_OF_THE_DAY = 'Menu van de dag',
     NOTHING_PLANNED_TODAY = 'Niets gepland vandaag.',
     MORE_OPTIONS = 'Toon meer opties',
-    LESS_OPTIONS = 'Toon minder opties'
+    LESS_OPTIONS = 'Toon minder opties',
+    SHOPPING_LIST = 'Boodschappenlijst',
+    YOUR_SHOPPING_LIST_FOR_THE_PERIOD = 'Je boodschappenlijstje voor de periode'
 }
