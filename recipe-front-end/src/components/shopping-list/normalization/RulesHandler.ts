@@ -8,7 +8,7 @@ export class RulesHandler {
         return ingredients.map(this.doNormalizeIngredient);
     }
 
-    private doNormalizeIngredient(ingredient: Ingredient): Ingredient {
+    private readonly doNormalizeIngredient = (ingredient: Ingredient): Ingredient => {
         for (const rule of this._rules) {
             if (rule.canHandle(ingredient)) {
                 return rule.doHandle(ingredient);
