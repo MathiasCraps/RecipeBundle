@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { DayMenu, ReduxModel } from '../../redux/Store';
 import { calculateStartOfDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
@@ -9,7 +8,8 @@ import { combineToSingleValue } from './normalization/Combiner';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
-import { sortByIngredient, SortedRecipeMap } from './normalization/SortRecipeMap';
+import { sortByIngredient } from './normalization/SortRecipeMap';
+import { ShoppingIngredient } from './ShoppingIngredient';
 
 interface ReduxProps {
     menus: DayMenu[];
@@ -49,13 +49,7 @@ export function ShoppingListMain(props: ReduxProps) {
 
         <div>
             <ul>
-                {sumsToRender.map((ingredient, index) => {
-                    if (!ingredient.quantity_number) {
-                        // no point in rendering this
-                        return undefined;
-                    } 
-                    return <li key={index}><strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})</li>
-                })}
+                {sumsToRender.map((ingredient, index) => <li key={index}><ShoppingIngredient ingredient={ingredient} /></li>)}
             </ul>
         </div>
     </ContentContainer>
