@@ -8,13 +8,21 @@ interface props {
 
 export function ShoppingIngredient(props: props) {
     const ingredient = props.ingredient;
-    const [isCanceled, setIsCancelled] = useState(false);
+    const [isCancelled, setIsCancelled] = useState(false);
     if (!ingredient.quantity_number) {
-            // no point in rendering this
-            return <></>;
-        } 
+        // no point in rendering this
+        return <></>;
+    }
 
-        return <li className={`menu-recipe ${isCanceled ? 'strike-through grayed' : ''}`} onClick={() => setIsCancelled(!isCanceled)}>
-            <strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})
+    function handleKeyUp(event: React.KeyboardEvent) {
+        switch (event.code) {
+            case 'Enter':
+            case 'Space':
+                setIsCancelled(!isCancelled);
+        }
+    }
+
+    return <li tabIndex={0} onKeyUp={handleKeyUp} className={`menu-recipe ${isCancelled ? 'strike-through grayed' : ''}`} onClick={() => setIsCancelled(!isCancelled)}>
+        <strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})
         </li>
 }
