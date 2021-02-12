@@ -14,8 +14,8 @@ export function ShoppingIngredient(props: props) {
             return <></>;
         } 
 
-        return <div className={`menu-recipe ${isCanceled ? 'strike-through grayed' : ''}`} onClick={() => setIsCancelled(!isCanceled)}>
+        return <li className={`menu-recipe ${isCanceled ? 'strike-through grayed' : ''}`} onClick={() => setIsCancelled(!isCanceled)}>
             <strong>{ingredient.name}</strong> 
             ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})
-        </div>
+        </li>
 }

@@ -49,7 +49,7 @@ export function ShoppingListMain(props: ReduxProps) {
 
         <div>
             <ul>
-                {sumsToRender.map((ingredient, index) => <li key={index}><ShoppingIngredient ingredient={ingredient} /></li>)}
+                {sumsToRender.map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
             </ul>
         </div>
     </ContentContainer>
