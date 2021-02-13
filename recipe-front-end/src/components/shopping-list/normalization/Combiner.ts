@@ -8,7 +8,7 @@ export function combineToSingleValue(sortedRecipeMap: SortedRecipeMap, rulesHand
         const recipeMap: Ingredient[] = sortedRecipeMap[key];
         const ingredients = rulesHandler.normalize(recipeMap);
         return {
-            name: key,
+            name: key.toLowerCase(),
             quantity_number: ingredients.reduce((previous, current) => {
                 return previous + current.quantity_number!;
             }, 0),
