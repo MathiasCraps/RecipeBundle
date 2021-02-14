@@ -9,6 +9,7 @@ import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
+import { RangePicker } from './RangePicker';
 import { ShoppingIngredient } from './ShoppingIngredient';
 
 interface ReduxProps {
@@ -23,10 +24,6 @@ export function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 
 function selectMenuFromRange(menus: DayMenu[], fromTime: Date, toTime: Date) {
     return menus.filter((menu) => menu.date >= fromTime.getTime() && menu.date < toTime.getTime());
-}
-
-function formatDate(date: Date) {
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 }
 
 const rulesHandler = new RulesHandler([
@@ -45,7 +42,7 @@ export function ShoppingListMain(props: ReduxProps) {
 
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
-        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} {formatDate(startTime)} - {formatDate(endTime)}:</p>
+        <RangePicker {...{startTime, endTime}}/>
 
         <div>
             <ul>
