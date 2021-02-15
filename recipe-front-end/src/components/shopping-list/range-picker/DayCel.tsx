@@ -6,5 +6,7 @@ interface OwnProps {
 }
 
 export function DayCel(props: OwnProps) {
-    return <span className="picker-day">{props.day.getDate()}</span>
+    const dayOfMonth = props.day.getDate();
+    const valueToRender = !isNaN(dayOfMonth) ? dayOfMonth : '-';
+    return <span className="picker-day">{valueToRender}</span>
 }
