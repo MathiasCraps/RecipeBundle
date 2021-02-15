@@ -27,5 +27,28 @@ export function calculateMonthGrid(year: number, month: number): Date[][] {
         }
         calendar[week].push(proposedDate);
     }
-    return calendar;
+
+    return fillIncompleteWeeks(calendar);
+}
+
+function fillIncompleteWeeks(monthGrid: Date[][]): Date[][] {
+    const firstWeek = monthGrid[0];
+    if (firstWeek.length !== 7) {
+        const input = [];
+        for (let i = firstWeek.length; i < 7; i++) {
+            input.push(new Date(NaN));
+        }
+        monthGrid[0] = input.concat([...monthGrid[0]]);
+    }
+
+    const lastWeek = [...monthGrid[monthGrid.length - 1]];
+    if (lastWeek.length !== 7) {
+        for (let i = lastWeek.length; i < 7; i++) {
+            lastWeek.push(new Date(NaN))
+        }
+
+        monthGrid[monthGrid.length - 1] = lastWeek;
+    }
+
+    return monthGrid;
 }
