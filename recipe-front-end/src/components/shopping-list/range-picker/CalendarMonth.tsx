@@ -1,4 +1,5 @@
 import React from 'react';
+import { calculateMonthGrid } from '../../../utils/DateUtils';
 import { WeekRow } from './WeekRow';
 
 interface OwnProps {
@@ -6,14 +7,15 @@ interface OwnProps {
     isVisible: boolean;
 }
 
+
+
 export function CalendarMonth(props: OwnProps) {
     if (!props.isVisible) {
         return <div></div>
     }
 
-    const startOfMonth = new Date(Date.UTC(props.date.getFullYear(), props.date.getMonth(), 1));
-    // const 
-    return <div>
-        <WeekRow startOfWeek={startOfMonth}/>
+    const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
+    return <div>        
+        {gridCurrentMonth.map((week, index) => <WeekRow week={week} key={index} />)}
     </div>
 }
