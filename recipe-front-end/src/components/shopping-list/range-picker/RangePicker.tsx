@@ -14,7 +14,7 @@ function formatDate(date: Date) {
 export function RangePicker(props: OwnProps) {
     const [isVisible, setIsvisible] = useState(false);
     return <>
-        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <span onClick={() => setIsvisible(!isVisible)}>{formatDate(props.startTime)}</span> - {formatDate(props.endTime)}:</p>
+        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <span className="date-range-initiator" onClick={() => setIsvisible(!isVisible)}>{formatDate(props.startTime)} - {formatDate(props.endTime)}</span>:</p>
         <CalendarMonth isVisible={isVisible} date={new Date(2021, 3, 1)} />
     </>
 }
