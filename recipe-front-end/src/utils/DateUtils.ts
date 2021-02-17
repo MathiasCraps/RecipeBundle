@@ -58,3 +58,7 @@ export function isSameUtcDay(day1: Date, day2: Date): boolean {
         day1.getUTCMonth() === day2.getUTCMonth() &&
         day1.getUTCDate() === day2.getUTCDate()
 }
+
+export function addDays(date: Date, days: number): Date {
+    return new Date(Number(date) + (FULL_DAY_IN_MS * days));
+}
