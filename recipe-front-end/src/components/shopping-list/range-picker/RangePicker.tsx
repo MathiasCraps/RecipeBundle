@@ -20,6 +20,6 @@ export function RangePicker(props: OwnProps) {
             tabIndex={0} 
             onClick={() => setIsvisible(!isVisible)}>{formatDate(props.startTime)} - {formatDate(props.endTime)}
             </a>:</p>
-        <CalendarMonth isVisible={isVisible} date={new Date(2021, 3, 1)} />
+        <CalendarMonth isVisible={isVisible} date={new Date()} />
     </>
 }
