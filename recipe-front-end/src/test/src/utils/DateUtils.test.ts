@@ -6,17 +6,18 @@ const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0100')
 describe('DateUtils', () => {
     describe(`using date ${startDate}`, () => {
         describe('calling calculateStartOfDate', () => {
-           let result: Date;
+            let result: Date;
 
-           beforeEach(() => {
-               result = calculateStartOfDate(startDate);
-           })
+            beforeEach(() => {
+                result = calculateStartOfDate(startDate);
+            });
 
-           test(`should normalize to ${referenceDate}`, () => {
-               expect(Number(result)).toBe(Number(referenceDate));
-           })
+            test(`should normalize to ${referenceDate}`, () => {
+                expect(Number(result)).toBe(Number(referenceDate));
+            });
         });
-    })
+    });
+
     describe('normalizeWeekDay', () => {
         [
             { input: 0, output: 6 },
@@ -35,7 +36,7 @@ describe('DateUtils', () => {
 
                 test(`result is normalized to ${entry.output}`, () => {
                     expect(result).toBe(entry.output)
-                })
+                });
             });
         });
     });
@@ -46,7 +47,7 @@ describe('DateUtils', () => {
 
             beforeEach(() => {
                 result = isSameUtcDay(new Date(2021, 1, 1), new Date(2021, 1, 1));
-            })
+            });
 
             test('returns true', () => {
                 expect(result).toBe(true);
@@ -58,7 +59,7 @@ describe('DateUtils', () => {
 
             beforeEach(() => {
                 result = isSameUtcDay(
-                    new Date(Date.UTC(2021, 1, 1)), 
+                    new Date(Date.UTC(2021, 1, 1)),
                     new Date(Date.UTC(2021, 1, 1, 17, 0, 0))
                 );
             });
