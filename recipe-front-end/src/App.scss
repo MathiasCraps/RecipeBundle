@@ -306,6 +306,10 @@ li {
   border: 1px solid #EDF2F7;
   text-align: center;
   cursor: pointer;
+
+  &.is-current-day {
+    background-color: #E2E8F0;
+  }
 }
 
 /* todo: fix me with chakra global styles */
