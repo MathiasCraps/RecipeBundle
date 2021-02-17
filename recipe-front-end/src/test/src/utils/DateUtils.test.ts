@@ -39,4 +39,46 @@ describe('DateUtils', () => {
             });
         });
     });
+
+    describe('isSameUtcDay', () => {
+        describe('when calling with exact same time', () => {
+            let result: boolean;
+
+            beforeEach(() => {
+                result = isSameUtcDay(new Date(2021, 1, 1), new Date(2021, 1, 1));
+            })
+
+            test('returns true', () => {
+                expect(result).toBe(true);
+            });
+        });
+
+        describe('when called with different time, but same day', () => {
+            let result: boolean;
+
+            beforeEach(() => {
+                result = isSameUtcDay(
+                    new Date(Date.UTC(2021, 1, 1)), 
+                    new Date(Date.UTC(2021, 1, 1, 17, 0, 0))
+                );
+            });
+
+            test('returns true', () => {
+                expect(result).toBe(true);
+            });
+
+        });
+
+        describe('when called with different day', () => {
+            let result: boolean;
+
+            beforeEach(() => {
+                result = isSameUtcDay(new Date(2021, 1, 1), new Date(2021, 1, 15));
+            });
+
+            test('returns false', () => {
+                expect(result).toBe(false);
+            });
+        });
+    });
 });
