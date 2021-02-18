@@ -31,7 +31,7 @@ function RangePicker(props: ReduxProps) {
         </a>:</p>
         <CalendarMonth isVisible={isVisible}
             date={new Date()}
-            onClicked={(day: Date) => console.log('clicked', day)}
+            onDayPicked={(day: Date) => console.log('clicked', day)}
         />
     </>
 }

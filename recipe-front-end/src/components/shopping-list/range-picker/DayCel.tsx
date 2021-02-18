@@ -4,7 +4,7 @@ import { isSameUtcDay } from '../../../utils/DateUtils';
 interface OwnProps {
     day: Date;
     isEnabled: boolean;
-    onClicked: (date: Date) => void;
+    onDayPicked: (date: Date) => void;
 }
 
 export function DayCel(props: OwnProps) {
@@ -12,7 +12,7 @@ export function DayCel(props: OwnProps) {
     const valueToRender = !isNaN(dayOfMonth) ? dayOfMonth : '-';
     const isToday = isSameUtcDay(new Date(), props.day);
     return <span className={`picker-day ${isToday ? 'is-current-day' : ''}`} 
-        onClick={() => props.onClicked(props.day)}>
+        onClick={() => props.onDayPicked(props.day)}>
         {valueToRender}
     </span>
 }
