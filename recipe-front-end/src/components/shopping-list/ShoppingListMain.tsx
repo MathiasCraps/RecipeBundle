@@ -16,7 +16,7 @@ interface ReduxProps {
     menus: DayMenu[];
 }
 
-export function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
+function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
         menus: reduxModel.menuPlanning
     };
