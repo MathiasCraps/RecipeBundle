@@ -14,7 +14,10 @@ export function CalendarMonth(props: OwnProps) {
     }
 
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
-    return <div>        
-        {gridCurrentMonth.map((week, index) => <WeekRow week={week} key={index} onDayPicked={props.onDayPicked} />)}
+    return <div>
+        {gridCurrentMonth.map((week, index) => <WeekRow
+            week={week}
+            key={index}
+            onDayPicked={props.onDayPicked} />)}
     </div>
 }
