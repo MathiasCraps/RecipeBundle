@@ -23,13 +23,16 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 function RangePicker(props: ReduxProps) {
     const [isVisible, setIsvisible] = useState(false);
     return <>
-        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a 
-            href="#" 
-            className="date-range-initiator" 
-            tabIndex={0} 
+        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a
+            href="#"
+            className="date-range-initiator"
+            tabIndex={0}
             onClick={() => setIsvisible(!isVisible)}>{formatDate(props.startDate)} - {formatDate(props.endDate)}
-            </a>:</p>
-        <CalendarMonth isVisible={isVisible} date={new Date()} />
+        </a>:</p>
+        <CalendarMonth isVisible={isVisible}
+            date={new Date()}
+            onClicked={(day: Date) => console.log('clicked', day)}
+        />
     </>
 }
 

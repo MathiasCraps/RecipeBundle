@@ -5,9 +5,8 @@ import { WeekRow } from './WeekRow';
 interface OwnProps {
     date: Date;
     isVisible: boolean;
+    onClicked: (date: Date) => void;
 }
-
-
 
 export function CalendarMonth(props: OwnProps) {
     if (!props.isVisible) {
@@ -16,6 +15,6 @@ export function CalendarMonth(props: OwnProps) {
 
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
     return <div>        
-        {gridCurrentMonth.map((week, index) => <WeekRow week={week} key={index} />)}
+        {gridCurrentMonth.map((week, index) => <WeekRow week={week} key={index} onClicked={props.onClicked} />)}
     </div>
 }
