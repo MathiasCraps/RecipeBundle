@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { ReduxModel } from '../../../redux/Store';
 import { dateIsInRange, isSameUtcDay } from '../../../utils/DateUtils';
+import { DatePickerContext } from './RangePicker';
 
 interface OwnProps {
     day: Date;
@@ -26,11 +27,13 @@ export function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): Red
 type Props = OwnProps & ReduxProps;
 
 function DayCel(props: Props) {
+    const tempSelectedDay = useContext(DatePickerContext);
+    const isTempSelectedDay = tempSelectedDay ? isSameUtcDay(tempSelectedDay, props.day) : false;
     const dayOfMonth = props.day.getDate();
     const valueToRender = !isNaN(dayOfMonth) ? dayOfMonth : '-';
     const classList = [
         'picker-day',
-        props.isInRange ? 'in-range' : ''
+        isTempSelectedDay || (!tempSelectedDay && props.isInRange) ? 'in-range' : ''
     ].join(' ');
 
     return <span className={classList}

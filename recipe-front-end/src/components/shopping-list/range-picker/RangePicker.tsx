@@ -27,6 +27,7 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 
 type Props = ReduxProps & ReduxActions;
 
+export const DatePickerContext = React.createContext<Date | undefined>(undefined);
 function RangePicker(props: Props) {
     function updateRange(date: Date) {
         if(isNaN(+date)) {
@@ -45,7 +46,8 @@ function RangePicker(props: Props) {
 
     const [selection, setSelection] = useState<Date>();
     const [isVisible, setIsvisible] = useState(false);
-    return <>
+
+    return <DatePickerContext.Provider value={selection}>
         <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a
             href="#"
             className="date-range-initiator"
@@ -56,7 +58,7 @@ function RangePicker(props: Props) {
             date={new Date()}
             onDayPicked={updateRange}
         />
-    </>
+    </DatePickerContext.Provider>
 }
 
 export default connect(mapStateToProps, { updateShoppingRange })(RangePicker);
