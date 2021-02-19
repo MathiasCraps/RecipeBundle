@@ -4,7 +4,7 @@ import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, ViewType } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, ChangeViewAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction, ViewType } from "./Store";
 
 export function changeActiveView(view: ViewType, recipe: Recipe | undefined): ChangeViewAction {
     return {
@@ -168,5 +168,12 @@ export function updateMobileFapOpened(isOpened: boolean): UpdateMobileFapOpenedA
     return {
         type: Actions.MOBILE_FAB_OPENED,
         isOpened
+    }
+}
+
+export function updateShoppingRange(range: DateRange): UpdateShoppingRangeAction {
+    return {
+        type: Actions.UPDATE_SHOPPING_RANGE,
+        range
     }
 }
