@@ -1,5 +1,5 @@
 import React from 'react';
-import { DayCel } from './DayCel';
+import DayCel from './DayCel';
 
 interface OwnProps {
     week: Date[];
