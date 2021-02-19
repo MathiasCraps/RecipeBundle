@@ -62,3 +62,7 @@ export function isSameUtcDay(day1: Date, day2: Date): boolean {
 export function addDays(date: Date, days: number): Date {
     return new Date(Number(date) + (FULL_DAY_IN_MS * days));
 }
+
+export function dateIsInRange(dateToCompare: Date, fromDate: Date, toDate: Date): boolean {
+    return fromDate <= dateToCompare && toDate > dateToCompare;
+}
