@@ -1,10 +1,10 @@
-export const FULL_DAY_IN_MS  = 24 * 60 * 60 * 1e3;
+export const FULL_DAY_IN_MS = 24 * 60 * 60 * 1e3;
 
 export function calculateStartOfDate(date: Date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
 
-export function normalizeWeekDay(day: number): number {    
+export function normalizeWeekDay(day: number): number {
     if (day === 0) {
         return 6;
     }
@@ -12,7 +12,7 @@ export function normalizeWeekDay(day: number): number {
 }
 
 export function calculateMonthGrid(year: number, month: number): Date[][] {
-    const amountOfDays = new Date(year, month+1, 0).getDate();
+    const amountOfDays = new Date(year, month + 1, 0).getDate();
     const calendar: Date[][] = [];
     let week = -1;
     let startOfCurrentWeek = 1;
