@@ -64,8 +64,6 @@ export function addDays(date: Date, days: number): Date {
 }
 
 export function dateIsInRange(dateToCompare: Date, fromDate: Date, toDate: Date): boolean {
-    if (isSameUtcDay(dateToCompare, fromDate) || isSameUtcDay(dateToCompare, toDate)) {
-        return true;
-    }
-    return fromDate <= dateToCompare && toDate >= dateToCompare;
+    return calculateStartOfDate(fromDate) <= calculateStartOfDate(dateToCompare) &&
+        calculateStartOfDate(toDate) >= calculateStartOfDate(dateToCompare);
 }
