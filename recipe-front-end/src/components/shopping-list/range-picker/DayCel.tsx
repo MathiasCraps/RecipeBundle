@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { ReduxModel } from '../../../redux/Store';
-import { dateIsInRange, isSameUtcDay } from '../../../utils/DateUtils';
+import { dateIsInRange } from '../../../utils/DateUtils';
 import { DatePickerContext } from './RangePicker';
 
 interface OwnProps {
@@ -27,16 +27,18 @@ export function mapStateToProps(reduxStore: ReduxModel, ownProps: OwnProps): Red
 type Props = OwnProps & ReduxProps;
 
 function DayCel(props: Props) {
-    const tempSelectedDay = useContext(DatePickerContext);
-    const isTempSelectedDay = tempSelectedDay ? isSameUtcDay(tempSelectedDay, props.day) : false;
+    const draftSelectedDay = useContext(DatePickerContext);
+    const isInDraftRange = draftSelectedDay
+        ? dateIsInRange(props.day, draftSelectedDay.start, draftSelectedDay.end)
+        : false;
     const dayOfMonth = props.day.getDate();
     const valueToRender = !isNaN(dayOfMonth) ? dayOfMonth : '-';
     const classList = [
         'picker-day',
-        isTempSelectedDay || (!tempSelectedDay && props.isInRange) ? 'in-range' : ''
+        isInDraftRange || (!draftSelectedDay && props.isInRange) ? 'in-range' : ''
     ].join(' ');
 
-    return <span className={classList}
+    return <span tabIndex={-1} className={classList}
         onClick={() => props.onDayPicked(props.day)}>
         {valueToRender}
     </span>
