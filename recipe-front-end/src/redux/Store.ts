@@ -1,5 +1,6 @@
 import { Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
+import { addDays, calculateStartOfDate, FULL_DAY_IN_MS } from '../utils/DateUtils';
 import { Direction } from './Actions';
 
 export interface UserData {
@@ -18,6 +19,11 @@ export interface DayMenu {
     recipe: Recipe;
 }
 
+export interface DateRange {
+    start: Date;
+    end: Date;
+}
+
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
@@ -27,6 +33,7 @@ export interface ReduxModel {
     menuPlanning: DayMenu[];
     activeDay: number | undefined;
     mobileFabOpened: boolean;
+    shoppingDateRange: DateRange; 
 }
 
 export enum ViewType {
@@ -47,7 +54,8 @@ export enum Actions {
     REMOVE_MENU = 'REMOVE_MENU',
     UPDATE_ACTIVE_DAY = 'UPDATE_ACTIVE_DAY',
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
-    MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED'
+    MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
+    UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE'
 }
 
 export interface ChangeViewAction {
@@ -101,6 +109,13 @@ export interface UpdateMobileFapOpenedAction {
     isOpened: boolean;
 }
 
+export interface UpdateShoppingRangeAction {
+    type: Actions.UPDATE_SHOPPING_RANGE;
+    range: DateRange;
+}
+
+const today = calculateStartOfDate(new Date());
+const nextWeek = addDays(today, 7);
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
@@ -112,7 +127,11 @@ export const defaultState: ReduxModel = {
         name: undefined
     },
     activeDay: undefined,
-    mobileFabOpened: false
+    mobileFabOpened: false,
+    shoppingDateRange: {
+        start: today,
+        end: nextWeek
+    }
 }
 
 export type ReduxAction = ChangeViewAction | 
@@ -124,7 +143,8 @@ export type ReduxAction = ChangeViewAction |
     RemoveMenuAction | 
     UpdateActiveDayAction | 
     UpdateMenuDayAction |
-    UpdateMobileFapOpenedAction;
+    UpdateMobileFapOpenedAction |
+    UpdateShoppingRangeAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -191,6 +211,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 ...oldState,
                 mobileFabOpened: action.isOpened
             }
+        case Actions.UPDATE_SHOPPING_RANGE:
+            return {
+                ...oldState,
+                shoppingDateRange: action.range
+            };
         default:
             // not supported yet
     }
