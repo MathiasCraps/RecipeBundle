@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
-import { DayMenu, ReduxModel } from '../../redux/Store';
+import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
 import { calculateStartOfDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import ContentContainer from '../common/ContentContainer';
 import { combineToSingleValue } from './normalization/Combiner';
@@ -14,11 +14,13 @@ import { ShoppingIngredient } from './ShoppingIngredient';
 
 interface ReduxProps {
     menus: DayMenu[];
+    dateRange: DateRange;
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
-        menus: reduxModel.menuPlanning
+        menus: reduxModel.menuPlanning,
+        dateRange: reduxModel.shoppingDateRange
     };
 }
 
@@ -32,10 +34,7 @@ const rulesHandler = new RulesHandler([
 ]);
 
 export function ShoppingListMain(props: ReduxProps) {
-    const startTime = calculateStartOfDate(new Date());
-    const endTime = new Date(startTime.getTime() + (FULL_DAY_IN_MS * 7));
-
-    const menusToConsider = selectMenuFromRange(props.menus, startTime, endTime);
+    const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
     const ingredientsFromRecipes = menusToConsider.map(e => e.recipe.ingredients).flat(1);
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
