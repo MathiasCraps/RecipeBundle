@@ -92,7 +92,7 @@ function RangePicker(props: Props) {
         let assigned: DateRange;
         if (daysToAdd) {
             if (stage === StageOption.START) {
-                let baseDateStart: Date = (stage === StageOption.START && selection)
+                const baseDateStart: Date = (stage === StageOption.START && selection)
                     ? selection.start
                     : calculateStartOfDate(props.startDate);
                 const modified = addDays(baseDateStart, daysToAdd);
