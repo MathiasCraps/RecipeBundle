@@ -1,6 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import ActionsContainer from './components/common/ActionsContainer';
@@ -14,15 +15,11 @@ import { ReduxModel, ViewType } from './redux/Store';
 
 interface AppProps {
   recipes: Recipe[];
-  view: ViewType;
-  activeRecipe: Recipe | undefined;
 }
 
 function mapStateToProps(props: ReduxModel): AppProps {
   return {
-    recipes: props.recipes,
-    view: props.view,
-    activeRecipe: props.activeRecipe
+    recipes: props.recipes
   };
 }
 
@@ -31,16 +28,19 @@ function App(props: AppProps) {
     <Center className="top-header">
       <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
       <Box className="headers-side-icons">
-        <ActionsContainer/>
+        <ActionsContainer />
       </Box>
     </Center>
     <AccountMenu />
-    {props.view === ViewType.AddRecipe && <AddRecipeMenu /> }
-    {props.view === ViewType.RecipeView && <RecipeOverview /> }
-    {props.view === ViewType.Overview && <RecipeList recipes={props.recipes} />}
-    {props.view === ViewType.MenuPlanner && <MenuPlanner />}
-    {props.view === ViewType.ShoppingList && <ShoppingListMain />}
-
+    <Router>
+      <Switch>
+        <Route path="/addrecipe"><AddRecipeMenu /></Route>
+        <Route path="/recipeview"><RecipeOverview /></Route>
+        <Route path="/menuplanner"><MenuPlanner /></Route>
+        <Route path="/shoppinglist"><ShoppingListMain /></Route>
+        <Route path="/"><RecipeList recipes={props.recipes} /></Route>
+      </Switch>
+    </Router>
   </header></Box>)
 }
 
