@@ -1,7 +1,7 @@
 export enum Paths {
     BASE = '/',
     ADD_RECIPE = '/addrecipe',
-    RECIPE_OVERVIEW = '/recipeview',
+    RECIPE_OVERVIEW = '/recipe',
     PLANNER = '/menuplanner',
     LIST = '/shoppinglist',
 }
