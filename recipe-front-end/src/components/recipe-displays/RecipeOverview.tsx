@@ -7,9 +7,11 @@ import { Localisation } from "../../localisation/AppTexts";
 import { changeActiveView, Direction, switchActiveRecipe } from "../../redux/Actions";
 import { ReduxModel, ViewType } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
+import { Redirect, useRouteMatch } from 'react-router-dom';
+import { Paths } from '../../Paths';
 
 interface RecipeOverviewProps {
-    recipe: Recipe;
+    recipes: Recipe[];
 }
 
 interface ReduxProps {
@@ -21,14 +23,24 @@ type Props = RecipeOverviewProps & ReduxProps;
 
 function mapStateToProps(state: ReduxModel) {
     return {
-        recipe: state.activeRecipe!
+        recipes: state.recipes
     };
+}
+
+interface RecipeOverviewUrlParams {
+    id: string | undefined;
 }
 
 function RecipeOverview(props: Props) {
     const [originalTouch, setOriginalTouch] = useState(0);
     const [direction, setDirection] = useState<Direction>();
+    const urlId = useRouteMatch<RecipeOverviewUrlParams>(`${Paths.RECIPE_OVERVIEW}/:id`);
+    const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
 
+    if (!recipe) {
+        return <Redirect to={Paths.BASE} />
+    }
+    
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
             let direction: Direction | undefined;
@@ -91,14 +103,14 @@ function RecipeOverview(props: Props) {
             <a className={`recipe-overview-next ${direction === Direction.NEXT ? 'showTap' : ''}`} href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
             </a>
-            <Heading as="h2">{props.recipe.title}</Heading>
-            <Image src={props.recipe.image} alt="" />
+            <Heading as="h2">{recipe.title}</Heading>
+            <Image src={recipe.image} alt="" />
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-            <ul>{props.recipe.ingredients.map((ingredient, index) => (
+            <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
                 </li>))}</ul>
             <Heading as="h3">{Localisation.STEPS}</Heading>
-            {props.recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+            {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
         </ContentContainer></div>);
 }
 
