@@ -3,10 +3,8 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { connect } from "react-redux";
-import { Link, HashRouter } from "react-router-dom";
-import { Paths } from '../../Paths';
-import { changeActiveView, switchMenu } from "../../redux/Actions";
-import { OpenedMenu, ViewType } from "../../redux/Store";
+import { switchMenu } from "../../redux/Actions";
+import { OpenedMenu } from "../../redux/Store";
 
 interface OwnProps {
     icon: IconDefinition;

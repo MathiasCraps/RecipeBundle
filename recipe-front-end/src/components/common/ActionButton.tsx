@@ -2,11 +2,8 @@ import { Tooltip } from "@chakra-ui/react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { connect } from "react-redux";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { Paths } from '../../Paths';
-import { changeActiveView, switchMenu } from "../../redux/Actions";
-import { OpenedMenu, ViewType } from "../../redux/Store";
 
 interface OwnProps {
     icon: IconDefinition;
