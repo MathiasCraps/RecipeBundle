@@ -4,19 +4,7 @@ import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, SwitchActiveRecipeAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction, ViewType } from "./Store";
-
-export enum Direction {
-    PREVIOUS,
-    NEXT
-}
-
-export function switchActiveRecipe(direction: Direction): SwitchActiveRecipeAction {
-    return {
-        type: Actions.SWITCH_ACTIVE_RECIPE,
-        direction
-    }
-}
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {

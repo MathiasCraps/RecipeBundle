@@ -2,14 +2,12 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Redirect, useRouteMatch } from 'react-router-dom';
+import { Link, Redirect, useRouteMatch } from 'react-router-dom';
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { Direction, switchActiveRecipe } from "../../redux/Actions";
 import { ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
-import { Link } from 'react-router-dom';
 
 interface ReduxProps {
     recipes: Recipe[];
@@ -17,10 +15,15 @@ interface ReduxProps {
 
 type Props = ReduxProps;
 
-function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], direction: 'previous' | 'next') {
+enum Direction {
+    PREVIOUS,
+    NEXT
+}
+
+function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], direction: Direction) {
     const indexInArray = recipes.indexOf(recipes.filter((recipe) => recipe.id === currentIndex)[0]);
 
-    const proposedRecipeId = indexInArray + (direction === 'previous' ? -1 : +1);
+    const proposedRecipeId = indexInArray + (direction === Direction.PREVIOUS ? -1 : +1);
     return recipes[Math.min(recipes.length - 1, Math.max(0, proposedRecipeId))].id;
 }
 
@@ -35,8 +38,8 @@ function RecipeOverview(props: Props) {
     const [direction, setDirection] = useState<Direction>();
     const urlId = useRouteMatch<{ id: string | undefined}>(`${Paths.RECIPE_OVERVIEW}/:id`);
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
-    const previous = getSurroundingRecipeId(recipe.id, props.recipes, 'previous');
-    const next = getSurroundingRecipeId(recipe.id, props.recipes, 'next');
+    const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
+    const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
@@ -107,4 +110,4 @@ function RecipeOverview(props: Props) {
         </ContentContainer></div>);
 }
 
-export default connect(mapStateToProps, { switchActiveRecipe })(RecipeOverview);
+export default connect(mapStateToProps)(RecipeOverview);

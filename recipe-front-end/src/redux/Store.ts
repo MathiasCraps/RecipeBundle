@@ -1,7 +1,6 @@
 import { Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate, FULL_DAY_IN_MS } from '../utils/DateUtils';
-import { Direction } from './Actions';
 
 export interface UserData {
     loggedIn: boolean;
@@ -27,7 +26,6 @@ export interface DateRange {
 export interface ReduxModel {
     view: ViewType;
     recipes: Recipe[];
-    activeRecipe: Recipe | undefined;
     openedMenu: OpenedMenu;
     user: UserData;
     menuPlanning: DayMenu[];
@@ -45,7 +43,6 @@ export enum ViewType {
 }
 
 export enum Actions {
-    SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
     ADD_RECIPE = 'ADD_RECIPE',
@@ -55,11 +52,6 @@ export enum Actions {
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE'
-}
-
-export interface SwitchActiveRecipeAction {
-    type: Actions.SWITCH_ACTIVE_RECIPE;
-    direction: Direction;
 }
 
 export interface ToggleMenuAction {
@@ -112,7 +104,6 @@ const nextWeek = addDays(today, 7);
 export const defaultState: ReduxModel = {
     view: ViewType.Overview,
     recipes: [],
-    activeRecipe: undefined,
     openedMenu: OpenedMenu.NONE,
     menuPlanning: [],
     user: {
@@ -127,8 +118,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-export type ReduxAction = SwitchActiveRecipeAction | 
-    ToggleMenuAction | 
+export type ReduxAction = ToggleMenuAction | 
     LogoutAction | 
     AddRecipeAction | 
     AddMenuAction | 
@@ -140,18 +130,6 @@ export type ReduxAction = SwitchActiveRecipeAction |
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
-        case Actions.SWITCH_ACTIVE_RECIPE:
-            if (oldState.activeRecipe) {
-                const recipeIndex = oldState.recipes.indexOf(oldState.activeRecipe);
-                const adjustedRecipe = recipeIndex + (action.direction === Direction.PREVIOUS ? -1 : +1);
-                const boundariesClamped = Math.min(oldState.recipes.length - 1, Math.max(0, adjustedRecipe))    
-                return {
-                    ...oldState,
-                    activeRecipe: oldState.recipes[boundariesClamped],
-                    mobileFabOpened: false
-                }    
-            }
-            break;
         case Actions.TOGGLE_MENU:
             return {
                 ...oldState,
