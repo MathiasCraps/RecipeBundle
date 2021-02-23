@@ -9,32 +9,34 @@ import { Paths } from '../../Paths';
 import { Direction, switchActiveRecipe } from "../../redux/Actions";
 import { ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
+import { Link } from 'react-router-dom';
 
-interface RecipeOverviewProps {
+interface ReduxProps {
     recipes: Recipe[];
 }
 
-interface ReduxProps {
-    switchActiveRecipe: typeof switchActiveRecipe;
+type Props = ReduxProps;
+
+function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], direction: 'previous' | 'next') {
+    const indexInArray = recipes.indexOf(recipes.filter((recipe) => recipe.id === currentIndex)[0]);
+
+    const proposedRecipeId = indexInArray + (direction === 'previous' ? -1 : +1);
+    return recipes[Math.min(recipes.length - 1, Math.max(0, proposedRecipeId))].id;
 }
 
-type Props = RecipeOverviewProps & ReduxProps;
-
-function mapStateToProps(state: ReduxModel) {
+function mapStateToProps(state: ReduxModel): ReduxProps {
     return {
         recipes: state.recipes
     };
 }
 
-interface RecipeOverviewUrlParams {
-    id: string | undefined;
-}
-
 function RecipeOverview(props: Props) {
     const [originalTouch, setOriginalTouch] = useState(0);
     const [direction, setDirection] = useState<Direction>();
-    const urlId = useRouteMatch<RecipeOverviewUrlParams>(`${Paths.RECIPE_OVERVIEW}/:id`);
+    const urlId = useRouteMatch<{ id: string | undefined}>(`${Paths.RECIPE_OVERVIEW}/:id`);
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
+    const previous = getSurroundingRecipeId(recipe.id, props.recipes, 'previous');
+    const next = getSurroundingRecipeId(recipe.id, props.recipes, 'next');
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
@@ -42,27 +44,19 @@ function RecipeOverview(props: Props) {
     
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
-            let direction: Direction | undefined;
-
-            if (keyEvent.code === 'Escape') {
-                window.location.href = Paths.BASE;
-                return;
-            }
-
             switch (keyEvent.code) {
+                case 'Escape':
+                    window.location.href = Paths.BASE;
+                    return;
                 case "ArrowLeft":
-                    direction = Direction.PREVIOUS;
-                    break;
+                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
+                    return;
                 case "ArrowRight":
-                    direction = Direction.NEXT;
-                    break;
+                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${next}`
+                    return;
                 default:
                 // ignore
             }
-            if (direction !== undefined) {
-                props.switchActiveRecipe(direction)
-            }
-
         }
 
         document.body.addEventListener('keyup', handleKeyPress);
@@ -84,24 +78,24 @@ function RecipeOverview(props: Props) {
                 setDirection(Direction.NEXT);
             } else if (xDifference < -minimumMoveFactor) {
                 setDirection(Direction.PREVIOUS);
+                window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
             }
         }}
         onTouchEndCapture={() => {
             if (direction !== undefined) {
-                props.switchActiveRecipe(direction);
+                window.location.href = `${Paths.RECIPE_OVERVIEW}/${direction === Direction.PREVIOUS ? previous : next}`;
             }
 
             setOriginalTouch(0);
-            setDirection(0);
             setDirection(undefined);
         }}
     ><ContentContainer>
-            <a className={`recipe-overview-previous ${direction === Direction.PREVIOUS ? 'showTap' : ''}`} href="#" onClick={() => props.switchActiveRecipe(Direction.PREVIOUS)} >
+            <Link className={`recipe-overview-previous ${direction === Direction.PREVIOUS ? 'showTap' : ''}`} to={`${Paths.RECIPE_OVERVIEW}/${previous}`} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
-            </a>
-            <a className={`recipe-overview-next ${direction === Direction.NEXT ? 'showTap' : ''}`} href="#" onClick={() => props.switchActiveRecipe(Direction.NEXT)}>
+            </Link>
+            <Link className={`recipe-overview-next ${direction === Direction.NEXT ? 'showTap' : ''}`} to={`${Paths.RECIPE_OVERVIEW}/${next}`} >
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
-            </a>
+            </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
