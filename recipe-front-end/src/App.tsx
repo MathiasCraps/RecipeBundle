@@ -12,7 +12,7 @@ import AddRecipeMenu from "./components/recipe-management/AddRecipeMenu";
 import ShoppingListMain from './components/shopping-list/ShoppingListMain';
 import { Recipe } from "./interfaces/Recipe";
 import { Paths } from './Paths';
-import { ReduxModel, ViewType } from './redux/Store';
+import { ReduxModel } from './redux/Store';
 
 interface AppProps {
   recipes: Recipe[];
@@ -33,7 +33,6 @@ function App(props: AppProps) {
       </Box>
     </Center>
     <AccountMenu />
-    <Router>
       <Switch>
         <Route path={Paths.ADD_RECIPE}><AddRecipeMenu /></Route>
         <Route path={Paths.RECIPE_OVERVIEW}><RecipeOverview /></Route>
@@ -41,7 +40,6 @@ function App(props: AppProps) {
         <Route path={Paths.LIST}><ShoppingListMain /></Route>
         <Route path={Paths.BASE}><RecipeList recipes={props.recipes} /></Route>
       </Switch>
-    </Router>
   </header></Box>)
 }
 

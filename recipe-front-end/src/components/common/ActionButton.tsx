@@ -11,15 +11,13 @@ interface OwnProps {
     linkTo: Paths;
 }
 
-export function MainMenuButton(props: OwnProps) {
+export default function MainMenuButton(props: OwnProps) {
     return <Tooltip label={props.label} fontSize="md">
-        <Router>
-            <Link to={props.linkTo}>
-                <button className='action-item'
-                    aria-label={props.label}>
-                    <FontAwesomeIcon icon={props.icon} />
-                </button>
-            </Link>
-        </Router>
-    </Tooltip>;
+        <Link to={props.linkTo}>
+            <button className='action-item'
+                aria-label={props.label}>
+                <FontAwesomeIcon icon={props.icon} />
+            </button>
+        </Link>
+    </Tooltip>
 }

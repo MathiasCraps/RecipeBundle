@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { changeActiveView } from '../../redux/Actions';
-import { ReduxModel, ViewType } from '../../redux/Store';
-import { MainMenuButton } from "../common/ActionButton";
+import { ReduxModel } from '../../redux/Store';
+import MainMenuButton from "../common/ActionButton";
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -28,7 +28,7 @@ function ShoppingListMenuButton(props: Props) {
         return <></>
     }
 
-    return <MainMenuButton linkTo={Paths.PLANNER} icon={faCarrot} label={Localisation.SHOPPING_LIST} />
+    return <MainMenuButton linkTo={Paths.LIST} icon={faCarrot} label={Localisation.SHOPPING_LIST} />
 }
 
 export default connect(mapStateToProps, { changeActiveView })(ShoppingListMenuButton);
