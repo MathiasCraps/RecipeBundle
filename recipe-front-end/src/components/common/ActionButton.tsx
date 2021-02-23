@@ -2,35 +2,22 @@ import { Tooltip } from "@chakra-ui/react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { connect } from "react-redux";
-import { changeActiveView, switchMenu } from "../../redux/Actions";
-import { OpenedMenu, ViewType } from "../../redux/Store";
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Paths } from '../../Paths';
 
 interface OwnProps {
     icon: IconDefinition;
-    menuToOpen?: OpenedMenu;
-    viewToOpen?: ViewType;
     label: string;
+    linkTo: Paths;
 }
 
-interface ReduxActionProps {
-    switchMenu: typeof switchMenu;
-    changeActiveView: typeof changeActiveView;
-}
-
-type Props = OwnProps & ReduxActionProps;
-
-function MainMenuButton(props: Props) {
-    const changeView = props.menuToOpen 
-        ? () => props.switchMenu(props.menuToOpen!)
-        : () => props.changeActiveView(props.viewToOpen!, undefined)
+export default function MainMenuButton(props: OwnProps) {
     return <Tooltip label={props.label} fontSize="md">
-        <button className='action-item'
-            onClick={changeView}
-            aria-label={props.label}>
-            <FontAwesomeIcon icon={props.icon} />
-        </button>
-    </Tooltip>;
+        <Link to={props.linkTo}>
+            <button className='action-item'
+                aria-label={props.label}>
+                <FontAwesomeIcon icon={props.icon} />
+            </button>
+        </Link>
+    </Tooltip>
 }
-
-export default connect(null, { switchMenu, changeActiveView })(MainMenuButton);

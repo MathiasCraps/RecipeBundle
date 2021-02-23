@@ -2,16 +2,12 @@ import { faCarrot } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
-import { changeActiveView } from '../../redux/Actions';
-import { ReduxModel, ViewType } from '../../redux/Store';
+import { Paths } from '../../Paths';
+import { ReduxModel } from '../../redux/Store';
 import MainMenuButton from "../common/ActionButton";
 
 interface ReduxProps {
     loggedIn: boolean;
-}
-
-interface ReduxActions {
-    changeActiveView: typeof changeActiveView;
 }
 
 function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
@@ -20,14 +16,12 @@ function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
     }
 }
 
-type Props = ReduxProps & ReduxActions;
-
-function ShoppingListMenuButton(props: Props) {
+function ShoppingListMenuButton(props: ReduxProps) {
     if (!props.loggedIn) {
         return <></>
     }
 
-    return <MainMenuButton icon={faCarrot} label={Localisation.SHOPPING_LIST} viewToOpen={ViewType.ShoppingList} />
+    return <MainMenuButton linkTo={Paths.LIST} icon={faCarrot} label={Localisation.SHOPPING_LIST} />
 }
 
-export default connect(mapStateToProps, { changeActiveView })(ShoppingListMenuButton);
+export default connect(mapStateToProps)(ShoppingListMenuButton);

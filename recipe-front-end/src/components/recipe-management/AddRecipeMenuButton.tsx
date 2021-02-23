@@ -2,16 +2,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
-import { changeActiveView } from "../../redux/Actions";
-import { ReduxModel, ViewType } from "../../redux/Store";
+import { Paths } from '../../Paths';
+import { ReduxModel } from "../../redux/Store";
 import MainMenuButton from "../common/ActionButton";
 
 interface OwnProps {
     loggedIn: boolean;
-}
-
-interface ReduxProps {
-    changeActiveView: typeof changeActiveView;
 }
 
 function mapStateToProps(reduxStore: ReduxModel): OwnProps {
@@ -20,13 +16,11 @@ function mapStateToProps(reduxStore: ReduxModel): OwnProps {
     }
 }
 
-type Props = OwnProps & ReduxProps;
-
-function AddRecipeMenuButton(props: Props) {
+function AddRecipeMenuButton(props: OwnProps) {
     if (!props.loggedIn) {
         return <></>
     }
 
-    return <MainMenuButton label={Localisation.ADD_OWN_RECIPE} icon={faPlus} viewToOpen={ViewType.AddRecipe} />}
+    return <MainMenuButton linkTo={Paths.ADD_RECIPE} label={Localisation.ADD_OWN_RECIPE} icon={faPlus} />}
 
-export default connect(mapStateToProps, { changeActiveView })(AddRecipeMenuButton);
+export default connect(mapStateToProps)(AddRecipeMenuButton);

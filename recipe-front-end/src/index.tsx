@@ -10,6 +10,7 @@ import { BackEndUserData } from "./interfaces/UserData";
 import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -56,7 +57,9 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     <React.StrictMode>
       <ChakraProvider>
         <Provider store={store}>
-          <App />
+          <Router>
+            <App />
+          </Router>
         </Provider>
       </ChakraProvider>
     </React.StrictMode>,

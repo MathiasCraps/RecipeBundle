@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { switchMenu } from "../../redux/Actions";
 import { OpenedMenu, ReduxModel } from "../../redux/Store";
-import MainMenuButton from "../common/ActionButton"
+import HashButton from '../common/HashButton';
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -18,7 +18,7 @@ function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
 
 export function UserMenuButton(props: ReduxProps) {
     const icon = props.loggedIn ? faUserAlt : faUserNinja;
-    return <MainMenuButton label={Localisation.ACCOUNT_MANAGEMENT} icon={icon} menuToOpen={OpenedMenu.SESSION} />;
+    return <HashButton menuToOpen={OpenedMenu.SESSION} label={Localisation.ACCOUNT_MANAGEMENT} icon={icon}  />;
 }
 
 export default connect(mapStateToProps, { switchMenu })(UserMenuButton);

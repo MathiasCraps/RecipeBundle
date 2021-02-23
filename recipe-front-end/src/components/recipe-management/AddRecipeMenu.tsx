@@ -3,11 +3,13 @@ import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
 import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { addRecipe, AddRecipeReturn, changeActiveView } from "../../redux/Actions";
-import { AddRecipeAction, ReduxModel, ViewType } from "../../redux/Store";
+import { Paths } from '../../Paths';
+import { addRecipe, AddRecipeReturn } from "../../redux/Actions";
+import { AddRecipeAction, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import { IngredientsModal } from "./IngredientsModal";
 
@@ -21,11 +23,10 @@ export interface IngredientInput {
 let index = 0;
 
 interface ComponentProps {
-    isOpened: boolean;
+    isLoggedIn: boolean;
 }
 
 interface ReduxProps {
-    changeActiveView: typeof changeActiveView;
     addRecipe: AddRecipeReturn;
 }
 
@@ -34,13 +35,12 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isOpened: reduxModel.view === ViewType.AddRecipe
+        isLoggedIn: reduxModel.user.loggedIn
     }
 }
 
 function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction>): ReduxProps {
     return { 
-        changeActiveView, 
         addRecipe: addRecipe(dispatch) 
     }
 }
@@ -55,10 +55,14 @@ function createEmptyIngredient() {
 }
 
 export function AddRecipeMenu(props: Props) {
+    if (!props.isLoggedIn) {
+        return <Redirect to={Paths.BASE} />
+    }
+
     const toast = useToast();
 
     function close() {
-        props.changeActiveView(ViewType.Overview, undefined);
+        window.location.href = Paths.BASE;
     }
 
     function removeIngredient(requestedRemoveIngredient: IngredientInput) {

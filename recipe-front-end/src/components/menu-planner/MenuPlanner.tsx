@@ -5,16 +5,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { changeActiveView, updateActiveDay } from '../../redux/Actions';
+import { Paths } from '../../Paths';
+import { updateActiveDay } from '../../redux/Actions';
 import { DayMenu, ReduxModel } from "../../redux/Store";
 import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
 import AddMenuOverlay from "./AddMenuOverlay";
 import DayDetails from "./DayDetails";
 import Week from "./Week";
+import { Redirect } from "react-router-dom";
 
 interface ReduxProps {
     activeDay: number | undefined;
+    isLoggedIn: boolean
 }
 
 interface ReduxActions {
@@ -23,6 +26,7 @@ interface ReduxActions {
 
 function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
     return {
+        isLoggedIn: reduxStore.user.loggedIn,
         activeDay: reduxStore.activeDay
     }
 }
@@ -39,6 +43,10 @@ export function filterForDate(menus: DayMenu[], forDate: Date): DayMenu[] {
 }
 
 function MenuPlanner(props: Props) {
+    if (!props.isLoggedIn) {
+        return <Redirect to={Paths.BASE} />
+    }
+
     const currentDay = calculateStartOfDate(new Date());
     const rawCurrentDay = currentDay.getDay();
     const currentWeekDay = rawCurrentDay === 0 ? 6 : currentDay.getDay() - 1;
@@ -99,4 +107,4 @@ function MenuPlanner(props: Props) {
 }
 
 
-export default connect(mapStateToProps, { changeActiveView, updateActiveDay })(MenuPlanner);
+export default connect(mapStateToProps, { updateActiveDay })(MenuPlanner);
