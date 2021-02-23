@@ -24,7 +24,6 @@ export interface DateRange {
 }
 
 export interface ReduxModel {
-    view: ViewType;
     recipes: Recipe[];
     openedMenu: OpenedMenu;
     user: UserData;
@@ -32,14 +31,6 @@ export interface ReduxModel {
     activeDay: number | undefined;
     mobileFabOpened: boolean;
     shoppingDateRange: DateRange; 
-}
-
-export enum ViewType {
-    Overview,
-    RecipeView,
-    AddRecipe,
-    MenuPlanner,
-    ShoppingList
 }
 
 export enum Actions {
@@ -102,7 +93,6 @@ export interface UpdateShoppingRangeAction {
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
 export const defaultState: ReduxModel = {
-    view: ViewType.Overview,
     recipes: [],
     openedMenu: OpenedMenu.NONE,
     menuPlanning: [],

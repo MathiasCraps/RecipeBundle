@@ -9,7 +9,7 @@ import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn } from "../../redux/Actions";
-import { AddRecipeAction, ReduxModel, ViewType } from "../../redux/Store";
+import { AddRecipeAction, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import { IngredientsModal } from "./IngredientsModal";
 
@@ -24,7 +24,6 @@ let index = 0;
 
 interface ComponentProps {
     isLoggedIn: boolean;
-    isOpened: boolean;
 }
 
 interface ReduxProps {
@@ -36,8 +35,7 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isLoggedIn: reduxModel.user.loggedIn,
-        isOpened: reduxModel.view === ViewType.AddRecipe
+        isLoggedIn: reduxModel.user.loggedIn
     }
 }
 
