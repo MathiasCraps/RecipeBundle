@@ -45,7 +45,6 @@ export enum ViewType {
 }
 
 export enum Actions {
-    CHANGE_VIEW = 'CHANGE_VIEW',
     SWITCH_ACTIVE_RECIPE = 'SWITCH_ACTIVE_RECIPE',
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
@@ -56,12 +55,6 @@ export enum Actions {
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE'
-}
-
-export interface ChangeViewAction {
-    type: Actions.CHANGE_VIEW;
-    view: ViewType
-    recipe: Recipe | undefined
 }
 
 export interface SwitchActiveRecipeAction {
@@ -134,8 +127,7 @@ export const defaultState: ReduxModel = {
     }
 }
 
-export type ReduxAction = ChangeViewAction | 
-    SwitchActiveRecipeAction | 
+export type ReduxAction = SwitchActiveRecipeAction | 
     ToggleMenuAction | 
     LogoutAction | 
     AddRecipeAction | 
@@ -148,13 +140,6 @@ export type ReduxAction = ChangeViewAction |
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
-        case Actions.CHANGE_VIEW:
-            if (oldState.view !== action.view) {
-                return {
-                    ...oldState, view: action.view, activeRecipe: action.recipe, mobileFabOpened: false
-                }
-            }
-            break;
         case Actions.SWITCH_ACTIVE_RECIPE:
             if (oldState.activeRecipe) {
                 const recipeIndex = oldState.recipes.indexOf(oldState.activeRecipe);

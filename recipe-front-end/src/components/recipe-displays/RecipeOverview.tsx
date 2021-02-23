@@ -2,20 +2,19 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Redirect, useRouteMatch } from 'react-router-dom';
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { changeActiveView, Direction, switchActiveRecipe } from "../../redux/Actions";
-import { ReduxModel, ViewType } from "../../redux/Store";
-import ContentContainer from "../common/ContentContainer";
-import { Redirect, useRouteMatch } from 'react-router-dom';
 import { Paths } from '../../Paths';
+import { Direction, switchActiveRecipe } from "../../redux/Actions";
+import { ReduxModel } from "../../redux/Store";
+import ContentContainer from "../common/ContentContainer";
 
 interface RecipeOverviewProps {
     recipes: Recipe[];
 }
 
 interface ReduxProps {
-    changeActiveView: typeof changeActiveView;
     switchActiveRecipe: typeof switchActiveRecipe;
 }
 
@@ -46,7 +45,7 @@ function RecipeOverview(props: Props) {
             let direction: Direction | undefined;
 
             if (keyEvent.code === 'Escape') {
-                props.changeActiveView(ViewType.Overview, undefined);
+                window.location.href = Paths.BASE;
                 return;
             }
 
@@ -114,4 +113,4 @@ function RecipeOverview(props: Props) {
         </ContentContainer></div>);
 }
 
-export default connect(mapStateToProps, { changeActiveView, switchActiveRecipe })(RecipeOverview);
+export default connect(mapStateToProps, { switchActiveRecipe })(RecipeOverview);

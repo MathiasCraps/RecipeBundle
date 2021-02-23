@@ -3,16 +3,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { changeActiveView } from "../../redux/Actions";
 import { ReduxModel } from "../../redux/Store";
 import MainMenuButton from '../common/ActionButton';
 
 interface OwnProps {
     loggedIn: boolean;
-}
-
-interface ReduxProps {
-    changeActiveView: typeof changeActiveView;
 }
 
 function mapStateToProps(store: ReduxModel): OwnProps {
@@ -21,9 +16,7 @@ function mapStateToProps(store: ReduxModel): OwnProps {
     }
 }
 
-type Props = OwnProps & ReduxProps;
-
-function MenuPlannerButton(props: Props) {
+function MenuPlannerButton(props: OwnProps) {
     if (!props.loggedIn) {
         return <></>;
     }
@@ -33,4 +26,4 @@ function MenuPlannerButton(props: Props) {
         label={Localisation.MENU_PLANNER} />
 }
 
-export default connect(mapStateToProps, { changeActiveView })(MenuPlannerButton);
+export default connect(mapStateToProps)(MenuPlannerButton);

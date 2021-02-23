@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { addRecipe, AddRecipeReturn, changeActiveView } from "../../redux/Actions";
+import { Paths } from '../../Paths';
+import { addRecipe, AddRecipeReturn } from "../../redux/Actions";
 import { AddRecipeAction, ReduxModel, ViewType } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import { IngredientsModal } from "./IngredientsModal";
@@ -25,7 +26,6 @@ interface ComponentProps {
 }
 
 interface ReduxProps {
-    changeActiveView: typeof changeActiveView;
     addRecipe: AddRecipeReturn;
 }
 
@@ -40,7 +40,6 @@ function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
 
 function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction>): ReduxProps {
     return { 
-        changeActiveView, 
         addRecipe: addRecipe(dispatch) 
     }
 }
@@ -58,7 +57,7 @@ export function AddRecipeMenu(props: Props) {
     const toast = useToast();
 
     function close() {
-        props.changeActiveView(ViewType.Overview, undefined);
+        window.location.href = Paths.BASE;
     }
 
     function removeIngredient(requestedRemoveIngredient: IngredientInput) {

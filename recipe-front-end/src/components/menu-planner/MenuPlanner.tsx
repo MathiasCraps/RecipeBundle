@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
-import { changeActiveView, updateActiveDay } from '../../redux/Actions';
+import { updateActiveDay } from '../../redux/Actions';
 import { DayMenu, ReduxModel } from "../../redux/Store";
 import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
@@ -99,4 +99,4 @@ function MenuPlanner(props: Props) {
 }
 
 
-export default connect(mapStateToProps, { changeActiveView, updateActiveDay })(MenuPlanner);
+export default connect(mapStateToProps, { updateActiveDay })(MenuPlanner);

@@ -1,24 +1,19 @@
 import { Box, CloseButton, SlideFade } from "@chakra-ui/react";
 import React from "react";
-import { connect } from "react-redux";
-import { changeActiveView } from "../../redux/Actions";
-import { ViewType } from "../../redux/Store";
+import { Link } from "react-router-dom";
+import { Paths } from '../../Paths';
 
 interface OwnProps {
     classes?: string;
     children: React.ReactNode;
 }
 
-interface ReduxActions {
-    changeActiveView: typeof changeActiveView;
-}
-
-type Props = OwnProps & ReduxActions;
-
-function ContentContainer(props: Props) {
-    const classes = props.classes ? {className: props.classes} : {};
+export default function ContentContainer(props: OwnProps) {
+    const classes = props.classes ? { className: props.classes } : {};
     return <Box {...classes}>
-        <CloseButton className="close-button-top-left" autoFocus={true} size="md" onClick={() => props.changeActiveView(ViewType.Overview, undefined)} />
+        <Link to={Paths.BASE}>
+            <CloseButton className="close-button-top-left" autoFocus={true} size="md" />
+        </Link>
         <SlideFade in={true}>
             <Box className="card-content" padding="2em" maxWidth="80em" margin="auto">
                 {props.children}
@@ -26,5 +21,3 @@ function ContentContainer(props: Props) {
         </SlideFade>
     </Box>
 }
-
-export default connect(null, { changeActiveView })(ContentContainer)
