@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
+import { Paths } from '../../Paths';
 import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
-import { calculateStartOfDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import ContentContainer from '../common/ContentContainer';
 import { combineToSingleValue } from './normalization/Combiner';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
@@ -11,16 +11,19 @@ import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
 import RangePicker from './range-picker/RangePicker';
 import { ShoppingIngredient } from './ShoppingIngredient';
+import { Redirect } from "react-router-dom";
 
 interface ReduxProps {
     menus: DayMenu[];
     dateRange: DateRange;
+    loggedIn: boolean
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
         menus: reduxModel.menuPlanning,
-        dateRange: reduxModel.shoppingDateRange
+        dateRange: reduxModel.shoppingDateRange,
+        loggedIn: reduxModel.user.loggedIn
     };
 }
 
@@ -34,6 +37,10 @@ const rulesHandler = new RulesHandler([
 ]);
 
 export function ShoppingListMain(props: ReduxProps) {
+    if (!props.loggedIn) {
+        return <Redirect to={Paths.BASE} />
+    }
+
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
     const ingredientsFromRecipes = menusToConsider.map(e => e.recipe.ingredients).flat(1);
     const rawSorted = sortByIngredient(ingredientsFromRecipes);

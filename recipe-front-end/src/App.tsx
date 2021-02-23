@@ -1,7 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import ActionsContainer from './components/common/ActionsContainer';
@@ -43,4 +43,4 @@ function App(props: AppProps) {
   </header></Box>)
 }
 
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps)(App);

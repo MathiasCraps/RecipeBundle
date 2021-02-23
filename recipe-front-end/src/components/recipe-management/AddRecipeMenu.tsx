@@ -3,6 +3,7 @@ import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
 import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
@@ -22,6 +23,7 @@ export interface IngredientInput {
 let index = 0;
 
 interface ComponentProps {
+    isLoggedIn: boolean;
     isOpened: boolean;
 }
 
@@ -34,6 +36,7 @@ type Props = ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
+        isLoggedIn: reduxModel.user.loggedIn,
         isOpened: reduxModel.view === ViewType.AddRecipe
     }
 }
@@ -54,6 +57,10 @@ function createEmptyIngredient() {
 }
 
 export function AddRecipeMenu(props: Props) {
+    if (!props.isLoggedIn) {
+        return <Redirect to={Paths.BASE} />
+    }
+
     const toast = useToast();
 
     function close() {
