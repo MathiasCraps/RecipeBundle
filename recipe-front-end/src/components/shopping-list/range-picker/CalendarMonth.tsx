@@ -16,12 +16,12 @@ export function CalendarMonth(props: OwnProps) {
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
     const gridNextMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth() + 1);
     return <div>
-        {[gridCurrentMonth, gridNextMonth].map((month) => {
-            return month.map((week, index) => <WeekRow
+        {[gridCurrentMonth, gridNextMonth].map((month, index) => {
+            return <div className="month-grid" key={index}>{month.map((week, index) => <WeekRow
                 week={week}
                 key={index}
                 onDayPicked={props.onDayPicked}
-            />);
+            />)}</div>;
         })}
     </div>
 }
