@@ -4,6 +4,10 @@ export function calculateStartOfDate(date: Date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
 
+export function calculateStartOfMonthWithOffset(date: Date, offset: number) {
+    return new Date(date.getFullYear(), date.getMonth() + offset, 1);
+}
+
 export function normalizeWeekDay(day: number): number {
     if (day === 0) {
         return 6;

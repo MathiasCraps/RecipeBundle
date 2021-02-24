@@ -1,9 +1,9 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../../localisation/AppTexts';
 import { updateShoppingRange } from '../../../redux/Actions';
 import { DateRange, ReduxModel } from '../../../redux/Store';
-import { addDays, calculateStartOfDate } from '../../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 
 interface ReduxProps {
@@ -124,6 +124,11 @@ function RangePicker(props: Props) {
         }
     }
 
+    const months = [
+        new Date(),
+        calculateStartOfMonthWithOffset(new Date(), 1)
+    ]
+
     return <DatePickerContext.Provider value={selection}>
         <div onKeyUpCapture={(event) => {
             handleKeyAction(event);
@@ -137,10 +142,14 @@ function RangePicker(props: Props) {
                 tabIndex={0}
                 onMouseUp={toggleView}>{formatDate(props.startDate)} - {formatDate(props.endDate)}
             </a>:</p>
-            <CalendarMonth isVisible={isVisible}
-                date={new Date()}
-                onDayPicked={updateClickedRange}
-            />
+            {months.map((month, index) => {
+                return <React.Fragment key={index}><CalendarMonth isVisible={isVisible}
+                    date={month}
+                    onDayPicked={updateClickedRange}
+                />
+                </React.Fragment>
+
+            })}
         </div>
     </DatePickerContext.Provider>
 }

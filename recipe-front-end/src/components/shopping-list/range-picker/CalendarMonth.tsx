@@ -14,14 +14,10 @@ export function CalendarMonth(props: OwnProps) {
     }
 
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
-    const gridNextMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth() + 1);
-    return <div>
-        {[gridCurrentMonth, gridNextMonth].map((month, index) => {
-            return <div className="month-grid" key={index}>{month.map((week, index) => <WeekRow
-                week={week}
-                key={index}
-                onDayPicked={props.onDayPicked}
-            />)}</div>;
-        })}
-    </div>
+    return <div className="month-grid">
+        {gridCurrentMonth.map((week, index) => <WeekRow
+            key={index}
+            week={week}
+            onDayPicked={props.onDayPicked}
+        />)}</div>
 }
