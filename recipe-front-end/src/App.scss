@@ -313,8 +313,12 @@ li {
 }
 
 .month-grid {
-  width: 50%;
+  width: 100%;
   float: left;
+
+  @media (min-width:40em) {
+    width: 50%;
+  }
 }
 
 /* todo: fix me with chakra global styles */
