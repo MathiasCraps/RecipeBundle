@@ -42,5 +42,18 @@ export enum Localisation {
     MORE_OPTIONS = 'Toon meer opties',
     LESS_OPTIONS = 'Toon minder opties',
     SHOPPING_LIST = 'Boodschappenlijst',
-    YOUR_SHOPPING_LIST_FOR_THE_PERIOD = 'Je boodschappenlijstje voor de periode'
+    YOUR_SHOPPING_LIST_FOR_THE_PERIOD = 'Je boodschappenlijstje voor de periode',
+    JANUARY = 'Januari',
+    FEBRUARY = 'Februari',
+    MARCH = 'Maart',
+    APRIL = 'April',
+    MAY = 'Mei',
+    JUNE = 'Juni',
+    JULY = 'Juli',
+    AUGUST = 'Augustus',
+    SEPTEMBER = 'September',
+    OCTOBER = 'Oktober',
+    NOVEMBER = 'November',
+    DECEMBER = 'Decembe'
+
 }
