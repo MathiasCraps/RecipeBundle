@@ -37,7 +37,6 @@ enum StageOption {
 export const DatePickerContext = React.createContext<DateRange | undefined>(undefined);
 function RangePicker(props: Props) {
     const [selection, setSelection] = useState<DateRange | undefined>();
-    const [isVisible, setIsvisible] = useState(false);
     const [stage, setStage] = useState<StageOption>(StageOption.NONE);
 
     function updateClickedRange(date: Date) {
@@ -51,24 +50,21 @@ function RangePicker(props: Props) {
         } else {
             const [start, end] = [selection.start, date].sort((a, b) => Number(a) - Number(b));
             setSelection(undefined);
-            setIsvisible(false);
             setStage(StageOption.NONE);
             props.updateShoppingRange({ start, end });
         }
     }
 
     function toggleView() {
-        if (!isVisible) {
+        if (stage === StageOption.NONE) {
             setStage(StageOption.START);
         } else if (StageOption.END) {
             setStage(StageOption.NONE);
         }
-
-        setIsvisible(!isVisible);
     }
 
     function handleKeyAction(event: KeyboardEvent) {
-        if (!isVisible) {
+        if (stage === StageOption.NONE) {
             return;
         }
 
@@ -76,7 +72,6 @@ function RangePicker(props: Props) {
         if (event.key === 'Escape') {
             setSelection(undefined);
             setStage(StageOption.NONE);
-            setIsvisible(false);
             return;
         }
 
@@ -123,7 +118,6 @@ function RangePicker(props: Props) {
             }
 
             if (stage === StageOption.END) {
-                setIsvisible(false);
                 setStage(StageOption.NONE);
                 setSelection(undefined);
                 props.updateShoppingRange(assigned! || selection);
@@ -139,7 +133,7 @@ function RangePicker(props: Props) {
     return <DatePickerContext.Provider value={selection}>
         <div onKeyUpCapture={(event) => {
             handleKeyAction(event);
-            if (event.key === 'Enter' && !isVisible) {
+            if (event.key === 'Enter' && stage === StageOption.NONE) {
                 toggleView()
             }
         }}>
@@ -150,7 +144,7 @@ function RangePicker(props: Props) {
                 onMouseUp={toggleView}>{formatDate(props.startDate)} - {formatDate(props.endDate)}
             </a>:</p>
             {months.map((month, index) => {
-                return <React.Fragment key={index}><CalendarMonth isVisible={isVisible}
+                return <React.Fragment key={index}><CalendarMonth isVisible={stage !== StageOption.NONE}
                     date={month}
                     onDayPicked={updateClickedRange}
                 />
