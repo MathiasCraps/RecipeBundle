@@ -73,6 +73,13 @@ function RangePicker(props: Props) {
         }
 
         const key = event.key;
+        if (event.key === 'Escape') {
+            setSelection(undefined);
+            setStage(StageOption.NONE);
+            setIsvisible(false);
+            return;
+        }
+
         let daysToAdd = 0;
         switch (key) {
             case 'ArrowLeft':
