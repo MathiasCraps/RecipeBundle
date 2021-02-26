@@ -50,7 +50,7 @@ export function ShoppingListMain(props: ReduxProps) {
         <h2>{Localisation.SHOPPING_LIST}</h2>
         <RangePicker/>
 
-        <div>
+        <div className="shopping-list-ingredients">
             <ul>
                 {sumsToRender.sort((a, b) => a.name > b.name ? 1 : -1)
                 .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
