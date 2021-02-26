@@ -31,7 +31,7 @@ export function CalendarMonth(props: OwnProps) {
 
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
     return <div className="month-grid">
-        <div className="month-name">{MONTHS[props.date.getMonth()]}</div>
+        <div className="month-name">{`${MONTHS[props.date.getMonth()]} ${props.date.getUTCFullYear()}`}</div>
         {gridCurrentMonth.map((week, index) => <WeekRow
             key={index}
             week={week}
