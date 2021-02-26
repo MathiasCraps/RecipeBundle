@@ -14,7 +14,7 @@ interface OwnProps {
 export default function MainMenuButton(props: OwnProps) {
     return <Tooltip label={props.label} fontSize="md">
         <Link to={props.linkTo}>
-            <button className='action-item'
+            <button tabIndex={-1} className='action-item'
                 aria-label={props.label}>
                 <FontAwesomeIcon icon={props.icon} />
             </button>

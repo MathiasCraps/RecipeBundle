@@ -1,4 +1,5 @@
 import React from 'react';
+import { Localisation } from '../../../localisation/AppTexts';
 import { calculateMonthGrid } from '../../../utils/DateUtils';
 import { WeekRow } from './WeekRow';
 
@@ -8,16 +9,32 @@ interface OwnProps {
     onDayPicked: (date: Date) => void;
 }
 
+const MONTHS = [
+    Localisation.JANUARY,
+    Localisation.FEBRUARY,
+    Localisation.MARCH,
+    Localisation.APRIL,
+    Localisation.MAY,
+    Localisation.JUNE,
+    Localisation.JULY,
+    Localisation.AUGUST,
+    Localisation.SEPTEMBER,
+    Localisation.OCTOBER,
+    Localisation.NOVEMBER,
+    Localisation.DECEMBER,
+];
+
 export function CalendarMonth(props: OwnProps) {
     if (!props.isVisible) {
         return <div></div>
     }
 
     const gridCurrentMonth = calculateMonthGrid(props.date.getFullYear(), props.date.getMonth());
-    return <div>
+    return <div className="month-grid">
+        <div className="month-name">{`${MONTHS[props.date.getMonth()]} ${props.date.getUTCFullYear()}`}</div>
         {gridCurrentMonth.map((week, index) => <WeekRow
-            week={week}
             key={index}
-            onDayPicked={props.onDayPicked} />)}
-    </div>
+            week={week}
+            onDayPicked={props.onDayPicked}
+        />)}</div>
 }

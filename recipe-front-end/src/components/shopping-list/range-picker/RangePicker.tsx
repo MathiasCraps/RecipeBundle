@@ -1,9 +1,9 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../../localisation/AppTexts';
 import { updateShoppingRange } from '../../../redux/Actions';
 import { DateRange, ReduxModel } from '../../../redux/Store';
-import { addDays, calculateStartOfDate } from '../../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 
 interface ReduxProps {
@@ -16,7 +16,7 @@ interface ReduxActions {
 }
 
 function formatDate(date: Date) {
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
@@ -37,7 +37,6 @@ enum StageOption {
 export const DatePickerContext = React.createContext<DateRange | undefined>(undefined);
 function RangePicker(props: Props) {
     const [selection, setSelection] = useState<DateRange | undefined>();
-    const [isVisible, setIsvisible] = useState(false);
     const [stage, setStage] = useState<StageOption>(StageOption.NONE);
 
     function updateClickedRange(date: Date) {
@@ -51,28 +50,31 @@ function RangePicker(props: Props) {
         } else {
             const [start, end] = [selection.start, date].sort((a, b) => Number(a) - Number(b));
             setSelection(undefined);
-            setIsvisible(false);
             setStage(StageOption.NONE);
             props.updateShoppingRange({ start, end });
         }
     }
 
     function toggleView() {
-        if (!isVisible) {
+        if (stage === StageOption.NONE) {
             setStage(StageOption.START);
         } else if (StageOption.END) {
             setStage(StageOption.NONE);
         }
-
-        setIsvisible(!isVisible);
     }
 
     function handleKeyAction(event: KeyboardEvent) {
-        if (!isVisible) {
+        if (stage === StageOption.NONE) {
             return;
         }
 
         const key = event.key;
+        if (event.key === 'Escape') {
+            setSelection(undefined);
+            setStage(StageOption.NONE);
+            return;
+        }
+
         let daysToAdd = 0;
         switch (key) {
             case 'ArrowLeft':
@@ -116,7 +118,6 @@ function RangePicker(props: Props) {
             }
 
             if (stage === StageOption.END) {
-                setIsvisible(false);
                 setStage(StageOption.NONE);
                 setSelection(undefined);
                 props.updateShoppingRange(assigned! || selection);
@@ -124,10 +125,15 @@ function RangePicker(props: Props) {
         }
     }
 
+    const months = [
+        new Date(),
+        calculateStartOfMonthWithOffset(new Date(), 1)
+    ]
+
     return <DatePickerContext.Provider value={selection}>
         <div onKeyUpCapture={(event) => {
             handleKeyAction(event);
-            if (event.key === 'Enter' && !isVisible) {
+            if (event.key === 'Enter' && stage === StageOption.NONE) {
                 toggleView()
             }
         }}>
@@ -137,10 +143,14 @@ function RangePicker(props: Props) {
                 tabIndex={0}
                 onMouseUp={toggleView}>{formatDate(props.startDate)} - {formatDate(props.endDate)}
             </a>:</p>
-            <CalendarMonth isVisible={isVisible}
-                date={new Date()}
-                onDayPicked={updateClickedRange}
-            />
+            {months.map((month, index) => {
+                return <React.Fragment key={index}><CalendarMonth isVisible={stage !== StageOption.NONE}
+                    date={month}
+                    onDayPicked={updateClickedRange}
+                />
+                </React.Fragment>
+
+            })}
         </div>
     </DatePickerContext.Provider>
 }

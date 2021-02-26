@@ -312,6 +312,20 @@ li {
   }
 }
 
+.month-grid {
+  width: 100%;
+  float: left;
+
+  @media (min-width:40em) {
+    width: auto;
+    padding-right: 3rem;
+  }
+}
+
+.shopping-list-ingredients {
+  clear: both;
+}
+
 /* todo: fix me with chakra global styles */
 
 a {
