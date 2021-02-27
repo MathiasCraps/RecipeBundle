@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 import express from "express";
+import { graphqlHTTP } from 'express-graphql';
 import session from "express-session";
 import fs from "fs";
 import { Pool } from "pg";
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
+import { graphQLSchema } from './graphql/Setup';
 import { Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
@@ -206,3 +208,8 @@ pool.connect(async (error, client, done) => {
 
     client.release();
 });
+
+app.use('/graphql', graphqlHTTP({
+    schema: graphQLSchema,
+    graphiql: true
+}));
