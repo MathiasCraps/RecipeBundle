@@ -4,8 +4,8 @@ import { graphqlHTTP } from 'express-graphql';
 import session from "express-session";
 import fs from "fs";
 import { Pool } from "pg";
+import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
-import { graphQLSchema } from './graphql/Setup';
 import { Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
@@ -210,6 +210,6 @@ pool.connect(async (error, client, done) => {
 });
 
 app.use('/graphql', graphqlHTTP({
-    schema: graphQLSchema,
+    schema: schema,
     graphiql: true
 }));
