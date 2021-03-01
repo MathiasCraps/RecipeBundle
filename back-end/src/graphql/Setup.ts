@@ -6,6 +6,7 @@ import {
     GraphQLSchema,
     GraphQLString
 } from "graphql";
+import { getMenus } from '../sql/GetMenu';
 import { getAllRecipes } from '../sql/GetRecipes';
 
 const MenuType = new GraphQLObjectType({
@@ -50,7 +51,7 @@ const RootQuery = new GraphQLObjectType({
         menus: {
             type: new GraphQLList(MenuType),
             async resolve() {
-                return (await getAllRecipes()).menus;
+                return await getMenus();
             }
         }
 
