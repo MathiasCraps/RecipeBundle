@@ -1,14 +1,13 @@
 import { pool } from "..";
-import { ApplicationData, DayMenu, Recipe } from "../model/RecipeData";
+import { Recipe } from "../model/RecipeData";
 import { executeQuery } from "../sql-utils/Database";
 
-export async function getAllRecipes(): Promise<ApplicationData> {
+export async function getAllRecipes(): Promise<Recipe[]> {
     return new Promise(async (resolve, reject) => {
-        const recipes = (await executeQuery(pool, 'SELECT * FROM Recipes')).rows;
-        const results: Recipe[] = [];
-        const menus: DayMenu[] = [];
+        const recipeData = (await executeQuery(pool, 'SELECT * FROM Recipes')).rows;
+        const recipes: Recipe[] = [];
 
-        for (let recipe of recipes) {
+        for (let recipe of recipeData) {
             const recipeId = recipe.id;
             const ingredients = (await executeQuery(pool, {
                 name: 'get-ingredients-recipe',
@@ -19,13 +18,7 @@ export async function getAllRecipes(): Promise<ApplicationData> {
                 values: [recipeId]
             })).rows;
 
-            const menusFromDatabase = (await executeQuery(pool, {
-                name: 'get-menus',
-                text: `SELECT planned_time, menu_id FROM MenuPlanning WHERE recipe_id = $1`,
-                values: [recipeId]
-            })).rows;
-
-            results.push({
+            recipes.push({
                 title: recipe.recipe_name,
                 steps: recipe.steps,
                 ingredients: ingredients.map((ingredient: any) => {
@@ -38,19 +31,8 @@ export async function getAllRecipes(): Promise<ApplicationData> {
                 image: `${process.env.DOMAIN}/${recipe.image}`,
                 id: recipeId
             });
-
-            menus.push(...menusFromDatabase.map((menu: any) => {
-                return {
-                    menuId: menu.menu_id,
-                    recipeId,
-                    date: Number(menu.planned_time)
-                };
-            }));
         }
 
-        resolve({
-            menus: menus,
-            recipes: results
-        });
+        resolve(recipes);
     });
 }

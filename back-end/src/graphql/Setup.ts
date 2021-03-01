@@ -45,7 +45,7 @@ const RootQuery = new GraphQLObjectType({
         recipes: {
             type: new GraphQLList(RecipeType),
             async resolve() {
-                return (await getAllRecipes()).recipes;
+                return await getAllRecipes();
             }
         },
         menus: {
