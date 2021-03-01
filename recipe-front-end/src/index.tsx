@@ -11,6 +11,7 @@ import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 import { BrowserRouter as Router } from 'react-router-dom';
+import fetchGraphQL from './utils/FetchGraphQL';
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -36,8 +37,25 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     return;
   }
 
-  const data = await fetch('/getRecipes')
-  const applicationData: ApplicationData = await data.json();
+  const applicationData = await fetchGraphQL<ApplicationData>(`{ 
+    recipes {
+      id
+      title
+      steps
+      image
+      ingredients {
+        name
+        quantity_number
+        quantity_description
+      }
+    }
+    menus {
+      date
+      menuId
+      recipeId
+    }
+  }`);
+
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, applicationData.recipes))
     .filter((value) => value !== undefined) as DayMenu[];
