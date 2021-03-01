@@ -11,7 +11,6 @@ import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
-import { getAllRecipes } from "./sql/GetRecipes";
 import { updateDateMenu } from "./sql/UpdateDateMenu";
 import { modifyMenu } from "./sql/UpdateMenu";
 import { isDayMenu, isRecipe } from "./validation/TypeGuards";
@@ -36,10 +35,6 @@ app.post('*', verifyLoggedIn);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.single('userfile'));
-
-app.get('/getRecipes', async (request, response) => {
-    response.json(await getAllRecipes());
-});
 
 app.get('/logout', async(request, response) => {
     request.session.destroy((error) => {
