@@ -18,7 +18,6 @@ export const RootMutation = new GraphQLObjectType({
             type: MenuType,
             args: {
                 date: { type: GraphQLFloat },
-                menuId: { type: GraphQLInt },
                 recipeId: { type: GraphQLInt }
             },
             async resolve(parentValue, args, request) {
@@ -31,7 +30,7 @@ export const RootMutation = new GraphQLObjectType({
                 // todo: add assertions on type to ensure
                 const menu: DayMenu = {
                     date: args.date,
-                    menuId: args.menuId,
+                    menuId: 0,
                     recipeId: args.recipeId
                 }
 
