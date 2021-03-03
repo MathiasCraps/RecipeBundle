@@ -115,25 +115,6 @@ app.get('/getSessionData', async (request, response) => {
     }
 });
 
-app.post('/addMenu', async(request, response) => {
-    const session: SessionData = request.session as SessionData;
-    
-    if (!isDayMenu(request.body)) {
-        return response.json({error: 'Invalid data'});
-    }
-    
-    try {
-        const menuId = await modifyMenu(pool, request.body, session.userId!, 'add');
-        return response.json({
-            success: true,
-            menuId
-        });
-    } catch (err) {
-        console.log(err);
-        return response.json({error: 'Writing to database failed'});
-    }
-});
-
 app.post('/removeMenu', async(request, response) => { 
     const session = (request.session) as SessionData;  
     if (typeof request.body.menuId !== 'number') {
