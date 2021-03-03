@@ -3,19 +3,13 @@ import { pool } from '../..';
 import { DayMenu } from '../../model/RecipeData';
 import { SessionData } from '../../model/SessionData';
 import { modifyMenu } from '../../sql/UpdateMenu';
-import { MenuType } from '../queries/Menus';
-
-const testDataToReturn = {
-    date: 0,
-    menuId: 0,
-    recipeId: 0
-};
+import { AddMenuResponseData } from './AddMenuResponseData';
 
 export const RootMutation = new GraphQLObjectType({
     name: 'addmenu',
     fields: {
         addMenu: {
-            type: MenuType,
+            type: AddMenuResponseData,
             args: {
                 date: { type: GraphQLFloat },
                 recipeId: { type: GraphQLInt }
@@ -23,8 +17,10 @@ export const RootMutation = new GraphQLObjectType({
             async resolve(parentValue, args, request) {
                 const userId = (request.session as SessionData).userId || 1;
                 if (userId === undefined) {
-                    // todo: add status codes to indicate action was success
-                    return testDataToReturn;
+                    return {
+                        success: false,
+                        error: 'Not logged in'
+                    };
                 }
 
                 // todo: add assertions on type to ensure
@@ -34,13 +30,22 @@ export const RootMutation = new GraphQLObjectType({
                     recipeId: args.recipeId
                 }
 
+                let menuId: number;
                 try {
-                    await modifyMenu(pool, menu, userId, 'add');                    
+                    menuId = await modifyMenu(pool, menu, userId, 'add');                    
                 } catch(err) {
                     console.log('something went wrong adding data', err);
+
+                    return {
+                        success: false,
+                        error: err
+                    }
                 }
 
-                return testDataToReturn;
+                return {
+                    success: true,
+                    menuId
+                };
             }
         }
     }
