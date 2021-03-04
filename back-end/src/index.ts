@@ -11,7 +11,6 @@ import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
-import { modifyMenu } from './sql/UpdateMenu';
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -111,26 +110,6 @@ app.get('/getSessionData', async (request, response) => {
         });
     } catch (err) {
         return response.json({ loggedIn: false });
-    }
-});
-
-app.post('/updateMenu', async(request, response) => {
-    const session: SessionData = request.session as SessionData;
-    const { menuId, date } = request.body;
-    
-    if (typeof menuId !== 'number' || typeof date !== 'number') {
-        return response.json({error: 'Invalid data'});
-    }
-
-    try {
-        await modifyMenu(pool, {
-            menuId,
-            date,
-            recipeId: -1
-        }, session.userId!, 'update');
-        return response.json({success: true});
-    } catch (err) {
-        return response.json({error: true});
     }
 });
 
