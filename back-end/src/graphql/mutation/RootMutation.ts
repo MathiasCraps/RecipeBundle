@@ -58,6 +58,32 @@ export const RootMutation = new GraphQLObjectType({
                     };
                 }
             }
+        },
+        updateMenu: {
+            type: AddMenuResponseData,
+            args: {
+                date: { type: GraphQLFloat },
+                menuId: { type: GraphQLInt }
+            },
+            async resolve(parentValue, args, request) {
+                try {
+                    const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
+                        date: args.date,
+                        menuId: args.menuId,
+                        recipeId: 0
+                    }, 'update');
+
+                    return {
+                        success: true,
+                        menuId
+                    };
+                } catch (err) {
+                    return {
+                        success: false,
+                        error: err
+                    };
+                }
+            }
         }
     }
 });
