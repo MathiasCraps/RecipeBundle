@@ -11,7 +11,7 @@ import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
-import { updateDateMenu } from "./sql/UpdateDateMenu";
+import { modifyMenu } from './sql/UpdateMenu';
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -123,7 +123,11 @@ app.post('/updateMenu', async(request, response) => {
     }
 
     try {
-        await updateDateMenu(pool, menuId, date, session.userId!)
+        await modifyMenu(pool, {
+            menuId,
+            date,
+            recipeId: -1
+        }, session.userId!, 'update');
         return response.json({success: true});
     } catch (err) {
         return response.json({error: true});
