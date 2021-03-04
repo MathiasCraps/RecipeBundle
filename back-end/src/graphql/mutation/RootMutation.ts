@@ -1,9 +1,9 @@
 import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
-import { pool } from '../..';
-import { DayMenu } from '../../model/RecipeData';
 import { SessionData } from '../../model/SessionData';
-import { modifyMenu } from '../../sql/UpdateMenu';
 import { AddMenuResponseData } from './AddMenuResponseData';
+import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
+
+
 
 export const RootMutation = new GraphQLObjectType({
     name: 'addmenu',
@@ -15,37 +15,23 @@ export const RootMutation = new GraphQLObjectType({
                 recipeId: { type: GraphQLInt }
             },
             async resolve(parentValue, args, request) {
-                const userId = (request.session as SessionData).userId || 1;
-                if (userId === undefined) {
-                    return {
-                        success: false,
-                        error: 'Not logged in'
-                    };
-                }
-
-                // todo: add assertions on type to ensure
-                const menu: DayMenu = {
-                    date: args.date,
-                    menuId: 0,
-                    recipeId: args.recipeId
-                }
-
-                let menuId: number;
                 try {
-                    menuId = await modifyMenu(pool, menu, userId, 'add');                    
-                } catch(err) {
-                    console.log('something went wrong adding data', err);
+                    const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
+                        date: args.date,
+                        menuId: 0,
+                        recipeId: args.recipeId
+                    }, 'add');
 
+                    return {
+                        success: true,
+                        menuId
+                    };
+                } catch (err) {
                     return {
                         success: false,
                         error: err
-                    }
+                    };
                 }
-
-                return {
-                    success: true,
-                    menuId
-                };
             }
         },
         removeMenu: {
@@ -54,35 +40,23 @@ export const RootMutation = new GraphQLObjectType({
                 menuId: { type: GraphQLInt }
             },
             async resolve(parentValue, args, request) {
-                const userId = (request.session as SessionData).userId || 1;
-                if (userId === undefined) {
-                    return {
-                        success: false,
-                        error: 'Not logged in'
-                    };
-                }
-
-                // todo: add assertions on type to ensure
-                const menu: DayMenu = {
-                    date: 0,
-                    menuId: args.menuId,
-                    recipeId: 0
-                }
-
                 try {
-                    await modifyMenu(pool, menu, userId, 'remove');                    
-                } catch(err) {
-                    console.log('something went wrong removing data', err);
+                    const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
+                        date: 0,
+                        menuId: args.menuId,
+                        recipeId: 0
+                    }, 'remove');
 
+                    return {
+                        success: true,
+                        menuId
+                    };
+                } catch (err) {
                     return {
                         success: false,
                         error: err
-                    }
+                    };
                 }
-
-                return {
-                    success: true
-                };
             }
         }
     }
