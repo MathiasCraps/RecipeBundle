@@ -12,7 +12,6 @@ import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
 import { updateDateMenu } from "./sql/UpdateDateMenu";
-import { modifyMenu } from "./sql/UpdateMenu";
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -112,23 +111,6 @@ app.get('/getSessionData', async (request, response) => {
         });
     } catch (err) {
         return response.json({ loggedIn: false });
-    }
-});
-
-app.post('/removeMenu', async(request, response) => { 
-    const session = (request.session) as SessionData;  
-    if (typeof request.body.menuId !== 'number') {
-        return response.json({error: 'Invalid data'});
-    }
-    
-    try {
-        await modifyMenu(pool, request.body, session.userId!, 'remove');
-        return response.json({
-            success: true
-        });
-    } catch (err) {
-        console.log(err);
-        return response.json({error: 'Writing to database failed'});
     }
 });
 
