@@ -113,16 +113,12 @@ export type UpdateMenuDayReturn = (menuId: number, toDay: number) => Promise<voi
 export function updatePlannedMenuDay(dispatch: Dispatch<UpdateMenuDayAction>): UpdateMenuDayReturn {
     return async function (menuId: number, toDay: number) {
         try {
-            const response = await waitForDataAsJson<UpdateMenuResponse>('/updateMenu', {
-                method: 'POST',
-                body: JSON.stringify({
-                    menuId: menuId,
-                    date: toDay
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+            const response = (await fetchGraphQL<{updateMenu: UpdateMenuResponse}>(`mutation { 
+                updateMenu(date: ${toDay}, menuId: ${menuId}) {
+                    success
+                    error
                 }
-            })
+            }`)).updateMenu;
 
             if (response.error) {
                 throw new Error('Update failed');
