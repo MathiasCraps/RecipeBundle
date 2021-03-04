@@ -47,6 +47,43 @@ export const RootMutation = new GraphQLObjectType({
                     menuId
                 };
             }
+        },
+        removeMenu: {
+            type: AddMenuResponseData,
+            args: {
+                menuId: { type: GraphQLInt }
+            },
+            async resolve(parentValue, args, request) {
+                const userId = (request.session as SessionData).userId || 1;
+                if (userId === undefined) {
+                    return {
+                        success: false,
+                        error: 'Not logged in'
+                    };
+                }
+
+                // todo: add assertions on type to ensure
+                const menu: DayMenu = {
+                    date: 0,
+                    menuId: args.menuId,
+                    recipeId: 0
+                }
+
+                try {
+                    await modifyMenu(pool, menu, userId, 'remove');                    
+                } catch(err) {
+                    console.log('something went wrong removing data', err);
+
+                    return {
+                        success: false,
+                        error: err
+                    }
+                }
+
+                return {
+                    success: true
+                };
+            }
         }
     }
 });
