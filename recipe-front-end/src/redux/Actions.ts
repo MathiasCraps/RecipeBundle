@@ -85,15 +85,12 @@ export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => P
 export function removeMenu(dispatch: Dispatch<RemoveMenuAction>): (menu: DayMenu) => Promise<void> {
     return async function (menu: DayMenu): Promise<void> {
         try {
-            await fetch('/removeMenu', {
-                method: 'POST',
-                body: JSON.stringify({
-                    menuId: menu.menuId
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+            await fetchGraphQL(`mutation { 
+                removeMenu(menuId: ${menu.menuId}) {
+                    success
+                    error
                 }
-            });
+            }`);
 
             dispatch({
                 type: Actions.REMOVE_MENU,
