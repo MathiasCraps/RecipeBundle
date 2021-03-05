@@ -1,9 +1,9 @@
-import { GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLObjectType, GraphQLNonNull } from 'graphql';
 
 export const ModifyMenuResponse = new GraphQLObjectType({
     name: 'modifyMenuResponse',
     fields: () => ({
-        success: { type: GraphQLBoolean },
+        success: { type: GraphQLNonNull(GraphQLBoolean) },
         menuId: { type: GraphQLInt },
         error: { type: GraphQLString }
     })
