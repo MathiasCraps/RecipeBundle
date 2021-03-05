@@ -1,9 +1,7 @@
-import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
+import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { SessionData } from '../../model/SessionData';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
-
-
 
 export const RootMutation = new GraphQLObjectType({
     name: 'addmenu',
@@ -11,8 +9,8 @@ export const RootMutation = new GraphQLObjectType({
         addMenu: {
             type: ModifyMenuResponse,
             args: {
-                date: { type: GraphQLFloat },
-                recipeId: { type: GraphQLInt }
+                date: { type: new GraphQLNonNull(GraphQLFloat) },
+                recipeId: { type: new GraphQLNonNull(GraphQLInt) }
             },
             async resolve(parentValue, args, request) {
                 try {
@@ -37,7 +35,7 @@ export const RootMutation = new GraphQLObjectType({
         removeMenu: {
             type: ModifyMenuResponse,
             args: {
-                menuId: { type: GraphQLInt }
+                menuId: { type: new GraphQLNonNull(GraphQLInt) }
             },
             async resolve(parentValue, args, request) {
                 try {
@@ -62,8 +60,8 @@ export const RootMutation = new GraphQLObjectType({
         updateMenu: {
             type: ModifyMenuResponse,
             args: {
-                date: { type: GraphQLFloat },
-                menuId: { type: GraphQLInt }
+                date: { type: new GraphQLNonNull(GraphQLFloat) },
+                menuId: { type: new GraphQLNonNull(GraphQLInt) }
             },
             async resolve(parentValue, args, request) {
                 try {
