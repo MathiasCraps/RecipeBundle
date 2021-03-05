@@ -8,9 +8,10 @@ export const RootMutation = new GraphQLObjectType({
     fields: {
         addMenu: {
             type: ModifyMenuResponse,
+            description: 'Plan a recipe as a new menu item',
             args: {
-                date: { type: new GraphQLNonNull(GraphQLFloat) },
-                recipeId: { type: new GraphQLNonNull(GraphQLInt) }
+                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to plan the menu on.' },
+                recipeId: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the menu to add.' }
             },
             async resolve(parentValue, args, request) {
                 try {
@@ -34,8 +35,9 @@ export const RootMutation = new GraphQLObjectType({
         },
         removeMenu: {
             type: ModifyMenuResponse,
+            description: 'Remove a recipe as a planned menu item',
             args: {
-                menuId: { type: new GraphQLNonNull(GraphQLInt) }
+                menuId: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the menu to remove.' }
             },
             async resolve(parentValue, args, request) {
                 try {
@@ -59,9 +61,10 @@ export const RootMutation = new GraphQLObjectType({
         },
         updateMenu: {
             type: ModifyMenuResponse,
+            description: 'Move a planned menu to another date.',
             args: {
-                date: { type: new GraphQLNonNull(GraphQLFloat) },
-                menuId: { type: new GraphQLNonNull(GraphQLInt) }
+                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to move the menu to.' },
+                menuId: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the menu to move.' }
             },
             async resolve(parentValue, args, request) {
                 try {
