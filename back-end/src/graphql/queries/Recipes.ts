@@ -3,6 +3,7 @@ import { GraphQLFloat, GraphQLInt, GraphQLString } from 'graphql/type/scalars';
 
 export const IngredientType = new GraphQLObjectType({
     name: 'ingredient',
+    description: 'Metadata of an ingredient. Part of a recipe.',
     fields: () => ({
         name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
         quantity_number: { type: new GraphQLList(GraphQLFloat), description: 'The quantitative number of the needed amount.' },
@@ -13,6 +14,7 @@ export const IngredientType = new GraphQLObjectType({
 
 export const RecipeType = new GraphQLObjectType({
     name: 'recipe',
+    description: 'Describes a recipe.',
     fields: () => ({
         title: { type: new GraphQLNonNull(GraphQLString), description: 'The full title of the recipe.' },
         ingredients: { type: new GraphQLList(IngredientType), description: 'The ingredients needed for the recipe.' },
