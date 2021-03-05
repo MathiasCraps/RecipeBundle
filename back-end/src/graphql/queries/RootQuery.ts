@@ -10,12 +10,14 @@ export const RootQuery = new GraphQLObjectType({
     fields: {
         recipes: {
             type: new GraphQLList(RecipeType),
+            description: 'Request all the available recipes.',
             async resolve() {
                 return await getAllRecipes();
             }
         },
         menus: {
             type: new GraphQLList(MenuType),
+            description: 'Request all the planned menus for the current user.',
             async resolve(parentValue, args, request) {
                 const requestWithType = request.session as SessionData;
                 return await getMenus(requestWithType.userId);

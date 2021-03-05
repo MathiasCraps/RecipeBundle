@@ -10,7 +10,7 @@ export const RootMutation = new GraphQLObjectType({
             type: ModifyMenuResponse,
             description: 'Plan a recipe as a new menu item',
             args: {
-                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to plan the menu on.' },
+                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to plan the menu on. Unix Epoch in milliseconds.' },
                 recipeId: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the menu to add.' }
             },
             async resolve(parentValue, args, request) {
@@ -63,7 +63,7 @@ export const RootMutation = new GraphQLObjectType({
             type: ModifyMenuResponse,
             description: 'Move a planned menu to another date.',
             args: {
-                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to move the menu to.' },
+                date: { type: new GraphQLNonNull(GraphQLFloat), description: 'The date to move the menu to. Unix Epoch in milliseconds.' },
                 menuId: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the menu to move.' }
             },
             async resolve(parentValue, args, request) {
