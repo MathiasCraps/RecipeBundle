@@ -3,6 +3,7 @@ import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
+import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
 import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
@@ -57,16 +58,13 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
 export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => Promise<void> {
     return async function (menu: DayMenu): Promise<void> {
         try {
-            const data = await waitForDataAsJson<AddMenuResponse>('/addMenu', {
-                method: 'POST',
-                body: JSON.stringify({
-                    date: menu.date,
-                    recipeId: menu.recipe.id
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+            const data = (await fetchGraphQL<{addMenu: AddMenuResponse}>(`mutation { 
+                addMenu(date: ${menu.date}, recipeId: ${menu.recipe.id}) {
+                    success
+                    menuId
+                    error
                 }
-            });
+            }`)).addMenu;
 
             if (data.error || typeof data.menuId !== 'number') {
                 throw new Error('failed to post');
@@ -81,21 +79,18 @@ export function addMenu(dispatch: Dispatch<AddMenuAction>): (menu: DayMenu) => P
         } catch (err) {
             console.log('adding menu failed', err);
         }
-    }
+    };
 }
 
 export function removeMenu(dispatch: Dispatch<RemoveMenuAction>): (menu: DayMenu) => Promise<void> {
     return async function (menu: DayMenu): Promise<void> {
         try {
-            await fetch('/removeMenu', {
-                method: 'POST',
-                body: JSON.stringify({
-                    menuId: menu.menuId
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+            await fetchGraphQL(`mutation { 
+                removeMenu(menuId: ${menu.menuId}) {
+                    success
+                    error
                 }
-            });
+            }`);
 
             dispatch({
                 type: Actions.REMOVE_MENU,
@@ -118,16 +113,12 @@ export type UpdateMenuDayReturn = (menuId: number, toDay: number) => Promise<voi
 export function updatePlannedMenuDay(dispatch: Dispatch<UpdateMenuDayAction>): UpdateMenuDayReturn {
     return async function (menuId: number, toDay: number) {
         try {
-            const response = await waitForDataAsJson<UpdateMenuResponse>('/updateMenu', {
-                method: 'POST',
-                body: JSON.stringify({
-                    menuId: menuId,
-                    date: toDay
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+            const response = (await fetchGraphQL<{updateMenu: UpdateMenuResponse}>(`mutation { 
+                updateMenu(date: ${toDay}, menuId: ${menuId}) {
+                    success
+                    error
                 }
-            })
+            }`)).updateMenu;
 
             if (response.error) {
                 throw new Error('Update failed');

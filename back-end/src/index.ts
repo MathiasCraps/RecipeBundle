@@ -11,9 +11,7 @@ import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
 import { createTables } from "./sql/CreateTables";
-import { updateDateMenu } from "./sql/UpdateDateMenu";
-import { modifyMenu } from "./sql/UpdateMenu";
-import { isDayMenu, isRecipe } from "./validation/TypeGuards";
+import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
 
@@ -112,58 +110,6 @@ app.get('/getSessionData', async (request, response) => {
         });
     } catch (err) {
         return response.json({ loggedIn: false });
-    }
-});
-
-app.post('/addMenu', async(request, response) => {
-    const session: SessionData = request.session as SessionData;
-    
-    if (!isDayMenu(request.body)) {
-        return response.json({error: 'Invalid data'});
-    }
-    
-    try {
-        const menuId = await modifyMenu(pool, request.body, session.userId!, 'add');
-        return response.json({
-            success: true,
-            menuId
-        });
-    } catch (err) {
-        console.log(err);
-        return response.json({error: 'Writing to database failed'});
-    }
-});
-
-app.post('/removeMenu', async(request, response) => { 
-    const session = (request.session) as SessionData;  
-    if (typeof request.body.menuId !== 'number') {
-        return response.json({error: 'Invalid data'});
-    }
-    
-    try {
-        await modifyMenu(pool, request.body, session.userId!, 'remove');
-        return response.json({
-            success: true
-        });
-    } catch (err) {
-        console.log(err);
-        return response.json({error: 'Writing to database failed'});
-    }
-});
-
-app.post('/updateMenu', async(request, response) => {
-    const session: SessionData = request.session as SessionData;
-    const { menuId, date } = request.body;
-    
-    if (typeof menuId !== 'number' || typeof date !== 'number') {
-        return response.json({error: 'Invalid data'});
-    }
-
-    try {
-        await updateDateMenu(pool, menuId, date, session.userId!)
-        return response.json({success: true});
-    } catch (err) {
-        return response.json({error: true});
     }
 });
 
