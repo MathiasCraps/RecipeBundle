@@ -1,7 +1,7 @@
 import { GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLObjectType } from 'graphql';
 
-export const AddMenuResponseData = new GraphQLObjectType({
-    name: 'addMenuResponse',
+export const ModifyMenuResponse = new GraphQLObjectType({
+    name: 'modifyMenuResponse',
     fields: () => ({
         success: { type: GraphQLBoolean },
         menuId: { type: GraphQLInt },

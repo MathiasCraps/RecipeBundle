@@ -1,7 +1,7 @@
 import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
 import { SessionData } from '../../model/SessionData';
-import { AddMenuResponseData } from './AddMenuResponseData';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
+import { ModifyMenuResponse } from './ModifyMenuResponse';
 
 
 
@@ -9,7 +9,7 @@ export const RootMutation = new GraphQLObjectType({
     name: 'addmenu',
     fields: {
         addMenu: {
-            type: AddMenuResponseData,
+            type: ModifyMenuResponse,
             args: {
                 date: { type: GraphQLFloat },
                 recipeId: { type: GraphQLInt }
@@ -35,7 +35,7 @@ export const RootMutation = new GraphQLObjectType({
             }
         },
         removeMenu: {
-            type: AddMenuResponseData,
+            type: ModifyMenuResponse,
             args: {
                 menuId: { type: GraphQLInt }
             },
@@ -60,7 +60,7 @@ export const RootMutation = new GraphQLObjectType({
             }
         },
         updateMenu: {
-            type: AddMenuResponseData,
+            type: ModifyMenuResponse,
             args: {
                 date: { type: GraphQLFloat },
                 menuId: { type: GraphQLInt }
