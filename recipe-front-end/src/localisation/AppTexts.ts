@@ -54,6 +54,5 @@ export enum Localisation {
     SEPTEMBER = 'September',
     OCTOBER = 'Oktober',
     NOVEMBER = 'November',
-    DECEMBER = 'Decembe'
-
+    DECEMBER = 'December'
 }
