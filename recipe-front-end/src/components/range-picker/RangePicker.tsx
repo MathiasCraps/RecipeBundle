@@ -6,6 +6,10 @@ import { DateRange, ReduxModel } from '../../redux/Store';
 import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 
+interface OwnProps {
+    showNextMonth: boolean;
+}
+
 interface ReduxProps {
     startDate: Date;
     endDate: Date;
@@ -26,7 +30,7 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     }
 }
 
-type Props = ReduxProps & ReduxActions;
+type Props = OwnProps & ReduxProps & ReduxActions;
 
 enum StageOption {
     NONE,
@@ -126,9 +130,12 @@ function RangePicker(props: Props) {
     }
 
     const months = [
-        new Date(),
-        calculateStartOfMonthWithOffset(new Date(), 1)
+        new Date()
     ]
+
+    if (props.showNextMonth) {
+        months.push(calculateStartOfMonthWithOffset(new Date(), 1));
+    }
 
     return <DatePickerContext.Provider value={selection}>
         <div onKeyUpCapture={(event) => {

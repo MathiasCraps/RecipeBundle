@@ -48,7 +48,7 @@ export function ShoppingListMain(props: ReduxProps) {
 
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
-        <RangePicker/>
+        <RangePicker showNextMonth={true}/>
 
         <div className="shopping-list-ingredients">
             <ul>
