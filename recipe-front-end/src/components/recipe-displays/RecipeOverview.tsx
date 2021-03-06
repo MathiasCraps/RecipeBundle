@@ -8,6 +8,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
+import RangePicker from '../range-picker/RangePicker';
 
 interface ReduxProps {
     recipes: Recipe[];
@@ -101,6 +102,7 @@ function RecipeOverview(props: Props) {
             </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
+            <div>{Localisation.PLAN_IN}<RangePicker showNextMonth={false}/></div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
