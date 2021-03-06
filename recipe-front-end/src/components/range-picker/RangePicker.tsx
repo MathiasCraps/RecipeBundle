@@ -1,6 +1,5 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { connect } from 'react-redux';
-import { Localisation } from '../../localisation/AppTexts';
 import { updateShoppingRange } from '../../redux/Actions';
 import { DateRange, ReduxModel } from '../../redux/Store';
 import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../utils/DateUtils';
@@ -8,6 +7,8 @@ import { CalendarMonth } from './CalendarMonth';
 
 interface OwnProps {
     showNextMonth: boolean;
+    isVisible: boolean;
+    onClosing(): void;
 }
 
 interface ReduxProps {
@@ -17,10 +18,6 @@ interface ReduxProps {
 
 interface ReduxActions {
     updateShoppingRange: typeof updateShoppingRange;
-}
-
-function formatDate(date: Date) {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
@@ -33,15 +30,18 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 type Props = OwnProps & ReduxProps & ReduxActions;
 
 enum StageOption {
-    NONE,
     START,
     END
 }
 
 export const DatePickerContext = React.createContext<DateRange | undefined>(undefined);
 function RangePicker(props: Props) {
+    if (!props.isVisible) {
+        return <div></div>
+    }
+
     const [selection, setSelection] = useState<DateRange | undefined>();
-    const [stage, setStage] = useState<StageOption>(StageOption.NONE);
+    const [stage, setStage] = useState<StageOption>(StageOption.START);
 
     function updateClickedRange(date: Date) {
         if (isNaN(+date)) {
@@ -54,28 +54,27 @@ function RangePicker(props: Props) {
         } else {
             const [start, end] = [selection.start, date].sort((a, b) => Number(a) - Number(b));
             setSelection(undefined);
-            setStage(StageOption.NONE);
+            setStage(StageOption.START);
             props.updateShoppingRange({ start, end });
+            props.onClosing();
         }
     }
 
     function toggleView() {
-        if (stage === StageOption.NONE) {
+        if (stage === StageOption.START) {
             setStage(StageOption.START);
         } else if (StageOption.END) {
-            setStage(StageOption.NONE);
+            setStage(StageOption.START);
+            props.onClosing();
         }
     }
 
     function handleKeyAction(event: KeyboardEvent) {
-        if (stage === StageOption.NONE) {
-            return;
-        }
-
         const key = event.key;
         if (event.key === 'Escape') {
             setSelection(undefined);
-            setStage(StageOption.NONE);
+            setStage(StageOption.START);
+            props.onClosing();
             return;
         }
 
@@ -122,8 +121,9 @@ function RangePicker(props: Props) {
             }
 
             if (stage === StageOption.END) {
-                setStage(StageOption.NONE);
+                setStage(StageOption.START);
                 setSelection(undefined);
+                props.onClosing();
                 props.updateShoppingRange(assigned! || selection);
             }
         }
@@ -140,18 +140,12 @@ function RangePicker(props: Props) {
     return <DatePickerContext.Provider value={selection}>
         <div onKeyUpCapture={(event) => {
             handleKeyAction(event);
-            if (event.key === 'Enter' && stage === StageOption.NONE) {
+            if (event.key === 'Enter' && stage === StageOption.START) {
                 toggleView()
             }
         }}>
-            <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a
-                href="#"
-                className="date-range-initiator"
-                tabIndex={0}
-                onMouseUp={toggleView}>{formatDate(props.startDate)} - {formatDate(props.endDate)}
-            </a>:</p>
             {months.map((month, index) => {
-                return <React.Fragment key={index}><CalendarMonth isVisible={stage !== StageOption.NONE}
+                return <React.Fragment key={index}><CalendarMonth isVisible={props.isVisible}
                     date={month}
                     onDayPicked={updateClickedRange}
                 />

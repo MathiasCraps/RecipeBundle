@@ -36,8 +36,9 @@ function mapStateToProps(state: ReduxModel): ReduxProps {
 
 function RecipeOverview(props: Props) {
     const [originalTouch, setOriginalTouch] = useState(0);
+    const [pickerVisible, setPickerIsVisible] = useState(false);
     const [direction, setDirection] = useState<Direction>();
-    const urlId = useRouteMatch<{ id: string | undefined}>(`${Paths.RECIPE_OVERVIEW}/:id`);
+    const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.RECIPE_OVERVIEW}/:id`);
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
     const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
     const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
@@ -45,7 +46,7 @@ function RecipeOverview(props: Props) {
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
     }
-    
+
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
             switch (keyEvent.code) {
@@ -102,7 +103,12 @@ function RecipeOverview(props: Props) {
             </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
-            <div>{Localisation.PLAN_IN}<RangePicker showNextMonth={false}/></div>
+            <div>
+                <a href="#" onClick={() => setPickerIsVisible(!pickerVisible)}>{Localisation.PLAN_IN}</a>
+                <div>
+                    <RangePicker showNextMonth={false} isVisible={pickerVisible} onClosing={() => setPickerIsVisible(false)} />
+                </div>
+            </div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}

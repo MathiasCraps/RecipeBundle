@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
@@ -31,6 +31,10 @@ function selectMenuFromRange(menus: DayMenu[], fromTime: Date, toTime: Date) {
     return menus.filter((menu) => menu.date >= fromTime.getTime() && menu.date < toTime.getTime());
 }
 
+function formatDate(date: Date) {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+}
+
 const rulesHandler = new RulesHandler([
     new TableSpoonToGramRule(), 
     new TeaSpoonToGramRule()
@@ -45,10 +49,17 @@ export function ShoppingListMain(props: ReduxProps) {
     const ingredientsFromRecipes = menusToConsider.map(e => e.recipe.ingredients).flat(1);
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
+    const [pickerVisible, setPickerVisible] = useState(false);
 
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
-        <RangePicker showNextMonth={true}/>
+        <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a
+                href="#"
+                className="date-range-initiator"
+                tabIndex={0}
+                onClick={() => setPickerVisible(!pickerVisible)}>{formatDate(props.dateRange.start)} - {formatDate(props.dateRange.end)}
+            </a>:</p>
+        <RangePicker showNextMonth={true} isVisible={pickerVisible} onClosing={() => setPickerVisible(!pickerVisible)}/>
 
         <div className="shopping-list-ingredients">
             <ul>
