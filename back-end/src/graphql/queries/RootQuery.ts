@@ -11,7 +11,7 @@ export const RootQuery = new GraphQLObjectType({
         recipes: {
             type: new GraphQLList(RecipeType),
             description: 'Request all the available recipes.',
-            async resolve() {
+            async resolve(parent, args, request) {
                 return await getAllRecipes();
             }
         },
@@ -20,6 +20,9 @@ export const RootQuery = new GraphQLObjectType({
             description: 'Request all the planned menus for the current user.',
             async resolve(parentValue, args, request) {
                 const requestWithType = request.session as SessionData;
+                if (!(requestWithType?.loggedIn)) {
+                    return [];
+                }
                 return await getMenus(requestWithType.userId);
             }
         }

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import { graphqlHTTP } from 'express-graphql';
 import session from "express-session";
 import fs from "fs";
@@ -28,8 +28,6 @@ app.use(session({
   secret: String(process.env.SESSION_SECRET),
 }));
 
-app.post('*', verifyLoggedIn);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.single('userfile'));
@@ -51,7 +49,7 @@ function getExtension(mimeType: string): string {
     return '';
 }
 
-app.post('/addRecipe', async (request, response) => {
+app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Response) => {
     const user = (request.session as SessionData).userName;
     if (!user) {
         response.json({error: 'Not logged in'});
@@ -96,7 +94,7 @@ app.post('/addRecipe', async (request, response) => {
             response.json({error: 'Could not write to database'});
         }
     });  
-});
+}]);
 
 app.get('/getSessionData', async (request, response) => {
     const session: SessionData = request.session as SessionData;
