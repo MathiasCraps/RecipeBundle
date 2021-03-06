@@ -9,7 +9,7 @@ import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
-import RangePicker from './range-picker/RangePicker';
+import RangePicker from '../range-picker/RangePicker';
 import { ShoppingIngredient } from './ShoppingIngredient';
 import { Redirect } from "react-router-dom";
 

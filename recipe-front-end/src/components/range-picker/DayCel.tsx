@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
-import { ReduxModel } from '../../../redux/Store';
-import { dateIsInRange } from '../../../utils/DateUtils';
+import { ReduxModel } from '../../redux/Store';
+import { dateIsInRange } from '../../utils/DateUtils';
 import { DatePickerContext } from './RangePicker';
 
 interface OwnProps {

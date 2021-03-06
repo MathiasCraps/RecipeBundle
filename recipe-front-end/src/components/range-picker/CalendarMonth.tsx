@@ -1,6 +1,6 @@
 import React from 'react';
-import { Localisation } from '../../../localisation/AppTexts';
-import { calculateMonthGrid } from '../../../utils/DateUtils';
+import { Localisation } from '../../localisation/AppTexts';
+import { calculateMonthGrid } from '../../utils/DateUtils';
 import { WeekRow } from './WeekRow';
 
 interface OwnProps {

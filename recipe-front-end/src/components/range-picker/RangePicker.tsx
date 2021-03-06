@@ -1,9 +1,9 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { connect } from 'react-redux';
-import { Localisation } from '../../../localisation/AppTexts';
-import { updateShoppingRange } from '../../../redux/Actions';
-import { DateRange, ReduxModel } from '../../../redux/Store';
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../../utils/DateUtils';
+import { Localisation } from '../../localisation/AppTexts';
+import { updateShoppingRange } from '../../redux/Actions';
+import { DateRange, ReduxModel } from '../../redux/Store';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 
 interface ReduxProps {
