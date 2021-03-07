@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
+import MultiRangePicker from '../range-picker/MultiRangePicker';
 import { combineToSingleValue } from './normalization/Combiner';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
-import RangePicker from '../range-picker/RangePicker';
 import { ShoppingIngredient } from './ShoppingIngredient';
-import { Redirect } from "react-router-dom";
 
 interface ReduxProps {
     menus: DayMenu[];
@@ -36,7 +36,7 @@ function formatDate(date: Date) {
 }
 
 const rulesHandler = new RulesHandler([
-    new TableSpoonToGramRule(), 
+    new TableSpoonToGramRule(),
     new TeaSpoonToGramRule()
 ]);
 
@@ -54,17 +54,21 @@ export function ShoppingListMain(props: ReduxProps) {
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
         <p>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} <a
-                href="#"
-                className="date-range-initiator"
-                tabIndex={0}
-                onClick={() => setPickerVisible(!pickerVisible)}>{formatDate(props.dateRange.start)} - {formatDate(props.dateRange.end)}
-            </a>:</p>
-        <RangePicker showNextMonth={true} isVisible={pickerVisible} onClosing={() => setPickerVisible(!pickerVisible)}/>
+            href="#"
+            className="date-range-initiator"
+            tabIndex={0}
+            onClick={() => setPickerVisible(!pickerVisible)}>{formatDate(props.dateRange.start)} - {formatDate(props.dateRange.end)}
+        </a>:</p>
+        <MultiRangePicker
+            showNextMonth={true}
+            isVisible={pickerVisible}
+            onClosing={() => setPickerVisible(!pickerVisible)}
+        />
 
         <div className="shopping-list-ingredients">
             <ul>
                 {sumsToRender.sort((a, b) => a.name > b.name ? 1 : -1)
-                .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
+                    .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
             </ul>
         </div>
     </ContentContainer>
