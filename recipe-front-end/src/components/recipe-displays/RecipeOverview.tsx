@@ -12,6 +12,7 @@ import RangePicker from '../range-picker/RangePicker';
 
 interface ReduxProps {
     recipes: Recipe[];
+    loggedIn: boolean;
 }
 
 type Props = ReduxProps;
@@ -30,7 +31,8 @@ function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], directi
 
 function mapStateToProps(state: ReduxModel): ReduxProps {
     return {
-        recipes: state.recipes
+        recipes: state.recipes,
+        loggedIn: state.user.loggedIn
     };
 }
 
@@ -103,12 +105,12 @@ function RecipeOverview(props: Props) {
             </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
-            <div>
+            {props.loggedIn && <div>
                 <a href="#" onClick={() => setPickerIsVisible(!pickerVisible)}>{Localisation.PLAN_IN}</a>
                 <div>
                     <RangePicker showNextMonth={false} isVisible={pickerVisible} onClosing={() => setPickerIsVisible(false)} />
                 </div>
-            </div>
+            </div>}
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
