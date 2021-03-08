@@ -11,6 +11,7 @@ interface OwnProps {
     onDaySelected(date: Date): void;
     selectedRange: DateRange;
     activeDay: Date;
+    initialFocusRef: React.Ref<HTMLDivElement>;
 }
 
 type Props = OwnProps;
@@ -22,12 +23,7 @@ export default function RangePicker(props: Props) {
     }
 
     const [initialOpen, setIntialOpen] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        ref.current?.focus();
-    });
-
+    
     function handleKeyAction(event: KeyboardEvent) {
         const key = event.key;
         if (event.key === 'Escape') {
@@ -78,7 +74,7 @@ export default function RangePicker(props: Props) {
     }
 
     return <DatePickerContext.Provider value={props.selectedRange}>
-        <div tabIndex={-1} ref={ref} onKeyUpCapture={(event) => {
+        <div className="date-picker" tabIndex={-1} ref={props.initialFocusRef} onKeyUpCapture={(event) => {
             handleKeyAction(event);
         }}>
             {months.map((month, index) => {

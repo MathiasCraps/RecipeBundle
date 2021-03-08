@@ -10,6 +10,7 @@ interface Ownprops {
     isVisible: boolean;
     onClosing(): void;
     showNextMonth: boolean;
+    initialFocusRef: React.Ref<HTMLDivElement>;
 }
 
 interface ReduxActions {
@@ -66,6 +67,7 @@ function MultiRangePicker(props: Props) {
         onDaySelected={handleDaySelected}
         selectedRange={selection}
         activeDay={selectedDay}
+        initialFocusRef={props.initialFocusRef}
     />
 }
 
