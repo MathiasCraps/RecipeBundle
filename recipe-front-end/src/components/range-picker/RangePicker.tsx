@@ -82,7 +82,9 @@ export default function RangePicker(props: Props) {
             handleKeyAction(event);
         }}>
             {months.map((month, index) => {
-                return <React.Fragment key={index}><CalendarMonth isVisible={props.isVisible}
+                return <React.Fragment key={index}><CalendarMonth 
+                    isVisible={props.isVisible}
+                    onDaySelected={props.onDaySelected}
                     date={month}
                     onDayPicked={props.onDayPicked}
                 />

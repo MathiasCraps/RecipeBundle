@@ -8,6 +8,7 @@ interface OwnProps {
     day: Date;
     isEnabled: boolean;
     onDayPicked: (date: Date) => void;
+    onDaySelected: (date: Date) => void;
 }
 
 interface ReduxProps {
@@ -39,7 +40,8 @@ function DayCel(props: Props) {
     ].join(' ');
 
     return <span tabIndex={-1} className={classList}
-        onClick={() => props.onDayPicked(props.day)}>
+        onClick={() => props.onDayPicked(props.day)}
+        onMouseOver={() => props.onDaySelected(props.day)}>
         {valueToRender}
     </span>
 }
