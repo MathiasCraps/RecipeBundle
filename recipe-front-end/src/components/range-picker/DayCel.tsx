@@ -40,8 +40,8 @@ function DayCel(props: Props) {
     ].join(' ');
 
     return <span tabIndex={-1} className={classList}
-        onClick={() => props.onDayPicked(props.day)}
-        onMouseOver={() => props.onDaySelected(props.day)}>
+        onClick={() => !isNaN(Number(props.day)) && props.onDayPicked(props.day)}
+        onMouseOver={() => !isNaN(Number(props.day)) && props.onDaySelected(props.day)}>
         {valueToRender}
     </span>
 }
