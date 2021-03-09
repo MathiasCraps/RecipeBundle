@@ -1,5 +1,5 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Heading, Image } from "@chakra-ui/react";
+import { Heading, Image, toast, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
@@ -56,6 +56,7 @@ function RecipeOverview(props: Props) {
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
     const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
     const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
+    const toast = useToast();
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
@@ -131,13 +132,18 @@ function RecipeOverview(props: Props) {
                     <SingleDayPicker 
                         isVisible={pickerVisible} 
                         onClose={() => setPickerIsVisible(false)}
-                        onComplete={(date: Date) => {
-                        props.addMenu({
+                        onComplete={async (date: Date) => {
+                        setPickerIsVisible(false);
+                        await props.addMenu({
                             date: Number(date),
                             menuId: -1,
                             recipe: recipe
                         });
-                        setPickerIsVisible(false);
+                        toast({
+                            description: Localisation.ADDING_MENU_WAS_SUCCESS,
+                            status: 'success',
+                            isClosable: true,
+                        });
                     }}
                     />
                 </div>
