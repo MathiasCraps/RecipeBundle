@@ -3,19 +3,25 @@ import { Heading, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { ReduxModel } from "../../redux/Store";
+import { addMenu } from '../../redux/Actions';
+import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
-import RangePicker from '../range-picker/RangePicker';
+import SingleDayPicker from '../range-picker/SingleDayPicker';
 
 interface ReduxProps {
     recipes: Recipe[];
     loggedIn: boolean;
 }
 
-type Props = ReduxProps;
+interface ReduxActions {
+    addMenu: (menu: DayMenu) => Promise<void>;
+}
+
+type Props = ReduxProps & ReduxActions;
 
 enum Direction {
     PREVIOUS,
@@ -27,6 +33,12 @@ function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], directi
 
     const proposedRecipeId = indexInArray + (direction === Direction.PREVIOUS ? -1 : +1);
     return recipes[Math.min(recipes.length - 1, Math.max(0, proposedRecipeId))].id;
+}
+
+function map(dispatch: Dispatch<AddMenuAction>) {
+    return {
+        addMenu: addMenu(dispatch),
+    };
 }
 
 function mapStateToProps(state: ReduxModel): ReduxProps {
@@ -51,6 +63,10 @@ function RecipeOverview(props: Props) {
 
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
+            if (pickerVisible) {
+                return false;
+            }
+
             switch (keyEvent.code) {
                 case 'Escape':
                     window.location.href = Paths.BASE;
@@ -106,11 +122,27 @@ function RecipeOverview(props: Props) {
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
             {props.loggedIn && <div>
-                <a href="#" onClick={() => setPickerIsVisible(!pickerVisible)}>{Localisation.PLAN_IN}</a>
+                <button
+                    className="date-range-initiator"
+                    onClick={() => setPickerIsVisible(!pickerVisible)}>
+                        {Localisation.PLAN_IN}
+                </button>
                 <div>
-                    <RangePicker showNextMonth={false} isVisible={pickerVisible} onClosing={() => setPickerIsVisible(false)} />
+                    <SingleDayPicker 
+                        isVisible={pickerVisible} 
+                        onClose={() => setPickerIsVisible(false)}
+                        onComplete={(date: Date) => {
+                        props.addMenu({
+                            date: Number(date),
+                            menuId: -1,
+                            recipe: recipe
+                        });
+                        setPickerIsVisible(false);
+                    }}
+                    />
                 </div>
             </div>}
+            <div className="clearer"></div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
@@ -120,4 +152,4 @@ function RecipeOverview(props: Props) {
         </ContentContainer></div>);
 }
 
-export default connect(mapStateToProps)(RecipeOverview);
+export default connect(mapStateToProps, map)(RecipeOverview);
