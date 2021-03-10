@@ -6,6 +6,7 @@ import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
+import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
 import { combineToSingleValue } from './normalization/Combiner';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
@@ -56,44 +57,24 @@ export function ShoppingListMain(props: ReduxProps) {
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
 
-
-        <Popover
-            placement="bottom"
-            closeOnBlur={true}
-            isOpen={pickerVisible}
+        <SimplePopover trigger={<div>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} : <PopoverTrigger>
+            <button
+                className="date-range-initiator"
+                onClick={() => setPickerVisible(!pickerVisible)}>
+                {`${formatDate(props.dateRange.start)} ${formatDate(props.dateRange.end)}`}
+            </button></PopoverTrigger></div>}
+            isOpened={pickerVisible}
+            onClose={() => setPickerVisible(false)}
+            title={Localisation.PICK_A_PERIOD}
             initialFocusRef={initialFocusRef}
-            onClose={() => setPickerVisible(!pickerVisible)}
         >
-            {Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} : <PopoverTrigger>
-                <button
-                    className="date-range-initiator"
-                    onClick={() => setPickerVisible(!pickerVisible)}>
-                        {`${formatDate(props.dateRange.start)} ${formatDate(props.dateRange.end)}`}
-                </button></PopoverTrigger>
-            <PopoverContent>
-                <PopoverHeader paddingTop="0.5em" fontWeight="bold" border="0">
-                    {Localisation.PICK_A_PERIOD}
-                </PopoverHeader>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverBody>
-                    <MultiRangePicker
-                        showNextMonth={true}
-                        isVisible={pickerVisible}
-                        onClosing={() => setPickerVisible(!pickerVisible)}
-                        initialFocusRef={initialFocusRef}
-                    />
-                </PopoverBody>
-            </PopoverContent>
-        </Popover>
-
-
-
-
-
-
-
-
+            <MultiRangePicker
+                showNextMonth={true}
+                isVisible={pickerVisible}
+                onClosing={() => setPickerVisible(!pickerVisible)}
+                initialFocusRef={initialFocusRef}
+            />
+        </SimplePopover>
 
         <div className="shopping-list-ingredients">
             <ul>
