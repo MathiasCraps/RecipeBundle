@@ -1,5 +1,5 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Heading, Image, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, useToast } from "@chakra-ui/react";
+import { Heading, Image, useToast } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { Paths } from '../../Paths';
 import { addMenu } from '../../redux/Actions';
 import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
+import SimplePopover from '../common/SimplePopover';
 import SingleDayPicker from '../range-picker/SingleDayPicker';
 
 interface ReduxProps {
@@ -124,46 +125,34 @@ function RecipeOverview(props: Props) {
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
 
-            {props.loggedIn && <Popover
-                placement="bottom"
-                closeOnBlur={true}
-                isOpen={pickerVisible}
+            {props.loggedIn && <SimplePopover
+                trigger={<button
+                    className="date-range-initiator"
+                    onClick={() => setPickerIsVisible(!pickerVisible)}>
+                    {Localisation.PLAN_IN}
+                </button>}
+                onClose={() => setPickerIsVisible(false)}
+                isOpened={pickerVisible}
                 initialFocusRef={initialFocusRef}
-                onClose={() => setPickerIsVisible(!pickerVisible)}
-            >
-                <PopoverTrigger>
-                    <button
-                        className="date-range-initiator"
-                        onClick={() => setPickerIsVisible(!pickerVisible)}>
-                        {Localisation.PLAN_IN}
-                    </button></PopoverTrigger>
-                <PopoverContent>
-                    <PopoverHeader paddingTop="0.5em" fontWeight="bold" border="0">
-                        {Localisation.PLAN_IN}
-                    </PopoverHeader>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>
-                        <SingleDayPicker
-                            isVisible={pickerVisible}
-                            onClose={() => setPickerIsVisible(false)}
-                            initialFocusRef={initialFocusRef}
-                            onComplete={async (date: Date) => {
-                                setPickerIsVisible(false);
-                                await props.addMenu({
-                                    date: Number(date),
-                                    menuId: -1,
-                                    recipe: recipe
-                                });
-                                toast({
-                                    description: Localisation.ADDING_MENU_WAS_SUCCESS,
-                                    status: 'success',
-                                    isClosable: true,
-                                });
-                            }} />
-                    </PopoverBody>
-                </PopoverContent>
-            </Popover>}
+                >
+                    <SingleDayPicker
+                    isVisible={pickerVisible}
+                    onClose={() => setPickerIsVisible(false)}
+                    initialFocusRef={initialFocusRef}
+                    onComplete={async (date: Date) => {
+                        setPickerIsVisible(false);
+                        await props.addMenu({
+                            date: Number(date),
+                            menuId: -1,
+                            recipe: recipe
+                        });
+                        toast({
+                            description: Localisation.ADDING_MENU_WAS_SUCCESS,
+                            status: 'success',
+                            isClosable: true,
+                        });
+                    }} />
+            </SimplePopover>}
 
             <div className="clearer"></div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
