@@ -1,6 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, useToast } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -57,6 +57,7 @@ function RecipeOverview(props: Props) {
     const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
     const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
     const toast = useToast();
+    const initialFocusRef = useRef<HTMLDivElement>(null);
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
@@ -146,6 +147,7 @@ function RecipeOverview(props: Props) {
                         <SingleDayPicker
                             isVisible={pickerVisible}
                             onClose={() => setPickerIsVisible(false)}
+                            initialFocusRef={initialFocusRef}
                             onComplete={async (date: Date) => {
                                 setPickerIsVisible(false);
                                 await props.addMenu({
