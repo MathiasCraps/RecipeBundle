@@ -1,19 +1,28 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Heading, Image } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Heading, Image, useToast } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { ReduxModel } from "../../redux/Store";
+import { addMenu } from '../../redux/Actions';
+import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
+import SimplePopover from '../common/SimplePopover';
+import SingleDayPicker from '../range-picker/SingleDayPicker';
 
 interface ReduxProps {
     recipes: Recipe[];
+    loggedIn: boolean;
 }
 
-type Props = ReduxProps;
+interface ReduxActions {
+    addMenu: (menu: DayMenu) => Promise<void>;
+}
+
+type Props = ReduxProps & ReduxActions;
 
 enum Direction {
     PREVIOUS,
@@ -27,26 +36,40 @@ function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], directi
     return recipes[Math.min(recipes.length - 1, Math.max(0, proposedRecipeId))].id;
 }
 
+function map(dispatch: Dispatch<AddMenuAction>) {
+    return {
+        addMenu: addMenu(dispatch),
+    };
+}
+
 function mapStateToProps(state: ReduxModel): ReduxProps {
     return {
-        recipes: state.recipes
+        recipes: state.recipes,
+        loggedIn: state.user.loggedIn
     };
 }
 
 function RecipeOverview(props: Props) {
     const [originalTouch, setOriginalTouch] = useState(0);
+    const [pickerVisible, setPickerIsVisible] = useState(false);
     const [direction, setDirection] = useState<Direction>();
-    const urlId = useRouteMatch<{ id: string | undefined}>(`${Paths.RECIPE_OVERVIEW}/:id`);
+    const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.RECIPE_OVERVIEW}/:id`);
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
     const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
     const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
+    const toast = useToast();
+    const initialFocusRef = useRef<HTMLDivElement>(null);
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
     }
-    
+
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
+            if (pickerVisible) {
+                return false;
+            }
+
             switch (keyEvent.code) {
                 case 'Escape':
                     window.location.href = Paths.BASE;
@@ -101,13 +124,45 @@ function RecipeOverview(props: Props) {
             </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
+
+            {props.loggedIn && <SimplePopover
+                trigger={<button
+                    className="date-range-initiator"
+                    onClick={() => setPickerIsVisible(!pickerVisible)}>
+                    {Localisation.PLAN_IN}
+                </button>}
+                onClose={() => setPickerIsVisible(false)}
+                isOpened={pickerVisible}
+                initialFocusRef={initialFocusRef}
+                title={Localisation.PLAN_IN}
+                >
+                    <SingleDayPicker
+                    isVisible={pickerVisible}
+                    onClose={() => setPickerIsVisible(false)}
+                    initialFocusRef={initialFocusRef}
+                    onComplete={async (date: Date) => {
+                        setPickerIsVisible(false);
+                        await props.addMenu({
+                            date: Number(date),
+                            menuId: -1,
+                            recipe: recipe
+                        });
+                        toast({
+                            description: Localisation.ADDING_MENU_WAS_SUCCESS,
+                            status: 'success',
+                            isClosable: true,
+                        });
+                    }} />
+            </SimplePopover>}
+
+            <div className="clearer"></div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
                 <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
                 </li>))}</ul>
             <Heading as="h3">{Localisation.STEPS}</Heading>
             {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
-        </ContentContainer></div>);
+        </ContentContainer></div >);
 }
 
-export default connect(mapStateToProps)(RecipeOverview);
+export default connect(mapStateToProps, map)(RecipeOverview);

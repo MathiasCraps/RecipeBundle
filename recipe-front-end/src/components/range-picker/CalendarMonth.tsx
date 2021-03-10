@@ -1,12 +1,13 @@
 import React from 'react';
-import { Localisation } from '../../../localisation/AppTexts';
-import { calculateMonthGrid } from '../../../utils/DateUtils';
+import { Localisation } from '../../localisation/AppTexts';
+import { calculateMonthGrid } from '../../utils/DateUtils';
 import { WeekRow } from './WeekRow';
 
 interface OwnProps {
     date: Date;
     isVisible: boolean;
     onDayPicked: (date: Date) => void;
+    onDaySelected: (date: Date) => void;
 }
 
 const MONTHS = [
@@ -36,5 +37,6 @@ export function CalendarMonth(props: OwnProps) {
             key={index}
             week={week}
             onDayPicked={props.onDayPicked}
+            onDaySelected={props.onDaySelected}
         />)}</div>
 }

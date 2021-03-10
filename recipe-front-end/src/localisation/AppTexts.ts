@@ -2,6 +2,7 @@
 export enum Localisation {
     PREVIOUS_RECIPE = "Naar vorig recept",
     NEXT_RECIPE = "Naar volgend recept",
+    PLAN_IN = 'Plan dit in',
     INGREDIENT = "Ingrediënt",
     INGREDIENTS = "Ingrediënten",
     STEPS = "Instructies",
@@ -25,6 +26,7 @@ export enum Localisation {
     CANCEL = 'Annuleren',
     TITLE = 'Titel',
     ADDING_WAS_SUCCESS = 'Gelukt! Bedankt voor je inzending.',
+    ADDING_MENU_WAS_SUCCESS = 'Je menu staat ingepland',
     ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.',
     MENU_PLANNER = 'Menuplanner',
     DISH_SINGULAR = 'Gerecht',
@@ -43,6 +45,7 @@ export enum Localisation {
     LESS_OPTIONS = 'Toon minder opties',
     SHOPPING_LIST = 'Boodschappenlijst',
     YOUR_SHOPPING_LIST_FOR_THE_PERIOD = 'Je boodschappenlijstje voor de periode',
+    PICK_A_PERIOD = 'Kies een periode',
     JANUARY = 'Januari',
     FEBRUARY = 'Februari',
     MARCH = 'Maart',
@@ -54,6 +57,5 @@ export enum Localisation {
     SEPTEMBER = 'September',
     OCTOBER = 'Oktober',
     NOVEMBER = 'November',
-    DECEMBER = 'Decembe'
-
+    DECEMBER = 'December'
 }

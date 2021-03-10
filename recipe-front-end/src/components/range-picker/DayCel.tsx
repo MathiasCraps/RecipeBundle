@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
-import { ReduxModel } from '../../../redux/Store';
-import { dateIsInRange } from '../../../utils/DateUtils';
+import { ReduxModel } from '../../redux/Store';
+import { dateIsInRange } from '../../utils/DateUtils';
 import { DatePickerContext } from './RangePicker';
 
 interface OwnProps {
     day: Date;
     isEnabled: boolean;
     onDayPicked: (date: Date) => void;
+    onDaySelected: (date: Date) => void;
 }
 
 interface ReduxProps {
@@ -39,7 +40,8 @@ function DayCel(props: Props) {
     ].join(' ');
 
     return <span tabIndex={-1} className={classList}
-        onClick={() => props.onDayPicked(props.day)}>
+        onClick={() => !isNaN(Number(props.day)) && props.onDayPicked(props.day)}
+        onMouseOver={() => !isNaN(Number(props.day)) && props.onDaySelected(props.day)}>
         {valueToRender}
     </span>
 }
