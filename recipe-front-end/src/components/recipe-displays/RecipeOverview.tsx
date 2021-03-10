@@ -1,5 +1,5 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Heading, Image, toast, useToast } from "@chakra-ui/react";
+import { Heading, Image, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
@@ -122,32 +122,47 @@ function RecipeOverview(props: Props) {
             </Link>
             <Heading as="h2">{recipe.title}</Heading>
             <Image src={recipe.image} alt="" />
-            {props.loggedIn && <div>
-                <button
-                    className="date-range-initiator"
-                    onClick={() => setPickerIsVisible(!pickerVisible)}>
+
+            {props.loggedIn && <Popover
+                placement="bottom"
+                closeOnBlur={true}
+                isOpen={pickerVisible}
+                initialFocusRef={initialFocusRef}
+                onClose={() => setPickerIsVisible(!pickerVisible)}
+            >
+                <PopoverTrigger>
+                    <button
+                        className="date-range-initiator"
+                        onClick={() => setPickerIsVisible(!pickerVisible)}>
                         {Localisation.PLAN_IN}
-                </button>
-                <div>
-                    <SingleDayPicker 
-                        isVisible={pickerVisible} 
-                        onClose={() => setPickerIsVisible(false)}
-                        onComplete={async (date: Date) => {
-                        setPickerIsVisible(false);
-                        await props.addMenu({
-                            date: Number(date),
-                            menuId: -1,
-                            recipe: recipe
-                        });
-                        toast({
-                            description: Localisation.ADDING_MENU_WAS_SUCCESS,
-                            status: 'success',
-                            isClosable: true,
-                        });
-                    }}
-                    />
-                </div>
-            </div>}
+                    </button></PopoverTrigger>
+                <PopoverContent>
+                    <PopoverHeader paddingTop="0.5em" fontWeight="bold" border="0">
+                        {Localisation.PLAN_IN}
+                    </PopoverHeader>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
+                        <SingleDayPicker
+                            isVisible={pickerVisible}
+                            onClose={() => setPickerIsVisible(false)}
+                            onComplete={async (date: Date) => {
+                                setPickerIsVisible(false);
+                                await props.addMenu({
+                                    date: Number(date),
+                                    menuId: -1,
+                                    recipe: recipe
+                                });
+                                toast({
+                                    description: Localisation.ADDING_MENU_WAS_SUCCESS,
+                                    status: 'success',
+                                    isClosable: true,
+                                });
+                            }} />
+                    </PopoverBody>
+                </PopoverContent>
+            </Popover>}
+
             <div className="clearer"></div>
             <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
             <ul>{recipe.ingredients.map((ingredient, index) => (
@@ -155,7 +170,7 @@ function RecipeOverview(props: Props) {
                 </li>))}</ul>
             <Heading as="h3">{Localisation.STEPS}</Heading>
             {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
-        </ContentContainer></div>);
+        </ContentContainer></div >);
 }
 
 export default connect(mapStateToProps, map)(RecipeOverview);
