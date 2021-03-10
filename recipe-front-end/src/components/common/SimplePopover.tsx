@@ -1,9 +1,9 @@
 import { Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger } from '@chakra-ui/react';
 import React from 'react';
-import { Localisation } from '../../localisation/AppTexts';
 
 interface OwnProps {
     trigger: React.ReactNode;
+    title: string;
     isOpened: boolean;
     children: React.ReactNode;
     onClose:() => void;
@@ -23,7 +23,7 @@ export default function SimplePopover(props: OwnProps) {
     </PopoverTrigger>
     <PopoverContent>
         <PopoverHeader paddingTop="0.5em" fontWeight="bold" border="0">
-            {Localisation.PLAN_IN}
+            {props.title}
         </PopoverHeader>
         <PopoverArrow />
         <PopoverCloseButton />

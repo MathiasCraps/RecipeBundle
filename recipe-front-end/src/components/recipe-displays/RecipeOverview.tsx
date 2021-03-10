@@ -134,6 +134,7 @@ function RecipeOverview(props: Props) {
                 onClose={() => setPickerIsVisible(false)}
                 isOpened={pickerVisible}
                 initialFocusRef={initialFocusRef}
+                title={Localisation.PLAN_IN}
                 >
                     <SingleDayPicker
                     isVisible={pickerVisible}
