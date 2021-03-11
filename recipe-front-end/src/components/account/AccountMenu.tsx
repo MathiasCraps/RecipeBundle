@@ -26,6 +26,8 @@ function mapStateToProps(reduxStore: ReduxModel): AccountMenuProps {
 }
 
 function AccountMenu(props: Props) {
+    const displayedUserName = props.user.loggedIn ? `${props.user.name} 🐱‍👓` : `${Localisation.NINJA} 🐱‍👤`;
+
     return (<Drawer
         isOpen={props.loginMenuOpened}
         placement="right"
@@ -35,7 +37,7 @@ function AccountMenu(props: Props) {
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>
-                    <b>{`${Localisation.WELCOME} ` + ((props.user.loggedIn) ? `${props.user.name} 🐱‍👓` : `${Localisation.NINJA} 🐱‍👤`)}</b>
+                    <b>{`${Localisation.WELCOME} ${displayedUserName}`}</b>
                 </DrawerHeader>
                 <DrawerBody>
                     {props.user.loggedIn ? <LoggedInText /> : <NotLoggedIn />}
