@@ -1,10 +1,12 @@
-import { Box, Button, ButtonGroup, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { PopoverTrigger } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
+import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
+import { flatArray } from '../../utils/ArrayUtils';
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
@@ -48,7 +50,7 @@ export function ShoppingListMain(props: ReduxProps) {
     }
 
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
-    const ingredientsFromRecipes = menusToConsider.map(e => e.recipe.ingredients).flat(1);
+    const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
     const [pickerVisible, setPickerVisible] = useState(false);

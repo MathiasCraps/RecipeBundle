@@ -20,3 +20,7 @@ export function updateDayMenuWithDate(dayMenu: DayMenu[], menuId: number, toDate
 
     return shallowCopy;
 }
+
+export function flatArray<T>(array: T[][]): T[] {
+    return Array.prototype.concat.apply([], array);
+}
