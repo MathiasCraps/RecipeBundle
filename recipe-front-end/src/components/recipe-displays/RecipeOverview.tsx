@@ -50,19 +50,20 @@ function mapStateToProps(state: ReduxModel): ReduxProps {
 }
 
 function RecipeOverview(props: Props) {
-    const [originalTouch, setOriginalTouch] = useState(0);
-    const [pickerVisible, setPickerIsVisible] = useState(false);
-    const [direction, setDirection] = useState<Direction>();
     const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.RECIPE_OVERVIEW}/:id`);
     const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
-    const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
-    const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
-    const toast = useToast();
-    const initialFocusRef = useRef<HTMLDivElement>(null);
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
     }
+
+    const [originalTouch, setOriginalTouch] = useState(0);
+    const [pickerVisible, setPickerIsVisible] = useState(false);
+    const [direction, setDirection] = useState<Direction>();
+    const previous = getSurroundingRecipeId(recipe.id, props.recipes, Direction.PREVIOUS);
+    const next = getSurroundingRecipeId(recipe.id, props.recipes, Direction.NEXT);
+    const toast = useToast();
+    const initialFocusRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         function handleKeyPress(keyEvent: KeyboardEvent) {
