@@ -6,7 +6,6 @@ import { FillDayFilter } from './dayfilters/FillDayFilter';
 
 interface OwnProps {
     day: Date;
-    isEnabled: boolean;
     onDayPicked: (date: Date) => void;
     onDaySelected: (date: Date) => void;
     fillDayFilters: FillDayFilter[];

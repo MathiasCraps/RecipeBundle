@@ -13,7 +13,6 @@ export function WeekRow(props: OwnProps) {
     return <div className="picker-row">{props.week.map((day, index) => <DayCel
         key={index}
         day={day}
-        isEnabled={true}
         onDayPicked={props.onDayPicked} 
         onDaySelected={props.onDaySelected}
         fillDayFilters={props.fillDayFilters}/>)}
