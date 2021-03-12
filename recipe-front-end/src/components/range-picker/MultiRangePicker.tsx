@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { updateShoppingRange } from '../../redux/Actions';
 import { DateRange } from '../../redux/Store';
+import { dateIsInRange } from '../../utils/DateUtils';
 import RangePicker from './RangePicker';
 
 
@@ -68,7 +69,7 @@ function MultiRangePicker(props: Props) {
         selectedRange={selection}
         activeDay={selectedDay}
         initialFocusRef={props.initialFocusRef}
-        fillDayFilters={[]}
+        fillDayFilters={[(date) => dateIsInRange(date, selection.start, selection.end)]}
     />
 }
 

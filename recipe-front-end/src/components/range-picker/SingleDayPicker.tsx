@@ -1,5 +1,6 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { DateRange } from '../../redux/Store';
+import { dateIsInRange } from '../../utils/DateUtils';
 import RangePicker from './RangePicker';
 
 interface OwnProps {
@@ -27,7 +28,7 @@ export default function SingleDayPicker(props: Props) {
         initialFocusRef={props.initialFocusRef}
         activeDay={selectedRange.start}
         selectedRange={selectedRange}
-        fillDayFilters={[]}
+        fillDayFilters={[(date: Date) => dateIsInRange(date, selectedRange.start, selectedRange.end)]}
     />
     </div>
 }
