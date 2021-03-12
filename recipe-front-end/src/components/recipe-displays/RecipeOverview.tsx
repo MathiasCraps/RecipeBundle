@@ -9,6 +9,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addMenu } from '../../redux/Actions';
 import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
+import { isSameUtcDay } from '../../utils/DateUtils';
 import ContentContainer from "../common/ContentContainer";
 import SimplePopover from '../common/SimplePopover';
 import SingleDayPicker from '../range-picker/SingleDayPicker';
@@ -16,6 +17,7 @@ import SingleDayPicker from '../range-picker/SingleDayPicker';
 interface ReduxProps {
     recipes: Recipe[];
     loggedIn: boolean;
+    menus: DayMenu[];
 }
 
 interface ReduxActions {
@@ -45,18 +47,25 @@ function map(dispatch: Dispatch<AddMenuAction>) {
 function mapStateToProps(state: ReduxModel): ReduxProps {
     return {
         recipes: state.recipes,
-        loggedIn: state.user.loggedIn
+        loggedIn: state.user.loggedIn,
+        menus: state.menuPlanning
     };
 }
 
 function RecipeOverview(props: Props) {
     const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.RECIPE_OVERVIEW}/:id`);
-    const recipe = props.recipes.filter((recipe) => recipe.id === Number(urlId?.params.id))[0];
+    const recipeId = urlId?.params.id || '-1';
+    const recipe = props.recipes.filter((recipe) => recipe.id === Number(recipeId))[0];
 
     if (!recipe) {
         return <Redirect to={Paths.BASE} />
     }
 
+    const plannedDates = props.menus
+        .filter((menu) => menu.recipe.id === Number(recipeId))
+        .map((item) => new Date(item.date));
+
+    console.log('planned', plannedDates);
     const [originalTouch, setOriginalTouch] = useState(0);
     const [pickerVisible, setPickerIsVisible] = useState(false);
     const [direction, setDirection] = useState<Direction>();
@@ -136,11 +145,14 @@ function RecipeOverview(props: Props) {
                 isOpened={pickerVisible}
                 initialFocusRef={initialFocusRef}
                 title={Localisation.PLAN_IN}
-                >
-                    <SingleDayPicker
+            >
+                <SingleDayPicker
                     isVisible={pickerVisible}
                     onClose={() => setPickerIsVisible(false)}
                     initialFocusRef={initialFocusRef}
+                    fillDayFilters={[(date: Date) => plannedDates.some(
+                        plannedDate => isSameUtcDay(date, plannedDate)
+                    )]}
                     onComplete={async (date: Date) => {
                         setPickerIsVisible(false);
                         await props.addMenu({
