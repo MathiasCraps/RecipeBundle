@@ -2,6 +2,7 @@ import React, { KeyboardEvent, useState } from 'react';
 import { DateRange } from '../../redux/Store';
 import { addDays, calculateStartOfMonthWithOffset } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
+import { FillDayFilter } from './dayfilters/FillDayFilter';
 
 interface OwnProps {
     showNextMonth: boolean;
@@ -12,6 +13,7 @@ interface OwnProps {
     selectedRange: DateRange;
     activeDay: Date;
     initialFocusRef: React.Ref<HTMLDivElement>;
+    fillDayFilters: FillDayFilter[];
 }
 
 type Props = OwnProps;
@@ -83,6 +85,7 @@ export default function RangePicker(props: Props) {
                     onDaySelected={props.onDaySelected}
                     date={month}
                     onDayPicked={props.onDayPicked}
+                    fillDayFilters={props.fillDayFilters}
                 />
                 </React.Fragment>
 

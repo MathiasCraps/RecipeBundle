@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localisation } from '../../localisation/AppTexts';
 import { calculateMonthGrid } from '../../utils/DateUtils';
+import { FillDayFilter } from './dayfilters/FillDayFilter';
 import { WeekRow } from './WeekRow';
 
 interface OwnProps {
@@ -8,6 +9,7 @@ interface OwnProps {
     isVisible: boolean;
     onDayPicked: (date: Date) => void;
     onDaySelected: (date: Date) => void;
+    fillDayFilters: FillDayFilter[];
 }
 
 const MONTHS = [
@@ -38,5 +40,6 @@ export function CalendarMonth(props: OwnProps) {
             week={week}
             onDayPicked={props.onDayPicked}
             onDaySelected={props.onDaySelected}
+            fillDayFilters={props.fillDayFilters}
         />)}</div>
 }

@@ -27,6 +27,7 @@ export default function SingleDayPicker(props: Props) {
         initialFocusRef={props.initialFocusRef}
         activeDay={selectedRange.start}
         selectedRange={selectedRange}
+        fillDayFilters={[]}
     />
     </div>
 }

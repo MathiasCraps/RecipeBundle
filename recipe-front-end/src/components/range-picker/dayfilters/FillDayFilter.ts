@@ -1,0 +1,1 @@
+export type FillDayFilter = (date: Date) => boolean;

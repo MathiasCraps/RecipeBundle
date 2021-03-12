@@ -1,10 +1,12 @@
 import React from 'react';
 import DayCel from './DayCel';
+import { FillDayFilter } from './dayfilters/FillDayFilter';
 
 interface OwnProps {
     week: Date[];
     onDayPicked: (date: Date) => void;
     onDaySelected: (date: Date) => void;
+    fillDayFilters: FillDayFilter[];
 }
 
 export function WeekRow(props: OwnProps) {
@@ -13,6 +15,7 @@ export function WeekRow(props: OwnProps) {
         day={day}
         isEnabled={true}
         onDayPicked={props.onDayPicked} 
-        onDaySelected={props.onDaySelected}/>)}
+        onDaySelected={props.onDaySelected}
+        fillDayFilters={props.fillDayFilters}/>)}
     </div>
 }

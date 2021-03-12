@@ -68,6 +68,7 @@ function MultiRangePicker(props: Props) {
         selectedRange={selection}
         activeDay={selectedDay}
         initialFocusRef={props.initialFocusRef}
+        fillDayFilters={[]}
     />
 }
 

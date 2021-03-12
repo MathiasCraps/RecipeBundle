@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { ReduxModel } from '../../redux/Store';
 import { dateIsInRange } from '../../utils/DateUtils';
+import { FillDayFilter } from './dayfilters/FillDayFilter';
 import { DatePickerContext } from './RangePicker';
 
 interface OwnProps {
@@ -9,6 +10,7 @@ interface OwnProps {
     isEnabled: boolean;
     onDayPicked: (date: Date) => void;
     onDaySelected: (date: Date) => void;
+    fillDayFilters: FillDayFilter[];
 }
 
 interface ReduxProps {
