@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { DateRange } from '../../redux/Store';
 import { dateIsInRange } from '../../utils/DateUtils';
 import { FillDayFilter } from './dayfilters/FillDayFilter';

@@ -47,6 +47,8 @@ export default function RangePicker(props: Props) {
             case 'ArrowDown':
                 daysToAdd = 7;
                 break;
+            default:
+                // ignore
         }
 
         let assigned: Date;

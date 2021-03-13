@@ -1,5 +1,4 @@
 import { Tooltip } from "@chakra-ui/react";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { Localisation } from "../../localisation/AppTexts";
 import { DayMenu } from "../../redux/Store";

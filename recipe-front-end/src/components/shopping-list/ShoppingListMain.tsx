@@ -54,26 +54,33 @@ export function ShoppingListMain(props: ReduxProps) {
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
     const [pickerVisible, setPickerVisible] = useState(false);
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
     const initialFocusRef = React.useRef(null);
+
+    function handleClosingPicker() {
+        setPickerVisible(false)
+        triggerRef.current?.focus();
+        
+    }
 
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
 
         <SimplePopover trigger={<div>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} : <PopoverTrigger>
-            <button
+            <button ref={triggerRef}
                 className="date-range-initiator"
                 onClick={() => setPickerVisible(!pickerVisible)}>
                 {`${formatDate(props.dateRange.start)} ${formatDate(props.dateRange.end)}`}
             </button></PopoverTrigger></div>}
             isOpened={pickerVisible}
-            onClose={() => setPickerVisible(false)}
+            onClose={handleClosingPicker}
             title={Localisation.PICK_A_PERIOD}
             initialFocusRef={initialFocusRef}
         >
             <MultiRangePicker
                 showNextMonth={true}
                 isVisible={pickerVisible}
-                onClosing={() => setPickerVisible(!pickerVisible)}
+                onClosing={handleClosingPicker}
                 initialFocusRef={initialFocusRef}
             />
         </SimplePopover>

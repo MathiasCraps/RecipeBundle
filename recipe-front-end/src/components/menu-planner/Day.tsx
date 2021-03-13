@@ -52,7 +52,7 @@ function Day(props: Props) {
             setIsAboutToDrop(true);
             e.preventDefault();
         }}
-        onDragLeave={(e) => {
+        onDragLeave={() => {
             setIsAboutToDrop(false);
         }}
         onDrop={(e) => {

@@ -2,7 +2,7 @@ import { Tooltip } from "@chakra-ui/react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Paths } from '../../Paths';
 
 interface OwnProps {

@@ -1,6 +1,6 @@
 import { Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
-import { addDays, calculateStartOfDate, FULL_DAY_IN_MS } from '../utils/DateUtils';
+import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 
 export interface UserData {
     loggedIn: boolean;

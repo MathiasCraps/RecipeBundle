@@ -12,6 +12,7 @@ interface OwnProps {
 
 export default function SimplePopover(props: OwnProps) {
     return <Popover
+    returnFocusOnClose={true}
     placement="bottom"
     closeOnBlur={true}
     isOpen={props.isOpened}

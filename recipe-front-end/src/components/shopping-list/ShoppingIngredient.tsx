@@ -19,6 +19,9 @@ export function ShoppingIngredient(props: props) {
             case 'Enter':
             case 'Space':
                 setIsCancelled(!isCancelled);
+                break;
+            default:
+                // ignore
         }
     }
 
