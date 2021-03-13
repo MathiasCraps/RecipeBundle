@@ -3,7 +3,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { Recipe } from "../../interfaces/Recipe";
+import { Redirect } from "react-router-dom";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { updateActiveDay } from '../../redux/Actions';
@@ -13,7 +13,6 @@ import ContentContainer from "../common/ContentContainer";
 import AddMenuOverlay from "./AddMenuOverlay";
 import DayDetails from "./DayDetails";
 import Week from "./Week";
-import { Redirect } from "react-router-dom";
 
 interface ReduxProps {
     activeDay: number | undefined;
