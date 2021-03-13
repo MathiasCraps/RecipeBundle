@@ -97,7 +97,7 @@ function MenuPlanner(props: Props) {
             </DayDetails>}
 
             <AddMenuOverlay isOpened={isOpened}
-                onSubmit={(selectedRecipe: Recipe) => {
+                onSubmit={() => {
                     setIsOpened(false);
                 }}
                 onCancel={() => setIsOpened(false)} />
