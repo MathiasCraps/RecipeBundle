@@ -314,6 +314,10 @@ li {
   &.in-range {
     background-color: #E2E8F0;
   }
+
+  &.is-selected {
+    background-color: #CBD5E0;
+  }
 }
 
 .month-grid {
