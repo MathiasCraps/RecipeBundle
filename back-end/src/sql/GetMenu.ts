@@ -22,7 +22,8 @@ export async function getMenus(userId: number | undefined): Promise<DayMenu[]> {
             return {
                 menuId: menu.menu_id,
                 recipeId,
-                date: Number(menu.planned_time)
+                date: Number(menu.planned_time),
+                ingredientsBought: false // todo: add and link in database
             };
         }));
     }

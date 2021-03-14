@@ -18,7 +18,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: args.date,
                         menuId: 0,
-                        recipeId: args.recipeId
+                        recipeId: args.recipeId,
+                        ingredientsBought: false
                     }, 'add');
 
                     return {
@@ -44,7 +45,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: 0,
                         menuId: args.menuId,
-                        recipeId: 0
+                        recipeId: 0,
+                        ingredientsBought: false
                     }, 'remove');
 
                     return {
@@ -71,7 +73,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: args.date,
                         menuId: args.menuId,
-                        recipeId: 0
+                        recipeId: 0,
+                        ingredientsBought: false
                     }, 'update');
 
                     return {
