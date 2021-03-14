@@ -158,7 +158,8 @@ function RecipeOverview(props: Props) {
                         await props.addMenu({
                             date: Number(date),
                             menuId: -1,
-                            recipe: recipe
+                            recipe: recipe,
+                            ingredientsBought: false
                         });
                         toast({
                             description: Localisation.ADDING_MENU_WAS_SUCCESS,

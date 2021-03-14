@@ -57,7 +57,8 @@ function AddMenuOverlay(props: Props) {
         props.addMenu({
             date: props.date.getTime(),
             recipe: focusedSuggestion!,
-            menuId: -1
+            menuId: -1,
+            ingredientsBought: false
         });
         props.onSubmit(focusedSuggestion!);
         reset();

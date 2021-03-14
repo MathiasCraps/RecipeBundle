@@ -16,6 +16,7 @@ export interface DayMenu {
     date: number;
     menuId: number;
     recipe: Recipe;
+    ingredientsBought: boolean;
 }
 
 export interface DateRange {
