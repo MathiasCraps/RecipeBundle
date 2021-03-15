@@ -1,11 +1,13 @@
-import { PopoverTrigger } from '@chakra-ui/react';
+import { Button, PopoverTrigger } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
+import { Dispatch } from 'redux';
 import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
-import { DateRange, DayMenu, ReduxModel } from '../../redux/Store';
+import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
+import { DateRange, DayMenu, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
 import { flatArray } from '../../utils/ArrayUtils';
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
@@ -31,8 +33,18 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     };
 }
 
+interface ReduxActions {
+    toggleMenuIngredientsBought: toggleMenuIngredientsBoughtReturn;
+}
+
+function mapDispatchToProps(dispatch: Dispatch<ToggleMenuIngredientsBoughtAction>): ReduxActions {
+    return { 
+        toggleMenuIngredientsBought: toggleMenuIngredientsBought(dispatch) 
+    }
+}
+
 function selectMenuFromRange(menus: DayMenu[], fromTime: Date, toTime: Date) {
-    return menus.filter((menu) => menu.date >= fromTime.getTime() && menu.date < toTime.getTime());
+    return menus.filter((menu) => !menu.ingredientsBought && menu.date >= fromTime.getTime() && menu.date < toTime.getTime());
 }
 
 function formatDate(date: Date) {
@@ -44,7 +56,9 @@ const rulesHandler = new RulesHandler([
     new TeaSpoonToGramRule()
 ]);
 
-export function ShoppingListMain(props: ReduxProps) {
+type Props = ReduxProps & ReduxActions;
+
+export function ShoppingListMain(props: Props) {
     if (!props.loggedIn) {
         return <Redirect to={Paths.BASE} />
     }
@@ -91,7 +105,11 @@ export function ShoppingListMain(props: ReduxProps) {
                     .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
             </ul>
         </div>
+
+        <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
+            {Localisation.MARK_LIST_AS_PURCHASED}
+        </Button>
     </ContentContainer>
 }
 
-export default connect(mapStateToProps)(ShoppingListMain);
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListMain);
