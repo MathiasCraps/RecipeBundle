@@ -5,7 +5,7 @@ import { Recipe } from "../interfaces/Recipe";
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -146,5 +146,16 @@ export function updateShoppingRange(range: DateRange): UpdateShoppingRangeAction
     return {
         type: Actions.UPDATE_SHOPPING_RANGE,
         range
+    }
+}
+
+export type toggleMenuIngredientsBoughtReturn = (menu: DayMenu[], bought: boolean) => Promise<void>;
+export function toggleMenuIngredientsBought(dispatch: Dispatch<ToggleMenuIngredientsBoughtAction>): toggleMenuIngredientsBoughtReturn {
+    return async function (menus: DayMenu[], bought: boolean) {
+        dispatch({
+            type: Actions.TOGGLE_MENU_INGREDIENTS_BOUGHT,
+            menus,
+            bought
+        });
     }
 }
