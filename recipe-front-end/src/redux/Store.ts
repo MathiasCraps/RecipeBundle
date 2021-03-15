@@ -1,6 +1,7 @@
 import { Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
+import { toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -178,6 +179,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 ...oldState,
                 shoppingDateRange: action.range
             };
+        case Actions.TOGGLE_MENU_INGREDIENTS_BOUGHT:
+            return {
+                ...oldState,
+                menuPlanning: toggleIngredientsBoughtForMenus(oldState.menuPlanning, action.menus, action.bought)
+            }
         default:
             // not supported yet
     }
