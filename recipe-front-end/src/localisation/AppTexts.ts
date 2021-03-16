@@ -41,6 +41,8 @@ export enum Localisation {
     DO_SEARCH = 'Zoeken maar',
     MENU_OF_THE_DAY = 'Menu van de dag',
     NOTHING_PLANNED_TODAY = 'Niets gepland vandaag.',
+    YOU_HAVE_ALL_INGREDIENTS = 'Je hebt alle ingrediënten in huis.',
+    YOU_DONT_HAVE_ALL_INGREDIENTS = 'Je hebt nog niet alles in huis.',
     MORE_OPTIONS = 'Toon meer opties',
     LESS_OPTIONS = 'Toon minder opties',
     SHOPPING_LIST = 'Boodschappenlijst',
