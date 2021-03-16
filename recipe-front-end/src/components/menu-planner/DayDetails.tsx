@@ -55,8 +55,10 @@ function DayDetails(props: Props) {
                 <Tooltip label={data.ingredientsBought ?
                     Localisation.YOU_HAVE_ALL_INGREDIENTS :
                     Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS
-                }><FontAwesomeIcon onClick={() => props.toggleMenuIngredientsBought([data], !data.ingredientsBought)}
-                    icon={data.ingredientsBought ? faCheckSquare : faTimes} />
+                }>
+                    <a href="#" onClick={() => props.toggleMenuIngredientsBought([data], !data.ingredientsBought)}>
+                        <FontAwesomeIcon icon={data.ingredientsBought ? faCheckSquare : faTimes} />
+                    </a>
                 </Tooltip>
             </div>
         })}
