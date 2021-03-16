@@ -48,10 +48,9 @@ function DayDetails(props: Props) {
             return <div key={index}><DroppableMenuItem menu={data}>
                 <Tooltip label={Localisation.REMOVE}>
                     <a href="#" onClick={() => props.removeMenu(data)}>
-                       <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon icon={faTrash} />
                     </a>
                 </Tooltip>
-            </DroppableMenuItem>
                 <Tooltip label={data.ingredientsBought ?
                     Localisation.YOU_HAVE_ALL_INGREDIENTS :
                     Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS
@@ -60,6 +59,7 @@ function DayDetails(props: Props) {
                         <FontAwesomeIcon icon={data.ingredientsBought ? faCheckSquare : faTimes} />
                     </a>
                 </Tooltip>
+            </DroppableMenuItem>
             </div>
         })}
         {props.children}
