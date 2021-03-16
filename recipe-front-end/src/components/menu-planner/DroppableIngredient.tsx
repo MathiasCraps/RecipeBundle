@@ -20,9 +20,7 @@ export function DroppableMenuItem(props: OwnProps) {
         }}
         onDragEnd={() => setIsDragging(false)}>
         {props.menu.recipe.title}
-        <Tooltip label={Localisation.REMOVE}>
-            {props.children}
-        </Tooltip>
+        {props.children}
     </span>
     </div>)
 }

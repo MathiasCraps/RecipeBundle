@@ -46,9 +46,11 @@ function DayDetails(props: Props) {
         {props.menuOfTheDay.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
         {props.menuOfTheDay.map((data, index) => {
             return <div key={index}><DroppableMenuItem menu={data}>
-                <a href="#" onClick={() => props.removeMenu(data)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                </a>
+                <Tooltip label={Localisation.REMOVE}>
+                    <a href="#" onClick={() => props.removeMenu(data)}>
+                       <FontAwesomeIcon icon={faTrash} />
+                    </a>
+                </Tooltip>
             </DroppableMenuItem>
                 <Tooltip label={data.ingredientsBought ?
                     Localisation.YOU_HAVE_ALL_INGREDIENTS :
