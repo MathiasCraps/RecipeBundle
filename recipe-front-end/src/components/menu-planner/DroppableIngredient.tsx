@@ -1,6 +1,4 @@
-import { Tooltip } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Localisation } from "../../localisation/AppTexts";
 import { DayMenu } from "../../redux/Store";
 
 interface OwnProps {
