@@ -64,6 +64,7 @@ export function ShoppingListMain(props: Props) {
     }
 
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
+    const hasMenus = Boolean(menusToConsider.length)
     const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
@@ -99,16 +100,16 @@ export function ShoppingListMain(props: Props) {
             />
         </SimplePopover>
 
-        <div className="shopping-list-ingredients">
+        {!hasMenus && <p>{Localisation.YOU_ALREADY_BOUGHT_EVERYTHING}</p>}
+        {hasMenus && <div className="shopping-list-ingredients">
             <ul>
                 {sumsToRender.sort((a, b) => a.name > b.name ? 1 : -1)
                     .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
             </ul>
-        </div>
-
-        <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
-            {Localisation.MARK_LIST_AS_PURCHASED}
-        </Button>
+            <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
+                {Localisation.MARK_LIST_AS_PURCHASED}
+            </Button>
+        </div>}
     </ContentContainer>
 }
 
