@@ -11,7 +11,7 @@ export const RootQuery = new GraphQLObjectType({
         recipes: {
             type: new GraphQLList(RecipeType),
             description: 'Request all the available recipes.',
-            async resolve(parent, args, request) {
+            async resolve() {
                 return await getAllRecipes();
             }
         },
