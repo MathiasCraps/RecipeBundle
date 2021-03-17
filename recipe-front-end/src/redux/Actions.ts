@@ -152,6 +152,13 @@ export function updateShoppingRange(range: DateRange): UpdateShoppingRangeAction
 export type toggleMenuIngredientsBoughtReturn = (menu: DayMenu[], bought: boolean) => Promise<void>;
 export function toggleMenuIngredientsBought(dispatch: Dispatch<ToggleMenuIngredientsBoughtAction>): toggleMenuIngredientsBoughtReturn {
     return async function (menus: DayMenu[], bought: boolean) {
+        const menuIds = menus.map((menu) => menu.menuId).join(',');
+        await fetchGraphQL<{updateMenu: {success: boolean}}>(`mutation { 
+            updateMenuIngredientsBought(menuIds: [${menuIds}], isBought: ${bought}) {
+                success
+            }
+        }`);
+
         dispatch({
             type: Actions.TOGGLE_MENU_INGREDIENTS_BOUGHT,
             menus,
