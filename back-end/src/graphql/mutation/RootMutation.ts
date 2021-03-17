@@ -1,5 +1,7 @@
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
+import { updatePurchaseState } from '../../sql/UpdatePurchaseState';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
 import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
@@ -97,10 +99,9 @@ export const RootMutation = new GraphQLObjectType({
                 menuIds: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)), description: 'The identifier of the menus to update.' },
                 isBought: { type: new GraphQLNonNull(GraphQLBoolean), description: 'Boolean indicating if all ingredients have been bought.' },
             },
-            async resolve() {
-                return Promise.resolve({
-                    success: true
-                });
+            async resolve(parentValue, args, request) {
+                const success = await updatePurchaseState(pool, args.menuIds, args.isBought, (request.session as SessionData).userId!);
+                return { success };                
             }
         }
     }
