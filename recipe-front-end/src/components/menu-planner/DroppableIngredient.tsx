@@ -1,6 +1,4 @@
-import { Tooltip } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Localisation } from "../../localisation/AppTexts";
 import { DayMenu } from "../../redux/Store";
 
 interface OwnProps {
@@ -20,9 +18,7 @@ export function DroppableMenuItem(props: OwnProps) {
         }}
         onDragEnd={() => setIsDragging(false)}>
         {props.menu.recipe.title}
-        <Tooltip label={Localisation.REMOVE}>
-            {props.children}
-        </Tooltip>
+        {props.children}
     </span>
     </div>)
 }

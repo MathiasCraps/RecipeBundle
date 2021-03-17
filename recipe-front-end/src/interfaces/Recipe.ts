@@ -21,4 +21,5 @@ export interface RawDayMenu {
     date: number;
     menuId: number;
     recipeId: number;
+    ingredientsBought: boolean;
 }

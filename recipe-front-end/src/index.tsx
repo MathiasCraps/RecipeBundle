@@ -53,6 +53,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       date
       menuId
       recipeId
+      ingredientsBought
     }
   }`);
 

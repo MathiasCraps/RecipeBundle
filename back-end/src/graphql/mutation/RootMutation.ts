@@ -1,10 +1,13 @@
-import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
+import { updatePurchaseState } from '../../sql/UpdatePurchaseState';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
+import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
 
 export const RootMutation = new GraphQLObjectType({
-    name: 'addmenu',
+    name: 'menuManagement',
     fields: {
         addMenu: {
             type: ModifyMenuResponse,
@@ -18,7 +21,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: args.date,
                         menuId: 0,
-                        recipeId: args.recipeId
+                        recipeId: args.recipeId,
+                        ingredientsBought: false
                     }, 'add');
 
                     return {
@@ -44,7 +48,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: 0,
                         menuId: args.menuId,
-                        recipeId: 0
+                        recipeId: 0,
+                        ingredientsBought: false
                     }, 'remove');
 
                     return {
@@ -71,7 +76,8 @@ export const RootMutation = new GraphQLObjectType({
                     const menuId = await writeMenuChangeToDatabase((request.session as SessionData).userId!, {
                         date: args.date,
                         menuId: args.menuId,
-                        recipeId: 0
+                        recipeId: 0,
+                        ingredientsBought: false
                     }, 'update');
 
                     return {
@@ -84,6 +90,18 @@ export const RootMutation = new GraphQLObjectType({
                         error: err
                     };
                 }
+            }
+        },
+        updateMenuIngredientsBought: {
+            type: updateIngredientsPurchasedResponse,
+            description: 'Mark the ingredients of a menu as bought.',
+            args: {
+                menuIds: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)), description: 'The identifier of the menus to update.' },
+                isBought: { type: new GraphQLNonNull(GraphQLBoolean), description: 'Boolean indicating if all ingredients have been bought.' },
+            },
+            async resolve(parentValue, args, request) {
+                const success = await updatePurchaseState(pool, args.menuIds, args.isBought, (request.session as SessionData).userId!);
+                return { success };                
             }
         }
     }

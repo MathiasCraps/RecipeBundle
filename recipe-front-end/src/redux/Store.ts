@@ -1,6 +1,7 @@
 import { Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
+import { toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -16,6 +17,7 @@ export interface DayMenu {
     date: number;
     menuId: number;
     recipe: Recipe;
+    ingredientsBought: boolean;
 }
 
 export interface DateRange {
@@ -42,7 +44,8 @@ export enum Actions {
     UPDATE_ACTIVE_DAY = 'UPDATE_ACTIVE_DAY',
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
-    UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE'
+    UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE',
+    TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT'
 }
 
 export interface ToggleMenuAction {
@@ -90,6 +93,12 @@ export interface UpdateShoppingRangeAction {
     range: DateRange;
 }
 
+export interface ToggleMenuIngredientsBoughtAction {
+    type: Actions.TOGGLE_MENU_INGREDIENTS_BOUGHT;
+    menus: DayMenu[];
+    bought: boolean;
+}
+
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
 export const defaultState: ReduxModel = {
@@ -116,7 +125,8 @@ export type ReduxAction = ToggleMenuAction |
     UpdateActiveDayAction | 
     UpdateMenuDayAction |
     UpdateMobileFapOpenedAction |
-    UpdateShoppingRangeAction;
+    UpdateShoppingRangeAction |
+    ToggleMenuIngredientsBoughtAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -169,6 +179,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 ...oldState,
                 shoppingDateRange: action.range
             };
+        case Actions.TOGGLE_MENU_INGREDIENTS_BOUGHT:
+            return {
+                ...oldState,
+                menuPlanning: toggleIngredientsBoughtForMenus(oldState.menuPlanning, action.menus, action.bought)
+            }
         default:
             // not supported yet
     }

@@ -14,7 +14,7 @@ export async function getMenus(userId: number | undefined): Promise<DayMenu[]> {
         const recipeId = identifier.id;
         const menusFromDatabase = (await executeQuery(pool, {
             name: 'get-menus',
-            text: `SELECT planned_time, menu_id FROM MenuPlanning WHERE recipe_id = $1 AND user_id = $2`,
+            text: `SELECT planned_time, menu_id, ingredients_purchased FROM MenuPlanning WHERE recipe_id = $1 AND user_id = $2`,
             values: [recipeId, userId]
         })).rows;
     
@@ -22,7 +22,8 @@ export async function getMenus(userId: number | undefined): Promise<DayMenu[]> {
             return {
                 menuId: menu.menu_id,
                 recipeId,
-                date: Number(menu.planned_time)
+                date: Number(menu.planned_time),
+                ingredientsBought: menu.ingredients_purchased
             };
         }));
     }
