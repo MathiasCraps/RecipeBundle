@@ -1,10 +1,11 @@
-import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { SessionData } from '../../model/SessionData';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
+import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
 
 export const RootMutation = new GraphQLObjectType({
-    name: 'addmenu',
+    name: 'menuManagement',
     fields: {
         addMenu: {
             type: ModifyMenuResponse,
@@ -87,6 +88,19 @@ export const RootMutation = new GraphQLObjectType({
                         error: err
                     };
                 }
+            }
+        },
+        updateMenuIngredientsBought: {
+            type: updateIngredientsPurchasedResponse,
+            description: 'Mark the ingredients of a menu as bought.',
+            args: {
+                menuId: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)), description: 'The identifier of the menus to update.' },
+                isBought: { type: new GraphQLNonNull(GraphQLBoolean), description: 'Boolean indicating if all ingredients have been bought.' },
+            },
+            async resolve() {
+                return Promise.resolve({
+                    success: true
+                });
             }
         }
     }
