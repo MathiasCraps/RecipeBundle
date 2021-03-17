@@ -94,7 +94,7 @@ export const RootMutation = new GraphQLObjectType({
             type: updateIngredientsPurchasedResponse,
             description: 'Mark the ingredients of a menu as bought.',
             args: {
-                menuId: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)), description: 'The identifier of the menus to update.' },
+                menuIds: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)), description: 'The identifier of the menus to update.' },
                 isBought: { type: new GraphQLNonNull(GraphQLBoolean), description: 'Boolean indicating if all ingredients have been bought.' },
             },
             async resolve() {
