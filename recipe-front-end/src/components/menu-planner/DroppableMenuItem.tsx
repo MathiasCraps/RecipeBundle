@@ -41,7 +41,7 @@ function DroppableMenuItem(props: Props) {
         <div>
             {props.menu.recipe.title}
             <Tooltip label={Localisation.REMOVE}>
-                <a href="#" onClick={() => props.removeMenu(props.menu)}>
+                <a className="remove-menu" href="#" onClick={() => props.removeMenu(props.menu)}>
                     <FontAwesomeIcon icon={faTrash} />
                 </a>
             </Tooltip>
