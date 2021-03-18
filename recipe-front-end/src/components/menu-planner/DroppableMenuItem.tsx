@@ -41,10 +41,10 @@ function DroppableMenuItem(props: Props) {
         onDragEnd={() => setIsDragging(false)}>
         {props.menu.recipe.title}
         <Tooltip label={Localisation.REMOVE}>
-                    <a href="#" onClick={() => props.removeMenu(props.menu)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                    </a>
-                </Tooltip>
+            <a href="#" onClick={() => props.removeMenu(props.menu)}>
+                <FontAwesomeIcon icon={faTrash} />
+            </a>
+        </Tooltip>
         <Tooltip label={props.menu.ingredientsBought ?
             Localisation.YOU_HAVE_ALL_INGREDIENTS :
             Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS
