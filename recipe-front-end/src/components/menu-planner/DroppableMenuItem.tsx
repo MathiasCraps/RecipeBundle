@@ -32,7 +32,7 @@ function DroppableMenuItem(props: Props) {
     const [isDragging, setIsDragging] = useState(false);
     const extraClasses = isDragging ? 'is-dragging' : ''
 
-    return (<div><span className={`day-menu-item ${extraClasses}`}
+    return (<div className={`day-menu-item ${extraClasses}`}
         draggable
         onDragStart={(event) => {
             setIsDragging(true);
@@ -53,7 +53,6 @@ function DroppableMenuItem(props: Props) {
                 <FontAwesomeIcon icon={props.menu.ingredientsBought ? faCheckSquare : faTimes} />
             </a>
         </Tooltip>
-    </span>
     </div>)
 }
 
