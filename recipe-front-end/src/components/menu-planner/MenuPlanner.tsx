@@ -55,7 +55,7 @@ function MenuPlanner(props: Props) {
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const [isOpened, setIsOpened] = useState(false);
     const currentDayFocus = useRef<HTMLAnchorElement>(null);
-    const addRecipeButton = <a ref={currentDayFocus} href='#' onClick={() => setIsOpened(true)}>
+    const addRecipeButton = <a ref={currentDayFocus} className="add-menu" href='#' onClick={() => setIsOpened(true)}>
         <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
     </a>
 
