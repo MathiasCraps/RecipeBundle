@@ -251,9 +251,13 @@ li {
   margin-bottom: 0.75em;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 0.75em;
-  width: 50%;
+  width: 100%;
   border: 1px solid #E2E8F0;
-  float: left;
+
+  @media (min-width: 40em) {
+    width: 50%;
+    float: left;  
+  }
 
   input[type=checkbox] {
     margin-right: 0.5em;
