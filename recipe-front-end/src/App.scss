@@ -248,11 +248,24 @@ li {
 .day-menu-item {
   user-select: none;
   cursor: grab;
-  display: inline-block;
+  margin-bottom: 0.75em;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.75em;
+  width: 50%;
+  border: 1px solid #E2E8F0;
+  float: left;
+
+  input[type=checkbox] {
+    margin-right: 0.5em;
+  }
+
+  .ingredients-bought {
+    text-decoration: line-through;
+  }
 
   &.is-dragging {
     border: 1px dashed black;
-    padding: 0.1em;
+    padding: 0.85em;
   }
 }
 

@@ -1,13 +1,12 @@
 import { Tooltip } from '@chakra-ui/react';
-import { faTrash, faCheckSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Localisation } from '../../localisation/AppTexts';
-import { toggleMenuIngredientsBoughtReturn, removeMenu, toggleMenuIngredientsBought } from '../../redux/Actions';
+import { removeMenu, toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
 import { DayMenu, RemoveMenuAction, ToggleMenuIngredientsBoughtAction } from "../../redux/Store";
-import DayDetails from './DayDetails';
 
 interface OwnProps {
     menu: DayMenu;
@@ -39,20 +38,24 @@ function DroppableMenuItem(props: Props) {
             event.dataTransfer.setData('menuId', String(props.menu.menuId))
         }}
         onDragEnd={() => setIsDragging(false)}>
-        {props.menu.recipe.title}
-        <Tooltip label={Localisation.REMOVE}>
-            <a href="#" onClick={() => props.removeMenu(props.menu)}>
-                <FontAwesomeIcon icon={faTrash} />
-            </a>
-        </Tooltip>
-        <Tooltip label={props.menu.ingredientsBought ?
-            Localisation.YOU_HAVE_ALL_INGREDIENTS :
-            Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS
-        }>
-            <a href="#" onClick={() => props.toggleMenuIngredientsBought([props.menu], !props.menu.ingredientsBought)}>
-                <FontAwesomeIcon icon={props.menu.ingredientsBought ? faCheckSquare : faTimes} />
-            </a>
-        </Tooltip>
+        <div>
+            {props.menu.recipe.title}
+            <Tooltip label={Localisation.REMOVE}>
+                <a href="#" onClick={() => props.removeMenu(props.menu)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </a>
+            </Tooltip>
+        </div>
+
+
+        <div>
+            <label tabIndex={0} onClick={() => props.toggleMenuIngredientsBought([props.menu], !props.menu.ingredientsBought)}>
+                <input type="checkbox" checked={props.menu.ingredientsBought} />
+                <span className={props.menu.ingredientsBought ? "ingredients-bought" : ""}>
+                    {props.menu.ingredientsBought ? Localisation.YOU_HAVE_ALL_INGREDIENTS : Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS}
+                </span>
+            </label>
+        </div>
     </div>)
 }
 
