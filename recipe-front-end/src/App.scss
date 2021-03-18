@@ -204,10 +204,20 @@ li {
   background-color: #EDF2F7;
   padding: 1em;
   border: 2px solid #E2E8F0;
+  overflow: hidden;
 
   a {
     display: inline-block;
     margin-top: 0.5em;
+  }
+
+  .add-menu {
+    display: block;
+    clear: both;
+  }
+
+  .remove-menu {
+    margin-left: 0.5em;
   }
 }
 
@@ -248,11 +258,28 @@ li {
 .day-menu-item {
   user-select: none;
   cursor: grab;
-  display: inline-block;
+  margin-bottom: 0.75em;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.75em;
+  width: 100%;
+  border: 1px solid #E2E8F0;
+
+  @media (min-width: 40em) {
+    width: 50%;
+    float: left;  
+  }
+
+  input[type=checkbox] {
+    margin-right: 0.5em;
+  }
+
+  .ingredients-bought {
+    text-decoration: line-through;
+  }
 
   &.is-dragging {
     border: 1px dashed black;
-    padding: 0.1em;
+    padding: 0.85em;
   }
 }
 
