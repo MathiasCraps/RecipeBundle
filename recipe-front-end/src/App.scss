@@ -7,25 +7,6 @@ html, body, #root {
   clear: both;
 }
 
-.recipe-preview-size {
-  position: absolute;
-  font-size: 1.7em;
-  top: 0.8em;
-  left: 0.8em;
-  z-index: 9;
-  color: white;
-  text-shadow: 1px 1px 3px black;
-}
-
-.recipeBox {
-  position: relative;
-
-  a:hover img,
-  a:focus img {
-    filter: opacity(0.85);
-  }
-}
-
 .close-button-top-left {
   position: fixed;
   top: 1em;
