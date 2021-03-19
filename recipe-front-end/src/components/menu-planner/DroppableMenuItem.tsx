@@ -7,6 +7,7 @@ import { Dispatch } from 'redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { removeMenu, toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
 import { DayMenu, RemoveMenuAction, ToggleMenuIngredientsBoughtAction } from "../../redux/Store";
+import './DroppableMenuItem.scss';
 
 interface OwnProps {
     menu: DayMenu;
