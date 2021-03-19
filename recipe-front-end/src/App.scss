@@ -119,28 +119,6 @@ li {
   clear: both;
 }
 
-.menu-selected-day {
-  clear: both;
-  background-color: #EDF2F7;
-  padding: 1em;
-  border: 2px solid #E2E8F0;
-  overflow: hidden;
-
-  a {
-    display: inline-block;
-    margin-top: 0.5em;
-  }
-
-  .add-menu {
-    display: block;
-    clear: both;
-  }
-
-  .remove-menu {
-    margin-left: 0.5em;
-  }
-}
-
 .day-menu-item {
   user-select: none;
   cursor: grab;
