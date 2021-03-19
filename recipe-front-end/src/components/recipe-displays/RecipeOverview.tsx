@@ -66,7 +66,6 @@ function RecipeOverview(props: Props) {
         .filter((menu) => menu.recipe.id === Number(recipeId))
         .map((item) => new Date(item.date));
 
-    console.log('planned', plannedDates);
     const [originalTouch, setOriginalTouch] = useState(0);
     const [pickerVisible, setPickerIsVisible] = useState(false);
     const [direction, setDirection] = useState<Direction>();
