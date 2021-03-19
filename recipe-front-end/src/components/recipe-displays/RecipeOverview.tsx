@@ -13,6 +13,7 @@ import { isSameUtcDay } from '../../utils/DateUtils';
 import ContentContainer from "../common/ContentContainer";
 import SimplePopover from '../common/SimplePopover';
 import SingleDayPicker from '../range-picker/SingleDayPicker';
+import './RecipeOverview.scss';
 
 interface ReduxProps {
     recipes: Recipe[];
