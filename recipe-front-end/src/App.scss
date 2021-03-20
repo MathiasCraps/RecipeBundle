@@ -70,24 +70,8 @@ li {
   margin-left: 1.2em;
 }
 
-.menu-recipe {
-  padding: 1rem 0 1rem 0;
-  float: left;
-  width: 50%;
-  list-style: none;
-  margin: 0;
-
-  @media (min-width: 40em) {
-    width: 30%;
-  }
-}
-
 .strike-through {
   text-decoration: line-through;
-}
-
-.grayed {
-  color: #A0AEC0;
 }
 
 .date-range-initiator {

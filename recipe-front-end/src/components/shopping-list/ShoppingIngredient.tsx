@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Ingredient } from '../../interfaces/Recipe';
+import './ShoppingIngredient.scss';
 
 interface props {
     ingredient: Ingredient;
