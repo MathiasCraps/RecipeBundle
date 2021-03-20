@@ -1,0 +1,9 @@
+.month-grid {
+    width: 100%;
+    float: left;
+  
+    @media (min-width:40em) {
+      width: auto;
+      padding-right: 3rem;
+    }
+  }

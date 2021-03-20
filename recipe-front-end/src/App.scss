@@ -78,16 +78,6 @@ li {
   cursor: pointer;
 }
 
-.month-grid {
-  width: 100%;
-  float: left;
-
-  @media (min-width:40em) {
-    width: auto;
-    padding-right: 3rem;
-  }
-}
-
 /* todo: fix me with chakra global styles */
 
 a {
