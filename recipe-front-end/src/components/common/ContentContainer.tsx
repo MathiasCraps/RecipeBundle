@@ -2,6 +2,7 @@ import { Box, CloseButton, SlideFade } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Paths } from '../../Paths';
+import './ContentContainer.scss';
 
 interface OwnProps {
     classes?: string;
