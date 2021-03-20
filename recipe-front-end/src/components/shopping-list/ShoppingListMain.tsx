@@ -18,6 +18,7 @@ import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
 import { ShoppingIngredient } from './ShoppingIngredient';
+import './ShoppingListMain.scss';
 
 interface ReduxProps {
     menus: DayMenu[];
