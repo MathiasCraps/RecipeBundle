@@ -1,0 +1,10 @@
+.actionsContainer {
+  @media (max-width: 40em) {
+    position: fixed;
+    bottom: 1.5em;
+    right: 1.5em;
+    flex-direction: column;
+  }
+
+  display: flex;
+}

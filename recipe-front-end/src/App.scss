@@ -7,15 +7,6 @@ html, body, #root {
   clear: both;
 }
 
-.actionsContainer {
-  @media (max-width: 40em) {
-    position: fixed;
-    bottom: 1.5em;
-    right: 1.5em;
-  }
-}
-
-
 .action-item {  
   font-size: 1.5em;
   height: 2em;
@@ -43,13 +34,6 @@ html, body, #root {
 
   @media (min-width: 40em) {
     width: 2em;
-  }
-}
-
-.actionsContainer {
-  display: flex;
-  @media (max-width: 40em) {
-    flex-direction: column;
   }
 }
 
