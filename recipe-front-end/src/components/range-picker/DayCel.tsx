@@ -4,6 +4,7 @@ import { ReduxModel } from '../../redux/Store';
 import { dateIsInRange } from '../../utils/DateUtils';
 import { FillDayFilter } from './dayfilters/FillDayFilter';
 import { DatePickerContext } from './RangePicker';
+import './DayCel.scss';
 
 interface OwnProps {
     day: Date;

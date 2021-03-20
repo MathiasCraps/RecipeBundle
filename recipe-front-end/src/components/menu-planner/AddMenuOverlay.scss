@@ -1,0 +1,11 @@
+.search-result {
+    padding: 0.5em;
+    cursor: pointer;
+    padding-left: 1.5em;
+    font-style:italic;
+  
+    &.active {
+      padding-left: 2em;
+      background-color: #f5f5f5;
+    }
+  }

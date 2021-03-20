@@ -6,6 +6,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { updateActiveDay, UpdateMenuDayReturn, updatePlannedMenuDay } from "../../redux/Actions";
 import { DayMenu, ReduxModel, UpdateActiveDayAction, UpdateMenuDayAction } from "../../redux/Store";
 import { filterForDate } from "./MenuPlanner";
+import './Day.scss';
 
 interface OwnProps {
     date: Date;

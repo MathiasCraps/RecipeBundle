@@ -5,6 +5,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { DayMenu, ReduxModel } from "../../redux/Store";
 import DroppableMenuItem from "./DroppableMenuItem";
 import { filterForDate } from "./MenuPlanner";
+import './DayDetails.scss';
 
 interface OwnProps {
     children: React.ReactNode;

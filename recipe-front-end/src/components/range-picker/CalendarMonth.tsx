@@ -3,6 +3,7 @@ import { Localisation } from '../../localisation/AppTexts';
 import { calculateMonthGrid } from '../../utils/DateUtils';
 import { FillDayFilter } from './dayfilters/FillDayFilter';
 import { WeekRow } from './WeekRow';
+import './CalendarMonth.scss';
 
 interface OwnProps {
     date: Date;

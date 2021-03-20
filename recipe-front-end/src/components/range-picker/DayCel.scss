@@ -1,0 +1,16 @@
+.picker-day {
+    height: 2rem;
+    width: 2rem;
+    display: inline-block;
+    border: 1px solid #EDF2F7;
+    text-align: center;
+    cursor: pointer;
+  
+    &.in-range {
+      background-color: #E2E8F0;
+    }
+  
+    &.is-selected {
+      background-color: #CBD5E0;
+    }
+  }

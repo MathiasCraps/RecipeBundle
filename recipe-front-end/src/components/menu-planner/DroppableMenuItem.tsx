@@ -7,6 +7,7 @@ import { Dispatch } from 'redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { removeMenu, toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
 import { DayMenu, RemoveMenuAction, ToggleMenuIngredientsBoughtAction } from "../../redux/Store";
+import './DroppableMenuItem.scss';
 
 interface OwnProps {
     menu: DayMenu;
@@ -51,7 +52,7 @@ function DroppableMenuItem(props: Props) {
         <div>
             <label tabIndex={0} onClick={() => props.toggleMenuIngredientsBought([props.menu], !props.menu.ingredientsBought)}>
                 <input type="checkbox" checked={props.menu.ingredientsBought} />
-                <span className={props.menu.ingredientsBought ? "ingredients-bought" : ""}>
+                <span className={props.menu.ingredientsBought ? "strike-through" : ""}>
                     {props.menu.ingredientsBought ? Localisation.YOU_HAVE_ALL_INGREDIENTS : Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS}
                 </span>
             </label>

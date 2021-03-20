@@ -6,6 +6,7 @@ import { updateActiveDay } from "../../redux/Actions";
 import { FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import Day from "./Day";
 import DayDetails from "./DayDetails";
+import "./Week.scss";
 
 interface OwnProps {
     firstDayOfWeek: number;

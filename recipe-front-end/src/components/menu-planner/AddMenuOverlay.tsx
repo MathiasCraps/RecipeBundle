@@ -8,6 +8,7 @@ import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { addMenu } from "../../redux/Actions";
 import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
+import './AddMenuOverlay.scss';
 
 interface OwnProps {
     isOpened: boolean;

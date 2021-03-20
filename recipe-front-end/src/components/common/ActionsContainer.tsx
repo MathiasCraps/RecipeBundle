@@ -8,6 +8,7 @@ import MenuPlannerButton from '../menu-planner/MenuPlannerButton';
 import AddRecipeMenuButton from '../recipe-management/AddRecipeMenuButton';
 import ShoppingListMenuButton from '../shopping-list/ShoppingListMenuButton';
 import HamburgerMain from './HamburgerMain';
+import './ActionsContainer.scss';
 
 interface ReduxProps {
     loggedIn: boolean;

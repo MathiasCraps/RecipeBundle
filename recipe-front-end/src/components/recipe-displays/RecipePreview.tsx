@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Recipe } from "../../interfaces/Recipe";
 import { Paths } from '../../Paths';
+import './RecipePreview.scss';
 
 interface OwnProps {
   recipe: Recipe;
