@@ -8,10 +8,11 @@ import App from "./App";
 import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { DayMenu, defaultState, handleState } from './redux/Store';
-import { calculateStartOfDate } from "./utils/DateUtils";
+import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import { parseGetParams } from "./utils/UrlUtils";
 import { BrowserRouter as Router } from 'react-router-dom';
 import fetchGraphQL from './utils/FetchGraphQL';
+import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -61,8 +62,14 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     .map((menu) => findMenu(menu, applicationData.recipes))
     .filter((value) => value !== undefined) as DayMenu[];
 
+
+  const shoppingRangeFromStorage = localStorage.getItem(LOCAL_STORAGE_RANGE_NAME);
+  const shoppingDateRange = parseDateRange(shoppingRangeFromStorage, Number(new Date()))
+    || defaultState.shoppingDateRange;
+
   const store = createStore(handleState, {
     ...defaultState,
+    ...{ shoppingDateRange },
     user: {
       loggedIn: userData.loggedIn,
       name: userData.userName
