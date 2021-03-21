@@ -74,13 +74,18 @@ export function dateIsInRange(dateToCompare: Date, fromDate: Date, toDate: Date)
         calculateStartOfDate(toDate) >= calculateStartOfDate(dateToCompare);
 }
 
-export function parseDateRange(input: string | null): DateRange | undefined {
+export function parseDateRange(input: string | null, now: number): DateRange | undefined {
     if (!input) {
         return undefined;
     }
 
     try {
         const parsedInput: {start: number, end: number} = JSON.parse(input);
+
+        if (now > Number(new Date(parsedInput.end))) {
+            return undefined;
+        }
+
         return {
             start: new Date(parsedInput.start),
             end: new Date(parsedInput.end)

@@ -64,7 +64,8 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
 
 
   const shoppingRangeFromStorage = localStorage.getItem(LOCAL_STORAGE_RANGE_NAME);
-  const shoppingDateRange = parseDateRange(shoppingRangeFromStorage) || defaultState.shoppingDateRange;
+  const shoppingDateRange = parseDateRange(shoppingRangeFromStorage, Number(new Date()))
+    || defaultState.shoppingDateRange;
 
   const store = createStore(handleState, {
     ...defaultState,
