@@ -1,3 +1,5 @@
+import { DateRange } from '../redux/Store';
+
 export const FULL_DAY_IN_MS = 24 * 60 * 60 * 1e3;
 
 export function calculateStartOfDate(date: Date) {
@@ -70,4 +72,20 @@ export function addDays(date: Date, days: number): Date {
 export function dateIsInRange(dateToCompare: Date, fromDate: Date, toDate: Date): boolean {
     return calculateStartOfDate(fromDate) <= calculateStartOfDate(dateToCompare) &&
         calculateStartOfDate(toDate) >= calculateStartOfDate(dateToCompare);
+}
+
+export function parseDateRange(input: string | null): DateRange | undefined {
+    if (!input) {
+        return undefined;
+    }
+
+    try {
+        const parsedInput: {start: number, end: number} = JSON.parse(input);
+        return {
+            start: new Date(parsedInput.start),
+            end: new Date(parsedInput.end)
+        }
+    } catch (err) {
+        return undefined;
+    }
 }
