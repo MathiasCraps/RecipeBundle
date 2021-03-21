@@ -142,7 +142,10 @@ export function updateMobileFapOpened(isOpened: boolean): UpdateMobileFapOpenedA
     }
 }
 
+export const LOCAL_STORAGE_RANGE_NAME = 'shopping-range';
 export function updateShoppingRange(range: DateRange): UpdateShoppingRangeAction {
+    localStorage.setItem(LOCAL_STORAGE_RANGE_NAME, JSON.stringify(range));
+
     return {
         type: Actions.UPDATE_SHOPPING_RANGE,
         range
