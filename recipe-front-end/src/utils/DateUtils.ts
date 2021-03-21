@@ -82,7 +82,7 @@ export function parseDateRange(input: string | null, now: number): DateRange | u
     try {
         const parsedInput: {start: number, end: number} = JSON.parse(input);
 
-        if (now > Number(new Date(parsedInput.end))) {
+        if (now > parsedInput.end) {
             return undefined;
         }
 
