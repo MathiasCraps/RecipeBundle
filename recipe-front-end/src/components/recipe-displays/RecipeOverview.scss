@@ -14,6 +14,23 @@
   }
 }
 
+.content {
+  float: left;
+}
+
+.recipe-image {
+  float: right;
+  max-width: 50%;
+  padding: 1em;
+}
+
+.recipe-image,
+.content {
+  @media (min-width: 40em) {
+    width: 50%;    
+  }
+}
+
 .recipe-overview-previous,
 .recipe-overview-next {
   position: fixed;
