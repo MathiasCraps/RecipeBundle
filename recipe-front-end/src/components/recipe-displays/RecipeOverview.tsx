@@ -125,7 +125,7 @@ function RecipeOverview(props: Props) {
             setOriginalTouch(0);
             setDirection(undefined);
         }}
-    ><ContentContainer>
+    ><ContentContainer classes="recipe-overview">
             <Link className={`recipe-overview-previous ${direction === Direction.PREVIOUS ? 'showTap' : ''}`} to={`${Paths.RECIPE_OVERVIEW}/${previous}`} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
             </Link>
