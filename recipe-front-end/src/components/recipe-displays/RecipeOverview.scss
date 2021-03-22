@@ -1,53 +1,85 @@
 .recipe-overview-previous {
-    left: 0em;
-  
-    @media (min-width: 85em) {
-      left: 1em;
-    }
+  left: 0em;
+
+  @media (min-width: 85em) {
+    left: 1em;
+  }
+}
+
+.recipe-overview-next {
+  right: 0em;
+
+  @media (min-width: 85em) {
+    right: 1em;
+  }
+}
+
+.content {
+  float: left;
+}
+
+.recipe-image {
+  float: right;
+}
+
+@media (min-width: 50em) {
+  .recipe-image {
+    padding: 1em;
   }
   
-  .recipe-overview-next {
-    right: 0em;
-  
-    @media (min-width: 85em) {
-      right: 1em;
+  .recipe-image,
+  .content {
+    width: 50%; 
+  }
+}
+
+
+
+.recipe-overview-previous,
+.recipe-overview-next {
+  position: fixed;
+  top: 50%;
+  z-index: 10;
+  display: none;
+
+  &.showTap {
+    display: block;
+  }
+
+  @media (min-width: 85em) {
+    display: block;
+
+    &:after {
+      width: 0%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      position: absolute;
+      border-radius: 0.5em;
+      height: 100%;
+      background-color: #e2e8f0;
+      transition: width 0.08s linear 0s;
+      content: "";
+    }
+
+    &:hover,
+    &:focus {
+      &:after {
+        width: 100%;
+      }
     }
   }
-  
-  .recipe-overview-previous,
-  .recipe-overview-next {
-    position: fixed;
-    top: 50%;
-    z-index: 10;
-    display: none;
-  
-    &.showTap {
-      display: block;
-    }
-  
-    @media (min-width: 85em) {
-        display: block;
-  
-        &:after {
-          width: 0%;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: -1;
-          position: absolute;
-          border-radius: 0.5em;
-          height: 100%;
-          background-color: #E2E8F0;
-          transition: width 0.08s linear 0s;
-          content: '';
-        }     
-  
-        &:hover,
-        &:focus {
-          &:after {
-            width: 100%;
-          }
-        }
-    }
+}
+
+.recipe-overview {
+  h2 {
+    font-size: 1.7em;
   }
+
+  h3 {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+  }
+}

@@ -125,57 +125,59 @@ function RecipeOverview(props: Props) {
             setOriginalTouch(0);
             setDirection(undefined);
         }}
-    ><ContentContainer>
+    ><ContentContainer classes="recipe-overview">
             <Link className={`recipe-overview-previous ${direction === Direction.PREVIOUS ? 'showTap' : ''}`} to={`${Paths.RECIPE_OVERVIEW}/${previous}`} >
                 <ArrowBackIcon boxSize="2em" aria-label={Localisation.PREVIOUS_RECIPE} />
             </Link>
             <Link className={`recipe-overview-next ${direction === Direction.NEXT ? 'showTap' : ''}`} to={`${Paths.RECIPE_OVERVIEW}/${next}`} >
                 <ArrowForwardIcon boxSize="2em" aria-label={Localisation.NEXT_RECIPE} />
             </Link>
-            <Heading as="h2">{recipe.title}</Heading>
-            <Image src={recipe.image} alt="" />
+            <Image className="recipe-image" src={recipe.image} alt="" />
+            <div className="content">
+                <Heading as="h2">{recipe.title}</Heading>
 
-            {props.loggedIn && <SimplePopover
-                trigger={<button
-                    className="date-range-initiator"
-                    onClick={() => setPickerIsVisible(!pickerVisible)}>
-                    {Localisation.PLAN_IN}
-                </button>}
-                onClose={() => setPickerIsVisible(false)}
-                isOpened={pickerVisible}
-                initialFocusRef={initialFocusRef}
-                title={Localisation.PLAN_IN}
-            >
-                <SingleDayPicker
-                    isVisible={pickerVisible}
+                {props.loggedIn && <SimplePopover
+                    trigger={<button
+                        className="date-range-initiator"
+                        onClick={() => setPickerIsVisible(!pickerVisible)}>
+                        {Localisation.PLAN_IN}
+                    </button>}
                     onClose={() => setPickerIsVisible(false)}
+                    isOpened={pickerVisible}
                     initialFocusRef={initialFocusRef}
-                    fillDayFilters={[(date: Date) => plannedDates.some(
-                        plannedDate => isSameUtcDay(date, plannedDate)
-                    )]}
-                    onComplete={async (date: Date) => {
-                        setPickerIsVisible(false);
-                        await props.addMenu({
-                            date: Number(date),
-                            menuId: -1,
-                            recipe: recipe,
-                            ingredientsBought: false
-                        });
-                        toast({
-                            description: Localisation.ADDING_MENU_WAS_SUCCESS,
-                            status: 'success',
-                            isClosable: true,
-                        });
-                    }} />
-            </SimplePopover>}
+                    title={Localisation.PLAN_IN}
+                >
+                    <SingleDayPicker
+                        isVisible={pickerVisible}
+                        onClose={() => setPickerIsVisible(false)}
+                        initialFocusRef={initialFocusRef}
+                        fillDayFilters={[(date: Date) => plannedDates.some(
+                            plannedDate => isSameUtcDay(date, plannedDate)
+                        )]}
+                        onComplete={async (date: Date) => {
+                            setPickerIsVisible(false);
+                            await props.addMenu({
+                                date: Number(date),
+                                menuId: -1,
+                                recipe: recipe,
+                                ingredientsBought: false
+                            });
+                            toast({
+                                description: Localisation.ADDING_MENU_WAS_SUCCESS,
+                                status: 'success',
+                                isClosable: true,
+                            });
+                        }} />
+                </SimplePopover>}
 
-            <div className="clearer"></div>
-            <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
-            <ul>{recipe.ingredients.map((ingredient, index) => (
-                <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
-                </li>))}</ul>
-            <Heading as="h3">{Localisation.STEPS}</Heading>
-            {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+                <div className="clearer"></div>
+                <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
+                <ul>{recipe.ingredients.map((ingredient, index) => (
+                    <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantity_description}
+                    </li>))}</ul>
+                <Heading as="h3">{Localisation.STEPS}</Heading>
+                {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+            </div>
         </ContentContainer></div >);
 }
 
