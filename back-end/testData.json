@@ -1,4 +1,15 @@
 {
+  "categories": [
+    "oils",
+    "vegetables",
+    "tins",
+    "legumes",
+    "spices",
+    "grains",
+    "spreads",
+    "sauces",
+    "nuts"
+  ],
   "recipeData": [
     {
       "title": "Herfstpasta met pompoen",
