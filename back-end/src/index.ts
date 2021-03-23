@@ -135,7 +135,7 @@ pool.connect(async (error, client, done) => {
     try {
         const hasBeenCreated = await createTables(pool);
         if (hasBeenCreated) {
-            const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
+            const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8')).recipeData;
 
             for (let recipe of defaultRecipes) {
                 await addRecipe(pool, recipe);
