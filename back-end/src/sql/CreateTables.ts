@@ -22,9 +22,16 @@ export async function createTables(pool: Pool) {
         created_at timestamp DEFAULT current_timestamp
     )`);
 
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategory (
+        id serial PRIMARY KEY,
+        category_name varchar(100) NOT NULL
+    )`);
+
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Ingredients (
         id serial PRIMARY KEY,
-        ingredient_name varchar(500) NOT NULL
+        ingredient_name varchar(500) NOT NULL,
+        ingredient_category_id INT,
+        FOREIGN KEY (ingredient_category_id) REFERENCES IngredientCategory (id)
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS RecipesIngredientsMatch (
