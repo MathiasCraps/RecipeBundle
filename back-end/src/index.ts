@@ -10,6 +10,7 @@ import { Recipe, TestData } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
+import { createCategories } from './sql/CreateCategories';
 import { createTables } from "./sql/CreateTables";
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
@@ -137,6 +138,7 @@ pool.connect(async (error, client, done) => {
         if (hasBeenCreated) {
             const testData: TestData = JSON.parse(fs.readFileSync('testData.json', 'utf8')).recipeData;
             const recipes = testData.recipes;
+            await createCategories(pool, testData.categories);
 
             for (let recipe of recipes) {
                 await addRecipe(pool, recipe);
