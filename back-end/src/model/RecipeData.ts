@@ -8,6 +8,7 @@ export interface Ingredient {
     quantity_number: number | null;
     quantity_description: string;
     category: number;
+    categoryName: string | undefined;
 }
 
 export interface TestData {

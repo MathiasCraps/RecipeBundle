@@ -26,7 +26,8 @@ export async function getAllRecipes(): Promise<Recipe[]> {
                         quantity_number: Number(ingredient.quantity_number),
                         quantity_description: ingredient.quantity_name, 
                         name: ingredient.ingredient_name,
-                        category: 0
+                        category: 0,
+                        categoryName: ''
                     };
                 }),
                 image: `${process.env.DOMAIN}/${recipe.image}`,
