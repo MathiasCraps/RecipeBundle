@@ -13,8 +13,8 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
     for (let ingredient of recipeData.ingredients) {
         let ingredientResult = await executeQuery(pool, {
             name: 'add-ingredient',
-            text: 'INSERT INTO Ingredients (ingredient_name) VALUES ($1) RETURNING id;',
-            values: [ingredient.name]
+            text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id) VALUES ($1, $2) RETURNING id;',
+            values: [ingredient.name, ingredient.category]
         });
         const id = ingredientResult.rows[0].id;
 
