@@ -9,7 +9,9 @@
     "spreads",
     "sauces",
     "nuts",
-    "misc"
+    "misc",
+    "drinks",
+    "fruits"
   ],
   "recipes": [
     {
@@ -195,90 +197,91 @@
           "name": "pompoen",
           "quantity_number": 1,
           "quantity_description": "stuk",
-          "category": 1
+          "category": 2
         },
         {
           "name": "olijfolie",
           "quantity_number": 1,
           "quantity_description": "eetlepel",
-          "category": 0
+          "category": 1
         },
         {
           "name": "ui",
           "quantity_number": 1,
           "quantity_description": "stuk",
-          "category": 1
+          "category": 2
         },
         {
           "name": "knoflook",
           "quantity_number": 3,
           "quantity_description": "stuks",
-          "category": 1
+          "category": 2
         },
         {
           "name": "water",
           "quantity_number": 50,
-          "quantity_description": "milliliter"
+          "quantity_description": "milliliter",
+          "category": 10
         },
         {
           "name": "tomatenstukjes",
           "quantity_number": 1,
           "quantity_description": "blik",
-          "category": 2
+          "category": 3
         },
         {
           "name": "komijn",
           "quantity_number": 1,
           "quantity_description": "theelepel",
-          "category": 4
+          "category": 5
         },
         {
           "name": "oregano",
           "quantity_number": 1,
           "quantity_description": "theelepel",
-          "category": 4
+          "category": 5
         },
         {
           "name": "paprikapoeder",
           "quantity_number": 1,
           "quantity_description": "theelepel",
-          "category": 4
+          "category": 5
         },
         {
           "name": "cayennepeper",
           "quantity_number": 0.5,
           "quantity_description": "theelepel",
-          "category": 4
+          "category": 5
         },
         {
           "name": "zout",
           "quantity_number": 0,
           "quantity_description": "naar smaak",
-          "category": 4
+          "category": 5
         },
         {
           "name": "kidneybonen",
           "quantity_number": 1,
           "quantity_description": "blik",
-          "category": 3
+          "category": 4
         },
         {
           "name": "wraps",
           "quantity_number": 1,
           "quantity_description": "stuk",
-          "category": 5
+          "category": 6
         },
         {
           "name": "avocado",
           "quantity_number": 1,
           "quantity_description": "stuk",
-          "category": 1
+          "category": 2
         },
         {
           "name": "salsa",
           "quantity_number": 1,
           "quantity_description": "pot",
-          "category": 7
+          "category": 8
         }
       ],
       "steps": "Spoel de pompoen goed af; de pompoen hoeft namelijk niet geschild te worden, op lelijke plekjes in de schil na. Snijd met een groot mes voorzichtig de top van de pompoen af en snijd de pompoen door midden. Snijd de helften nog eens door en verwijder de zaden en draden met een lepel. Maak blokjes van het vruchtvlees en snijd de ui fijn. Verhit de olie in een grote pan. Fruit de ui ongeveer 5 minuten. Pers de knoflook hierboven uit en bak nog één minuut mee. Voeg de pompoenblokjes en het water toe en laat dit ongeveer 10 minuten stoven.\\nVerwarm intussen de oven voor op 100 ºC of gebruik later in het recept de magnetron om de tortilla’s op te warmen.\\nVoeg de tomatenblokjes, komijn, oregano, paprikapoeder, cayennepeper en zout naar smaak aan de pompoen toe. Roer door en laat nog 10 minuten stoven. Laat het blik kidneybonen uitlekken en voeg de bonen toe. Verwarm deze nog een paar minuten mee.\\nWarm de wraps ongeveer een minuut op in de voorverwarmde oven zodat ze warm en soepel worden. Snijd ondertussen de avocado in plakken: snijd deze door de helft, verwijder de pit en trek de schil eraf, snijd dan de plakken.\\nServeer de tortilla’s met de groenten/bonenvulling, schijfjes avocado en salsa.\\nTip: In plaats van de ovenstand kun je de wraps ook eerst vullen en vervolgens 5 minuten onder de voorverwarmde gril zetten. Ze krijgen dan een knapperige bovenkant.",
@@ -290,47 +293,56 @@
         {
           "name": "bloem",
           "quantity_number": 250,
-          "quantity_description": "gram"
+          "quantity_description": "gram",
+          "category": 6
         },
         {
           "name": "maïzena",
           "quantity_number": 20,
-          "quantity_description": "gram"
+          "quantity_description": "gram",
+          "category": 6
         },
         {
           "name": "bakpoeder",
           "quantity_number": 1,
-          "quantity_description": "zakje"
+          "quantity_description": "zakje",
+          "category": 10
         },
         {
           "name": "suiker",
           "quantity_number": 150,
-          "quantity_description": "gram"
+          "quantity_description": "gram",
+          "category": 10
         },
         {
           "name": "vanillesuiker",
           "quantity_number": 1,
-          "quantity_description": "pakje"
+          "quantity_description": "pakje",
+          "category": 10
         },
         {
           "name": "zout",
           "quantity_number": 0,
-          "quantity_description": "een snufje"
+          "quantity_description": "een snufje",
+          "category": 5
         },
         {
           "name": "zonnebloemolie",
           "quantity_number": 75,
-          "quantity_description": "gram"
+          "quantity_description": "gram",
+          "category": 1
         },
         {
           "name": "ongezoete plantaardige melk",
           "quantity_number": 150,
-          "quantity_description": "gram"
+          "quantity_description": "gram",
+          "category": 11
         },
         {
           "name": "peer",
           "quantity_number": 1,
-          "quantity_description": "stuk"
+          "quantity_description": "stuk",
+          "category": 12
         }
       ],
       "steps": "Verwarm de oven voor op 175 graden. Bekleed een kleine ronde cakevorm (doorsnede 18 cm) met bakpapier.\\nMeng eerst de droge ingrediënten door elkaar. Klop dan met een handmixer of garde de olie en melk erdoor. Schrik niet, het moet een dik beslag worden. Verdeel het beslag over de vorm. Schil de peer, verdeel hem in kwarten en verwijder het klokhuis. Snijd de kwarten in plakjes en leg die mooi verdeeld op het beslag.\\nBak de cake in ongeveer 45 minuten gaar en goudbruin. Laat hem even afkoelen op een rooster alvorens hem op te dienen.\\nTip: Het is ook lekker om de peren in blokjes te snijden en ze door het beslag te mengen. Zwarte bessen (diepvries) of pruimen zijn ook lekker door het beslag in plaats van peren. Het is ook lekker om amandelschaafsel over de cake te strooien voordat deze de oven in gaat.",
