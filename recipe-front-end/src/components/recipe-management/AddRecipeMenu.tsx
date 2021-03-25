@@ -89,7 +89,8 @@ export function AddRecipeMenu(props: Props) {
             ingredients: transformedIngredients,
             steps,
             image: '',
-            id: -1
+            id: -1,
+            categoryName: ''
         }
 
         const formData = new FormData()
