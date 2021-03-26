@@ -8,6 +8,7 @@ export const IngredientType = new GraphQLObjectType({
         name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
         quantity_number: { type: new GraphQLNonNull(GraphQLFloat), description: 'The quantitative number of the needed amount.' },
         quantity_description: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the quantity.' },
+        categoryId: { type: new GraphQLNonNull(GraphQLInt), description: 'The unique identifier of the ingredient category'},
         categoryName: { type: new GraphQLNonNull(GraphQLString), description: 'The category of the ingredient.'}
     })
 });
