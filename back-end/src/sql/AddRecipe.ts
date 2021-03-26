@@ -14,7 +14,7 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
         let ingredientResult = await executeQuery(pool, {
             name: 'add-ingredient',
             text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id) VALUES ($1, $2) RETURNING id;',
-            values: [ingredient.name, ingredient.category]
+            values: [ingredient.name, ingredient.categoryId]
         });
         const id = ingredientResult.rows[0].id;
 

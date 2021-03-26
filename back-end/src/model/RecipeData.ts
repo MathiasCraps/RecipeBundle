@@ -7,7 +7,7 @@ export interface Ingredient {
     name: string;
     quantity_number: number | null;
     quantity_description: string;
-    category: number;
+    categoryId: number;
     categoryName: string | undefined;
 }
 
