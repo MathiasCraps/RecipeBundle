@@ -15,6 +15,7 @@ export interface Recipe {
     steps: string;
     image: string;
     id: number;
+    categoryName: string;
 }
 
 export interface RawDayMenu {

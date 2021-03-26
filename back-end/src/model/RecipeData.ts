@@ -7,6 +7,13 @@ export interface Ingredient {
     name: string;
     quantity_number: number | null;
     quantity_description: string;
+    categoryId: number;
+    categoryName: string | undefined;
+}
+
+export interface TestData {
+    categories: string[];
+    recipes: Recipe[];
 }
 
 export interface Recipe {

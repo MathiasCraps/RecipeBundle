@@ -6,10 +6,11 @@ import fs from "fs";
 import { Pool } from "pg";
 import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
-import { Recipe } from "./model/RecipeData";
+import { Recipe, TestData } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { addRecipe } from "./sql/AddRecipe";
+import { createCategories } from './sql/CreateCategories';
 import { createTables } from "./sql/CreateTables";
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
@@ -135,9 +136,11 @@ pool.connect(async (error, client, done) => {
     try {
         const hasBeenCreated = await createTables(pool);
         if (hasBeenCreated) {
-            const defaultRecipes: Recipe[] = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
+            const testData: TestData = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
+            const recipes = testData.recipes;
+            await createCategories(pool, testData.categories);
 
-            for (let recipe of defaultRecipes) {
+            for (let recipe of recipes) {
                 await addRecipe(pool, recipe);
             }
         }
