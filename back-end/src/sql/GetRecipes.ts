@@ -23,7 +23,6 @@ export async function getAllRecipes(): Promise<Recipe[]> {
                 title: recipe.recipe_name,
                 steps: recipe.steps,
                 ingredients: ingredients.map((ingredient: any) => {
-                    console.log(ingredient);
                     return { 
                         quantity_number: Number(ingredient.quantity_number),
                         quantity_description: ingredient.quantity_name, 
