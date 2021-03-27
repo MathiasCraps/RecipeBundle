@@ -1,7 +1,10 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
+import { getIngredientCategories } from '../../sql/GetIngredientCategories';
 import { getMenus } from '../../sql/GetMenu';
 import { getAllRecipes } from '../../sql/GetRecipes';
+import { Category } from './Category';
 import { MenuType } from './Menus';
 import { RecipeType } from './Recipes';
 
@@ -24,6 +27,13 @@ export const RootQuery = new GraphQLObjectType({
                     return [];
                 }
                 return await getMenus(requestWithType.userId);
+            }
+        },
+        categories: {
+            type: new GraphQLNonNull(new GraphQLList(Category)),
+            description: 'All the categories of the ingredients.',
+            async resolve() {
+                return await getIngredientCategories(pool);
             }
         }
     }
