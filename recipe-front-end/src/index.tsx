@@ -58,6 +58,10 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       recipeId
       ingredientsBought
     }
+    categories {
+      categoryId
+      categoryName
+    }
   }`);
 
   const linkedMenu: DayMenu[] = applicationData.menus
