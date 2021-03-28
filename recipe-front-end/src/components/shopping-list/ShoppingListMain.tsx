@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { Dispatch } from 'redux';
 import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
+import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { Paths } from '../../Paths';
 import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
 import { DateRange, DayMenu, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
@@ -13,6 +14,7 @@ import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
 import { combineToSingleValue } from './normalization/Combiner';
+import { groupByCategory } from './normalization/GroupByCategory';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
@@ -69,6 +71,8 @@ export function ShoppingListMain(props: Props) {
     const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
+    const sumsInGroups = groupByCategory(sumsToRender);
+    const sortedCategoryKeys = Object.keys(sumsInGroups)
     const [pickerVisible, setPickerVisible] = useState(false);
     const triggerRef = React.useRef<HTMLButtonElement>(null);
     const initialFocusRef = React.useRef(null);
@@ -76,7 +80,7 @@ export function ShoppingListMain(props: Props) {
     function handleClosingPicker() {
         setPickerVisible(false)
         triggerRef.current?.focus();
-        
+
     }
 
     return <ContentContainer classes="shopping-list">
@@ -103,10 +107,15 @@ export function ShoppingListMain(props: Props) {
 
         {!hasMenus && <p>{Localisation.YOU_ALREADY_BOUGHT_EVERYTHING}</p>}
         {hasMenus && <div className="shopping-list-ingredients">
-            <ul>
-                {sumsToRender.sort((a, b) => a.name > b.name ? 1 : -1)
-                    .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
-            </ul>
+            {sortedCategoryKeys.map((category, index) => {
+                const ingredientsInCategory = sumsInGroups[category];
+                return (<div className="clearer" key={index}>
+                    <h3>{translateCategory(ingredientsInCategory[0].categoryName as any)}</h3>
+                    <ul>
+                        {ingredientsInCategory.sort((a, b) => a.name > b.name ? 1 : -1)
+                            .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
+                    </ul></div>)
+            })}
             <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
                 {Localisation.MARK_LIST_AS_PURCHASED}
             </Button>
