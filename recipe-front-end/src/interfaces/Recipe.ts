@@ -1,6 +1,7 @@
 export interface ApplicationData {
     menus: RawDayMenu[];
     recipes: Recipe[];
+    categories: Category[];
 }
 
 export interface Ingredient {
@@ -15,6 +16,11 @@ export interface Recipe {
     steps: string;
     image: string;
     id: number;
+    categoryName: string;
+}
+
+export interface Category {
+    categoryId: number;
     categoryName: string;
 }
 

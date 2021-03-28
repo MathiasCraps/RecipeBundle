@@ -11,13 +11,14 @@ import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn } from "../../redux/Actions";
 import { AddRecipeAction, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
-import { IngredientsModal } from "./IngredientsModal";
+import IngredientsModal from "./IngredientsModal";
 
 export interface IngredientInput {
     name: string;
     quantityNumber: number;
     quantityDescription: string;
     identifier: number;
+    categoryId: number;
 }
 
 let index = 0;
@@ -50,7 +51,8 @@ function createEmptyIngredient() {
         name: '',
         identifier: ++index,
         quantityDescription: '',
-        quantityNumber: 0
+        quantityNumber: 0,
+        categoryId: -1
     }
 }
 
@@ -80,7 +82,8 @@ export function AddRecipeMenu(props: Props) {
                 return {
                     name: ingredient.name,
                     quantity_description: ingredient.quantityDescription,
-                    quantity_number: ingredient.quantityNumber
+                    quantity_number: ingredient.quantityNumber,
+                    categoryId: ingredient.categoryId
                 };
             }
         );
@@ -93,7 +96,7 @@ export function AddRecipeMenu(props: Props) {
             categoryName: ''
         }
 
-        const formData = new FormData()
+        const formData = new FormData();
         formData.append('userfile', ref.current!.files![0]);
         formData.append('recipe', JSON.stringify(recipeData))
 

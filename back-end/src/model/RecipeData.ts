@@ -11,6 +11,11 @@ export interface Ingredient {
     categoryName: string | undefined;
 }
 
+export interface Category {
+    categoryId: number;
+    categoryName: string;
+}
+
 export interface TestData {
     categories: string[];
     recipes: Recipe[];
