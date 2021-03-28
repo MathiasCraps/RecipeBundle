@@ -83,7 +83,8 @@ export function AddRecipeMenu(props: Props) {
                     name: ingredient.name,
                     quantity_description: ingredient.quantityDescription,
                     quantity_number: ingredient.quantityNumber,
-                    categoryId: ingredient.categoryId
+                    categoryId: ingredient.categoryId,
+                    categoryName: ''
                 };
             }
         );
@@ -92,8 +93,7 @@ export function AddRecipeMenu(props: Props) {
             ingredients: transformedIngredients,
             steps,
             image: '',
-            id: -1,
-            categoryName: ''
+            id: -1
         }
 
         const formData = new FormData();
