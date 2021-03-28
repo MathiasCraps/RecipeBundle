@@ -57,7 +57,6 @@ function IngredientsModal(props: Props) {
                 </Select>
                 <Select onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
                     {props.categories.map((category, index) => {
-                        console.log(category);
                         return <React.Fragment key={category.categoryId}>
                             <option value={category.categoryId} selected={category.categoryId === categoryId}>
                                 {category.categoryName}
