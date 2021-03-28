@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
 import { Category } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
+import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import { IngredientInput } from "./AddRecipeMenu";
 
@@ -50,16 +51,16 @@ function IngredientsModal(props: Props) {
                         type='number'
                         placeholder={Localisation.QUANTITY} 
                 />
-                <Select placeholed={Localisation.QUANTITY} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                <Select defaultValue={quantityDescriptions[0]} placeholed={Localisation.QUANTITY} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                     {quantityDescriptions.map((description, index) => {
-                        return <option selected={description === props.ingredientInputs.quantityDescription} key={index} value={description}>{description}</option>
+                        return <option /*selected={description === props.ingredientInputs.quantityDescription}*/ key={index} value={description}>{description}</option>
                     })}
                 </Select>
-                <Select onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
+                <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
                     {props.categories.map((category, index) => {
                         return <React.Fragment key={category.categoryId}>
-                            <option value={category.categoryId} selected={category.categoryId === categoryId}>
-                                {category.categoryName}
+                            <option value={category.categoryId}>
+                                {translateCategory(category.categoryName as any)}
                             </option>
                         </React.Fragment>
                     })}
