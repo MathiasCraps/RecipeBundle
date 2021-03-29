@@ -8,6 +8,8 @@ export interface Ingredient {
     name: string;
     quantity_number: number | null;
     quantity_description: string;
+    categoryId: number;
+    categoryName: string;
 }
 
 export interface Recipe {
@@ -16,7 +18,6 @@ export interface Recipe {
     steps: string;
     image: string;
     id: number;
-    categoryName: string;
 }
 
 export interface Category {
