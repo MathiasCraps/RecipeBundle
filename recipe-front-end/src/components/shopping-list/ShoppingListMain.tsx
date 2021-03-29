@@ -116,9 +116,11 @@ export function ShoppingListMain(props: Props) {
                             .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
                     </ul></div>)
             })}
-            <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
-                {Localisation.MARK_LIST_AS_PURCHASED}
-            </Button>
+            <div className="clearer">
+                <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
+                    {Localisation.MARK_LIST_AS_PURCHASED}
+                </Button>
+            </div>
         </div>}
     </ContentContainer>
 }
