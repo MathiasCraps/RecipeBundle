@@ -1,4 +1,4 @@
-import { faCaretDown, faCaretLeft, faCaretRight, faIcons } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Ingredient } from '../../interfaces/Recipe';
