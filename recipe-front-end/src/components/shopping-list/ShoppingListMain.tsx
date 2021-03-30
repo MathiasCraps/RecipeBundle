@@ -109,7 +109,7 @@ export function ShoppingListMain(props: Props) {
             {sortedCategoryKeys.map((category, index) => {
                 return <ShoppingCategory ingredients={sumsInGroups[category]} key={index} />
             })}
-            <div className="clearer">ø
+            <div className="clearer">
                 <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
                     {Localisation.MARK_LIST_AS_PURCHASED}
                 </Button>
