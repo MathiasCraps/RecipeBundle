@@ -14,7 +14,7 @@ export function ShoppingCategory(props: OwnProps) {
     const [isOpened, setIsOpened] = useState<boolean>(true);
     const display = isOpened ? 'block': 'none';
 
-    return <div className="clearer">
+    return <div className="clearer category">
         <h3 onClick={() => setIsOpened(!isOpened)}>
             <FontAwesomeIcon className="display-icon" icon={isOpened ? faCaretDown : faCaretRight } />
             {translateCategory(props.ingredients[0].categoryName as any)}</h3>
