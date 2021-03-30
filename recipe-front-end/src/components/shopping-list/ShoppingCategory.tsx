@@ -1,3 +1,5 @@
+import { faCaretDown, faCaretLeft, faCaretRight, faIcons } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Ingredient } from '../../interfaces/Recipe';
 import { translateCategory } from '../../localisation/CategoryLocalisation';
@@ -12,7 +14,9 @@ export function ShoppingCategory(props: OwnProps) {
     const display = isOpened ? 'block': 'none';
 
     return <div className="clearer">
-        <h3 onClick={() => setIsOpened(!isOpened)}>{translateCategory(props.ingredients[0].categoryName as any)}</h3>
+        <h3 onClick={() => setIsOpened(!isOpened)}>
+            <FontAwesomeIcon icon={isOpened ? faCaretDown : faCaretRight } />
+            {translateCategory(props.ingredients[0].categoryName as any)}</h3>
         <ul style={{ display }}>
             {props.ingredients.sort((a, b) => a.name > b.name ? 1 : -1)
                 .map((ingredient, index) => <React.Fragment key={index}>
