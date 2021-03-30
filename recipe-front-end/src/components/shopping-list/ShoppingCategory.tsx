@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Ingredient } from '../../interfaces/Recipe';
 import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ShoppingIngredient } from './ShoppingIngredient';
+import './ShoppingCategory.scss';
 
 interface OwnProps {
     ingredients: Ingredient[];
@@ -15,7 +16,7 @@ export function ShoppingCategory(props: OwnProps) {
 
     return <div className="clearer">
         <h3 onClick={() => setIsOpened(!isOpened)}>
-            <FontAwesomeIcon icon={isOpened ? faCaretDown : faCaretRight } />
+            <FontAwesomeIcon className="display-icon" icon={isOpened ? faCaretDown : faCaretRight } />
             {translateCategory(props.ingredients[0].categoryName as any)}</h3>
         <ul style={{ display }}>
             {props.ingredients.sort((a, b) => a.name > b.name ? 1 : -1)
