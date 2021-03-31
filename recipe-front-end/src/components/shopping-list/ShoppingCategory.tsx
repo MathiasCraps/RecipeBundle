@@ -12,12 +12,15 @@ interface OwnProps {
 
 export function ShoppingCategory(props: OwnProps) {
     const [isOpened, setIsOpened] = useState<boolean>(true);
-    const display = isOpened ? 'block': 'none';
+    const display = isOpened ? 'block' : 'none';
 
     return <div className="clearer category">
-        <h3 onClick={() => setIsOpened(!isOpened)}>
-            <FontAwesomeIcon className="display-icon" icon={isOpened ? faCaretDown : faCaretRight } />
-            {translateCategory(props.ingredients[0].categoryName as any)}</h3>
+        <h3>
+            <button onClick={() => setIsOpened(!isOpened)}>
+                <FontAwesomeIcon className="display-icon" icon={isOpened ? faCaretDown : faCaretRight} />
+                {translateCategory(props.ingredients[0].categoryName as any)}
+            </button>
+        </h3>
         <ul style={{ display }}>
             {props.ingredients.sort((a, b) => a.name > b.name ? 1 : -1)
                 .map((ingredient, index) => <React.Fragment key={index}>
