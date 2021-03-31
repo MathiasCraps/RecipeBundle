@@ -22,11 +22,14 @@ export function ShoppingIngredient(props: props) {
                 setIsCancelled(!isCancelled);
                 break;
             default:
-                // ignore
+            // ignore
         }
     }
 
-    return <li tabIndex={0} onKeyUp={handleKeyUp} className={`menu-recipe ${isCancelled ? 'strike-through grayed' : ''}`} onClick={() => setIsCancelled(!isCancelled)}>
+    return <li tabIndex={0}
+        onKeyUp={handleKeyUp}
+        className={`menu-recipe ${isCancelled ? 'strike-through grayed' : ''}`}
+        onClick={() => setIsCancelled(!isCancelled)}>
         <strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})
-        </li>
+    </li>
 }

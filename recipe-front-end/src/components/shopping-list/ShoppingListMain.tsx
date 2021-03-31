@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import { Dispatch } from 'redux';
 import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
-import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { Paths } from '../../Paths';
 import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
 import { DateRange, DayMenu, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
@@ -19,7 +18,7 @@ import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule
 import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
-import { ShoppingIngredient } from './ShoppingIngredient';
+import { ShoppingCategory } from './ShoppingCategory';
 import './ShoppingListMain.scss';
 
 interface ReduxProps {
@@ -108,13 +107,7 @@ export function ShoppingListMain(props: Props) {
         {!hasMenus && <p>{Localisation.YOU_ALREADY_BOUGHT_EVERYTHING}</p>}
         {hasMenus && <div className="shopping-list-ingredients">
             {sortedCategoryKeys.map((category, index) => {
-                const ingredientsInCategory = sumsInGroups[category];
-                return (<div className="clearer" key={index}>
-                    <h3>{translateCategory(ingredientsInCategory[0].categoryName as any)}</h3>
-                    <ul>
-                        {ingredientsInCategory.sort((a, b) => a.name > b.name ? 1 : -1)
-                            .map((ingredient, index) => <React.Fragment key={index}><ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
-                    </ul></div>)
+                return <ShoppingCategory ingredients={sumsInGroups[category]} key={index} />
             })}
             <div className="clearer">
                 <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>

@@ -1,0 +1,15 @@
+.display-icon {
+    margin-right: 0.5em;
+}
+
+.category {
+    cursor: pointer;
+
+    &.closed {
+        color: #A0AEC0;
+    }
+
+    .category-list {
+        padding: 1em 0 1.5em 0;
+    }
+}
