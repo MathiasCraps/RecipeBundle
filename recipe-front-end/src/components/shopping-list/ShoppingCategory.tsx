@@ -21,7 +21,7 @@ export function ShoppingCategory(props: OwnProps) {
                 {translateCategory(props.ingredients[0].categoryName as any)}
             </button>
         </h3>
-        <ul style={{ display }}>
+        <ul className="category-list" style={{ display }}>
             {props.ingredients.sort((a, b) => a.name > b.name ? 1 : -1)
                 .map((ingredient, index) => <React.Fragment key={index}>
                     <ShoppingIngredient ingredient={ingredient} /></React.Fragment>)}
