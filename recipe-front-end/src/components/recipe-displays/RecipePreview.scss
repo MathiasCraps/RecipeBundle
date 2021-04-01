@@ -11,11 +11,23 @@
 .recipeBox {
   position: relative;
 
+  .grid-image::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0em 0em 0em rgba(51, 51, 51, 0.15);
+  }
+
   a:hover,
   a:focus {
     .grid-image,
     .grid-image {
-      filter: opacity(0.85);
+      filter: opacity(0.95);
+
+      &:before {
+        box-shadow: inset 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s;
+      }
     }
   }
 }
