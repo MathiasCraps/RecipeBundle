@@ -1,4 +1,4 @@
-import { Box, Image } from "@chakra-ui/react";
+import { AspectRatio, Box, Image } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Recipe } from "../../interfaces/Recipe";
@@ -16,7 +16,15 @@ export default function RecipePreview(props: OwnProps) {
     borderRadius="lg"
   ><Link to={`${Paths.RECIPE_OVERVIEW}/${props.recipe.id}`}>
       <strong className="recipe-preview-size">{props.recipe.title}</strong>
-      <Image src={props.recipe.image} width="100%" alt="" />
+      <AspectRatio ratio={1}>
+        <div style={{
+          backgroundImage: `url(${props.recipe.image})`,
+          backgroundSize: 'cover',
+          width: "100%",
+          height: "100%"
+          
+        }}></div>
+      </AspectRatio>
     </Link>
   </Box>);
 }
