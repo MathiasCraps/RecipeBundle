@@ -17,7 +17,7 @@ export default function RecipePreview(props: OwnProps) {
   ><Link to={`${Paths.RECIPE_OVERVIEW}/${props.recipe.id}`}>
       <strong className="recipe-preview-size">{props.recipe.title}</strong>
       <AspectRatio ratio={1}>
-        <div style={{
+        <div className="grid-image" style={{
           backgroundImage: `url(${props.recipe.image})`,
           backgroundSize: 'cover',
           width: "100%",
