@@ -11,8 +11,11 @@
   .recipeBox {
     position: relative;
   
-    a:hover .grid-image,
-    a:focus .grid-image {
-      filter: opacity(0.85);
+    a:hover,
+    a:focus {
+      .grid-image,
+      .grid-image {
+        filter: opacity(0.85);
+      }
     }
   }
