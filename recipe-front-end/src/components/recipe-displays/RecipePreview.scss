@@ -1,21 +1,21 @@
 .recipe-preview-size {
-    position: absolute;
-    font-size: 1.7em;
-    top: 0.8em;
-    left: 0.8em;
-    z-index: 9;
-    color: white;
-    text-shadow: 1px 1px 3px black;
-  }
+  position: absolute;
+  font-size: 1.7em;
+  top: 0.8em;
+  left: 0.8em;
+  z-index: 9;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+}
 
-  .recipeBox {
-    position: relative;
-  
-    a:hover,
-    a:focus {
-      .grid-image,
-      .grid-image {
-        filter: opacity(0.85);
-      }
+.recipeBox {
+  position: relative;
+
+  a:hover,
+  a:focus {
+    .grid-image,
+    .grid-image {
+      filter: opacity(0.85);
     }
   }
+}
