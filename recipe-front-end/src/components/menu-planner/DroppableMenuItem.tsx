@@ -30,7 +30,7 @@ type Props = OwnProps & ReduxActions;
 
 function DroppableMenuItem(props: Props) {
     const [isDragging, setIsDragging] = useState(false);
-    const extraClasses = isDragging ? 'is-dragging' : ''
+    const extraClasses = isDragging ? 'is-dragging' : '';
     const inputRef = useRef<HTMLInputElement>(null);
 
     function onIngredientsBoughtToggle() {
