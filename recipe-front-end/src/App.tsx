@@ -1,7 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import ActionsContainer from './components/common/ActionsContainer';
@@ -27,7 +27,12 @@ function mapStateToProps(props: ReduxModel): AppProps {
 function App(props: AppProps) {
   return (<Box><header>
     <Center className="top-header">
-      <Heading as="h1">👨‍🍳 Rebundle 👩🏻‍🍳</Heading>
+      <Heading as="h1">
+        <Link style={{
+          textDecoration: 'none',
+          display: 'block'
+        }} to={Paths.BASE}>👨‍🍳 Rebundle 👩🏻‍🍳</Link>
+      </Heading>
       <Box className="headers-side-icons">
         <ActionsContainer />
       </Box>
