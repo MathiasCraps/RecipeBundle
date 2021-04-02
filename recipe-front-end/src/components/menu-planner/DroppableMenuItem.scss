@@ -11,6 +11,10 @@
       width: 50%;
       float: left;  
     }
+
+    label {
+      cursor: pointer;
+    }
   
     input[type=checkbox] {
       margin-right: 0.5em;
