@@ -68,6 +68,13 @@ a {
   text-decoration: underline!important;
 }
 
+h1 a {
+  text-decoration: initial!important;
+  &:focus{
+      border: 1px solid #CBD5E0;
+  }
+}
+
 h3 {
   margin-top: 1em!important;
 }
