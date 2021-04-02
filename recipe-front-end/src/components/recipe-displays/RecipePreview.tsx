@@ -1,4 +1,4 @@
-import { AspectRatio, Box, Image } from "@chakra-ui/react";
+import { AspectRatio, Box } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Recipe } from "../../interfaces/Recipe";
