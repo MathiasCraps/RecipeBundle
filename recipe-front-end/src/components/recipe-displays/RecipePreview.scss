@@ -11,23 +11,33 @@
 .recipeBox {
   position: relative;
 
-  .grid-image::before {
-    content: '';
+  .grid-image {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    box-shadow: inset 0em 0em 0em rgba(51, 51, 51, 0.15);
-  }
+    
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+    }
+}
 
   a:hover,
   a:focus {
-    .grid-image,
-    .grid-image {
-      filter: opacity(0.95);
+    .aspect-ratio {
+      overflow: hidden;
+    }
 
-      &:before {
-        box-shadow: inset 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.15);
-        transition: box-shadow 0.3s;
-      }
+    .grid-image {
+      left: -0.5em;
+      top: -0.5em;
+      width: calc(100% + 1em);
+      height: calc(100% + 1em);
+
+      transition: all 0.15s ease-in;
     }
   }
 }
