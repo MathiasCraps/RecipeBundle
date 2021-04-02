@@ -1,7 +1,7 @@
 import { Tooltip } from '@chakra-ui/react';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Localisation } from '../../localisation/AppTexts';
@@ -31,8 +31,11 @@ type Props = OwnProps & ReduxActions;
 function DroppableMenuItem(props: Props) {
     const [isDragging, setIsDragging] = useState(false);
     const extraClasses = isDragging ? 'is-dragging' : ''
+    const inputRef = useRef<HTMLInputElement>(null);
+
     function onIngredientsBoughtToggle() {
         props.toggleMenuIngredientsBought([props.menu], !props.menu.ingredientsBought);
+        inputRef.current?.focus();
     }
 
     return (<div className={`day-menu-item ${extraClasses}`}
@@ -54,7 +57,7 @@ function DroppableMenuItem(props: Props) {
 
         <div>
             <label onClick={onIngredientsBoughtToggle}>
-                <input type="checkbox" checked={props.menu.ingredientsBought} onChange={onIngredientsBoughtToggle}/>
+                <input type="checkbox" checked={props.menu.ingredientsBought} onChange={onIngredientsBoughtToggle} ref={inputRef}/>
                 <span className={props.menu.ingredientsBought ? "strike-through" : ""}>
                     {props.menu.ingredientsBought ? Localisation.YOU_HAVE_ALL_INGREDIENTS : Localisation.YOU_DONT_HAVE_ALL_INGREDIENTS}
                 </span>
