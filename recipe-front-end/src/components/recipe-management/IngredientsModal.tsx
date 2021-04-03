@@ -6,6 +6,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import { IngredientInput } from "./AddRecipeMenu";
+import './IngredientsModal.scss';
 
 interface OwnProps {
     ingredientInputs: IngredientInput;
@@ -39,7 +40,7 @@ function IngredientsModal(props: Props) {
         <ModalOverlay />
         <ModalContent>
             <ModalCloseButton onClick={props.onCancel} />
-            <ModalBody>
+            <ModalBody className="add-ingredients-modal">
                 <Heading as="h3">{Localisation.EDIT_INGREDIENT}</Heading>
                 <label>
                     {Localisation.INGREDIENT_NAME}
