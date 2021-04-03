@@ -1,5 +1,7 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image, useToast } from "@chakra-ui/react";
+import { faCalendarWeek } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, useRouteMatch } from 'react-router-dom';
@@ -140,7 +142,7 @@ function RecipeOverview(props: Props) {
                     trigger={<button
                         className="date-range-initiator"
                         onClick={() => setPickerIsVisible(!pickerVisible)}>
-                        {Localisation.PLAN_IN}
+                        <FontAwesomeIcon icon={faCalendarWeek}/> {Localisation.PLAN_IN}
                     </button>}
                     onClose={() => setPickerIsVisible(false)}
                     isOpened={pickerVisible}
