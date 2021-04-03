@@ -6,6 +6,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import { IngredientInput } from "./AddRecipeMenu";
+import './IngredientsModal.scss';
 
 interface OwnProps {
     ingredientInputs: IngredientInput;
@@ -39,32 +40,45 @@ function IngredientsModal(props: Props) {
         <ModalOverlay />
         <ModalContent>
             <ModalCloseButton onClick={props.onCancel} />
-            <ModalBody>
+            <ModalBody className="add-ingredients-modal">
                 <Heading as="h3">{Localisation.EDIT_INGREDIENT}</Heading>
-                <Input  ref={focusRef} 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        placeholder={Localisation.INGREDIENT_NAME} 
-                />
-                <Input  value={quantityNumber || ''} 
-                        onChange={(e) => setQuantityNumber(Number(e.target.value) || 0)} 
+                <label>
+                    {Localisation.INGREDIENT_NAME}
+                    <Input ref={focusRef}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder={Localisation.INGREDIENT_NAME}
+                    /></label>
+
+                <label>
+                    {Localisation.QUANTITY}
+                    <Input value={quantityNumber || ''}
+                        onChange={(e) => setQuantityNumber(Number(e.target.value) || 0)}
                         type='number'
-                        placeholder={Localisation.QUANTITY} 
-                />
-                <Select defaultValue={quantityDescriptions[0]} placeholed={Localisation.QUANTITY} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
-                    {quantityDescriptions.map((description, index) => {
-                        return <option /*selected={description === props.ingredientInputs.quantityDescription}*/ key={index} value={description}>{description}</option>
-                    })}
-                </Select>
-                <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
-                    {props.categories.map((category, index) => {
-                        return <React.Fragment key={category.categoryId}>
-                            <option value={category.categoryId}>
-                                {translateCategory(category.categoryName as any)}
-                            </option>
-                        </React.Fragment>
-                    })}
-                </Select>
+                        placeholder={Localisation.QUANTITY}
+                    />
+                </label>
+                <label>
+                    {Localisation.QUANTITY_KIND}
+                    <Select defaultValue={quantityDescriptions[0]} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                        {quantityDescriptions.map((description, index) => {
+                            const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
+                            return <option key={index} value={description}>{capitalizedText}</option>
+                        })}
+                    </Select>
+                </label>
+                <label>
+                    {Localisation.CATEGORY_INGREDIENT}
+                    <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
+                        {props.categories.map((category, index) => {
+                            return <React.Fragment key={category.categoryId}>
+                                <option value={category.categoryId}>
+                                    {translateCategory(category.categoryName as any)}
+                                </option>
+                            </React.Fragment>
+                        })}
+                    </Select>
+                </label>
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({

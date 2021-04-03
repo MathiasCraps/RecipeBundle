@@ -19,7 +19,7 @@
 }
 
 .recipe-image {
-  float: right;
+  width: 100%;
 }
 
 @media (min-width: 50em) {
@@ -29,6 +29,7 @@
   
   .recipe-image,
   .content {
+    float: right;
     width: 50%; 
   }
 }
