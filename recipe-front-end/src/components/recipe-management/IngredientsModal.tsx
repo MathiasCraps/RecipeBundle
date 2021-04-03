@@ -53,7 +53,8 @@ function IngredientsModal(props: Props) {
                 />
                 <Select defaultValue={quantityDescriptions[0]} placeholed={Localisation.QUANTITY} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                     {quantityDescriptions.map((description, index) => {
-                        return <option key={index} value={description}>{description}</option>
+                        const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
+                        return <option key={index} value={description}>{capitalizedText}</option>
                     })}
                 </Select>
                 <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
