@@ -47,8 +47,8 @@ function MenuPlanner(props: Props) {
     }
 
     const currentDay = calculateStartOfDate(new Date());
-    const rawCurrentDay = currentDay.getDay();
-    const currentWeekDay = rawCurrentDay === 0 ? 6 : currentDay.getDay() - 1;
+    const rawCurrentDay = currentDay.getUTCDay();
+    const currentWeekDay = rawCurrentDay === 0 ? 6 : currentDay.getUTCDay() - 1;
     const firstDayOfCurrentWeek = currentDay.getTime() - (FULL_DAY_IN_MS * currentWeekDay);
     const firstDayOfNextWeek = firstDayOfCurrentWeek + (FULL_DAY_IN_MS * 7);
     const maximumRange = firstDayOfCurrentWeek + (FULL_DAY_IN_MS * 14);
