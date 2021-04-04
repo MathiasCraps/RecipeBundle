@@ -7,6 +7,7 @@ import { updateActiveDay, UpdateMenuDayReturn, updatePlannedMenuDay } from "../.
 import { DayMenu, ReduxModel, UpdateActiveDayAction, UpdateMenuDayAction } from "../../redux/Store";
 import { filterForDate } from "./MenuPlanner";
 import './Day.scss';
+import { normalizeWeekDay } from '../../utils/DateUtils';
 
 interface OwnProps {
     date: Date;
@@ -38,6 +39,8 @@ function mapDispatchToProps(dispatch: Dispatch<UpdateActiveDayAction | UpdateMen
     }
 }
 
+const DAY_LOCALS = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+
 function Day(props: Props) {
     const [isAboutToDrop, setIsAboutToDrop] = useState(false);
     const classes = `day ${props.isActiveDay ? 'selected-day' : ''} ${isAboutToDrop ? 'active-drop' : ''}`;
@@ -47,6 +50,7 @@ function Day(props: Props) {
         ? Localisation.DISH_SINGULAR
         : Localisation.DISH_PLURAL
     const hasRecipes = amountOfRecipes > 0;
+    const dayOfWeek = normalizeWeekDay(props.date.getUTCDay());
 
     return (<div
         onDragOver={(e) => {
@@ -65,7 +69,7 @@ function Day(props: Props) {
         }}
         className={classes} 
         onClick={() => props.updateActiveDay(props.date.getTime())}>
-        <div className='planner-day-display'>{props.date.getDate()}</div>
+        <div className='planner-day-display'>{`${DAY_LOCALS[dayOfWeek]} ${props.date.getDate()}`}</div>
         <div>
             <Center className="small-selected-day">
                 {!isSmallView && (hasRecipes ? `${amountOfRecipes} ${dishedDescription.toLowerCase()}` : '-')}
