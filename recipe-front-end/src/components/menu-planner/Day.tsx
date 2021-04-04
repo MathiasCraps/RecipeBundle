@@ -76,7 +76,7 @@ function Day(props: Props) {
         <div className='planner-day-display'>
             <div className='localized-day'>{DAY_LOCALS[dayOfWeek]}</div>
             <div className='date-group'>
-                <span className='date'>{props.date.getDate()}</span>
+                <span className='date'>{props.date.getUTCDate()}</span>
                 <span className='month'> {MONTH_LOCALS[props.date.getUTCMonth()]}</span>
             </div>
         </div>
