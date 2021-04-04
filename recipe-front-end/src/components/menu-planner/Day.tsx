@@ -7,7 +7,7 @@ import { updateActiveDay, UpdateMenuDayReturn, updatePlannedMenuDay } from "../.
 import { DayMenu, ReduxModel, UpdateActiveDayAction, UpdateMenuDayAction } from "../../redux/Store";
 import { filterForDate } from "./MenuPlanner";
 import './Day.scss';
-import { normalizeWeekDay } from '../../utils/DateUtils';
+import { isSameUtcDay, normalizeWeekDay } from '../../utils/DateUtils';
 
 interface OwnProps {
     date: Date;
@@ -28,7 +28,10 @@ type Props = OwnProps & ReduxProps & ReduxActions;
 function mapStateToProps(reduxState: ReduxModel, ownProps: OwnProps): ReduxProps {
     return {
         menuForThisDay: filterForDate(reduxState.menuPlanning, ownProps.date),
-        isActiveDay: reduxState.activeDay === ownProps.date.getTime()
+        isActiveDay: !reduxState.activeDay || isSameUtcDay(
+            new Date(reduxState.activeDay), 
+            ownProps.date
+        )
     }
 }
 

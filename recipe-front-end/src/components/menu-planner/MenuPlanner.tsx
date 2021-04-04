@@ -8,7 +8,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { updateActiveDay } from '../../redux/Actions';
 import { DayMenu, ReduxModel } from "../../redux/Store";
-import { calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
+import { addDays, calculateStartOfDate, FULL_DAY_IN_MS, normalizeWeekDay } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
 import AddMenuOverlay from "./AddMenuOverlay";
 import DayDetails from "./DayDetails";
@@ -47,11 +47,10 @@ function MenuPlanner(props: Props) {
     }
 
     const currentDay = calculateStartOfDate(new Date());
-    const rawCurrentDay = currentDay.getUTCDay();
-    const currentWeekDay = rawCurrentDay === 0 ? 6 : currentDay.getUTCDay() - 1;
-    const firstDayOfCurrentWeek = currentDay.getTime() - (FULL_DAY_IN_MS * currentWeekDay);
-    const firstDayOfNextWeek = firstDayOfCurrentWeek + (FULL_DAY_IN_MS * 7);
-    const maximumRange = firstDayOfCurrentWeek + (FULL_DAY_IN_MS * 14);
+    const currentWeekDay = normalizeWeekDay(currentDay.getUTCDay());
+    const firstDayOfCurrentWeek = addDays(currentDay, -currentWeekDay);
+    const firstDayOfNextWeek = addDays(firstDayOfCurrentWeek, 7);
+    const maximumRange = addDays(firstDayOfCurrentWeek, 14);
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const [isOpened, setIsOpened] = useState(false);
     const currentDayFocus = useRef<HTMLAnchorElement>(null);
@@ -65,17 +64,17 @@ function MenuPlanner(props: Props) {
                 return;
             }
 
-            let activeDay = props.activeDay || firstDayOfCurrentWeek;
+            let activeDay = props.activeDay ? new Date(props.activeDay) : firstDayOfCurrentWeek;
             if (event.code === 'ArrowLeft') {
-                activeDay = Math.max(activeDay - FULL_DAY_IN_MS, firstDayOfCurrentWeek);
+                activeDay = new Date(Math.max(activeDay.getTime() - FULL_DAY_IN_MS, firstDayOfCurrentWeek.getTime()));
             } else if (event.code === 'ArrowRight') {
-                activeDay = Math.min(activeDay + FULL_DAY_IN_MS, maximumRange);
+                activeDay = new Date(Math.min(activeDay.getTime() + FULL_DAY_IN_MS, maximumRange.getTime()));
             } else {
                 return;
             }
 
             currentDayFocus.current?.focus();
-            props.updateActiveDay(activeDay);
+            props.updateActiveDay(activeDay.getTime());
         }
 
         document.body.addEventListener('keyup', switchDay);
@@ -88,8 +87,8 @@ function MenuPlanner(props: Props) {
     return (<ContentContainer>
         <Heading as="h2">{Localisation.MENU_PLANNER}</Heading>
 
-        <Week firstDayOfWeek={firstDayOfCurrentWeek}>{addRecipeButton}</Week>
-        <Week firstDayOfWeek={firstDayOfNextWeek}>{addRecipeButton}</Week>
+        <Week firstDayOfWeek={firstDayOfCurrentWeek.getTime()}>{addRecipeButton}</Week>
+        <Week firstDayOfWeek={firstDayOfNextWeek.getTime()}>{addRecipeButton}</Week>
 
         <Box>
             {!isSmallView && props.activeDay && <DayDetails date={new Date(new Date(props.activeDay))} >
