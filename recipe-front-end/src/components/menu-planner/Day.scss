@@ -19,8 +19,20 @@
   }
 
   .planner-day-display {
-    font-size: 1.5em;
     text-align: center;
+
+    .localized-day {
+      border: none;
+      font-weight: bold;
+    }
+
+    .date {
+      font-size: 1.5em;
+    }
+
+    .date-group {
+      margin-bottom: 0.25em;
+    }
   }
 }
 

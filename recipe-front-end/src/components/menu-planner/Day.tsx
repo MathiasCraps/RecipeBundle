@@ -40,6 +40,7 @@ function mapDispatchToProps(dispatch: Dispatch<UpdateActiveDayAction | UpdateMen
 }
 
 const DAY_LOCALS = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+const MONTH_LOCALS = ['jan', 'feb', 'maa', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
 
 function Day(props: Props) {
     const [isAboutToDrop, setIsAboutToDrop] = useState(false);
@@ -69,7 +70,13 @@ function Day(props: Props) {
         }}
         className={classes} 
         onClick={() => props.updateActiveDay(props.date.getTime())}>
-        <div className='planner-day-display'>{`${DAY_LOCALS[dayOfWeek]} ${props.date.getDate()}`}</div>
+        <div className='planner-day-display'>
+            <div className='localized-day'>{DAY_LOCALS[dayOfWeek]}</div>
+            <div className='date-group'>
+                <span className='date'>{props.date.getDate()}</span>
+                <span className='month'> {MONTH_LOCALS[props.date.getUTCMonth()]}</span>
+            </div>
+        </div>
         <div>
             <Center className="small-selected-day">
                 {!isSmallView && (hasRecipes ? `${amountOfRecipes} ${dishedDescription.toLowerCase()}` : '-')}
