@@ -91,7 +91,7 @@ function MenuPlanner(props: Props) {
         <Week firstDayOfWeek={firstDayOfNextWeek}>{addRecipeButton}</Week>
 
         <Box>
-            {!isSmallView && props.activeDay && <DayDetails date={new Date(new Date(props.activeDay))} >
+            {!isSmallView && props.activeDay && <DayDetails date={new Date(props.activeDay)} >
                 {addRecipeButton}
             </DayDetails>}
 
