@@ -87,8 +87,8 @@ function MenuPlanner(props: Props) {
     return (<ContentContainer>
         <Heading as="h2">{Localisation.MENU_PLANNER}</Heading>
 
-        <Week firstDayOfWeek={firstDayOfCurrentWeek.getTime()}>{addRecipeButton}</Week>
-        <Week firstDayOfWeek={firstDayOfNextWeek.getTime()}>{addRecipeButton}</Week>
+        <Week firstDayOfWeek={firstDayOfCurrentWeek}>{addRecipeButton}</Week>
+        <Week firstDayOfWeek={firstDayOfNextWeek}>{addRecipeButton}</Week>
 
         <Box>
             {!isSmallView && props.activeDay && <DayDetails date={new Date(new Date(props.activeDay))} >

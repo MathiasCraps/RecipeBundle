@@ -9,7 +9,7 @@ import DayDetails from "./DayDetails";
 import "./Week.scss";
 
 interface OwnProps {
-    firstDayOfWeek: number;
+    firstDayOfWeek: Date;
     children: React.ReactNode;
 }
 
@@ -26,7 +26,7 @@ function Week(props: Props) {
     
     return (<Box className='week'>
         {WEEKDAYS.map((day, index) => {
-            const date = addDays(new Date(props.firstDayOfWeek), index);
+            const date = addDays(props.firstDayOfWeek, index);
             return (<div key={index}>
                 <Day date={date} />
 
