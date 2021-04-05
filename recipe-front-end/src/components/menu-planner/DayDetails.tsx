@@ -27,12 +27,9 @@ type Props = OwnProps & ReduxProps;
 
 function DayDetails(props: Props) {
     return <div className="menu-selected-day">
-        <Heading as="h2">{Localisation.MENU_OF_THE_DAY}</Heading>
+        <Heading as="h3">{Localisation.MENU_OF_THE_DAY}</Heading>
         {props.menuOfTheDay.length === 0 && <div>{Localisation.NOTHING_PLANNED_TODAY}</div>}
-        {props.menuOfTheDay.map((menu, index) => {
-            return <div key={index}><DroppableMenuItem menu={menu}/>
-            </div>
-        })}
+        {props.menuOfTheDay.map((menu, index) => <div key={index}><DroppableMenuItem menu={menu}/></div>)}
         {props.children}
     </div>
 }

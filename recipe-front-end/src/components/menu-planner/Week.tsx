@@ -3,13 +3,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { updateActiveDay } from "../../redux/Actions";
-import { FULL_DAY_IN_MS } from "../../utils/DateUtils";
+import { addDays, calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
 import Day from "./Day";
 import DayDetails from "./DayDetails";
 import "./Week.scss";
 
 interface OwnProps {
-    firstDayOfWeek: number;
+    firstDayOfWeek: Date;
     children: React.ReactNode;
 }
 
@@ -26,7 +26,7 @@ function Week(props: Props) {
     
     return (<Box className='week'>
         {WEEKDAYS.map((day, index) => {
-            const date = new Date(props.firstDayOfWeek + (FULL_DAY_IN_MS * index));
+            const date = addDays(props.firstDayOfWeek, index);
             return (<div key={index}>
                 <Day date={date} />
 

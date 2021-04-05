@@ -7,6 +7,7 @@ import { updateActiveDay, UpdateMenuDayReturn, updatePlannedMenuDay } from "../.
 import { DayMenu, ReduxModel, UpdateActiveDayAction, UpdateMenuDayAction } from "../../redux/Store";
 import { filterForDate } from "./MenuPlanner";
 import './Day.scss';
+import { isSameUtcDay, normalizeWeekDay } from '../../utils/DateUtils';
 
 interface OwnProps {
     date: Date;
@@ -27,7 +28,10 @@ type Props = OwnProps & ReduxProps & ReduxActions;
 function mapStateToProps(reduxState: ReduxModel, ownProps: OwnProps): ReduxProps {
     return {
         menuForThisDay: filterForDate(reduxState.menuPlanning, ownProps.date),
-        isActiveDay: reduxState.activeDay === ownProps.date.getTime()
+        isActiveDay: !reduxState.activeDay || isSameUtcDay(
+            new Date(reduxState.activeDay), 
+            ownProps.date
+        )
     }
 }
 
@@ -38,6 +42,9 @@ function mapDispatchToProps(dispatch: Dispatch<UpdateActiveDayAction | UpdateMen
     }
 }
 
+const DAY_LOCALS = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+const MONTH_LOCALS = ['jan', 'feb', 'maa', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+
 function Day(props: Props) {
     const [isAboutToDrop, setIsAboutToDrop] = useState(false);
     const classes = `day ${props.isActiveDay ? 'selected-day' : ''} ${isAboutToDrop ? 'active-drop' : ''}`;
@@ -47,6 +54,7 @@ function Day(props: Props) {
         ? Localisation.DISH_SINGULAR
         : Localisation.DISH_PLURAL
     const hasRecipes = amountOfRecipes > 0;
+    const dayOfWeek = normalizeWeekDay(props.date.getUTCDay());
 
     return (<div
         onDragOver={(e) => {
@@ -65,7 +73,13 @@ function Day(props: Props) {
         }}
         className={classes} 
         onClick={() => props.updateActiveDay(props.date.getTime())}>
-        <div className='planner-day-display'>{props.date.getDate()}</div>
+        <div className='planner-day-display'>
+            <div className='localized-day'>{DAY_LOCALS[dayOfWeek]}</div>
+            <div className='date-group'>
+                <span className='date'>{props.date.getUTCDate()}</span>
+                <span className='month'> {MONTH_LOCALS[props.date.getUTCMonth()]}</span>
+            </div>
+        </div>
         <div>
             <Center className="small-selected-day">
                 {!isSmallView && (hasRecipes ? `${amountOfRecipes} ${dishedDescription.toLowerCase()}` : '-')}
