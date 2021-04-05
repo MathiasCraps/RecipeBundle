@@ -1,7 +1,7 @@
 import { calculateStartOfDate, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
 
-const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0100')
-const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0100')
+const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
+const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
 
 describe('DateUtils', () => {
     describe(`using date ${startDate}`, () => {
