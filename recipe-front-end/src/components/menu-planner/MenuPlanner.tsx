@@ -66,9 +66,9 @@ function MenuPlanner(props: Props) {
 
             let activeDay = props.activeDay ? new Date(props.activeDay) : firstDayOfCurrentWeek;
             if (event.code === 'ArrowLeft') {
-                activeDay = new Date(Math.max(activeDay.getTime() - FULL_DAY_IN_MS, firstDayOfCurrentWeek.getTime()));
+                activeDay = new Date(Math.max(addDays(activeDay, -1).getTime(), firstDayOfCurrentWeek.getTime()));
             } else if (event.code === 'ArrowRight') {
-                activeDay = new Date(Math.min(activeDay.getTime() + FULL_DAY_IN_MS, maximumRange.getTime()));
+                activeDay = new Date(Math.min(addDays(activeDay, 1).getTime(), maximumRange.getTime()));
             } else {
                 return;
             }
