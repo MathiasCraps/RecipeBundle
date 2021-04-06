@@ -8,7 +8,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { updateActiveDay } from '../../redux/Actions';
 import { DayMenu, ReduxModel } from "../../redux/Store";
-import { addDays, calculateStartOfDate, FULL_DAY_IN_MS, normalizeWeekDay } from "../../utils/DateUtils";
+import { addDays, calculateStartOfDate, clipDate, FULL_DAY_IN_MS, normalizeWeekDay } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
 import AddMenuOverlay from "./AddMenuOverlay";
 import DayDetails from "./DayDetails";
@@ -66,9 +66,9 @@ function MenuPlanner(props: Props) {
 
             let activeDay = props.activeDay ? new Date(props.activeDay) : firstDayOfCurrentWeek;
             if (event.code === 'ArrowLeft') {
-                activeDay = new Date(Math.max(addDays(activeDay, -1).getTime(), firstDayOfCurrentWeek.getTime()));
+                activeDay = clipDate(addDays(activeDay, -1), firstDayOfCurrentWeek, Math.max);
             } else if (event.code === 'ArrowRight') {
-                activeDay = new Date(Math.min(addDays(activeDay, 1).getTime(), maximumRange.getTime()));
+                activeDay = clipDate(addDays(activeDay, 1), maximumRange, Math.min);
             } else {
                 return;
             }

@@ -94,3 +94,8 @@ export function parseDateRange(input: string | null, now: number): DateRange | u
         return undefined;
     }
 }
+
+export function clipDate(firstDate: Date, secondDate: Date, comparator: (...numbers: number[]) => number): Date {
+    const result = comparator(firstDate.getTime(), secondDate.getTime());
+    return new Date(result);
+}
