@@ -50,7 +50,7 @@ function MenuPlanner(props: Props) {
     const currentWeekDay = normalizeWeekDay(currentDay.getUTCDay());
     const firstDayOfCurrentWeek = addDays(currentDay, -currentWeekDay);
     const firstDayOfNextWeek = addDays(firstDayOfCurrentWeek, 7);
-    const maximumRange = addDays(firstDayOfCurrentWeek, 14);
+    const maximumRange = addDays(firstDayOfCurrentWeek, 13);
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const [isOpened, setIsOpened] = useState(false);
     const currentDayFocus = useRef<HTMLAnchorElement>(null);
