@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { DateRange } from '../../redux/Store';
-import { addDays, calculateStartOfMonthWithOffset } from '../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 import { FillDayFilter } from './dayfilters/FillDayFilter';
 
@@ -51,14 +51,18 @@ export default function RangePicker(props: Props) {
                 // ignore
         }
 
-        let assigned: Date;
+        let calculatedNewDay: Date;
         
         if (daysToAdd) {
-            assigned = addDays(props.activeDay, daysToAdd)
-            props.onDaySelected(assigned);
+            calculatedNewDay = addDays(props.activeDay, daysToAdd);
+
+            const clippedTime = Math.min(
+                endRange.getTime(), 
+                Math.max(months[0].getTime(), calculatedNewDay.getTime())
+            );
+            const clippedDate = calculateStartOfDate(new Date(clippedTime));
+            props.onDaySelected(clippedDate);
         }
-
-
 
         if (key === 'Enter' && initialOpen) {
             props.onDayPicked(props.activeDay);
@@ -76,6 +80,8 @@ export default function RangePicker(props: Props) {
     if (props.showNextMonth) {
         months.push(calculateStartOfMonthWithOffset(months[0], 1));
     }
+
+    const endRange = new Date(calculateStartOfMonthWithOffset(months[months.length - 1], 1).getTime() - FULL_DAY_IN_MS);
 
     return <DatePickerContext.Provider value={props.selectedRange}>
         <div className="date-picker" tabIndex={-1} ref={props.initialFocusRef} onKeyUpCapture={(event) => {
