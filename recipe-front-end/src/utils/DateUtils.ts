@@ -7,7 +7,7 @@ export function calculateStartOfDate(date: Date) {
 }
 
 export function calculateStartOfMonthWithOffset(date: Date, offset: number) {
-    return new Date(date.getFullYear(), date.getMonth() + offset, 1);
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth() + offset, 1));
 }
 
 export function normalizeWeekDay(day: number): number {
