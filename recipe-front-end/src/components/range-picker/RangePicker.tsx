@@ -70,11 +70,11 @@ export default function RangePicker(props: Props) {
     }
 
     const months = [
-        new Date()
+        calculateStartOfMonthWithOffset(new Date(), 0)
     ]
 
     if (props.showNextMonth) {
-        months.push(calculateStartOfMonthWithOffset(new Date(), 1));
+        months.push(calculateStartOfMonthWithOffset(months[0], 1));
     }
 
     return <DatePickerContext.Provider value={props.selectedRange}>
