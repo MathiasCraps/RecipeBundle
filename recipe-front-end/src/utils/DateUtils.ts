@@ -95,7 +95,11 @@ export function parseDateRange(input: string | null, now: number): DateRange | u
     }
 }
 
-export function clipDate(firstDate: Date, secondDate: Date, comparator: (...numbers: number[]) => number): Date {
-    const result = comparator(firstDate.getTime(), secondDate.getTime());
-    return new Date(result);
+export function clipDate(dateToClip: Date, minimumRange: Date, maximumRange: Date): Date {
+    const clippedTime = Math.min(
+        maximumRange.getTime(), 
+        Math.max(minimumRange.getTime(), dateToClip.getTime())
+    );
+    
+    return new Date(clippedTime);
 }
