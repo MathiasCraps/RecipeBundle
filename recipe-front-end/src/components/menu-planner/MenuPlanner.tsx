@@ -65,16 +65,20 @@ function MenuPlanner(props: Props) {
             }
 
             let activeDay = props.activeDay ? new Date(props.activeDay) : firstDayOfCurrentWeek;
+            let offset = 0;
+
             if (event.code === 'ArrowLeft') {
-                activeDay = clipDate(addDays(activeDay, -1), firstDayOfCurrentWeek, Math.max);
+                offset = -1;
             } else if (event.code === 'ArrowRight') {
-                activeDay = clipDate(addDays(activeDay, 1), maximumRange, Math.min);
-            } else {
-                return;
+                offset = 1;
             }
 
-            currentDayFocus.current?.focus();
-            props.updateActiveDay(activeDay.getTime());
+            if (offset) {
+                activeDay = clipDate(addDays(activeDay, offset), firstDayOfCurrentWeek, maximumRange);
+                currentDayFocus.current?.focus();
+                props.updateActiveDay(activeDay.getTime());   
+            } 
+
         }
 
         document.body.addEventListener('keyup', switchDay);
