@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Localisation } from "../../localisation/AppTexts";
 import { updateActiveDay } from "../../redux/Actions";
-import { addDays, calculateStartOfDate, FULL_DAY_IN_MS } from "../../utils/DateUtils";
+import { addDays } from "../../utils/DateUtils";
 import Day from "./Day";
 import DayDetails from "./DayDetails";
 import "./Week.scss";

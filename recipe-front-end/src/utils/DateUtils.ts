@@ -7,7 +7,7 @@ export function calculateStartOfDate(date: Date) {
 }
 
 export function calculateStartOfMonthWithOffset(date: Date, offset: number) {
-    return new Date(date.getFullYear(), date.getMonth() + offset, 1);
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth() + offset, 1));
 }
 
 export function normalizeWeekDay(day: number): number {
@@ -93,4 +93,13 @@ export function parseDateRange(input: string | null, now: number): DateRange | u
     } catch (err) {
         return undefined;
     }
+}
+
+export function clipDate(dateToClip: Date, minimumRange: Date, maximumRange: Date): Date {
+    const clippedTime = Math.min(
+        maximumRange.getTime(), 
+        Math.max(minimumRange.getTime(), dateToClip.getTime())
+    );
+    
+    return new Date(clippedTime);
 }

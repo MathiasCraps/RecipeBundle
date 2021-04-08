@@ -8,7 +8,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { updateActiveDay } from '../../redux/Actions';
 import { DayMenu, ReduxModel } from "../../redux/Store";
-import { addDays, calculateStartOfDate, FULL_DAY_IN_MS, normalizeWeekDay } from "../../utils/DateUtils";
+import { addDays, calculateStartOfDate, clipDate, FULL_DAY_IN_MS, normalizeWeekDay } from "../../utils/DateUtils";
 import ContentContainer from "../common/ContentContainer";
 import AddMenuOverlay from "./AddMenuOverlay";
 import DayDetails from "./DayDetails";
@@ -50,7 +50,7 @@ function MenuPlanner(props: Props) {
     const currentWeekDay = normalizeWeekDay(currentDay.getUTCDay());
     const firstDayOfCurrentWeek = addDays(currentDay, -currentWeekDay);
     const firstDayOfNextWeek = addDays(firstDayOfCurrentWeek, 7);
-    const maximumRange = addDays(firstDayOfCurrentWeek, 14);
+    const maximumRange = addDays(firstDayOfCurrentWeek, 13);
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const [isOpened, setIsOpened] = useState(false);
     const currentDayFocus = useRef<HTMLAnchorElement>(null);
@@ -65,16 +65,20 @@ function MenuPlanner(props: Props) {
             }
 
             let activeDay = props.activeDay ? new Date(props.activeDay) : firstDayOfCurrentWeek;
+            let offset = 0;
+
             if (event.code === 'ArrowLeft') {
-                activeDay = new Date(Math.max(activeDay.getTime() - FULL_DAY_IN_MS, firstDayOfCurrentWeek.getTime()));
+                offset = -1;
             } else if (event.code === 'ArrowRight') {
-                activeDay = new Date(Math.min(activeDay.getTime() + FULL_DAY_IN_MS, maximumRange.getTime()));
-            } else {
-                return;
+                offset = 1;
             }
 
-            currentDayFocus.current?.focus();
-            props.updateActiveDay(activeDay.getTime());
+            if (offset) {
+                activeDay = clipDate(addDays(activeDay, offset), firstDayOfCurrentWeek, maximumRange);
+                currentDayFocus.current?.focus();
+                props.updateActiveDay(activeDay.getTime());   
+            } 
+
         }
 
         document.body.addEventListener('keyup', switchDay);
