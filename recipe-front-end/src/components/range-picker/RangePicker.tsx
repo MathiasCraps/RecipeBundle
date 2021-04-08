@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { DateRange } from '../../redux/Store';
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, FULL_DAY_IN_MS } from '../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, clipDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 import { FillDayFilter } from './dayfilters/FillDayFilter';
 
@@ -55,12 +55,7 @@ export default function RangePicker(props: Props) {
         
         if (daysToAdd) {
             calculatedNewDay = addDays(props.activeDay, daysToAdd);
-
-            const clippedTime = Math.min(
-                endRange.getTime(), 
-                Math.max(months[0].getTime(), calculatedNewDay.getTime())
-            );
-            const clippedDate = calculateStartOfDate(new Date(clippedTime));
+            const clippedDate = clipDate(calculatedNewDay, months[0], endRange);
             props.onDaySelected(clippedDate);
         }
 
