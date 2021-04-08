@@ -70,7 +70,7 @@ function IngredientsModal(props: Props) {
                 <label>
                     {Localisation.CATEGORY_INGREDIENT}
                     <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
-                        {props.categories.map((category, index) => {
+                        {props.categories.map((category) => {
                             return <React.Fragment key={category.categoryId}>
                                 <option value={category.categoryId}>
                                     {translateCategory(category.categoryName as any)}

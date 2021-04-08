@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { DateRange } from '../../redux/Store';
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, clipDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
+import { addDays, calculateStartOfMonthWithOffset, clipDate, FULL_DAY_IN_MS } from '../../utils/DateUtils';
 import { CalendarMonth } from './CalendarMonth';
 import { FillDayFilter } from './dayfilters/FillDayFilter';
 
