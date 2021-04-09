@@ -1,4 +1,4 @@
-import { calculateStartOfDate, calculateStartOfMonthWithOffset, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
 
 const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
 const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
@@ -104,6 +104,22 @@ describe('DateUtils', () => {
                     expect(result).toEqual(entry.expected);
                 })
             })
+        });
+    });
+
+    describe('addDays', () => {
+        const TEST_DATE = new Date(2021, 1, 1);
+        let output: Date;
+
+
+        describe('called with +1', () => {
+            beforeEach(() => {
+                output = addDays(TEST_DATE, 1);
+            });
+    
+            it('should add 86400 seconds', () => {
+                expect(output.getTime()).toBe(TEST_DATE.getTime() + 86400 * 1000);
+            });
         });
     });
 });
