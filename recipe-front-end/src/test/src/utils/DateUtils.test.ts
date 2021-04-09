@@ -1,4 +1,4 @@
-import { calculateStartOfDate, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
+import { calculateStartOfDate, calculateStartOfMonthWithOffset, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
 
 const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
 const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
@@ -80,6 +80,30 @@ describe('DateUtils', () => {
             test('returns false', () => {
                 expect(result).toBe(false);
             });
+        });
+    });
+
+    describe('calculateStartOfMonthWithOffset', () => {
+        const TEST_DATE = new Date(2021, 5, 1);
+
+        [
+            { input: TEST_DATE, offset: -1, expected: new Date(Date.UTC(2021, 4, 1)) },
+            { input: TEST_DATE, offset: 0, expected: new Date(Date.UTC(2021, 5, 1)) },
+            { input: TEST_DATE, offset: 1, expected: new Date(Date.UTC(2021, 6, 1)) },
+            { input: new Date(2021, 1, 1), offset: -1, expected: new Date(Date.UTC(2020, 12, 1)) },
+            { input: new Date(2020, 12, 1), offset: 1, expected: new Date(Date.UTC(2021, 1, 1)) }
+        ].forEach((entry) => {
+            describe(`called with ${entry.input} and ${entry.offset}`, () => {
+                let result: Date;
+
+                beforeEach(() => {
+                    result = calculateStartOfMonthWithOffset(entry.input, entry.offset);
+                });
+
+                it(`should be ${entry.expected}`, () => {
+                    expect(result).toEqual(entry.expected);
+                })
+            })
         });
     });
 });
