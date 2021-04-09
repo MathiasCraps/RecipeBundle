@@ -1,4 +1,4 @@
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, dateIsInRange, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
 
 const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
 const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
@@ -122,4 +122,25 @@ describe('DateUtils', () => {
             });
         });
     });
+
+    describe('dateIsInRange', () => {
+        const start = new Date(2020, 1, 1);
+        const end = new Date(2020, 6, 1);
+        [
+            { reference: new Date(2020, 1, 1), expectation: true}, 
+            { reference: new Date(2020, 6, 1), expectation: true}, 
+            { reference: new Date(2020, 3, 1), expectation: true}, 
+            { reference: new Date(2019, 1, 1), expectation: false}, 
+            { reference: new Date(2020, 7, 1), expectation: false}, 
+        ].forEach((entry) => {
+            let result: boolean;
+            describe(`called with ${entry} on a range of ${start} to ${end}`, () => {
+                result = dateIsInRange(entry.reference, start, end)
+            });
+
+            it(`should ${entry.expectation ? 'be in range' : 'not be in range'}`, () => {
+                expect(result).toBe(entry.expectation);
+            });
+        });
+    })
 });
