@@ -102,15 +102,14 @@ describe('DateUtils', () => {
 
                 test(`should be ${entry.expected}`, () => {
                     expect(result).toEqual(entry.expected);
-                })
-            })
+                });
+            });
         });
     });
 
     describe('addDays', () => {
         const TEST_DATE = new Date(2021, 1, 1);
         let output: Date;
-
 
         describe('called with +1', () => {
             beforeEach(() => {
@@ -142,5 +141,5 @@ describe('DateUtils', () => {
                 expect(result).toBe(entry.expectation);
             });
         });
-    })
+    });
 });
