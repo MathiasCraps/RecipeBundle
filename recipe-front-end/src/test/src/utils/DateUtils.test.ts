@@ -100,7 +100,7 @@ describe('DateUtils', () => {
                     result = calculateStartOfMonthWithOffset(entry.input, entry.offset);
                 });
 
-                it(`should be ${entry.expected}`, () => {
+                test(`should be ${entry.expected}`, () => {
                     expect(result).toEqual(entry.expected);
                 })
             })
@@ -117,7 +117,7 @@ describe('DateUtils', () => {
                 output = addDays(TEST_DATE, 1);
             });
     
-            it('should add 86400 seconds', () => {
+            test('should add 86400 seconds', () => {
                 expect(output.getTime()).toBe(TEST_DATE.getTime() + 86400 * 1000);
             });
         });
@@ -138,7 +138,7 @@ describe('DateUtils', () => {
                 result = dateIsInRange(entry.reference, start, end)
             });
 
-            it(`should ${entry.expectation ? 'be in range' : 'not be in range'}`, () => {
+            test(`should ${entry.expectation ? 'be in range' : 'not be in range'}`, () => {
                 expect(result).toBe(entry.expectation);
             });
         });
