@@ -1,4 +1,5 @@
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, dateIsInRange, isSameUtcDay, normalizeWeekDay } from '../../../utils/DateUtils';
+import { DateRange } from '../../../redux/Store';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, dateIsInRange, FULL_DAY_IN_MS, isSameUtcDay, normalizeWeekDay, parseDateRange } from '../../../utils/DateUtils';
 
 const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
 const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
@@ -139,6 +140,42 @@ describe('DateUtils', () => {
 
             test(`should ${entry.expectation ? 'be in range' : 'not be in range'}`, () => {
                 expect(result).toBe(entry.expectation);
+            });
+        });
+    });
+
+    describe('parseDateRange', () => {
+
+        describe('called with date 2021-1-1 - 2021-1-7', () => {
+            const TEST_RANGE = { start: new Date(2021, 0, 1), end: new Date(2021, 0, 7) };
+            const TEST_RANGE_AS_STRING = JSON.stringify({ start: Number(TEST_RANGE.start), end: Number(TEST_RANGE.end) });
+
+            [
+                { nowTime: Number(TEST_RANGE.start), description: 'called at start of range' },
+                { nowTime: Number(TEST_RANGE.start) + FULL_DAY_IN_MS, description: 'called during range' },
+                { nowTime: Number(TEST_RANGE.end), description: 'called at end of range' }
+            ].forEach((testEntry) => {
+                describe(testEntry.description, () => {
+                    let result: DateRange | undefined;
+                    beforeEach(() => {
+                        result = parseDateRange(TEST_RANGE_AS_STRING, testEntry.nowTime);
+                    });
+    
+                    test('must return full range', () => {
+                        expect(result).toEqual(TEST_RANGE);
+                    });
+                });
+            });
+
+            describe('called after end of range', () => {
+                let result: DateRange | undefined;
+                beforeEach(() => {
+                    result = parseDateRange(TEST_RANGE_AS_STRING, Number(TEST_RANGE.end) + FULL_DAY_IN_MS);
+                });
+
+                test('must return undefined', () => {
+                    expect(result).toEqual(undefined);
+                })
             });
         });
     });
