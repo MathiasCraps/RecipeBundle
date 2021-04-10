@@ -116,7 +116,7 @@ describe('DateUtils', () => {
             beforeEach(() => {
                 output = addDays(TEST_DATE, 1);
             });
-    
+
             test('should add 86400 seconds', () => {
                 expect(output.getTime()).toBe(TEST_DATE.getTime() + 86400 * 1000);
             });
@@ -127,11 +127,11 @@ describe('DateUtils', () => {
         const start = new Date(2020, 1, 1);
         const end = new Date(2020, 6, 1);
         [
-            { reference: new Date(2020, 1, 1), expectation: true}, 
-            { reference: new Date(2020, 6, 1), expectation: true}, 
-            { reference: new Date(2020, 3, 1), expectation: true}, 
-            { reference: new Date(2019, 1, 1), expectation: false}, 
-            { reference: new Date(2020, 7, 1), expectation: false}, 
+            { reference: new Date(2020, 1, 1), expectation: true },
+            { reference: new Date(2020, 6, 1), expectation: true },
+            { reference: new Date(2020, 3, 1), expectation: true },
+            { reference: new Date(2019, 1, 1), expectation: false },
+            { reference: new Date(2020, 7, 1), expectation: false },
         ].forEach((entry) => {
             let result: boolean;
             describe(`called with ${entry} on a range of ${start} to ${end}`, () => {
