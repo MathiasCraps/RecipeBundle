@@ -145,7 +145,6 @@ describe('DateUtils', () => {
     });
 
     describe('parseDateRange', () => {
-
         describe('called with date 2021-1-1 - 2021-1-7', () => {
             const TEST_RANGE = { start: new Date(2021, 0, 1), end: new Date(2021, 0, 7) };
             const TEST_RANGE_AS_STRING = JSON.stringify({ start: Number(TEST_RANGE.start), end: Number(TEST_RANGE.end) });
@@ -176,6 +175,17 @@ describe('DateUtils', () => {
                 test('must return undefined', () => {
                     expect(result).toEqual(undefined);
                 })
+            });
+        });
+
+        describe('called with invalid value', () => {
+            let result: DateRange |  undefined;
+            beforeEach(() => {
+                result = parseDateRange('invalid', Number(new Date(2021, 0, 1)));
+            });
+
+            test('must return undefined', () => {
+                expect(result).toBe(undefined);
             });
         });
     });
