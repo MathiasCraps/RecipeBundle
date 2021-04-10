@@ -1,5 +1,5 @@
 import { DateRange } from '../../../redux/Store';
-import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, dateIsInRange, FULL_DAY_IN_MS, isSameUtcDay, normalizeWeekDay, parseDateRange } from '../../../utils/DateUtils';
+import { addDays, calculateStartOfDate, calculateStartOfMonthWithOffset, clipDate, dateIsInRange, FULL_DAY_IN_MS, isSameUtcDay, normalizeWeekDay, parseDateRange } from '../../../utils/DateUtils';
 
 const referenceDate = new Date('Fri Feb 01 2021 00:00:00 GMT+0000')
 const startDate = new Date('Fri Feb 01 2021 17:00:00 GMT+0000')
@@ -186,6 +186,39 @@ describe('DateUtils', () => {
 
             test('must return undefined', () => {
                 expect(result).toBe(undefined);
+            });
+        });
+    });
+
+    describe('clipDate', () => {
+        const LOWEST_CLIP_DATE = new Date(2021, 0, 1);
+        const HIGHEST_CLIP_DATE = new Date(2021, 1, 1);
+        const IN_CORRECT_RANGE = new Date(2021, 0, 17);
+        const OUT_OF_RANGE_LOW = new Date(2020, 0, 1);
+        const OUT_OF_RANGE_HIGH = new Date(2022, 0, 1);
+
+        [
+            // at clip edges
+            { input: LOWEST_CLIP_DATE, output: LOWEST_CLIP_DATE },
+            { input: HIGHEST_CLIP_DATE, output: HIGHEST_CLIP_DATE },
+
+            // within ranges
+            { input: IN_CORRECT_RANGE, output: IN_CORRECT_RANGE},
+
+            // out of ranges
+            { input: OUT_OF_RANGE_LOW, output: LOWEST_CLIP_DATE },
+            { input: OUT_OF_RANGE_HIGH, output: HIGHEST_CLIP_DATE },
+        ].forEach((entry) => {
+            let output: Date;
+
+            describe(`called with ${entry.input} for range ${LOWEST_CLIP_DATE} to ${HIGHEST_CLIP_DATE}`, () => {
+                beforeEach(() => {
+                    output = clipDate(entry.input, LOWEST_CLIP_DATE, HIGHEST_CLIP_DATE)
+                });
+
+                test(`should clip to ${entry.output}`, () => {
+                    expect(output).toEqual(entry.output);
+                });
             });
         });
     });
