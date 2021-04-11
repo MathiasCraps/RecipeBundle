@@ -4,6 +4,7 @@ import { SessionData } from '../../model/SessionData';
 import { updatePurchaseState } from '../../sql/UpdatePurchaseState';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
+import { RemoveRecipeResponse } from './RemoveRecipeResponse';
 import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
 
 export const RootMutation = new GraphQLObjectType({
@@ -102,6 +103,30 @@ export const RootMutation = new GraphQLObjectType({
             async resolve(parentValue, args, request) {
                 const success = await updatePurchaseState(pool, args.menuIds, args.isBought, (request.session as SessionData).userId!);
                 return { success };                
+            }
+        },
+        removeRecipe: {
+            type: RemoveRecipeResponse,
+            description: 'Remove the recipe',
+            args: {
+                recipeId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the recipe to remove'}
+            },
+            async resolve(parentValue, args, request) {
+                try {
+                    const session: SessionData = request.session;
+                    if (!session.loggedIn) {
+                        throw new Error('Not logged in');
+                    }
+
+                    return {
+                        success: true
+                    };
+                } catch (err) {
+                    return {
+                        success: false,
+                        err: err
+                    }
+                }
             }
         }
     }
