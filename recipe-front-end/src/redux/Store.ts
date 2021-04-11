@@ -40,6 +40,7 @@ export enum Actions {
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
     ADD_RECIPE = 'ADD_RECIPE',
+    REMOVE_RECIPE = 'REMOVE_RECIPE',
     ADD_MENU = 'ADD_MENU',
     REMOVE_MENU = 'REMOVE_MENU',
     UPDATE_ACTIVE_DAY = 'UPDATE_ACTIVE_DAY',
@@ -60,6 +61,11 @@ export interface LogoutAction {
 
 export interface AddRecipeAction {
     type: Actions.ADD_RECIPE;
+    recipe: Recipe;
+}
+
+export interface RemoveRecipeAction {
+    type: Actions.REMOVE_RECIPE;
     recipe: Recipe;
 }
 
@@ -122,6 +128,7 @@ export const defaultState: ReduxModel = {
 export type ReduxAction = ToggleMenuAction | 
     LogoutAction | 
     AddRecipeAction | 
+    RemoveRecipeAction |
     AddMenuAction | 
     RemoveMenuAction | 
     UpdateActiveDayAction | 
