@@ -5,7 +5,7 @@ import { Recipe } from "../interfaces/Recipe";
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -52,6 +52,16 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
             console.error(err);
             throw err;
         }
+    }
+}
+
+export type RemoveRecipeReturn = (recipe: Recipe) => Promise<void>;
+export function removeRecipe(dispatch: Dispatch<RemoveRecipeAction>,): RemoveRecipeReturn {
+    return async function (recipe: Recipe): Promise<void> {
+        dispatch({
+            type: Actions.REMOVE_RECIPE,
+            recipe: recipe
+        });
     }
 }
 
