@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
+import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
@@ -58,10 +59,18 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
 export type RemoveRecipeReturn = (recipe: Recipe) => Promise<void>;
 export function removeRecipe(dispatch: Dispatch<RemoveRecipeAction>,): RemoveRecipeReturn {
     return async function (recipe: Recipe): Promise<void> {
-        dispatch({
-            type: Actions.REMOVE_RECIPE,
-            recipe: recipe
-        });
+        const data = (await fetchGraphQL<{ removeRecipe: RemoveRecipeResponse }>(`mutation { 
+            removeRecipe(recipeId: ${recipe.id}) {
+                success
+            }
+        }`)).removeRecipe;
+
+        if (data.success) {
+            dispatch({
+                type: Actions.REMOVE_RECIPE,
+                recipe: recipe
+            });
+        }
     }
 }
 
