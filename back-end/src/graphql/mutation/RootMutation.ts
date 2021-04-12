@@ -1,5 +1,5 @@
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { pool } from '../..';
+import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
 import { SessionData } from '../../model/SessionData';
 import { removeRecipe } from '../../sql/RemoveRecipe';
 import { updatePurchaseState } from '../../sql/UpdatePurchaseState';
@@ -7,6 +7,7 @@ import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
 import { RemoveRecipeResponse } from './RemoveRecipeResponse';
 import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
+import fs from 'fs';
 
 export const RootMutation = new GraphQLObjectType({
     name: 'menuManagement',
@@ -119,7 +120,9 @@ export const RootMutation = new GraphQLObjectType({
                         throw new Error('Not logged in');
                     }
 
-                    await removeRecipe(pool, args.recipeId);
+                    const imagePath = await removeRecipe(pool, args.recipeId);
+
+                    fs.unlinkSync(`${BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '')}${imagePath}`);
 
                     return {
                         success: true
