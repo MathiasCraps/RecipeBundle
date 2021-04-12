@@ -1,3 +1,4 @@
+import { RecipeList } from '../components/recipe-displays/RecipeList';
 import { Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
@@ -192,7 +193,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 menuPlanning: toggleIngredientsBoughtForMenus(oldState.menuPlanning, action.menus, action.bought)
-            }
+            };
+        case Actions.REMOVE_RECIPE:
+            return {
+                ...oldState,
+                recipes: removeFromArray(action.recipe, oldState.recipes)
+            };
         default:
             // not supported yet
     }
