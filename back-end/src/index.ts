@@ -22,7 +22,7 @@ const app = express();
 const port = 8080;
 const upload = multer();
 
-const BASE_FILE_UPLOAD_DIRECTORY = `${__dirname}/public/uploads/`;
+export const BASE_FILE_UPLOAD_DIRECTORY = `${__dirname}/public/uploads/`;
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({

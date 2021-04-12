@@ -1,6 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image, useToast } from "@chakra-ui/react";
-import { faCalendarWeek } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarWeek, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
@@ -9,8 +9,8 @@ import { Dispatch } from 'redux';
 import { Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { addMenu } from '../../redux/Actions';
-import { AddMenuAction, DayMenu, ReduxModel } from "../../redux/Store";
+import { addMenu, removeRecipe, RemoveRecipeReturn } from '../../redux/Actions';
+import { AddMenuAction, DayMenu, ReduxModel, RemoveRecipeAction } from "../../redux/Store";
 import { isSameUtcDay } from '../../utils/DateUtils';
 import ContentContainer from "../common/ContentContainer";
 import SimplePopover from '../common/SimplePopover';
@@ -25,6 +25,7 @@ interface ReduxProps {
 
 interface ReduxActions {
     addMenu: (menu: DayMenu) => Promise<void>;
+    removeRecipe: RemoveRecipeReturn
 }
 
 type Props = ReduxProps & ReduxActions;
@@ -41,9 +42,10 @@ function getSurroundingRecipeId(currentIndex: number, recipes: Recipe[], directi
     return recipes[Math.min(recipes.length - 1, Math.max(0, proposedRecipeId))].id;
 }
 
-function map(dispatch: Dispatch<AddMenuAction>) {
+function map(dispatch: Dispatch<AddMenuAction | RemoveRecipeAction>) {
     return {
         addMenu: addMenu(dispatch),
+        removeRecipe: removeRecipe(dispatch)
     };
 }
 
@@ -171,6 +173,23 @@ function RecipeOverview(props: Props) {
                             });
                         }} />
                 </SimplePopover>}
+
+                {props.loggedIn && <button
+                    className="date-range-initiator"
+                    onClick={async() => {
+                        const success = await props.removeRecipe(recipe);
+                        toast({
+                            description: success ? Localisation.REMOVING_SUCCEEDED : Localisation.REMOVING_FAILED,
+                            status: success ? 'success' : 'error',
+                            isClosable: true
+                        });
+                        
+                        if (success) {
+                            window.location.href = Paths.BASE;
+                        }
+                    }}>
+                    <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}
+                </button>}
 
                 <div className="clearer"></div>
                 <Heading as="h3">{Localisation.INGREDIENTS}</Heading>

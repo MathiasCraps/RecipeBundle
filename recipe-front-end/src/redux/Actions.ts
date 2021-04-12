@@ -2,10 +2,11 @@ import { Dispatch } from "redux";
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { Recipe } from "../interfaces/Recipe";
+import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -51,6 +52,31 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
         } catch (err) {
             console.error(err);
             throw err;
+        }
+    }
+}
+
+export type RemoveRecipeReturn = (recipe: Recipe) => Promise<boolean>;
+export function removeRecipe(dispatch: Dispatch<RemoveRecipeAction>,): RemoveRecipeReturn {
+    return async function (recipe: Recipe): Promise<boolean> {
+        try {
+            const data = (await fetchGraphQL<{ removeRecipe: RemoveRecipeResponse }>(`mutation { 
+                removeRecipe(recipeId: ${recipe.id}) {
+                    success
+                }
+            }`)).removeRecipe;
+    
+    
+            if (data.success) {
+                dispatch({
+                    type: Actions.REMOVE_RECIPE,
+                    recipe: recipe
+                });
+            }
+            
+            return data.success;
+        } catch (err) {
+            return false;
         }
     }
 }
