@@ -24,6 +24,8 @@ export enum Localisation {
     EDIT_INGREDIENT = 'Ingrediënt bewerken',
     REMOVE_INGREDIENT = 'Ingrediënt verwijderen',
     REMOVE = 'Verwijder',
+    REMOVING_SUCCEEDED = 'Verwijderen gelukt.',
+    REMOVING_FAILED = 'Verwijderen is niet gelukt.',
     ACCOUNT_MANAGEMENT = 'Account beheren',
     CANCEL = 'Annuleren',
     TITLE = 'Titel',

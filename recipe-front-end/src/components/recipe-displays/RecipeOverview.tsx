@@ -176,7 +176,14 @@ function RecipeOverview(props: Props) {
 
                 {props.loggedIn && <button
                     className="date-range-initiator"
-                    onClick={() => props.removeRecipe(recipe)}>
+                    onClick={async() => {
+                        const success = await props.removeRecipe(recipe);
+                        toast({
+                            description: success ? Localisation.REMOVING_SUCCEEDED : Localisation.REMOVING_FAILED,
+                            status: success ? 'success' : 'error',
+                            isClosable: true
+                        });
+                    }}>
                     <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}
                 </button>}
 
