@@ -183,6 +183,10 @@ function RecipeOverview(props: Props) {
                             status: success ? 'success' : 'error',
                             isClosable: true
                         });
+                        
+                        if (success) {
+                            window.location.href = Paths.BASE;
+                        }
                     }}>
                     <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}
                 </button>}
