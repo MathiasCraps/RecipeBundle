@@ -1,16 +1,15 @@
 import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { Category } from '../../interfaces/Recipe';
+import { Category, Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
-import { IngredientInput } from "./AddRecipeMenu";
 import './IngredientsModal.scss';
 
 interface OwnProps {
-    ingredientInputs: IngredientInput;
-    onConfirm: (newValue: IngredientInput) => void;
+    ingredientInputs: Ingredient;
+    onConfirm: (newValue: Ingredient) => void;
     onCancel: () => void;
 }
 
@@ -31,8 +30,8 @@ type Props = OwnProps & ReduxProps;
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
     const [name, setName] = useState(props.ingredientInputs.name);
-    const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantityNumber);
-    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantityDescription || quantityDescriptions[0]);
+    const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
+    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description || quantityDescriptions[0]);
     const [categoryId, setCategoryId] = useState<number>(props.categories[0]?.categoryId);
     const canBeSubmitted = name && quantityNumber;
 
@@ -83,10 +82,11 @@ function IngredientsModal(props: Props) {
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
                     name,
-                    quantityNumber,
-                    quantityDescription,
+                    quantity_number: quantityNumber,
+                    quantity_description: quantityDescription,
                     identifier: props.ingredientInputs.identifier,
-                    categoryId
+                    categoryId,
+                    categoryName: ''
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>
