@@ -13,15 +13,11 @@ import { AddRecipeAction, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import IngredientsModal from "./IngredientsModal";
 
-export interface IngredientInput {
-    name: string;
-    quantityNumber: number;
-    quantityDescription: string;
-    identifier: number;
-    categoryId: number;
-}
-
 let index = 0;
+
+interface OwnProps {
+    defaultState: Recipe;
+}
 
 interface ComponentProps {
     isLoggedIn: boolean;
@@ -31,8 +27,7 @@ interface ReduxProps {
     addRecipe: AddRecipeReturn;
 }
 
-type Props = ComponentProps & ReduxProps;
-
+type Props = OwnProps & ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
@@ -46,14 +41,15 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction>): ReduxProps {
     }
 }
 
-function createEmptyIngredient() {
+function createEmptyIngredient(): Ingredient {
     return {
         name: '',
         identifier: ++index,
-        quantityDescription: '',
-        quantityNumber: 0,
-        categoryId: -1
-    }
+        quantity_number: 0,
+        quantity_description: '',
+        categoryId: -1,
+        categoryName: ''
+    };
 }
 
 export function RecipeEditor(props: Props) {
@@ -67,7 +63,7 @@ export function RecipeEditor(props: Props) {
         window.location.href = Paths.BASE;
     }
 
-    function removeIngredient(requestedRemoveIngredient: IngredientInput) {
+    function removeIngredient(requestedRemoveIngredient: Ingredient) {
         const shallowClone = [...ingredients];
         setIngredients(shallowClone.filter((ingredient) => ingredient.identifier !== requestedRemoveIngredient.identifier));
     }
@@ -77,20 +73,9 @@ export function RecipeEditor(props: Props) {
             return;
         }
 
-        const transformedIngredients: Ingredient[] = ingredients
-            .map((ingredient) => {
-                return {
-                    name: ingredient.name,
-                    quantity_description: ingredient.quantityDescription,
-                    quantity_number: ingredient.quantityNumber,
-                    categoryId: ingredient.categoryId,
-                    categoryName: ''
-                };
-            }
-        );
         const recipeData: Recipe = {
             title,
-            ingredients: transformedIngredients,
+            ingredients,
             steps,
             image: '',
             id: -1
@@ -114,19 +99,21 @@ export function RecipeEditor(props: Props) {
             })
         }
 
-        setIngredients([]);
-        setTitle('');
-        setSteps('');
-        setImagePath('');
+        setIngredients(props.defaultState.ingredients);
+        setTitle(props.defaultState.title);
+        setSteps(props.defaultState.steps);
+        setImagePath(props.defaultState.image);
         setEditingIngredient(undefined);
         close();
     }
 
-    const [ingredients, setIngredients] = useState<IngredientInput[]>([]);
-    const [title, setTitle] = useState('');
-    const [steps, setSteps] = useState('');
-    const [imagePath, setImagePath] = useState('');
-    const [editingIngredient, setEditingIngredient] = useState<IngredientInput>();
+    const defaultState = props.defaultState;
+
+    const [ingredients, setIngredients] = useState<Ingredient[]>(defaultState.ingredients);
+    const [title, setTitle] = useState(defaultState.title);
+    const [steps, setSteps] = useState(defaultState.steps);
+    const [imagePath, setImagePath] = useState(defaultState.image);
+    const [editingIngredient, setEditingIngredient] = useState<Ingredient>()
     const ref = useRef<HTMLInputElement>(null)
 
     const canBeSubmitted = Boolean(ingredients.length && title && steps && imagePath);
@@ -141,8 +128,8 @@ export function RecipeEditor(props: Props) {
         </Box>
 
         <Box className="box"><b>{Localisation.INGREDIENTS}</b>
-            <Box>{ingredients.map((ingredient: IngredientInput) => {
-                const { name, quantityNumber, quantityDescription } = ingredient;
+            <Box>{ingredients.map((ingredient: Ingredient) => {
+                const { name, quantity_number, quantity_description } = ingredient;
                 return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
                     <label>
                         <Tooltip label={Localisation.EDIT_INGREDIENT} fontSize="md">
@@ -151,23 +138,23 @@ export function RecipeEditor(props: Props) {
                         <Tooltip label={Localisation.REMOVE_INGREDIENT} fontSize="md">
                             <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
                         </Tooltip>
-                        <strong>{name}</strong>, {quantityNumber} {quantityDescription}
+                        <strong>{name}</strong>, {quantity_number} {quantity_description}
                     </label>
                 </Box>)
             })}</Box>
 
 
             {editingIngredient && <IngredientsModal
-                onConfirm={(ingredientInput: IngredientInput) => {
-                    const identifier = ingredientInput.identifier;
+                onConfirm={(ingredient: Ingredient) => {
+                    const identifier = ingredient.identifier;
                     const shallowCopy = [...ingredients];
                     const entryToReplace = shallowCopy.filter((ingredient) => ingredient.identifier === identifier);
                     const indexOfEntryToReplace = shallowCopy.indexOf(entryToReplace[0]);
 
                     if (indexOfEntryToReplace !== -1) {
-                        shallowCopy[indexOfEntryToReplace] = ingredientInput;
+                        shallowCopy[indexOfEntryToReplace] = ingredient;
                     } else {
-                        shallowCopy.push(ingredientInput);
+                        shallowCopy.push(ingredient);
                     }
 
                     setEditingIngredient(undefined);
