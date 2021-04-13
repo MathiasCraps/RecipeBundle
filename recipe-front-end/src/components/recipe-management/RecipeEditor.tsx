@@ -56,7 +56,7 @@ function createEmptyIngredient() {
     }
 }
 
-export function AddRecipeMenu(props: Props) {
+export function RecipeEditor(props: Props) {
     if (!props.isLoggedIn) {
         return <Redirect to={Paths.BASE} />
     }
@@ -203,4 +203,4 @@ export function AddRecipeMenu(props: Props) {
     </ContentContainer>)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeEditor);
