@@ -6,6 +6,7 @@ export interface ApplicationData {
 
 export interface Ingredient {
     name: string;
+    identifier?: number;
     quantity_number: number | null;
     quantity_description: string;
     categoryId: number;
