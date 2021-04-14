@@ -6,7 +6,7 @@ import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -47,6 +47,30 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
             recipe.id = id;
             dispatch({
                 type: Actions.ADD_RECIPE,
+                recipe: recipe
+            })
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+}
+
+export type EditRecipeReturn = (recipe: Recipe) => Promise<void>;
+export function editRecipe(dispatch: Dispatch<EditRecipeAction>): EditRecipeReturn {
+    return async function (recipe: Recipe): Promise<void> {
+        const response = await waitForDataAsJson<AddRecipeResponse>('/editRecipe', {
+            method: 'POST',
+            body: JSON.stringify(recipe)
+        });
+
+        if (response.error) {
+            throw new Error(response.error);
+        }
+
+        try {
+            dispatch({
+                type: Actions.EDIT_RECIPE,
                 recipe: recipe
             })
         } catch (err) {
