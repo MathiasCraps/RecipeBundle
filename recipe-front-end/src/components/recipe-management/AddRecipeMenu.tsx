@@ -8,5 +8,5 @@ export default function AddRecipeMenu() {
       steps: '',
       image: '',
       id: -1
-   }} />
+   }} editingExisting={false} />
 }

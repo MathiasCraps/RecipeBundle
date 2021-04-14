@@ -8,8 +8,8 @@ import { Dispatch } from "redux";
 import { Ingredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
-import { addRecipe, AddRecipeReturn } from "../../redux/Actions";
-import { AddRecipeAction, ReduxModel } from "../../redux/Store";
+import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
+import { AddRecipeAction, EditRecipeAction, ReduxModel } from "../../redux/Store";
 import ContentContainer from "../common/ContentContainer";
 import IngredientsModal from "./IngredientsModal";
 
@@ -17,6 +17,7 @@ let index = 0;
 
 interface OwnProps {
     defaultState: Recipe;
+    editingExisting: boolean;
 }
 
 interface ComponentProps {
@@ -25,6 +26,7 @@ interface ComponentProps {
 
 interface ReduxProps {
     addRecipe: AddRecipeReturn;
+    editRecipe: EditRecipeReturn;
 }
 
 type Props = OwnProps & ComponentProps & ReduxProps;
@@ -35,10 +37,11 @@ function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction>): ReduxProps {
+function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction|EditRecipeAction>): ReduxProps {
     return { 
-        addRecipe: addRecipe(dispatch) 
-    }
+        addRecipe: addRecipe(dispatch),
+        editRecipe: editRecipe(dispatch)
+    };
 }
 
 function createEmptyIngredient(): Ingredient {
@@ -86,7 +89,11 @@ export function RecipeEditor(props: Props) {
         formData.append('recipe', JSON.stringify(recipeData))
 
         try {
-            await props.addRecipe(recipeData, formData);
+            if (!props.editingExisting) {
+                await props.addRecipe(recipeData, formData);
+            } else {
+                await props.editRecipe(recipeData);
+            }
 
             toast({
                 description: Localisation.ADDING_WAS_SUCCESS,
@@ -114,9 +121,10 @@ export function RecipeEditor(props: Props) {
     const [steps, setSteps] = useState(defaultState.steps);
     const [imagePath, setImagePath] = useState(defaultState.image);
     const [editingIngredient, setEditingIngredient] = useState<Ingredient>()
-    const ref = useRef<HTMLInputElement>(null)
+    const ref = useRef<HTMLInputElement>(null);
 
-    const canBeSubmitted = Boolean(ingredients.length && title && steps && imagePath);
+    const baseFilled = Boolean(ingredients.length && title && steps)
+    const canBeSubmitted = props.editingExisting ? baseFilled : baseFilled && imagePath;
 
     return (<ContentContainer>
         <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
