@@ -171,7 +171,7 @@ export function RecipeEditor(props: Props) {
         <Box className="box">
             <label>
                 <Box><b>{Localisation.STEPS}</b></Box>
-                <Textarea placeholder={Localisation.STEP} onChange={(event) => setSteps(event.target.value)} />
+                <Textarea placeholder={Localisation.STEP} value={steps} onChange={(event) => setSteps(event.target.value)} />
             </label>
         </Box>
 
