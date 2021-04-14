@@ -78,8 +78,8 @@ export function RecipeEditor(props: Props) {
             ingredients,
             steps,
             image: '',
-            id: -1
-        }
+            id: props.defaultState.id || -1
+        };
 
         const formData = new FormData();
         formData.append('userfile', ref.current!.files![0]);
