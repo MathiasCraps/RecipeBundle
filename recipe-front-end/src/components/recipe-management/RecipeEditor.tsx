@@ -126,8 +126,7 @@ export function RecipeEditor(props: Props) {
     const baseFilled = Boolean(ingredients.length && title && steps)
     const canBeSubmitted = props.editingExisting ? baseFilled : baseFilled && imagePath;
 
-    return (<ContentContainer>
-        <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
+    return (<div>
         <Box className="box">
             <label>
                 <b>{Localisation.TITLE}</b>
@@ -195,7 +194,7 @@ export function RecipeEditor(props: Props) {
             </Button>
             <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
         </Box>
-    </ContentContainer>)
+    </div>)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeEditor);

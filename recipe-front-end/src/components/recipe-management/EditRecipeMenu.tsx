@@ -1,9 +1,12 @@
+import { Heading } from '@chakra-ui/react';
 import React from "react";
 import { connect } from 'react-redux';
 import { Redirect, useRouteMatch } from 'react-router-dom';
 import { Recipe } from '../../interfaces/Recipe';
+import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { ReduxModel } from '../../redux/Store';
+import ContentContainer from '../common/ContentContainer';
 import RecipeEditor from './RecipeEditor';
 
 interface ReduxProps {
@@ -23,10 +26,13 @@ export function EditRecipeMenu(props: ReduxProps) {
     }
 
     const recipe = props.recipes[Number(urlId)];
-    return <RecipeEditor defaultState={{
-        ...recipe,
-        ingredients: recipe.ingredients.map((ingredient) => { return { ...ingredient } })
-    }} editingExisting={true} />
+    return <ContentContainer>
+        <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
+        <RecipeEditor defaultState={{
+            ...recipe,
+            ingredients: recipe.ingredients.map((ingredient) => { return { ...ingredient } })
+        }} editingExisting={true} />
+    </ContentContainer>
 }
 
 export default connect(mapStateToProps)(EditRecipeMenu);
