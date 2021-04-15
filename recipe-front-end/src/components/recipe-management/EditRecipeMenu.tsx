@@ -19,11 +19,14 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 export function EditRecipeMenu(props: ReduxProps) {
     const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.EDIT_RECIPE}/:id`)?.params.id;
     if (!urlId) {
-        return <Redirect to={Paths.BASE}/>
+        return <Redirect to={Paths.BASE} />
     }
 
     const recipe = props.recipes[Number(urlId)];
-    return <RecipeEditor defaultState={Object.assign({}, recipe)} editingExisting={true} />
+    return <RecipeEditor defaultState={{
+        ...recipe,
+        ingredients: recipe.ingredients.map((ingredient) => { return { ...ingredient } })
+    }} editingExisting={true} />
 }
 
 export default connect(mapStateToProps)(EditRecipeMenu);
