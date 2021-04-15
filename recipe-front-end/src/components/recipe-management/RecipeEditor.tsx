@@ -13,7 +13,7 @@ import { AddRecipeAction, EditRecipeAction, ReduxModel } from "../../redux/Store
 import ContentContainer from "../common/ContentContainer";
 import IngredientsModal from "./IngredientsModal";
 
-let index = 0;
+let index = -10e8;
 
 interface OwnProps {
     defaultState: Recipe;
