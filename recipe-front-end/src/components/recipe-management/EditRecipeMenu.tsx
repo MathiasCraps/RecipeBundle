@@ -27,7 +27,7 @@ export function EditRecipeMenu(props: ReduxProps) {
 
     const recipe = props.recipes[Number(urlId)];
     return <ContentContainer>
-        <Heading as="h2">{Localisation.ADD_OWN_RECIPE}</Heading>
+        <Heading as="h2">{Localisation.EDIT_RECIPE}</Heading>
         <RecipeEditor defaultState={{
             ...recipe,
             ingredients: recipe.ingredients.map((ingredient) => { return { ...ingredient } })
