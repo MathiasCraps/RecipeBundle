@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Textarea, Tooltip, useToast } from "@chakra-ui/react";
+import { Box, Button, Input, Textarea, Tooltip, useToast } from "@chakra-ui/react";
 import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
@@ -10,7 +10,6 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
 import { AddRecipeAction, EditRecipeAction, ReduxModel } from "../../redux/Store";
-import ContentContainer from "../common/ContentContainer";
 import IngredientsModal from "./IngredientsModal";
 
 let index = -10e8;
@@ -37,8 +36,8 @@ function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction|EditRecipeAction>): ReduxProps {
-    return { 
+function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeAction>): ReduxProps {
+    return {
         addRecipe: addRecipe(dispatch),
         editRecipe: editRecipe(dispatch)
     };
