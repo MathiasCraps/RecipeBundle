@@ -4,6 +4,7 @@ export interface ApplicationData {
 }
 
 export interface Ingredient {
+    id: number;
     name: string;
     quantity_number: number | null;
     quantity_description: string;

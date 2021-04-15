@@ -1,5 +1,5 @@
 import { pool } from "..";
-import { Recipe } from "../model/RecipeData";
+import { Ingredient, Recipe } from "../model/RecipeData";
 import { executeQuery } from "../sql-utils/Database";
 
 export async function getAllRecipes(): Promise<Recipe[]> {
@@ -11,7 +11,7 @@ export async function getAllRecipes(): Promise<Recipe[]> {
             const recipeId = recipe.id;
             const ingredients = (await executeQuery(pool, {
                 name: 'get-ingredients-recipe',
-                text: `SELECT Ingredients.ingredient_name, RecipesIngredientsMatch.quantity_name, RecipesIngredientsMatch.quantity_number, IngredientCategory.category_name, IngredientCategory.id as category_id 
+                text: `SELECT Ingredients.ingredient_name, RecipesIngredientsMatch.quantity_name, RecipesIngredientsMatch.quantity_number, IngredientCategory.category_name, IngredientCategory.id as category_id, Ingredients.id as ingredient_id
                 FROM Ingredients
                 INNER JOIN RecipesIngredientsMatch ON RecipesIngredientsMatch.ingredient_id = Ingredients.id
                 INNER JOIN IngredientCategory ON IngredientCategory.id = Ingredients.ingredient_category_id
@@ -22,8 +22,9 @@ export async function getAllRecipes(): Promise<Recipe[]> {
             recipes.push({
                 title: recipe.recipe_name,
                 steps: recipe.steps,
-                ingredients: ingredients.map((ingredient: any) => {
-                    return { 
+                ingredients: ingredients.map((ingredient: any): Ingredient => {
+                    return {
+                        id: Number(ingredient.ingredient_id),
                         quantity_number: Number(ingredient.quantity_number),
                         quantity_description: ingredient.quantity_name, 
                         name: ingredient.ingredient_name,
