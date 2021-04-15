@@ -84,7 +84,7 @@ function IngredientsModal(props: Props) {
                     name,
                     quantity_number: quantityNumber,
                     quantity_description: quantityDescription,
-                    identifier: props.ingredientInputs.identifier,
+                    id: props.ingredientInputs.id,
                     categoryId,
                     categoryName: ''
                 })}>{Localisation.ADD}</Button>

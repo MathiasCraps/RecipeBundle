@@ -47,7 +47,7 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction|EditRecipeAction>
 function createEmptyIngredient(): Ingredient {
     return {
         name: '',
-        identifier: ++index,
+        id: ++index,
         quantity_number: 0,
         quantity_description: '',
         categoryId: -1,
@@ -68,7 +68,7 @@ export function RecipeEditor(props: Props) {
 
     function removeIngredient(requestedRemoveIngredient: Ingredient) {
         const shallowClone = [...ingredients];
-        setIngredients(shallowClone.filter((ingredient) => ingredient.identifier !== requestedRemoveIngredient.identifier));
+        setIngredients(shallowClone.filter((ingredient) => ingredient.id !== requestedRemoveIngredient.id));
     }
 
     async function postRecipe() {
@@ -137,7 +137,7 @@ export function RecipeEditor(props: Props) {
         <Box className="box"><b>{Localisation.INGREDIENTS}</b>
             <Box>{ingredients.map((ingredient: Ingredient) => {
                 const { name, quantity_number, quantity_description } = ingredient;
-                return (<Box className="edit-ingredient-container" key={ingredient.identifier}>
+                return (<Box className="edit-ingredient-container" key={ingredient.id}>
                     <label>
                         <Tooltip label={Localisation.EDIT_INGREDIENT} fontSize="md">
                             <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt} /></Button>
@@ -153,9 +153,9 @@ export function RecipeEditor(props: Props) {
 
             {editingIngredient && <IngredientsModal
                 onConfirm={(ingredient: Ingredient) => {
-                    const identifier = ingredient.identifier;
+                    const identifier = ingredient.id;
                     const shallowCopy = [...ingredients];
-                    const entryToReplace = shallowCopy.filter((ingredient) => ingredient.identifier === identifier);
+                    const entryToReplace = shallowCopy.filter((ingredient) => ingredient.id === identifier);
                     const indexOfEntryToReplace = shallowCopy.indexOf(entryToReplace[0]);
 
                     if (indexOfEntryToReplace !== -1) {

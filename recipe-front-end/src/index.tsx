@@ -46,6 +46,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       image
       ingredients {
         name
+        id
         quantity_number
         quantity_description
         categoryId
