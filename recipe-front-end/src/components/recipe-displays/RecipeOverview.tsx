@@ -1,6 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image, useToast } from "@chakra-ui/react";
-import { faCalendarWeek, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarWeek, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
