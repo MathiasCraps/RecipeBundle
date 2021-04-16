@@ -86,13 +86,13 @@ function RecipeOverview(props: Props) {
 
             switch (keyEvent.code) {
                 case 'Escape':
-                    window.location.href = Paths.BASE;
+                    window.location.hash = Paths.BASE;
                     return;
                 case "ArrowLeft":
-                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
+                    window.location.hash = `${Paths.RECIPE_OVERVIEW}/${previous}`
                     return;
                 case "ArrowRight":
-                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${next}`
+                    window.location.hash = `${Paths.RECIPE_OVERVIEW}/${next}`
                     return;
                 default:
                 // ignore
@@ -118,12 +118,12 @@ function RecipeOverview(props: Props) {
                 setDirection(Direction.NEXT);
             } else if (xDifference < -minimumMoveFactor) {
                 setDirection(Direction.PREVIOUS);
-                window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
+                window.location.hash = `${Paths.RECIPE_OVERVIEW}/${previous}`
             }
         }}
         onTouchEndCapture={() => {
             if (direction !== undefined) {
-                window.location.href = `${Paths.RECIPE_OVERVIEW}/${direction === Direction.PREVIOUS ? previous : next}`;
+                window.location.hash = `${Paths.RECIPE_OVERVIEW}/${direction === Direction.PREVIOUS ? previous : next}`;
             }
 
             setOriginalTouch(0);
@@ -189,7 +189,7 @@ function RecipeOverview(props: Props) {
                         });
                         
                         if (success) {
-                            window.location.href = Paths.BASE;
+                            window.location.hash = Paths.BASE;
                         }
                     }}>
                     <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}

@@ -62,7 +62,7 @@ export function RecipeEditor(props: Props) {
     const toast = useToast();
 
     function close() {
-        window.location.href = Paths.BASE;
+        window.location.hash = Paths.BASE;
     }
 
     function removeIngredient(requestedRemoveIngredient: Ingredient) {
