@@ -79,7 +79,7 @@ export function RecipeEditor(props: Props) {
             title,
             ingredients,
             steps,
-            image: '',
+            image: props.defaultState.image,
             id: props.defaultState.id || -1
         };
 
