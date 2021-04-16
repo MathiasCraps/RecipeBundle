@@ -2,7 +2,7 @@ import { RecipeList } from '../components/recipe-displays/RecipeList';
 import { Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
-import { toggleIngredientsBoughtForMenus } from './ReducerHelpers';
+import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -207,7 +207,10 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 recipes: removeFromArray(action.recipe, oldState.recipes)
             };
         case Actions.EDIT_RECIPE:
-            return oldState;
+            return {
+                ...oldState,
+                recipes: replaceRecipe(oldState.recipes, action.recipe)
+            };
         default:
             // not supported yet
     }

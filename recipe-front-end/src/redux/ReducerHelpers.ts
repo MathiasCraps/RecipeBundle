@@ -1,3 +1,4 @@
+import { Recipe } from '../interfaces/Recipe';
 import { DayMenu } from './Store';
 
 export function toggleIngredientsBoughtForMenus(allMenus: DayMenu[], impactedMenus: DayMenu[], ingredientsBought: boolean) {
@@ -13,4 +14,15 @@ export function toggleIngredientsBoughtForMenus(allMenus: DayMenu[], impactedMen
             ingredientsBought
         }
     });
+}
+
+export function replaceRecipe(allRecipes: Recipe[], withRecipe: Recipe): Recipe[] {
+    for (let i = 0, n = allRecipes.length; i < n; i++) {
+        if (withRecipe.id === allRecipes[i].id) {
+            allRecipes[i] = withRecipe;
+            break;
+        }
+    }
+
+    return allRecipes;
 }
