@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import App from "./App";
 import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
+import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
 import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
@@ -34,7 +35,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const userData: BackEndUserData = await apiKey.json();
 
   if (codeQuery && userData.loggedIn) {
-    window.location.hash = '/';
+    window.location.hash = Paths.BASE;
     return;
   }
 
