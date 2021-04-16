@@ -21,11 +21,12 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 
 export function EditRecipeMenu(props: ReduxProps) {
     const urlId = useRouteMatch<{ id: string | undefined }>(`${Paths.EDIT_RECIPE}/:id`)?.params.id;
-    if (!urlId) {
+    const recipe = urlId && props.recipes.filter((recipe) => Number(urlId) === recipe.id)[0];
+
+    if (!urlId || !recipe) {
         return <Redirect to={Paths.BASE} />
     }
 
-    const recipe = props.recipes[Number(urlId)];
     return <ContentContainer>
         <Heading as="h2">{Localisation.EDIT_RECIPE}</Heading>
         <RecipeEditor defaultState={{
