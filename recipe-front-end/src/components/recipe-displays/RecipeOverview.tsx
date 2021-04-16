@@ -191,6 +191,10 @@ function RecipeOverview(props: Props) {
                     <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}
                 </button>}
 
+                {props.loggedIn && <Link to={`${Paths.EDIT_RECIPE}/${recipeId}`}><button className="date-range-initiator">
+                    <FontAwesomeIcon icon={faPencilAlt} /> {Localisation.EDIT_RECIPE}
+                </button></Link>}
+
                 <div className="clearer"></div>
                 <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
                 <ul>{recipe.ingredients.map((ingredient, index) => (
