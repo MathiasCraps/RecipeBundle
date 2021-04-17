@@ -19,7 +19,7 @@ function mapDispatchToProps(dispatch: Dispatch<LogoutAction>): Props {
 function LoggedInText(props: Props) {
     return (<Box>
         {Localisation.LOGGED_IN_ENCOURAGING}
-        <p><a href='#' onClick={() => props.doLogOut()}>{Localisation.LOG_OUT}</a></p>
+        <p><button onClick={() => props.doLogOut()}>{Localisation.LOG_OUT}</button></p>
     </Box>)
 }
 
