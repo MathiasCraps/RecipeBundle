@@ -35,7 +35,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const userData: BackEndUserData = await apiKey.json();
 
   if (codeQuery && userData.loggedIn) {
-    window.location.hash = Paths.BASE;
+    window.location.href = Paths.BASE;
     return;
   }
 
