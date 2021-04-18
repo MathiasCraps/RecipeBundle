@@ -56,12 +56,12 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
     }
 }
 
-export type EditRecipeReturn = (recipe: Recipe) => Promise<void>;
+export type EditRecipeReturn = (recipe: Recipe, formData: FormData) => Promise<void>;
 export function editRecipe(dispatch: Dispatch<EditRecipeAction>): EditRecipeReturn {
-    return async function (recipe: Recipe): Promise<void> {
+    return async function (recipe: Recipe, formData: FormData): Promise<void> {
         const response = await waitForDataAsJson<AddRecipeResponse>('/editRecipe', {
             method: 'POST',
-            body: JSON.stringify(recipe)
+            body: formData
         });
 
         if (response.error) {

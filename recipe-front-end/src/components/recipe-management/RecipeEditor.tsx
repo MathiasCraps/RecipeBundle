@@ -91,7 +91,7 @@ export function RecipeEditor(props: Props) {
             if (!props.editingExisting) {
                 await props.addRecipe(recipeData, formData);
             } else {
-                await props.editRecipe(recipeData);
+                await props.editRecipe(recipeData, formData);
             }
 
             toast({
