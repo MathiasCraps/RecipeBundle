@@ -11,7 +11,7 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
     });
 
     const recipeId = insertedRecipe.rows[0].id;
-    await addIngredients(pool, recipeData.ingredients, recipeData.id);
+    await addIngredients(pool, recipeData.ingredients, recipeId);
 
     return recipeId;
 }
