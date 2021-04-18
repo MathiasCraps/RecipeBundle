@@ -72,30 +72,29 @@ app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Respo
     const file = request.file;
     const trustedExtension = getExtension(file?.mimetype);
     if (!file || !file.buffer || !trustedExtension) {
-        response.json({error: 'Invalid image'});
+        response.json({ error: 'Invalid image' });
         return;
     }
 
-    const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
-    const FILE_NAME = `${RANDOM_NAME}.${trustedExtension}`;
-    fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file.buffer, async(err) => {
-        if (err) {
-            response.json({
-                error: 'Could not write image'
-            });
-            return;
-        }
+    let fileName: string;
+    try {
+        fileName = await writeImage(file.buffer, trustedExtension);
+    } catch (err) {
+        response.json({
+            error: 'Could not write image'
+        });
+        return;
+    }
 
-        try {
-            recipe.image = `uploads/${FILE_NAME}`;
-            const recipeId = await addRecipe(pool, recipe);
-            response.json({success: true, recipeId });    
-        } catch (err) {
-            // todo for later: remove added image should writing to the database not work
-            console.log('err', err);
-            response.json({error: 'Could not write to database'});
-        }
-    });  
+    try {
+        recipe.image = `uploads/${fileName}`;
+        const recipeId = await addRecipe(pool, recipe);
+        response.json({ success: true, recipeId });
+    } catch (err) {
+        // todo for later: remove added image should writing to the database not work
+        console.log('err', err);
+        response.json({ error: 'Could not write to database' });
+    }
 }]);
 
 app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Response) => {
@@ -144,6 +143,19 @@ app.get('/getSessionData', async (request, response) => {
     }
 });
 
+async function writeImage(file: Buffer, extension: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
+        const FILE_NAME = `${RANDOM_NAME}.${extension}`;
+        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
+            if (!err) {
+                resolve(FILE_NAME);
+            } else {
+                reject();
+            }
+        });
+    });
+}
 
 app.listen(port, () => {
     console.log(`Server active at ${process.env.DOMAIN}`)

@@ -48,7 +48,7 @@ function compareIngredientChanges(sourceIngredients: Ingredient[], targetIngredi
 
 }
 
-export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<void> {
+export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<string> {
     const sourceRecipe = await getRecipeById(pool, targetRecipe.id);
 
     if (!sourceRecipe) {
@@ -74,4 +74,6 @@ export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<void
 
     await addIngredients(pool, modifiedIngredients.added, sourceRecipe.id);
     await updateIngredients(pool, modifiedIngredients.edited, sourceRecipe.id);
+
+    return sourceRecipe.image;
 }
