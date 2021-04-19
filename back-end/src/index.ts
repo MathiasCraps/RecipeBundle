@@ -121,21 +121,18 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
 
     try {
         const originalImagePath = await editRecipe(pool, recipe);
-        if (request.file.size) {
-            try {
-                const extension = getExtension(request.file.mimetype);
-                const location = await writeImage(request.file.buffer, extension);
-                fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '') + originalImagePath);
-                executeQuery(pool, {
-                    name: 'update-image',
-                    text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
-                    values: [location, recipe.id]
-                });
-                response.json({success: true });    
-            } catch (err) {
-                response.json({success: false, error: err});
-            }
+        if (request.file) {
+            const extension = getExtension(request.file.mimetype);
+            const location = await writeImage(request.file.buffer, extension);
+            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '') + originalImagePath);
+            executeQuery(pool, {
+                name: 'update-image',
+                text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
+                values: [location, recipe.id]
+            });
         }
+
+        response.json({success: true });
     } catch (err) {
         // todo for later: remove added image should writing to the database not work
         console.log('err', err);
