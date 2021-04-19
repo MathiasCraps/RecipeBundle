@@ -4,14 +4,16 @@ import { executeQuery } from '../sql-utils/Database';
 import { addIngredients } from './AddIngredients';
 import { updateIngredients } from './EditIngredients';
 import { getRecipeById } from './GetRecipeById';
+import { removeIngredients } from './RemoveIngredients';
 
 type ModifiedIngredientsMap = {
     added: Ingredient[];
     edited: Ingredient[];
+    removed: Ingredient[];
 };
 
 type OptimizedOriginalMap = {
-    [key: number]: Ingredient;
+    [key: string]: Ingredient;
 }
 
 function ingredientIsModified(ingredientA: Ingredient, ingredientB: Ingredient): boolean {
@@ -29,8 +31,7 @@ function compareIngredientChanges(sourceIngredients: Ingredient[], targetIngredi
         }, {}
     );
 
-    // todo: detect removals
-    return targetIngredients.reduce<ModifiedIngredientsMap>((previous: ModifiedIngredientsMap, ingredient: Ingredient) => {
+    const modificationMap = targetIngredients.reduce<ModifiedIngredientsMap>((previous: ModifiedIngredientsMap, ingredient: Ingredient) => {
         const comparisonEntry = originalLookupMap[ingredient.id]
 
         if (!comparisonEntry) {
@@ -38,14 +39,23 @@ function compareIngredientChanges(sourceIngredients: Ingredient[], targetIngredi
             return previous;
         }
 
-
         if (ingredientIsModified(comparisonEntry, ingredient)) {
             previous.edited.push(ingredient);
         }
 
-        return previous;
-    }, { added: [], edited: [] });
+        // entry considered, nullify
+        delete originalLookupMap[ingredient.id];
 
+        return previous;
+    }, { added: [], edited: [], removed: [] });
+
+    const remainingKeys = Object.keys(originalLookupMap);
+
+    for (let key of remainingKeys) {
+        modificationMap.removed.push(originalLookupMap[key])
+    }
+
+    return modificationMap;
 }
 
 export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<string> {
@@ -74,6 +84,7 @@ export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<stri
 
     await addIngredients(pool, modifiedIngredients.added, sourceRecipe.id);
     await updateIngredients(pool, modifiedIngredients.edited, sourceRecipe.id);
+    await removeIngredients(pool, modifiedIngredients.removed, sourceRecipe.id);
 
     return sourceRecipe.image.replace(`${process.env.DOMAIN}/`, '');
 }
