@@ -14,6 +14,7 @@ export enum Localisation {
     LOGGED_IN_ENCOURAGING = "Ingelogd? Goed bezig.",
     LOG_OUT = 'Toch liever ninja? Log uit.',
     ADD_OWN_RECIPE = 'Eigen recept toevoegen',
+    EDIT_RECIPE = 'Recept bijwerken',
     ADD_RECIPE = 'Recept toevoegen',
     INGREDIENT_NAME = 'Naam ingrediënt',
     ADD = 'Toevoegen',

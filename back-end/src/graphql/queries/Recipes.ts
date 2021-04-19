@@ -5,6 +5,7 @@ export const IngredientType = new GraphQLObjectType({
     name: 'ingredient',
     description: 'Metadata of an ingredient. Part of a recipe.',
     fields: () => ({
+        id: { type: new GraphQLNonNull(GraphQLFloat), description: 'The identifier of the ingredient' },
         name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
         quantity_number: { type: new GraphQLNonNull(GraphQLFloat), description: 'The quantitative number of the needed amount.' },
         quantity_description: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the quantity.' },

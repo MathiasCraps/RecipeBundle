@@ -6,7 +6,7 @@ import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -38,6 +38,10 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
             throw new Error(response.error);
         }
 
+        if (response.image) {
+            recipe.image = response.image;
+        }
+
         try {
             const id = response.recipeId;
             if (typeof id !== 'number') {
@@ -47,6 +51,34 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
             recipe.id = id;
             dispatch({
                 type: Actions.ADD_RECIPE,
+                recipe: recipe
+            })
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+}
+
+export type EditRecipeReturn = (recipe: Recipe, formData: FormData) => Promise<void>;
+export function editRecipe(dispatch: Dispatch<EditRecipeAction>): EditRecipeReturn {
+    return async function (recipe: Recipe, formData: FormData): Promise<void> {
+        const response = await waitForDataAsJson<AddRecipeResponse>('/editRecipe', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.error) {
+            throw new Error(response.error);
+        }
+
+        if (response.image) {
+            recipe.image = response.image;
+        }
+
+        try {
+            dispatch({
+                type: Actions.EDIT_RECIPE,
                 recipe: recipe
             })
         } catch (err) {

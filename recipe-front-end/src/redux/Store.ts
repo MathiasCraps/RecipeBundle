@@ -2,7 +2,7 @@ import { RecipeList } from '../components/recipe-displays/RecipeList';
 import { Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
-import { toggleIngredientsBoughtForMenus } from './ReducerHelpers';
+import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -41,6 +41,7 @@ export enum Actions {
     TOGGLE_MENU = 'SWITCH_MENU',
     LOG_OUT = 'LOG_OUT',
     ADD_RECIPE = 'ADD_RECIPE',
+    EDIT_RECIPE = 'EDIT_RECIPE',
     REMOVE_RECIPE = 'REMOVE_RECIPE',
     ADD_MENU = 'ADD_MENU',
     REMOVE_MENU = 'REMOVE_MENU',
@@ -62,6 +63,11 @@ export interface LogoutAction {
 
 export interface AddRecipeAction {
     type: Actions.ADD_RECIPE;
+    recipe: Recipe;
+}
+
+export interface EditRecipeAction {
+    type: Actions.EDIT_RECIPE;
     recipe: Recipe;
 }
 
@@ -129,6 +135,7 @@ export const defaultState: ReduxModel = {
 export type ReduxAction = ToggleMenuAction | 
     LogoutAction | 
     AddRecipeAction | 
+    EditRecipeAction |
     RemoveRecipeAction |
     AddMenuAction | 
     RemoveMenuAction | 
@@ -198,6 +205,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 recipes: removeFromArray(action.recipe, oldState.recipes)
+            };
+        case Actions.EDIT_RECIPE:
+            return {
+                ...oldState,
+                recipes: replaceRecipe(oldState.recipes, action.recipe)
             };
         default:
             // not supported yet

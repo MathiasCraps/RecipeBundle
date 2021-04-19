@@ -53,10 +53,10 @@ function MenuPlanner(props: Props) {
     const maximumRange = addDays(firstDayOfCurrentWeek, 13);
     const [isSmallView] = useMediaQuery("(max-width: 40em)");
     const [isOpened, setIsOpened] = useState(false);
-    const currentDayFocus = useRef<HTMLAnchorElement>(null);
-    const addRecipeButton = <a ref={currentDayFocus} className="add-menu" href='#' onClick={() => setIsOpened(true)}>
+    const currentDayFocus = useRef<HTMLButtonElement>(null);
+    const addRecipeButton = <button ref={currentDayFocus} className="add-menu" onClick={() => setIsOpened(true)}>
         <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
-    </a>
+    </button>
 
     useEffect(() => {
         function switchDay(event: KeyboardEvent) {

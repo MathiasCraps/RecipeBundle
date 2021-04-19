@@ -1,6 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Heading, Image, useToast } from "@chakra-ui/react";
-import { faCalendarWeek, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarWeek, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
@@ -86,13 +86,13 @@ function RecipeOverview(props: Props) {
 
             switch (keyEvent.code) {
                 case 'Escape':
-                    window.location.href = Paths.BASE;
+                    window.location.hash = Paths.BASE;
                     return;
                 case "ArrowLeft":
-                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
+                    window.location.hash = `${Paths.RECIPE_OVERVIEW}/${previous}`
                     return;
                 case "ArrowRight":
-                    window.location.href = `${Paths.RECIPE_OVERVIEW}/${next}`
+                    window.location.hash = `${Paths.RECIPE_OVERVIEW}/${next}`
                     return;
                 default:
                 // ignore
@@ -118,12 +118,12 @@ function RecipeOverview(props: Props) {
                 setDirection(Direction.NEXT);
             } else if (xDifference < -minimumMoveFactor) {
                 setDirection(Direction.PREVIOUS);
-                window.location.href = `${Paths.RECIPE_OVERVIEW}/${previous}`
+                window.location.hash = `${Paths.RECIPE_OVERVIEW}/${previous}`
             }
         }}
         onTouchEndCapture={() => {
             if (direction !== undefined) {
-                window.location.href = `${Paths.RECIPE_OVERVIEW}/${direction === Direction.PREVIOUS ? previous : next}`;
+                window.location.hash = `${Paths.RECIPE_OVERVIEW}/${direction === Direction.PREVIOUS ? previous : next}`;
             }
 
             setOriginalTouch(0);
@@ -174,6 +174,10 @@ function RecipeOverview(props: Props) {
                         }} />
                 </SimplePopover>}
 
+                {props.loggedIn && <Link to={`${Paths.EDIT_RECIPE}/${recipeId}`}><button className="date-range-initiator">
+                    <FontAwesomeIcon icon={faPencilAlt} /> {Localisation.EDIT_RECIPE}
+                </button></Link>}
+
                 {props.loggedIn && <button
                     className="date-range-initiator"
                     onClick={async() => {
@@ -185,7 +189,7 @@ function RecipeOverview(props: Props) {
                         });
                         
                         if (success) {
-                            window.location.href = Paths.BASE;
+                            window.location.hash = Paths.BASE;
                         }
                     }}>
                     <FontAwesomeIcon icon={faTrash} /> {Localisation.REMOVE}

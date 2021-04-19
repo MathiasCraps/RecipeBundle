@@ -2,17 +2,18 @@ import { ChakraProvider } from "@chakra-ui/react";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
 import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
+import { Paths } from './Paths';
+import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
 import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
-import { parseGetParams } from "./utils/UrlUtils";
-import { BrowserRouter as Router } from 'react-router-dom';
 import fetchGraphQL from './utils/FetchGraphQL';
-import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
+import { parseGetParams } from "./utils/UrlUtils";
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -34,7 +35,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const userData: BackEndUserData = await apiKey.json();
 
   if (codeQuery && userData.loggedIn) {
-    window.location.href = '/';
+    window.location.href = Paths.BASE;
     return;
   }
 
@@ -46,6 +47,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       image
       ingredients {
         name
+        id
         quantity_number
         quantity_description
         categoryId
@@ -90,9 +92,9 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     <React.StrictMode>
       <ChakraProvider>
         <Provider store={store}>
-          <Router>
+          <HashRouter>
             <App />
-          </Router>
+          </HashRouter>
         </Provider>
       </ChakraProvider>
     </React.StrictMode>,

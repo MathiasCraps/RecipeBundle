@@ -9,9 +9,11 @@ import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
 import { Recipe, TestData } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
+import { executeQuery } from './sql-utils/Database';
 import { addRecipe } from "./sql/AddRecipe";
 import { createCategories } from './sql/CreateCategories';
 import { createTables } from "./sql/CreateTables";
+import { editRecipe } from './sql/EditRecipe';
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -71,30 +73,75 @@ app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Respo
     const file = request.file;
     const trustedExtension = getExtension(file?.mimetype);
     if (!file || !file.buffer || !trustedExtension) {
-        response.json({error: 'Invalid image'});
+        response.json({ error: 'Invalid image' });
         return;
     }
 
-    const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
-    const FILE_NAME = `${RANDOM_NAME}.${trustedExtension}`;
-    fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file.buffer, async(err) => {
-        if (err) {
-            response.json({
-                error: 'Could not write image'
+    let fileName: string;
+    try {
+        fileName = await writeImage(file.buffer, trustedExtension);
+    } catch (err) {
+        response.json({
+            error: 'Could not write image'
+        });
+        return;
+    }
+
+    try {
+        const publicImagePath = fileName ? `uploads/${fileName}` : ''
+        recipe.image = publicImagePath;
+        const recipeId = await addRecipe(pool, recipe);
+        response.json({ success: true, recipeId, image: publicImagePath });
+    } catch (err) {
+        // todo for later: remove added image should writing to the database not work
+        console.log('err', err);
+        response.json({ error: 'Could not write to database' });
+    }
+}]);
+
+app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Response) => {
+    const user = (request.session as SessionData).userName;
+    if (!user) {
+        response.json({error: 'Not logged in'});
+        return;
+    }
+
+    let recipe: Recipe;
+    try {
+        recipe = JSON.parse(request.body.recipe);
+        if (!isRecipe(recipe)) {
+            throw new Error('Invalid');
+        }    
+    } catch (err) {
+        console.log(err);
+        response.json({error: 'Invalid recipe data'});
+        return;
+    }
+
+    // todo, second phase: handle image
+
+    try {
+        const originalImagePath = await editRecipe(pool, recipe);
+        let location: string = '';
+        if (request.file) {
+            const extension = getExtension(request.file.mimetype);
+            location = await writeImage(request.file.buffer, extension);
+            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY + originalImagePath);
+            executeQuery(pool, {
+                name: 'update-image',
+                text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
+                values: [`uploads/${location}`, recipe.id]
             });
-            return;
         }
 
-        try {
-            recipe.image = `uploads/${FILE_NAME}`;
-            const recipeId = await addRecipe(pool, recipe);
-            response.json({success: true, recipeId });    
-        } catch (err) {
-            // todo for later: remove added image should writing to the database not work
-            console.log('err', err);
-            response.json({error: 'Could not write to database'});
-        }
-    });  
+        let imagePath = location || originalImagePath;
+
+        response.json({success: true, image: 'uploads/' + imagePath });
+    } catch (err) {
+        // todo for later: remove added image should writing to the database not work
+        console.log('err', err);
+        response.json({error: 'Could not write to database'});
+    }
 }]);
 
 app.get('/getSessionData', async (request, response) => {
@@ -112,6 +159,19 @@ app.get('/getSessionData', async (request, response) => {
     }
 });
 
+async function writeImage(file: Buffer, extension: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
+        const FILE_NAME = `${RANDOM_NAME}.${extension}`;
+        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
+            if (!err) {
+                resolve(`${FILE_NAME}`);
+            } else {
+                reject();
+            }
+        });
+    });
+}
 
 app.listen(port, () => {
     console.log(`Server active at ${process.env.DOMAIN}`)

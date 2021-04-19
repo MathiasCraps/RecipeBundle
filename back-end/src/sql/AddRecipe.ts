@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import { Recipe } from "../model/RecipeData";
 import { executeQuery } from "../sql-utils/Database";
+import { addIngredients } from './AddIngredients';
 
 export async function addRecipe(pool: Pool, recipeData: Recipe) {
     const insertedRecipe = await executeQuery(pool, {
@@ -10,21 +11,7 @@ export async function addRecipe(pool: Pool, recipeData: Recipe) {
     });
 
     const recipeId = insertedRecipe.rows[0].id;
-    for (let ingredient of recipeData.ingredients) {
-        let ingredientResult = await executeQuery(pool, {
-            name: 'add-ingredient',
-            text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id) VALUES ($1, $2) RETURNING id;',
-            values: [ingredient.name, ingredient.categoryId]
-        });
-        const id = ingredientResult.rows[0].id;
-
-        await executeQuery(pool, {
-            name: 'match-ingredient-and-recipe',
-            text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number, quantity_name) 
-                VALUES($1, $2, $3, $4);`,
-            values: [recipeId, id, ingredient.quantity_number, ingredient.quantity_description]
-        });
-    }
+    await addIngredients(pool, recipeData.ingredients, recipeId);
 
     return recipeId;
 }
