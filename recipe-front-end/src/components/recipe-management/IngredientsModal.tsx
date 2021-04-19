@@ -31,8 +31,8 @@ function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
     const [name, setName] = useState(props.ingredientInputs.name);
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
-    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description || quantityDescriptions[0]);
-    const [categoryId, setCategoryId] = useState<number>(props.categories[0]?.categoryId);
+    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
+    const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
     const canBeSubmitted = name && quantityNumber;
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
@@ -59,7 +59,7 @@ function IngredientsModal(props: Props) {
                 </label>
                 <label>
                     {Localisation.QUANTITY_KIND}
-                    <Select defaultValue={quantityDescriptions[0]} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                    <Select value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                         {quantityDescriptions.map((description, index) => {
                             const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
                             return <option key={index} value={description}>{capitalizedText}</option>
@@ -68,7 +68,7 @@ function IngredientsModal(props: Props) {
                 </label>
                 <label>
                     {Localisation.CATEGORY_INGREDIENT}
-                    <Select defaultValue={props.categories[0].categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
+                    <Select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
                         {props.categories.map((category) => {
                             return <React.Fragment key={category.categoryId}>
                                 <option value={category.categoryId}>
