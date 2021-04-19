@@ -75,5 +75,5 @@ export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<stri
     await addIngredients(pool, modifiedIngredients.added, sourceRecipe.id);
     await updateIngredients(pool, modifiedIngredients.edited, sourceRecipe.id);
 
-    return sourceRecipe.image;
+    return sourceRecipe.image.replace(`${process.env.DOMAIN}/`, '');
 }

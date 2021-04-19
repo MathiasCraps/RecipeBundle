@@ -9,6 +9,7 @@ import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
 import { Recipe, TestData } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
+import { executeQuery } from './sql-utils/Database';
 import { addRecipe } from "./sql/AddRecipe";
 import { createCategories } from './sql/CreateCategories';
 import { createTables } from "./sql/CreateTables";
@@ -119,8 +120,22 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
     // todo, second phase: handle image
 
     try {
-        await editRecipe(pool, recipe);
-        response.json({success: true });    
+        const originalImagePath = await editRecipe(pool, recipe);
+        if (request.file.size) {
+            try {
+                const extension = getExtension(request.file.mimetype);
+                const location = await writeImage(request.file.buffer, extension);
+                fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '') + originalImagePath);
+                executeQuery(pool, {
+                    name: 'update-image',
+                    text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
+                    values: [location, recipe.id]
+                });
+                response.json({success: true });    
+            } catch (err) {
+                response.json({success: false, error: err});
+            }
+        }
     } catch (err) {
         // todo for later: remove added image should writing to the database not work
         console.log('err', err);
@@ -149,7 +164,7 @@ async function writeImage(file: Buffer, extension: string): Promise<string> {
         const FILE_NAME = `${RANDOM_NAME}.${extension}`;
         fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
             if (!err) {
-                resolve(FILE_NAME);
+                resolve(`uploads/${FILE_NAME}`);
             } else {
                 reject();
             }
