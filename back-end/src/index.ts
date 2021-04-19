@@ -88,9 +88,10 @@ app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Respo
     }
 
     try {
-        recipe.image = `uploads/${fileName}`;
+        const publicImagePath = fileName ? `uploads/${fileName}` : ''
+        recipe.image = publicImagePath;
         const recipeId = await addRecipe(pool, recipe);
-        response.json({ success: true, recipeId });
+        response.json({ success: true, recipeId, image: publicImagePath });
     } catch (err) {
         // todo for later: remove added image should writing to the database not work
         console.log('err', err);
@@ -121,18 +122,21 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
 
     try {
         const originalImagePath = await editRecipe(pool, recipe);
+        let location: string = '';
         if (request.file) {
             const extension = getExtension(request.file.mimetype);
-            const location = await writeImage(request.file.buffer, extension);
-            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '') + originalImagePath);
+            location = await writeImage(request.file.buffer, extension);
+            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY + originalImagePath);
             executeQuery(pool, {
                 name: 'update-image',
                 text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
-                values: [location, recipe.id]
+                values: [`uploads/${location}`, recipe.id]
             });
         }
 
-        response.json({success: true });
+        let imagePath = location || originalImagePath;
+
+        response.json({success: true, image: 'uploads/' + imagePath });
     } catch (err) {
         // todo for later: remove added image should writing to the database not work
         console.log('err', err);
@@ -161,7 +165,7 @@ async function writeImage(file: Buffer, extension: string): Promise<string> {
         const FILE_NAME = `${RANDOM_NAME}.${extension}`;
         fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
             if (!err) {
-                resolve(`uploads/${FILE_NAME}`);
+                resolve(`${FILE_NAME}`);
             } else {
                 reject();
             }
