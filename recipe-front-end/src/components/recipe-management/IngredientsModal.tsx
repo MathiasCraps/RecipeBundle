@@ -17,7 +17,7 @@ interface ReduxProps {
     categories: Category[];
 }
 
-const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
+export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
 
 function mapStateToProps(reduxState: ReduxModel): ReduxProps {
     return {

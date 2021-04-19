@@ -10,7 +10,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
 import { AddRecipeAction, EditRecipeAction, ReduxModel } from "../../redux/Store";
-import IngredientsModal from "./IngredientsModal";
+import IngredientsModal, { quantityDescriptions } from "./IngredientsModal";
 
 let index = -10e8;
 
@@ -48,9 +48,9 @@ function createEmptyIngredient(): Ingredient {
         name: '',
         id: ++index,
         quantity_number: 0,
-        quantity_description: '',
-        categoryId: -1,
-        categoryName: ''
+        quantity_description: quantityDescriptions[0],
+        categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding
+        categoryName: 'oils'
     };
 }
 
