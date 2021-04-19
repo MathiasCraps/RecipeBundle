@@ -38,6 +38,10 @@ export function addRecipe(dispatch: Dispatch<AddRecipeAction>,): AddRecipeReturn
             throw new Error(response.error);
         }
 
+        if (response.image) {
+            recipe.image = response.image;
+        }
+
         try {
             const id = response.recipeId;
             if (typeof id !== 'number') {
@@ -66,6 +70,10 @@ export function editRecipe(dispatch: Dispatch<EditRecipeAction>): EditRecipeRetu
 
         if (response.error) {
             throw new Error(response.error);
+        }
+
+        if (response.image) {
+            recipe.image = response.image;
         }
 
         try {
