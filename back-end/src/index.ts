@@ -4,6 +4,7 @@ import { graphqlHTTP } from 'express-graphql';
 import session from "express-session";
 import fs from "fs";
 import { Pool } from "pg";
+import sharp from 'sharp';
 import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
 import { Recipe, TestData } from "./model/RecipeData";
@@ -28,22 +29,22 @@ export const BASE_FILE_UPLOAD_DIRECTORY = `${__dirname}/public/uploads/`;
 
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-  secret: String(process.env.SESSION_SECRET),
+    secret: String(process.env.SESSION_SECRET),
 }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.single('userfile'));
 
-app.get('/logout', async(request, response) => {
+app.get('/logout', async (request, response) => {
     request.session.destroy((error) => {
-      error && console.log('error', error);
-      response.json({ loggedIn: false})
+        error && console.log('error', error);
+        response.json({ loggedIn: false })
     })
 });
 
 function getExtension(mimeType: string): string {
-    switch(mimeType) {
+    switch (mimeType) {
         case 'image/jpeg':
             return 'jpg';
         case 'image/png':
@@ -55,7 +56,7 @@ function getExtension(mimeType: string): string {
 app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Response) => {
     const user = (request.session as SessionData).userName;
     if (!user) {
-        response.json({error: 'Not logged in'});
+        response.json({ error: 'Not logged in' });
         return;
     }
 
@@ -64,9 +65,9 @@ app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Respo
         recipe = JSON.parse(request.body.recipe);
         if (!isRecipe(recipe)) {
             throw new Error('Invalid');
-        }    
+        }
     } catch (err) {
-        response.json({error: 'Invalid recipe data'});
+        response.json({ error: 'Invalid recipe data' });
         return;
     }
 
@@ -102,7 +103,7 @@ app.post('/addRecipe', [verifyLoggedIn, async (request: Request, response: Respo
 app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Response) => {
     const user = (request.session as SessionData).userName;
     if (!user) {
-        response.json({error: 'Not logged in'});
+        response.json({ error: 'Not logged in' });
         return;
     }
 
@@ -111,10 +112,10 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
         recipe = JSON.parse(request.body.recipe);
         if (!isRecipe(recipe)) {
             throw new Error('Invalid');
-        }    
+        }
     } catch (err) {
         console.log(err);
-        response.json({error: 'Invalid recipe data'});
+        response.json({ error: 'Invalid recipe data' });
         return;
     }
 
@@ -126,7 +127,7 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
         if (request.file) {
             const extension = getExtension(request.file.mimetype);
             location = await writeImage(request.file.buffer, extension);
-            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY + originalImagePath);
+            fs.unlinkSync(BASE_FILE_UPLOAD_DIRECTORY.replace('uploads/', '') + originalImagePath);
             executeQuery(pool, {
                 name: 'update-image',
                 text: 'UPDATE Recipes SET image = $1 WHERE id = $2',
@@ -136,11 +137,11 @@ app.post('/editRecipe', [verifyLoggedIn, async (request: Request, response: Resp
 
         let imagePath = location || originalImagePath;
 
-        response.json({success: true, image: 'uploads/' + imagePath });
+        response.json({ success: true, image: 'uploads/' + imagePath });
     } catch (err) {
         // todo for later: remove added image should writing to the database not work
         console.log('err', err);
-        response.json({error: 'Could not write to database'});
+        response.json({ error: 'Could not write to database' });
     }
 }]);
 
@@ -149,7 +150,7 @@ app.get('/getSessionData', async (request, response) => {
     const auth = request.query.code as string;
 
     try {
-        const sessionData = await getSessionData(pool, session, auth);      
+        const sessionData = await getSessionData(pool, session, auth);
         return response.json({
             loggedIn: true,
             userName: sessionData.userName
@@ -160,10 +161,16 @@ app.get('/getSessionData', async (request, response) => {
 });
 
 async function writeImage(file: Buffer, extension: string): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
         const FILE_NAME = `${RANDOM_NAME}.${extension}`;
-        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
+
+        const smallerImage = await sharp(file)
+            .resize(750)
+            .jpeg({ quality: 70 })
+            .toBuffer();
+
+        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, smallerImage, async (err) => {
             if (!err) {
                 resolve(`${FILE_NAME}`);
             } else {
