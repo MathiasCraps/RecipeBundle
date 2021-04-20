@@ -160,10 +160,16 @@ app.get('/getSessionData', async (request, response) => {
 });
 
 async function writeImage(file: Buffer, extension: string): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const RANDOM_NAME = `${Number(new Date())}-${Math.random() * 10e18}`;
         const FILE_NAME = `${RANDOM_NAME}.${extension}`;
-        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, file, async (err) => {
+
+        const smallerImage = await sharp(file)
+            .resize(750)
+            .jpeg({ quality: 70 })
+            .toBuffer();
+
+        fs.writeFile(BASE_FILE_UPLOAD_DIRECTORY + FILE_NAME, smallerImage, async (err) => {
             if (!err) {
                 resolve(`${FILE_NAME}`);
             } else {
