@@ -2,11 +2,12 @@ import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
 import { getIngredientCategories } from '../../sql/GetIngredientCategories';
+import { getAllIngredients } from '../../sql/GetIngredients';
 import { getMenus } from '../../sql/GetMenu';
 import { getAllRecipes } from '../../sql/GetRecipes';
 import { Category } from './Category';
 import { MenuType } from './Menus';
-import { RecipeType } from './Recipes';
+import { QuantityLessIngredient, RecipeType } from './Recipes';
 
 export const RootQuery = new GraphQLObjectType({
     name: 'recipes',
@@ -34,6 +35,13 @@ export const RootQuery = new GraphQLObjectType({
             description: 'All the categories of the ingredients.',
             async resolve() {
                 return await getIngredientCategories(pool);
+            }
+        },
+        ingredients: {
+            type: new GraphQLNonNull(new GraphQLList(QuantityLessIngredient)),
+            description: 'All the currently existing ingredients', 
+            async resolve() {
+                return await getAllIngredients(pool);
             }
         }
     }
