@@ -2,15 +2,19 @@ export interface ApplicationData {
     menus: RawDayMenu[];
     recipes: Recipe[];
     categories: Category[];
+    ingredients: QuantityLessIngredient[];
 }
 
-export interface Ingredient {
+export interface QuantityLessIngredient {
     name: string;
     id: number;
-    quantity_number: number | null;
-    quantity_description: string;
     categoryId: number;
     categoryName: string;
+}
+
+export interface Ingredient extends QuantityLessIngredient {
+    quantity_number: number | null;
+    quantity_description: string;
 }
 
 export interface Recipe {
