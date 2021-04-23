@@ -41,11 +41,6 @@ type Props = OwnProps & ReduxProps & ReduxActionProps;
 function SearchInput(props: Props) {
     const [results, setResults] = useState<Recipe[]>([]);
 
-    function onConfirm() {
-        setResults([]);
-        props.onSelectionChange(undefined);
-    }
-
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
         if (!results.length) {
             return;
