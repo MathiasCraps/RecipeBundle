@@ -1,7 +1,5 @@
-import { Box, Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { KeyboardEvent, useRef, useState } from "react";
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Recipe } from "../../interfaces/Recipe";
@@ -60,7 +58,7 @@ function AddMenuOverlay(props: Props) {
                 recipe: focusedSuggestion!,
                 menuId: -1,
                 ingredientsBought: false
-            });    
+            });
         }
         reset();
         props.onSubmit();
@@ -73,7 +71,12 @@ function AddMenuOverlay(props: Props) {
             <ModalHeader>{Localisation.ADD_RECIPE}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-            <SearchInput onSelectionChange={setFocusedSuggestion} selection={focusedSuggestion} />
+                <SearchInput<Recipe>
+                    onSelectionChange={setFocusedSuggestion}
+                    selection={focusedSuggestion}
+                    onRender={(recipe) => recipe.title}
+                    items={props.recipes}
+                />
             </ModalBody>
 
             <ModalFooter>

@@ -1,45 +1,18 @@
-import { Box, Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { Box, Input } from "@chakra-ui/react";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { KeyboardEvent, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from 'redux';
-import { Recipe } from '../../../interfaces/Recipe';
 import { Localisation } from '../../../localisation/AppTexts';
-import { addMenu } from '../../../redux/Actions';
-import { DayMenu, ReduxModel } from '../../../redux/Store';
 
-interface OwnProps {
-    selection: Recipe | undefined;
-    onSelectionChange: (selectedRecipe: Recipe | undefined) => void;
+interface OwnProps<ItemType> {
+    selection: ItemType | undefined;
+    onSelectionChange: (selectedItem: ItemType | undefined) => void;
+    onRender: (item: ItemType) => string;
+    items: ItemType[];
 }
 
-interface ReduxProps {
-    recipes: Recipe[];
-    date: Date;
-}
-
-interface ReduxActionProps {
-    addMenu: (menu: DayMenu) => Promise<void>;
-}
-
-function mapStateToProps(reduxStore: ReduxModel): ReduxProps {
-    return {
-        recipes: reduxStore.recipes,
-        date: new Date(reduxStore.activeDay!)
-    }
-}
-
-function mapActions(dispatch: Dispatch) {
-    return {
-        addMenu: addMenu(dispatch)
-    };
-}
-
-type Props = OwnProps & ReduxProps & ReduxActionProps;
-
-function SearchInput(props: Props) {
-    const [results, setResults] = useState<Recipe[]>([]);
+export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
+    const [results, setResults] = useState<ItemType[]>([]);
 
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
         if (!results.length) {
@@ -64,8 +37,8 @@ function SearchInput(props: Props) {
         }
     }
 
-    function updateSearchFromSuggestion(focusedSuggestion: Recipe) {
-        inputRef.current!.value = focusedSuggestion.title;
+    function updateSearchFromSuggestion(focusedSuggestion: ItemType) {
+        inputRef.current!.value = props.onRender(focusedSuggestion);
         setResults([]);
     }
 
@@ -75,7 +48,7 @@ function SearchInput(props: Props) {
             onKeyUp={handleQueryType}
             onChange={(e) => {
                 const query = e.target.value;
-                const results = props.recipes.filter((recipe) => query && recipe.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+                const results = props.items.filter((item) => query && props.onRender(item).toLowerCase().indexOf(query.toLowerCase()) !== -1);
                 setResults(results);
                 if (results.length) {
                     props.onSelectionChange(results[0]);
@@ -92,10 +65,8 @@ function SearchInput(props: Props) {
                 }}
                 onMouseEnter={() => props.onSelectionChange(result)}
                 key={index}>
-                <FontAwesomeIcon icon={faAngleRight} /> {result.title}
+                <FontAwesomeIcon icon={faAngleRight} /> {props.onRender(result)}
             </Box>)
         })}</Box>
     </div>);
 }
-
-export default connect(mapStateToProps, mapActions)(SearchInput);
