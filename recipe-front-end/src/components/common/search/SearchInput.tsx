@@ -3,6 +3,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { KeyboardEvent, useRef, useState } from "react";
 import { Localisation } from '../../../localisation/AppTexts';
+import './SearchInput';
 
 interface OwnProps<ItemType> {
     selection: ItemType | undefined;
