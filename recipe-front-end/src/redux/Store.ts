@@ -115,6 +115,7 @@ export interface ToggleMenuIngredientsBoughtAction {
 
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
+
 export const defaultState: ReduxModel = {
     recipes: [],
     openedMenu: OpenedMenu.NONE,
