@@ -1,10 +1,11 @@
 import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { Category, Ingredient } from '../../interfaces/Recipe';
+import { Category, Ingredient, QuantityLessIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
+import SearchInput from '../common/search/SearchInput';
 import './IngredientsModal.scss';
 
 interface OwnProps {
@@ -15,13 +16,15 @@ interface OwnProps {
 
 interface ReduxProps {
     categories: Category[];
+    availableIngredients: QuantityLessIngredient[];
 }
 
 export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
 
 function mapStateToProps(reduxState: ReduxModel): ReduxProps {
     return {
-        categories: reduxState.categories
+        categories: reduxState.categories,
+        availableIngredients: reduxState.ingredients
     }
 }
 
@@ -29,11 +32,11 @@ type Props = OwnProps & ReduxProps;
 
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
-    const [name, setName] = useState(props.ingredientInputs.name);
+    const [ingredient, setIngredient] = useState<QuantityLessIngredient>();
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
-    const canBeSubmitted = name && quantityNumber;
+    const canBeSubmitted = ingredient && quantityNumber;
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -41,13 +44,13 @@ function IngredientsModal(props: Props) {
             <ModalCloseButton onClick={props.onCancel} />
             <ModalBody className="add-ingredients-modal">
                 <Heading as="h3">{Localisation.EDIT_INGREDIENT}</Heading>
-                <label>
-                    {Localisation.INGREDIENT_NAME}
-                    <Input ref={focusRef}
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder={Localisation.INGREDIENT_NAME}
-                    /></label>
+                {Localisation.INGREDIENT_NAME}
+                <SearchInput<QuantityLessIngredient>
+                    selection={ingredient}
+                    onRender={(ingredient) => ingredient.name}
+                    items={props.availableIngredients}
+                    onSelectionChange={(ingredient) => ingredient && setIngredient(ingredient)}
+                />
 
                 <label>
                     {Localisation.QUANTITY}
@@ -81,7 +84,7 @@ function IngredientsModal(props: Props) {
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
-                    name,
+                    name: ingredient!.name,
                     quantity_number: quantityNumber,
                     quantity_description: quantityDescription,
                     id: props.ingredientInputs.id,
