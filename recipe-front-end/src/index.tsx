@@ -91,7 +91,8 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     activeDay: calculateStartOfDate(new Date()).getTime(), // use today as starting date
     recipes: applicationData.recipes,
     categories: applicationData.categories,
-    menuPlanning: linkedMenu
+    menuPlanning: linkedMenu,
+    ingredients: applicationData.ingredients
   }, applyMiddleware(thunk));
 
   ReactDOM.render(
