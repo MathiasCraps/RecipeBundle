@@ -37,6 +37,8 @@ function IngredientsModal(props: Props) {
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
     const canBeSubmitted = ingredient && quantityNumber;
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const advancedClasses = showAdvanced ? '' : 'hidden';
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -60,7 +62,7 @@ function IngredientsModal(props: Props) {
                         placeholder={Localisation.QUANTITY}
                     />
                 </label>
-                <label>
+                <label className={advancedClasses}>
                     {Localisation.QUANTITY_KIND}
                     <Select value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                         {quantityDescriptions.map((description, index) => {
@@ -69,7 +71,7 @@ function IngredientsModal(props: Props) {
                         })}
                     </Select>
                 </label>
-                <label>
+                <label className={advancedClasses}>
                     {Localisation.CATEGORY_INGREDIENT}
                     <Select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
                         {props.categories.map((category) => {
