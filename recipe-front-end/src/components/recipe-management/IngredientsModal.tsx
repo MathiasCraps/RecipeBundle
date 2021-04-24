@@ -37,8 +37,8 @@ function IngredientsModal(props: Props) {
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
     const canBeSubmitted = ingredient && quantityNumber;
-    const [showAdvanced, setShowAdvanced] = useState(false);
-    const advancedClasses = showAdvanced ? '' : 'hidden';
+    const [showExtraOptions, setShowExtraOptions] = useState(false);
+    const advancedClasses = showExtraOptions ? '' : 'hidden';
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -52,6 +52,7 @@ function IngredientsModal(props: Props) {
                     onRender={(ingredient) => ingredient.name}
                     items={props.availableIngredients}
                     onSelectionChange={(ingredient) => ingredient && setIngredient(ingredient)}
+                    inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                 />
 
                 <label>

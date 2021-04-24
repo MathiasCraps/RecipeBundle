@@ -7,6 +7,7 @@ import './SearchInput.scss';
 
 interface OwnProps<ItemType> {
     selection: ItemType | undefined;
+    inputHasResults: (hasResults: boolean) => void;
     onSelectionChange: (selectedItem: ItemType | undefined) => void;
     onRender: (item: ItemType) => string;
     items: ItemType[];
@@ -40,6 +41,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
 
     function updateSearchFromSuggestion(focusedSuggestion: ItemType) {
         inputRef.current!.value = props.onRender(focusedSuggestion);
+        props.inputHasResults(true);
         setResults([]);
     }
 
@@ -51,6 +53,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
                 const query = e.target.value;
                 const results = props.items.filter((item) => query && props.onRender(item).toLowerCase().indexOf(query.toLowerCase()) !== -1);
                 setResults(results);
+                props.inputHasResults(Boolean(!inputRef.current!.value || results.length));
                 if (results.length) {
                     props.onSelectionChange(results[0]);
                 }
