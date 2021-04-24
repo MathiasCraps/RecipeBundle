@@ -1,12 +1,13 @@
 import { Box, Input } from "@chakra-ui/react";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { KeyboardEvent, useRef, useState } from "react";
+import React, { KeyboardEvent, useState } from "react";
 import { Localisation } from '../../../localisation/AppTexts';
 import './SearchInput.scss';
 
 interface OwnProps<ItemType> {
     selection: ItemType | undefined;
+    inputRef: React.RefObject<HTMLInputElement>;
     inputHasResults: (hasResults: boolean) => void;
     onSelectionChange: (selectedItem: ItemType | undefined) => void;
     onRender: (item: ItemType) => string;
@@ -15,6 +16,7 @@ interface OwnProps<ItemType> {
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
     const [results, setResults] = useState<ItemType[]>([]);
+    const inputRef = props.inputRef;
 
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
         if (!results.length) {
@@ -45,7 +47,6 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
         setResults([]);
     }
 
-    const inputRef = useRef<HTMLInputElement>(null);
     return (<div>
         <Input ref={inputRef}
             onKeyUp={handleQueryType}

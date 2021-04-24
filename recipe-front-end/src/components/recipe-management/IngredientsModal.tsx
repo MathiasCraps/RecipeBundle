@@ -53,6 +53,7 @@ function IngredientsModal(props: Props) {
                     items={props.availableIngredients}
                     onSelectionChange={(ingredient) => ingredient && setIngredient(ingredient)}
                     inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
+                    inputRef={focusRef}
                 />
 
                 <label>

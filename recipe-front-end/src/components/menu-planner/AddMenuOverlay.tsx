@@ -75,6 +75,7 @@ function AddMenuOverlay(props: Props) {
                     selection={focusedSuggestion}
                     onRender={(recipe) => recipe.title}
                     items={props.recipes}
+                    inputRef={inputRef}
                     inputHasResults={() => {
                         // ignore
                     }}
