@@ -12,10 +12,12 @@ interface OwnProps<ItemType> {
     onSelectionChange: (selectedItem: ItemType | undefined) => void;
     onRender: (item: ItemType) => string;
     items: ItemType[];
+    defaultValue: string | undefined;
 }
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
     const [results, setResults] = useState<ItemType[]>([]);
+    const [inputValue, setInputValue] = useState(props.defaultValue || '')
     const inputRef = props.inputRef;
 
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
@@ -39,10 +41,12 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
         if (props.selection && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
             updateSearchFromSuggestion(props.selection);
         }
+
+        setInputValue(props.inputRef.current!.value);
     }
 
     function updateSearchFromSuggestion(focusedSuggestion: ItemType) {
-        inputRef.current!.value = props.onRender(focusedSuggestion);
+        setInputValue(props.onRender(focusedSuggestion));
         props.inputHasResults(true);
         setResults([]);
     }
@@ -53,12 +57,15 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
             onChange={(e) => {
                 const query = e.target.value;
                 const results = props.items.filter((item) => query && props.onRender(item).toLowerCase().indexOf(query.toLowerCase()) !== -1);
+
+                setInputValue(query);
                 setResults(results);
                 props.inputHasResults(Boolean(!inputRef.current!.value || results.length));
                 if (results.length) {
                     props.onSelectionChange(results[0]);
                 }
             }}
+            value={inputValue}
             placeholder={Localisation.DO_SEARCH} />
         <Box>{results.map((result, index) => {
             const isActive = props.selection === result;

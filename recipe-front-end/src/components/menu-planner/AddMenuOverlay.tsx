@@ -79,6 +79,7 @@ function AddMenuOverlay(props: Props) {
                     inputHasResults={() => {
                         // ignore
                     }}
+                    defaultValue={''}
                 />
             </ModalBody>
 

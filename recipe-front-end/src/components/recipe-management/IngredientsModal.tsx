@@ -36,9 +36,10 @@ function IngredientsModal(props: Props) {
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
-    const canBeSubmitted = ingredient && quantityNumber;
     const [showExtraOptions, setShowExtraOptions] = useState(false);
     const advancedClasses = showExtraOptions ? '' : 'hidden';
+    const hasName = Boolean(ingredient?.name || focusRef.current?.value);
+    const canBeSubmitted = Boolean(showExtraOptions ? hasName && quantityNumber : ingredient);
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -51,9 +52,10 @@ function IngredientsModal(props: Props) {
                     selection={ingredient}
                     onRender={(ingredient) => ingredient.name}
                     items={props.availableIngredients}
-                    onSelectionChange={(ingredient) => ingredient && setIngredient(ingredient)}
+                    onSelectionChange={(ingredient) => setIngredient(ingredient)}
                     inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                     inputRef={focusRef}
+                    defaultValue={props.ingredientInputs.name}
                 />
 
                 <label>
@@ -88,7 +90,7 @@ function IngredientsModal(props: Props) {
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
-                    name: ingredient!.name,
+                    name: showExtraOptions ? focusRef.current!.value : ingredient?.name || '',
                     quantity_number: quantityNumber,
                     quantity_description: quantityDescription,
                     id: props.ingredientInputs.id,
