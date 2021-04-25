@@ -40,6 +40,9 @@ function IngredientsModal(props: Props) {
     const advancedClasses = showExtraOptions ? '' : 'hidden';
     const hasName = Boolean(ingredient?.name || focusRef.current?.value);
     const canBeSubmitted = Boolean(showExtraOptions ? hasName && quantityNumber : ingredient);
+    const nameCategory = translateCategory(props.categories.filter((category) => {
+        return category.categoryId === categoryId
+    })[0]?.categoryName as any);
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -66,6 +69,13 @@ function IngredientsModal(props: Props) {
                         placeholder={Localisation.QUANTITY}
                     />
                 </label>
+                {advancedClasses && <div><div>
+                    {Localisation.QUANTITY_KIND}: <strong>{quantityDescription}</strong>
+                </div><div>
+                        {Localisation.CATEGORY_INGREDIENT}: <strong>{nameCategory}</strong>
+                    </div>
+                </div>}
+
                 <label className={advancedClasses}>
                     {Localisation.QUANTITY_KIND}
                     <Select value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
@@ -75,6 +85,7 @@ function IngredientsModal(props: Props) {
                         })}
                     </Select>
                 </label>
+
                 <label className={advancedClasses}>
                     {Localisation.CATEGORY_INGREDIENT}
                     <Select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
