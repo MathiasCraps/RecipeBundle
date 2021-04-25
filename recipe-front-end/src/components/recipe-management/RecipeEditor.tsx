@@ -191,7 +191,7 @@ export function RecipeEditor(props: Props) {
             <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
                 {props.editingExisting ? Localisation.EDIT_RECIPE : Localisation.ADD_RECIPE }
             </Button>
-            <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
+            <Button variant="ghost" onClick={close}>{Localisation.CANCEL}</Button>
         </Box>
     </div>)
 }
