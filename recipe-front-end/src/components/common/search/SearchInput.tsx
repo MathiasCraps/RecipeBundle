@@ -41,8 +41,6 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
         if (props.selection && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
             updateSearchFromSuggestion(props.selection);
         }
-
-        setInputValue(props.inputRef.current!.value);
     }
 
     function updateSearchFromSuggestion(focusedSuggestion: ItemType) {
