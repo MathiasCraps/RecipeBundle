@@ -56,12 +56,12 @@ function IngredientsModal(props: Props) {
                     selection={ingredient}
                     onRender={(ingredient) => ingredient.name}
                     items={props.availableIngredients}
-                    onSelectionChange={(ingredient) => {
-                        if (!ingredient) {
-                            ingredient = createEmptyIngredient();
-                            ingredient.name = focusRef.current?.value || '';
+                    onSelectionChange={(draftIngredient) => {
+                        if (!draftIngredient) {
+                            draftIngredient = createEmptyIngredient();
+                            draftIngredient.name = focusRef.current?.value || '';
                         }
-                        setIngredient(ingredient);
+                        setIngredient(draftIngredient);
                     }}
                     inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                     inputRef={focusRef}
