@@ -59,9 +59,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
                 setInputValue(query);
                 setResults(results);
                 props.inputHasResults(Boolean(!inputRef.current!.value || results.length));
-                if (results.length) {
-                    props.onSelectionChange(results[0]);
-                }
+                props.onSelectionChange(results[0]);
             }}
             value={inputValue}
             placeholder={Localisation.DO_SEARCH} />
