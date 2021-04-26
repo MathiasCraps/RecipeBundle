@@ -7,6 +7,7 @@ import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
 import './IngredientsModal.scss';
+import { createEmptyIngredient } from './RecipeEditor';
 
 interface OwnProps {
     ingredientInputs: Ingredient;
@@ -32,7 +33,7 @@ type Props = OwnProps & ReduxProps;
 
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
-    const [ingredient, setIngredient] = useState<QuantityLessIngredient>();
+    const [ingredient, setIngredient] = useState<QuantityLessIngredient>(props.ingredientInputs);
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
@@ -55,7 +56,13 @@ function IngredientsModal(props: Props) {
                     selection={ingredient}
                     onRender={(ingredient) => ingredient.name}
                     items={props.availableIngredients}
-                    onSelectionChange={(ingredient) => setIngredient(ingredient)}
+                    onSelectionChange={(ingredient) => {
+                        if (!ingredient) {
+                            ingredient = createEmptyIngredient();
+                            ingredient.name = focusRef.current?.value || '';
+                        }
+                        setIngredient(ingredient);
+                    }}
                     inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                     inputRef={focusRef}
                     defaultValue={props.ingredientInputs.name}
@@ -101,10 +108,10 @@ function IngredientsModal(props: Props) {
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
-                    name: showExtraOptions ? focusRef.current!.value : ingredient?.name || '',
+                    name: ingredient.name,
                     quantity_number: quantityNumber,
                     quantity_description: quantityDescription,
-                    id: props.ingredientInputs.id,
+                    id: ingredient.id,
                     categoryId,
                     categoryName: ''
                 })}>{Localisation.ADD}</Button>

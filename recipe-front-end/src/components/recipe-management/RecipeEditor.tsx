@@ -43,7 +43,7 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeActio
     };
 }
 
-function createEmptyIngredient(): Ingredient {
+export function createEmptyIngredient(): Ingredient {
     return {
         name: '',
         id: ++index,
