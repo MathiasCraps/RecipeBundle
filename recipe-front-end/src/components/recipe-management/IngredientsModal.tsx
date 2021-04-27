@@ -106,9 +106,11 @@ function IngredientsModal(props: Props) {
                         placeholder={Localisation.QUANTITY}
                     />
                 </label>
-                {advancedClasses && <div><div>
-                    {Localisation.QUANTITY_KIND}: <strong>{quantityDescription}</strong>
-                </div><div>
+                {advancedClasses && <div onClick={() => setShowExtraOptions(true)}>
+                    <div>
+                        {Localisation.QUANTITY_KIND}: <strong>{quantityDescription}</strong>
+                    </div>
+                    <div>
                         {Localisation.CATEGORY_INGREDIENT}: <strong>{nameCategory}</strong>
                     </div>
                 </div>}
