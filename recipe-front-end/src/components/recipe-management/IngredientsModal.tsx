@@ -1,5 +1,5 @@
 import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
 import { Category, Ingredient, QuantityLessIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
@@ -44,6 +44,26 @@ function IngredientsModal(props: Props) {
     const nameCategory = translateCategory(props.categories.filter((category) => {
         return category.categoryId === categoryId
     })[0]?.categoryName as any);
+
+    useEffect(() => {
+        if (!focusRef.current) {
+            return;
+        }
+
+        function onBlur() {
+            const value = focusRef.current?.value || '';
+            if (value && ingredient.name !== value) {
+                const ingredient = createEmptyIngredient();
+                ingredient.name = value;
+                setIngredient(ingredient);
+            }
+        }
+
+        focusRef.current.addEventListener('blur', onBlur);
+        return () => {
+            focusRef.current?.removeEventListener('blur', onBlur);
+        }
+    });
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
