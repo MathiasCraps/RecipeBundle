@@ -44,10 +44,15 @@ function IngredientsModal(props: Props) {
     const nameCategory = translateCategory(props.categories.filter((category) => {
         return category.categoryId === categoryId
     })[0]?.categoryName as any);
+    const [searchIsActive, setSearchIsActive] = useState(false);
 
     useEffect(() => {
         if (!focusRef.current) {
             return;
+        }
+
+        function onFocus() {
+            setSearchIsActive(true);
         }
 
         function onBlur() {
@@ -57,10 +62,14 @@ function IngredientsModal(props: Props) {
                 ingredient.name = value;
                 setIngredient(ingredient);
             }
+
+            setSearchIsActive(false);
         }
 
+        focusRef.current.addEventListener('focus', onFocus);
         focusRef.current.addEventListener('blur', onBlur);
         return () => {
+            focusRef.current?.removeEventListener('blur', onFocus)
             focusRef.current?.removeEventListener('blur', onBlur);
         }
     });
@@ -85,6 +94,7 @@ function IngredientsModal(props: Props) {
                     }}
                     inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                     inputRef={focusRef}
+                    renderResults={searchIsActive}
                     defaultValue={props.ingredientInputs.name}
                 />
 

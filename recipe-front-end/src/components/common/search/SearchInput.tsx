@@ -13,6 +13,7 @@ interface OwnProps<ItemType> {
     onRender: (item: ItemType) => string;
     items: ItemType[];
     defaultValue: string | undefined;
+    renderResults: boolean;
 }
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
@@ -63,7 +64,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
             }}
             value={inputValue}
             placeholder={Localisation.DO_SEARCH} />
-        <Box>{results.map((result, index) => {
+        {props.renderResults && <Box>{results.map((result, index) => {
             const isActive = props.selection === result;
             return (<Box className={`search-result ${isActive ? 'active' : ''}`}
                 onClick={() => {
@@ -75,6 +76,6 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
                 key={index}>
                 <FontAwesomeIcon icon={faAngleRight} /> {props.onRender(result)}
             </Box>)
-        })}</Box>
+        })}</Box>}
     </div>);
 }
