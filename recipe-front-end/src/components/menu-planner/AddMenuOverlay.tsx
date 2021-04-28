@@ -76,9 +76,6 @@ function AddMenuOverlay(props: Props) {
                     onRender={(recipe) => recipe.title}
                     items={props.recipes}
                     inputRef={inputRef}
-                    inputHasResults={() => {
-                        // ignore
-                    }}
                     renderResults={true}
                     defaultValue={''}
                 />

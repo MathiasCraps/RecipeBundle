@@ -39,9 +39,10 @@ function IngredientsModal(props: Props) {
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
-    const [showExtraOptions, setShowExtraOptions] = useState(false);
+    const [forceShowExtraOptions, setForceShowExtraOptions] = useState(false);
+    const shouldShowExtraOptions = ingredient.id < 0 || forceShowExtraOptions; // negative id = new
     const hasName = Boolean(ingredient?.name || focusRef.current?.value);
-    const canBeSubmitted = Boolean(showExtraOptions ? hasName && quantityNumber : ingredient);
+    const canBeSubmitted = Boolean(shouldShowExtraOptions ? hasName && quantityNumber : ingredient);
     const [searchIsActive, setSearchIsActive] = useState(false);
 
     useEffect(() => {
@@ -59,7 +60,6 @@ function IngredientsModal(props: Props) {
                 const ingredient = createEmptyIngredient();
                 ingredient.name = value;
                 setIngredient(ingredient);
-                setShowExtraOptions(true);
             }
 
             setSearchIsActive(false);
@@ -68,7 +68,7 @@ function IngredientsModal(props: Props) {
         focusRef.current.addEventListener('focus', onFocus);
         focusRef.current.addEventListener('blur', onBlur);
         return () => {
-            focusRef.current?.removeEventListener('blur', onFocus)
+            focusRef.current?.removeEventListener('focus', onFocus)
             focusRef.current?.removeEventListener('blur', onBlur);
         }
     });
@@ -88,11 +88,9 @@ function IngredientsModal(props: Props) {
                         if (!draftIngredient) {
                             draftIngredient = createEmptyIngredient();
                             draftIngredient.name = focusRef.current?.value || '';
-                            setShowExtraOptions(true);
                         }
                         setIngredient(draftIngredient);
                     }}
-                    inputHasResults={(hasValidOptions) => setShowExtraOptions(!hasValidOptions)}
                     inputRef={focusRef}
                     renderResults={searchIsActive}
                     defaultValue={props.ingredientInputs.name}
@@ -107,21 +105,21 @@ function IngredientsModal(props: Props) {
                     />
                 </label>
 
-                {!showExtraOptions && <div
+                {!shouldShowExtraOptions && <div
                     className="edit-full"
                     tabIndex={0}
-                    onClick={() => setShowExtraOptions(true)}
+                    onClick={() => setForceShowExtraOptions(true)}
                     onKeyUpCapture={(event) => {
                         if (event.key === 'Enter') {
-                            setShowExtraOptions(true);
+                            setForceShowExtraOptions(true);
                         }
                     }}
                 >   <FontAwesomeIcon icon={faPencilAlt} /> {Localisation.EDIT_DETAILS}
                 </div>}
 
-                {showExtraOptions && <div><label>
+                {shouldShowExtraOptions && <div><label>
                     {Localisation.QUANTITY_KIND}
-                    <Select disabled={!showExtraOptions} value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                    <Select disabled={!shouldShowExtraOptions} value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
                         {quantityDescriptions.map((description, index) => {
                             const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
                             return <option key={index} value={description}>{capitalizedText}</option>
@@ -131,7 +129,7 @@ function IngredientsModal(props: Props) {
 
                     <label>
                         {Localisation.CATEGORY_INGREDIENT}
-                        <Select disabled={!showExtraOptions} value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
+                        <Select disabled={!shouldShowExtraOptions} value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
                             {props.categories.map((category) => {
                                 return <React.Fragment key={category.categoryId}>
                                     <option value={category.categoryId}>
