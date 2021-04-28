@@ -35,10 +35,9 @@ type Props = OwnProps & ReduxProps;
 
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
-    const [ingredient, setIngredient] = useState<QuantityLessIngredient>(props.ingredientInputs);
+    const [ingredient, setIngredient] = useState<Ingredient>(props.ingredientInputs);
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
     const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
-    const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
     const [forceShowExtraOptions, setForceShowExtraOptions] = useState(false);
     const shouldShowExtraOptions = ingredient.id < 0 || forceShowExtraOptions; // negative id = new
     const hasName = Boolean(ingredient?.name || focusRef.current?.value);
@@ -88,8 +87,14 @@ function IngredientsModal(props: Props) {
                         if (!draftIngredient) {
                             draftIngredient = createEmptyIngredient();
                             draftIngredient.name = focusRef.current?.value || '';
+                        } else {
+                            draftIngredient = {
+                                ...createEmptyIngredient(),
+                                ...draftIngredient
+                            }
                         }
-                        setIngredient(draftIngredient);
+
+                        setIngredient(draftIngredient as Ingredient);
                     }}
                     inputRef={focusRef}
                     renderResults={searchIsActive}
@@ -119,7 +124,12 @@ function IngredientsModal(props: Props) {
 
                 {shouldShowExtraOptions && <div><label>
                     {Localisation.QUANTITY_KIND}
-                    <Select disabled={!shouldShowExtraOptions} value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                    <Select disabled={!shouldShowExtraOptions} value={ingredient.quantity_description} onChange={(e) => {
+                        setIngredient({
+                            ...ingredient,
+                            quantity_description: e.target.selectedOptions[0].value
+                        })
+                    }}>
                         {quantityDescriptions.map((description, index) => {
                             const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
                             return <option key={index} value={description}>{capitalizedText}</option>
@@ -129,7 +139,12 @@ function IngredientsModal(props: Props) {
 
                     <label>
                         {Localisation.CATEGORY_INGREDIENT}
-                        <Select disabled={!shouldShowExtraOptions} value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
+                        <Select disabled={!shouldShowExtraOptions} value={ingredient.categoryId} onChange={(e) => {
+                            setIngredient({
+                                ...ingredient,
+                                categoryId: Number(e.target.selectedOptions[0].value)
+                            });
+                        }}>
                             {props.categories.map((category) => {
                                 return <React.Fragment key={category.categoryId}>
                                     <option value={category.categoryId}>
@@ -145,10 +160,10 @@ function IngredientsModal(props: Props) {
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
                     name: ingredient.name,
                     quantity_number: quantityNumber,
-                    quantity_description: quantityDescription,
+                    quantity_description: ingredient.quantity_description,
                     id: ingredient.id,
-                    categoryId,
-                    categoryName: ''
+                    categoryId: ingredient.categoryId,
+                    categoryName: ingredient.categoryName
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>
