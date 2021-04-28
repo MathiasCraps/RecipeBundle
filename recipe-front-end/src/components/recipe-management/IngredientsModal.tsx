@@ -106,7 +106,15 @@ function IngredientsModal(props: Props) {
                         placeholder={Localisation.QUANTITY}
                     />
                 </label>
-                {advancedClasses && <div onClick={() => setShowExtraOptions(true)}>
+                {advancedClasses && <div
+                    tabIndex={0}
+                    onClick={() => setShowExtraOptions(true)}
+                    onKeyUpCapture={(event) => {
+                        if (event.key === 'Enter') {
+                            setShowExtraOptions(true);
+                        }
+                    }}
+                    >
                     <div>
                         {Localisation.QUANTITY_KIND}: <strong>{quantityDescription}</strong>
                     </div>
