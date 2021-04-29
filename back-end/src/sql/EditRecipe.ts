@@ -23,7 +23,10 @@ function ingredientIsModified(ingredientA: Ingredient, ingredientB: Ingredient):
         ingredientA.quantity_description !== ingredientB.quantity_description);
 }
 
-function compareIngredientChanges(sourceIngredients: Ingredient[], targetIngredients: Ingredient[]): ModifiedIngredientsMap {
+function compareIngredientChanges(
+    sourceIngredients: Ingredient[],
+    targetIngredients: Ingredient[]
+): ModifiedIngredientsMap {
     const originalLookupMap: OptimizedOriginalMap = sourceIngredients.reduce<OptimizedOriginalMap>(
         (previous: OptimizedOriginalMap, next: Ingredient) => {
             previous[next.id] = next;
