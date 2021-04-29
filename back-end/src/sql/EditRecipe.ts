@@ -1,20 +1,26 @@
 import { Pool } from "pg";
-import { Ingredient, Recipe } from "../model/RecipeData";
+import { Ingredient, QuantityLessIngredient, Recipe } from "../model/RecipeData";
 import { executeQuery } from '../sql-utils/Database';
 import { addIngredients } from './AddIngredients';
+import { coupleExistingIngredients } from './CoupleExistingIngredients';
 import { updateIngredients } from './EditIngredients';
 import { getAllIngredients } from './GetIngredients';
 import { getRecipeById } from './GetRecipeById';
 import { removeIngredients } from './RemoveIngredients';
 
 type ModifiedIngredientsMap = {
-    added: Ingredient[];
+    addedAndNew: Ingredient[];
+    addedNotNew: Ingredient[];
     edited: Ingredient[];
     removed: Ingredient[];
 };
 
 type OptimizedOriginalMap = {
     [key: string]: Ingredient;
+}
+
+type AllIngredientsLookupMap = {
+    [key: string]: QuantityLessIngredient;
 }
 
 function ingredientIsModified(ingredientA: Ingredient, ingredientB: Ingredient): boolean {
@@ -26,7 +32,8 @@ function ingredientIsModified(ingredientA: Ingredient, ingredientB: Ingredient):
 
 function compareIngredientChanges(
     sourceIngredients: Ingredient[],
-    targetIngredients: Ingredient[]
+    targetIngredients: Ingredient[],
+    allIngredients: QuantityLessIngredient[]
 ): ModifiedIngredientsMap {
     const originalLookupMap: OptimizedOriginalMap = sourceIngredients.reduce<OptimizedOriginalMap>(
         (previous: OptimizedOriginalMap, next: Ingredient) => {
@@ -35,11 +42,21 @@ function compareIngredientChanges(
         }, {}
     );
 
+    const existingIngredientsMap: AllIngredientsLookupMap = allIngredients.reduce(
+        (previous: AllIngredientsLookupMap, next: QuantityLessIngredient) => {
+            previous[next.name] = next;
+            return previous;
+        }, {});
+
     const modificationMap = targetIngredients.reduce<ModifiedIngredientsMap>((previous: ModifiedIngredientsMap, ingredient: Ingredient) => {
         const comparisonEntry = originalLookupMap[ingredient.id]
 
         if (!comparisonEntry) {
-            previous.added.push(ingredient);
+            if (existingIngredientsMap[ingredient.name]) {
+                previous.addedNotNew.push(ingredient)
+            } else {
+                previous.addedAndNew.push(ingredient);
+            }
             return previous;
         }
 
@@ -51,7 +68,7 @@ function compareIngredientChanges(
         delete originalLookupMap[ingredient.id];
 
         return previous;
-    }, { added: [], edited: [], removed: [] });
+    }, { addedAndNew: [], addedNotNew: [], edited: [], removed: [] });
 
     const remainingKeys = Object.keys(originalLookupMap);
 
@@ -84,10 +101,13 @@ export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<stri
 
     const modifiedIngredients = compareIngredientChanges(
         sourceRecipe.ingredients,
-        targetRecipe.ingredients
+        targetRecipe.ingredients,
+        allIngredients
     );
 
-    await addIngredients(pool, modifiedIngredients.added, sourceRecipe.id);
+    await addIngredients(pool, modifiedIngredients.addedAndNew, sourceRecipe.id);
+    await coupleExistingIngredients(pool, modifiedIngredients.addedNotNew, sourceRecipe.id);
+
     await updateIngredients(pool, modifiedIngredients.edited, sourceRecipe.id);
     await removeIngredients(pool, modifiedIngredients.removed, sourceRecipe.id);
 
