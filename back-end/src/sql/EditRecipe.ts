@@ -44,7 +44,7 @@ function compareIngredientChanges(
 
     const existingIngredientsMap: AllIngredientsLookupMap = allIngredients.reduce(
         (previous: AllIngredientsLookupMap, next: QuantityLessIngredient) => {
-            previous[next.name] = next;
+            previous[next.name.toLowerCase()] = next;
             return previous;
         }, {});
 
@@ -52,7 +52,7 @@ function compareIngredientChanges(
         const comparisonEntry = originalLookupMap[ingredient.id]
 
         if (!comparisonEntry) {
-            if (existingIngredientsMap[ingredient.name]) {
+            if (existingIngredientsMap[ingredient.name.toLowerCase()]) {
                 previous.addedNotNew.push(ingredient)
             } else {
                 previous.addedAndNew.push(ingredient);
