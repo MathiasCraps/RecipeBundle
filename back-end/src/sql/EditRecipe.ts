@@ -3,6 +3,7 @@ import { Ingredient, Recipe } from "../model/RecipeData";
 import { executeQuery } from '../sql-utils/Database';
 import { addIngredients } from './AddIngredients';
 import { updateIngredients } from './EditIngredients';
+import { getAllIngredients } from './GetIngredients';
 import { getRecipeById } from './GetRecipeById';
 import { removeIngredients } from './RemoveIngredients';
 
@@ -63,6 +64,7 @@ function compareIngredientChanges(
 
 export async function editRecipe(pool: Pool, targetRecipe: Recipe): Promise<string> {
     const sourceRecipe = await getRecipeById(pool, targetRecipe.id);
+    const allIngredients = await getAllIngredients(pool);
 
     if (!sourceRecipe) {
         throw new Error('Original recipe does not exist.');
