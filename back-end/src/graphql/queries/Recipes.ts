@@ -1,8 +1,19 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { GraphQLFloat, GraphQLInt, GraphQLString } from 'graphql/type/scalars';
 
+export const QuantityLessIngredient = new GraphQLObjectType({
+    name: 'baseIngredient',
+    description: 'Metadata of an ingredient.',
+    fields: () => ({
+        id: { type: new GraphQLNonNull(GraphQLFloat), description: 'The identifier of the ingredient' },
+        name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
+        categoryId: { type: new GraphQLNonNull(GraphQLInt), description: 'The unique identifier of the ingredient category'},
+        categoryName: { type: new GraphQLNonNull(GraphQLString), description: 'The category of the ingredient.'}
+    })
+});
+
 export const IngredientType = new GraphQLObjectType({
-    name: 'ingredient',
+    name: 'quantifiedIngredient',
     description: 'Metadata of an ingredient. Part of a recipe.',
     fields: () => ({
         id: { type: new GraphQLNonNull(GraphQLFloat), description: 'The identifier of the ingredient' },

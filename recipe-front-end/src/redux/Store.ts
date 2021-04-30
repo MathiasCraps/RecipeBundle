@@ -1,5 +1,4 @@
-import { RecipeList } from '../components/recipe-displays/RecipeList';
-import { Category, Recipe } from '../interfaces/Recipe';
+import { Category, QuantityLessIngredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
@@ -35,6 +34,7 @@ export interface ReduxModel {
     mobileFabOpened: boolean;
     shoppingDateRange: DateRange;
     categories: Category[];
+    ingredients: QuantityLessIngredient[];
 }
 
 export enum Actions {
@@ -115,6 +115,7 @@ export interface ToggleMenuIngredientsBoughtAction {
 
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
+
 export const defaultState: ReduxModel = {
     recipes: [],
     openedMenu: OpenedMenu.NONE,
@@ -129,7 +130,8 @@ export const defaultState: ReduxModel = {
         start: today,
         end: nextWeek
     },
-    categories: []
+    categories: [],
+    ingredients: []
 }
 
 export type ReduxAction = ToggleMenuAction | 
