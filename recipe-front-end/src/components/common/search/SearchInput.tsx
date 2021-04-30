@@ -17,7 +17,8 @@ interface OwnProps<ItemType> {
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
     const [results, setResults] = useState<ItemType[]>([]);
-    const [inputValue, setInputValue] = useState(props.defaultValue || '')
+    const [inputValue, setInputValue] = useState(props.defaultValue || '');
+    const [selectedValue, setSelectedValue] = useState<ItemType>();
     const inputRef = props.inputRef;
 
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
@@ -25,21 +26,22 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
             return;
         }
 
-        const currentIndex = props.selection ? results.indexOf(props.selection) : 0;
+        const currentIndex = selectedValue ? results.indexOf(selectedValue) : 0;
         if (event.code === 'ArrowUp' && currentIndex !== 0) {
             event.preventDefault();
-            props.onSelectionChange(results[currentIndex - 1]);
+            setSelectedValue(results[currentIndex - 1]);
             return;
         }
 
         if (event.code === 'ArrowDown' && currentIndex < results.length - 1) {
             event.preventDefault();
-            props.onSelectionChange(results[currentIndex + 1])
+            setSelectedValue(results[currentIndex + 1]);
             return
         }
 
-        if (props.selection && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
-            updateSearchFromSuggestion(props.selection);
+        if (selectedValue && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
+            updateSearchFromSuggestion(selectedValue);
+            props.onSelectionChange(selectedValue)
         }
     }
 
@@ -57,12 +59,11 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
 
                 setInputValue(query);
                 setResults(results);
-                props.onSelectionChange(results[0]);
             }}
             value={inputValue}
             placeholder={Localisation.DO_SEARCH} />
         {props.renderResults && <Box>{results.map((result, index) => {
-            const isActive = props.selection === result;
+            const isActive = selectedValue === result;
             return (<Box className={`search-result ${isActive ? 'active' : ''}`}
                 onClick={() => {
                     props.onSelectionChange(result);
