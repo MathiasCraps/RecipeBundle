@@ -19,6 +19,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
     const [results, setResults] = useState<ItemType[]>([]);
     const [inputValue, setInputValue] = useState(props.defaultValue || '');
     const [selectedValue, setSelectedValue] = useState<ItemType>();
+    const [isHovering, setIsHovering] = useState(false);
     const inputRef = props.inputRef;
 
     function handleQueryType(event: KeyboardEvent<HTMLInputElement>) {
@@ -62,7 +63,10 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
             }}
             value={inputValue}
             placeholder={Localisation.DO_SEARCH} />
-        {props.renderResults && <Box>{results.map((result, index) => {
+        {(props.renderResults || isHovering) && <Box
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+        >{results.map((result, index) => {
             const isActive = selectedValue === result;
             return (<Box className={`search-result ${isActive ? 'active' : ''}`}
                 onClick={() => {
@@ -70,7 +74,7 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
                     updateSearchFromSuggestion(result);
                     inputRef.current!.focus(); // always keep your focus
                 }}
-                onMouseEnter={() => props.onSelectionChange(result)}
+                onMouseEnter={() => setSelectedValue(result)}
                 key={index}>
                 <FontAwesomeIcon icon={faAngleRight} /> {props.onRender(result)}
             </Box>)
