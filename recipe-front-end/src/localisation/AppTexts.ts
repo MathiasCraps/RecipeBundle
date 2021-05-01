@@ -14,6 +14,7 @@ export enum Localisation {
     LOGGED_IN_ENCOURAGING = "Ingelogd? Goed bezig.",
     LOG_OUT = 'Toch liever ninja? Log uit.',
     NO_RECIPES_FOUND = 'Geen recepten gevonden',
+    ENCOURAGE_ADDING_RECIPES = 'De magie van Rebundle werkt enkel als je recepten hebt.',
     ADD_OWN_RECIPE = 'Eigen recept toevoegen',
     EDIT_RECIPE = 'Recept bijwerken',
     ADD_RECIPE = 'Recept toevoegen',

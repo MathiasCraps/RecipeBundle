@@ -25,15 +25,18 @@ const options = {
 }
 
 function mapsStateToProps(reduxState: ReduxModel): ReduxProps {
-    return {
-      recipes: reduxState.recipes,
-      isLoggedIn: reduxState.user.loggedIn
-    }
+  return {
+    recipes: reduxState.recipes,
+    isLoggedIn: reduxState.user.loggedIn
+  }
 }
 
 function RecipeList(props: ReduxProps): React.ReactElement {
   if (!props.recipes.length) {
-    const content = props.isLoggedIn ? <Link to={Paths.ADD_RECIPE}>{Localisation.ADD_OWN_RECIPE}</Link> : <NotLoggedIn extraText="" />
+    const content = props.isLoggedIn ? <div>
+      <p>{Localisation.ENCOURAGE_ADDING_RECIPES}</p>
+      <Link to={Paths.ADD_RECIPE}>{Localisation.ADD_OWN_RECIPE}</Link>
+    </div> : <NotLoggedIn extraText="" />
     return <ContentContainer>
        <h2>{Localisation.NO_RECIPES_FOUND}</h2>
        {content}
