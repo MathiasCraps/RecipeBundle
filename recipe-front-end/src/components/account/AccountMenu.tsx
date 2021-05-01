@@ -40,7 +40,7 @@ function AccountMenu(props: Props) {
                     <b>{`${Localisation.WELCOME} ${displayedUserName}`}</b>
                 </DrawerHeader>
                 <DrawerBody>
-                    {props.user.loggedIn ? <LoggedInText /> : <NotLoggedIn />}
+                    {props.user.loggedIn ? <LoggedInText /> : <NotLoggedIn extraText={Localisation.NOT_YOU} />}
                 </DrawerBody>
             </DrawerContent>
         </DrawerOverlay>
