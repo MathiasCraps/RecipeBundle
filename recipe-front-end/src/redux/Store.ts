@@ -1,4 +1,3 @@
-import { RecipeList } from '../components/recipe-displays/RecipeList';
 import { Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
