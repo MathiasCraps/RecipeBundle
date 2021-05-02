@@ -12,9 +12,14 @@ export interface Ingredient {
     categoryName: string | undefined;
 }
 
+export interface LocalizedCategory {
+    [key: string]: string;
+}
+
 export interface Category {
-    categoryId: number;
+    categoryId: number | undefined;
     categoryName: string;
+    translations: LocalizedCategory
 }
 
 export interface TestData {
