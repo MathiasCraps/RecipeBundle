@@ -7,11 +7,12 @@ import { Pool } from "pg";
 import sharp from 'sharp';
 import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
-import { Recipe } from "./model/RecipeData";
+import { Category, Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { executeQuery } from './sql-utils/Database';
 import { addRecipe } from "./sql/AddRecipe";
+import { createCategories } from './sql/CreateCategories';
 import { createTables } from "./sql/CreateTables";
 import { editRecipe } from './sql/EditRecipe';
 import { isRecipe } from "./validation/TypeGuards";
@@ -200,7 +201,11 @@ pool.connect(async (error, client, done) => {
 
     // ensure tables are created
     try {
-        await createTables(pool);
+        const hasBeenCreated = await createTables(pool);
+        if (hasBeenCreated) {
+            const data: Category[] = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
+            createCategories(pool, data)
+        }
     } catch (err) {
         console.log('error setting up tables', err);
     }
