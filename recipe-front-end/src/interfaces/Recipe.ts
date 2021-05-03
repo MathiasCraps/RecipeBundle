@@ -21,9 +21,14 @@ export interface Recipe {
     id: number;
 }
 
+export interface TranslationMap {
+    [key: string]: string;
+}
+
 export interface Category {
     categoryId: number;
     categoryName: string;
+    translations: TranslationMap;
 }
 
 export interface RawDayMenu {
