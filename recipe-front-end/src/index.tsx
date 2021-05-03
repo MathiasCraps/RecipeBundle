@@ -63,6 +63,9 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     categories {
       categoryId
       categoryName
+      translations {
+        nl
+      }
     }
   }`);
 
