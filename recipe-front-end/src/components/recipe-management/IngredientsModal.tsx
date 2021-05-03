@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
 import { Category, Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
-import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import './IngredientsModal.scss';
 
@@ -72,7 +71,7 @@ function IngredientsModal(props: Props) {
                         {props.categories.map((category) => {
                             return <React.Fragment key={category.categoryId}>
                                 <option value={category.categoryId}>
-                                    {translateCategory(category.categoryName as any)}
+                                    {category.translations.nl}
                                 </option>
                             </React.Fragment>
                         })}
