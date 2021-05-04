@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, RawDayMenu, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, Category, Ingredient, RawDayMenu, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -14,6 +14,26 @@ import { DayMenu, defaultState, handleState } from './redux/Store';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
+
+type LinkedMap = { [key: string]: Category };
+function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] {
+  const linkedMap: LinkedMap = categories.reduce((previous: LinkedMap, next: Category) => {
+    previous[next.categoryId] = next;
+    return previous;
+  }, {});
+
+  return recipes.map((recipe) => {
+    return {
+      ...recipe,
+      ingredients: recipe.ingredients.map((ingredient) => {
+        return {
+          ...ingredient,
+          category: linkedMap[ingredient.id]
+        } as Ingredient;
+      })
+    };
+  });
+}
 
 function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const entry = recipes.filter((recipe) => recipe.id === menu.recipeId)[0];
@@ -69,8 +89,10 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     }
   }`);
 
+  const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
+
   const linkedMenu: DayMenu[] = applicationData.menus
-    .map((menu) => findMenu(menu, applicationData.recipes))
+    .map((menu) => findMenu(menu, linkedRecipes))
     .filter((value) => value !== undefined) as DayMenu[];
 
 
@@ -86,7 +108,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       name: userData.userName
     },
     activeDay: calculateStartOfDate(new Date()).getTime(), // use today as starting date
-    recipes: applicationData.recipes,
+    recipes: linkedRecipes,
     categories: applicationData.categories,
     menuPlanning: linkedMenu
   }, applyMiddleware(thunk));
