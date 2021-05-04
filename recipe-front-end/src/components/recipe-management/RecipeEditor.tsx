@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
-import { Ingredient, Recipe } from "../../interfaces/Recipe";
+import { Ingredient, QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
@@ -43,7 +43,7 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeActio
     };
 }
 
-function createEmptyIngredient(): Ingredient {
+function createEmptyIngredient(): QuantifiedIngredient {
     return {
         name: '',
         id: ++index,
@@ -65,7 +65,7 @@ export function RecipeEditor(props: Props) {
         window.location.hash = Paths.BASE;
     }
 
-    function removeIngredient(requestedRemoveIngredient: Ingredient) {
+    function removeIngredient(requestedRemoveIngredient: QuantifiedIngredient) {
         const shallowClone = [...ingredients];
         setIngredients(shallowClone.filter((ingredient) => ingredient.id !== requestedRemoveIngredient.id));
     }
@@ -77,7 +77,7 @@ export function RecipeEditor(props: Props) {
 
         const recipeData: Recipe = {
             title,
-            ingredients,
+            ingredients: ingredients as unknown as Ingredient[],
             steps,
             image: props.defaultState.image,
             id: props.defaultState.id || -1
@@ -115,11 +115,11 @@ export function RecipeEditor(props: Props) {
 
     const defaultState = props.defaultState;
 
-    const [ingredients, setIngredients] = useState<Ingredient[]>(defaultState.ingredients);
+    const [ingredients, setIngredients] = useState<QuantifiedIngredient[]>(defaultState.ingredients);
     const [title, setTitle] = useState(defaultState.title);
     const [steps, setSteps] = useState(defaultState.steps);
     const [imagePath, setImagePath] = useState(defaultState.image);
-    const [editingIngredient, setEditingIngredient] = useState<Ingredient>()
+    const [editingIngredient, setEditingIngredient] = useState<QuantifiedIngredient>()
     const ref = useRef<HTMLInputElement>(null);
 
     const baseFilled = Boolean(ingredients.length && title && steps)
@@ -134,7 +134,7 @@ export function RecipeEditor(props: Props) {
         </Box>
 
         <Box className="box"><b>{Localisation.INGREDIENTS}</b>
-            <Box>{ingredients.map((ingredient: Ingredient) => {
+            <Box>{ingredients.map((ingredient: QuantifiedIngredient) => {
                 const { name, quantity_number, quantity_description } = ingredient;
                 return (<Box className="edit-ingredient-container" key={ingredient.id}>
                     <label>
@@ -151,7 +151,7 @@ export function RecipeEditor(props: Props) {
 
 
             {editingIngredient && <IngredientsModal
-                onConfirm={(ingredient: Ingredient) => {
+                onConfirm={(ingredient: QuantifiedIngredient) => {
                     const identifier = ingredient.id;
                     const shallowCopy = [...ingredients];
                     const entryToReplace = shallowCopy.filter((ingredient) => ingredient.id === identifier);

@@ -1,14 +1,14 @@
 import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { Category, Ingredient } from '../../interfaces/Recipe';
+import { Category, QuantifiedIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { ReduxModel } from '../../redux/Store';
 import './IngredientsModal.scss';
 
 interface OwnProps {
-    ingredientInputs: Ingredient;
-    onConfirm: (newValue: Ingredient) => void;
+    ingredientInputs: QuantifiedIngredient;
+    onConfirm: (newValue: QuantifiedIngredient) => void;
     onCancel: () => void;
 }
 
