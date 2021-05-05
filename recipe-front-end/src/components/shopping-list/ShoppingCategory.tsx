@@ -2,9 +2,8 @@ import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Ingredient } from '../../interfaces/Recipe';
-import { translateCategory } from '../../localisation/CategoryLocalisation';
-import { ShoppingIngredient } from './ShoppingIngredient';
 import './ShoppingCategory.scss';
+import { ShoppingIngredient } from './ShoppingIngredient';
 
 interface OwnProps {
     ingredients: Ingredient[];
@@ -18,7 +17,7 @@ export function ShoppingCategory(props: OwnProps) {
         <h3>
             <button onClick={() => setIsOpened(!isOpened)}>
                 <FontAwesomeIcon className="display-icon" icon={isOpened ? faCaretDown : faCaretRight} />
-                {translateCategory(props.ingredients[0].categoryName as any)}
+                {props.ingredients[0].category.translations.nl}
             </button>
         </h3>
         <ul className="category-list" style={{ display }}>

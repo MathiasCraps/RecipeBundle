@@ -9,7 +9,6 @@ export interface BaseIngredient {
     id: number;
     name: string;
     categoryId: number;
-    categoryName: string;
 }
 
 export interface QuantifiedIngredient extends BaseIngredient {

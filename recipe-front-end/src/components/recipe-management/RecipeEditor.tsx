@@ -50,7 +50,6 @@ function createEmptyIngredient(): QuantifiedIngredient {
         quantity_number: 0,
         quantity_description: quantityDescriptions[0],
         categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding
-        categoryName: 'oils'
     };
 }
 

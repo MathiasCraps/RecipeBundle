@@ -85,7 +85,6 @@ function IngredientsModal(props: Props) {
                     quantity_description: quantityDescription,
                     id: props.ingredientInputs.id,
                     categoryId,
-                    categoryName: ''
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>
