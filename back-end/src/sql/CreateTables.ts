@@ -27,6 +27,13 @@ export async function createTables(pool: Pool) {
         category_name varchar(100) NOT NULL
     )`);
 
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategoryTranslation (
+        category_id INT,
+        language_code varchar(2) NOT NULL,
+        localised_name varchar(100) NOT NULL,
+        FOREIGN KEY (category_id) REFERENCES IngredientCategory (id)
+    )`);
+
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Ingredients (
         id serial PRIMARY KEY,
         ingredient_name varchar(500) NOT NULL,

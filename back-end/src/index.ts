@@ -7,7 +7,7 @@ import { Pool } from "pg";
 import sharp from 'sharp';
 import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
-import { Recipe, TestData } from "./model/RecipeData";
+import { Category, Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { executeQuery } from './sql-utils/Database';
@@ -203,13 +203,8 @@ pool.connect(async (error, client, done) => {
     try {
         const hasBeenCreated = await createTables(pool);
         if (hasBeenCreated) {
-            const testData: TestData = JSON.parse(fs.readFileSync('testData.json', 'utf8'));
-            const recipes = testData.recipes;
-            await createCategories(pool, testData.categories);
-
-            for (let recipe of recipes) {
-                await addRecipe(pool, recipe);
-            }
+            const data: Category[] = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
+            createCategories(pool, data)
         }
     } catch (err) {
         console.log('error setting up tables', err);

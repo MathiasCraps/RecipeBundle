@@ -1,4 +1,4 @@
-import { Category, QuantityLessIngredient, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, Ingredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
@@ -34,7 +34,7 @@ export interface ReduxModel {
     mobileFabOpened: boolean;
     shoppingDateRange: DateRange;
     categories: Category[];
-    ingredients: QuantityLessIngredient[];
+    ingredients: BaseIngredient[];
 }
 
 export enum Actions {

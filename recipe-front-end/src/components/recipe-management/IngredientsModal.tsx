@@ -3,23 +3,22 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { Category, Ingredient, QuantityLessIngredient } from '../../interfaces/Recipe';
+import { BaseIngredient, Category, Ingredient, QuantifiedIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
-import { translateCategory } from '../../localisation/CategoryLocalisation';
 import { ReduxModel } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
 import './IngredientsModal.scss';
 import { createEmptyIngredient } from './RecipeEditor';
 
 interface OwnProps {
-    ingredientInputs: Ingredient;
-    onConfirm: (newValue: Ingredient) => void;
+    ingredientInputs: QuantifiedIngredient;
+    onConfirm: (newValue: QuantifiedIngredient) => void;
     onCancel: () => void;
 }
 
 interface ReduxProps {
     categories: Category[];
-    availableIngredients: QuantityLessIngredient[];
+    availableIngredients: BaseIngredient[];
 }
 
 export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
@@ -35,9 +34,8 @@ type Props = OwnProps & ReduxProps;
 
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
-    const [ingredient, setIngredient] = useState<Ingredient>(props.ingredientInputs);
+    const [ingredient, setIngredient] = useState<QuantifiedIngredient>(props.ingredientInputs);
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
-    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
     const [forceShowExtraOptions, setForceShowExtraOptions] = useState(false);
     const shouldShowExtraOptions = ingredient.id < 0 || forceShowExtraOptions; // negative id = new
     const hasName = Boolean(ingredient?.name || focusRef.current?.value);
@@ -79,7 +77,7 @@ function IngredientsModal(props: Props) {
             <ModalBody className="add-ingredients-modal">
                 <Heading as="h3">{Localisation.EDIT_INGREDIENT}</Heading>
                 {Localisation.INGREDIENT_NAME}
-                <SearchInput<QuantityLessIngredient>
+                <SearchInput<BaseIngredient>
                     selection={ingredient}
                     onRender={(ingredient) => ingredient.name}
                     items={props.availableIngredients}
@@ -148,7 +146,7 @@ function IngredientsModal(props: Props) {
                             {props.categories.map((category) => {
                                 return <React.Fragment key={category.categoryId}>
                                     <option value={category.categoryId}>
-                                        {translateCategory(category.categoryName as any)}
+                                        {category.translations.nl}
                                     </option>
                                 </React.Fragment>
                             })}
@@ -162,8 +160,7 @@ function IngredientsModal(props: Props) {
                     quantity_number: quantityNumber,
                     quantity_description: ingredient.quantity_description,
                     id: ingredient.id,
-                    categoryId: ingredient.categoryId,
-                    categoryName: ingredient.categoryName
+                    categoryId: ingredient.categoryId
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>

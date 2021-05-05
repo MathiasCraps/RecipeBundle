@@ -10,14 +10,19 @@ export interface QuantityLessIngredient {
     categoryName: string | undefined;
 }
 
+export interface LocalizedCategory {
+    [key: string]: string;
+}
+
 export interface Ingredient extends QuantityLessIngredient {
     quantity_number: number | null;
     quantity_description: string;
 }
 
 export interface Category {
-    categoryId: number;
+    categoryId: number | undefined;
     categoryName: string;
+    translations: LocalizedCategory
 }
 
 export interface TestData {

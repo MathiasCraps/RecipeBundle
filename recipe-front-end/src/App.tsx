@@ -6,7 +6,7 @@ import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import ActionsContainer from './components/common/ActionsContainer';
 import MenuPlanner from "./components/menu-planner/MenuPlanner";
-import { RecipeList } from "./components/recipe-displays/RecipeList";
+import RecipeList from "./components/recipe-displays/RecipeList";
 import RecipeOverview from "./components/recipe-displays/RecipeOverview";
 import AddRecipeMenu from "./components/recipe-management/AddRecipeMenu";
 import EditRecipeMenu from './components/recipe-management/EditRecipeMenu';
@@ -45,7 +45,7 @@ function App(props: AppProps) {
         <Route path={Paths.PLANNER}><MenuPlanner /></Route>
         <Route path={Paths.LIST}><ShoppingListMain /></Route>
         <Route path={Paths.EDIT_RECIPE}><EditRecipeMenu /></Route>
-        <Route path={Paths.BASE}><RecipeList recipes={props.recipes} /></Route>
+        <Route path={Paths.BASE}><RecipeList /></Route>
       </Switch>
   </header></Box>)
 }

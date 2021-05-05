@@ -1,33 +1,56 @@
 export interface ApplicationData {
     menus: RawDayMenu[];
-    recipes: Recipe[];
+    recipes: RawRecipe[];
     categories: Category[];
-    ingredients: QuantityLessIngredient[];
+    ingredients: BaseIngredient[];
 }
 
-export interface QuantityLessIngredient {
-    name: string;
+export interface BaseIngredient {
     id: number;
+    name: string;
     categoryId: number;
-    categoryName: string;
 }
 
-export interface Ingredient extends QuantityLessIngredient {
-    quantity_number: number | null;
+export interface QuantifiedIngredient extends BaseIngredient {
+    quantity_number: number;
     quantity_description: string;
 }
 
-export interface Recipe {
+export interface Ingredient extends QuantifiedIngredient {
+    category: Category;
+}
+
+// interface BaseRecipe<IngredientType> {
+// export interface Ingredient extends QuantityLessIngredient {
+//     quantity_number: number | null;
+//     quantity_description: string;
+// }
+
+// export interface Recipe {
+interface BaseRecipe<IngredientType> {
     title: string;
-    ingredients: Ingredient[];
     steps: string;
     image: string;
     id: number;
+    ingredients: IngredientType[];
+}
+
+export interface RawRecipe extends BaseRecipe<QuantifiedIngredient> {
+
+}
+
+export interface Recipe extends BaseRecipe<Ingredient> {
+
+}
+
+export interface TranslationMap {
+    [key: string]: string;
 }
 
 export interface Category {
     categoryId: number;
     categoryName: string;
+    translations: TranslationMap;
 }
 
 export interface RawDayMenu {

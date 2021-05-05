@@ -1,0 +1,17 @@
+[
+  { "categoryName": "vegetables", "translations": { "nl": "Groenten" } },
+  { "categoryName": "grains", "translations": { "nl": "Graanproducten" } },
+  { "categoryName": "nuts", "translations": { "nl": "Noten/zaden" } },
+  { "categoryName": "legumes", "translations": { "nl": "Peulvruchten" } },
+  { "categoryName": "meat-replacer", "translations": { "nl": "Vleesvervanger" } },
+  { "categoryName": "fruits", "translations": { "nl": "Fruit" } },
+  { "categoryName": "drinks", "translations": { "nl": "Drinken" } },
+  { "categoryName": "oils", "translations": { "nl": "Oliën" } },
+  { "categoryName": "sauces", "translations": { "nl": "Sauzen" } },
+  { "categoryName": "spreads", "translations": { "nl": "Beleg" } },
+  { "categoryName": "tins", "translations": { "nl": "Geblikte voeding" } },
+  { "categoryName": "spices", "translations": { "nl": "Kruiden" } },
+  { "categoryName": "sugars", "translations": { "nl": "Suikers" } },
+  { "categoryName": "freeze-wares", "translations": { "nl": "Diepvrieswaren" } },
+  { "categoryName": "misc", "translations": { "nl": "Divers" } }
+]
