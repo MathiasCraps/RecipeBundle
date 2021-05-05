@@ -1,10 +1,14 @@
 import { Button, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Select } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { Category, QuantifiedIngredient } from '../../interfaces/Recipe';
+import { BaseIngredient, Category, Ingredient, QuantifiedIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { ReduxModel } from '../../redux/Store';
+import SearchInput from '../common/search/SearchInput';
 import './IngredientsModal.scss';
+import { createEmptyIngredient } from './RecipeEditor';
 
 interface OwnProps {
     ingredientInputs: QuantifiedIngredient;
@@ -14,13 +18,15 @@ interface OwnProps {
 
 interface ReduxProps {
     categories: Category[];
+    availableIngredients: BaseIngredient[];
 }
 
 export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
 
 function mapStateToProps(reduxState: ReduxModel): ReduxProps {
     return {
-        categories: reduxState.categories
+        categories: reduxState.categories,
+        availableIngredients: reduxState.ingredients
     }
 }
 
@@ -28,11 +34,41 @@ type Props = OwnProps & ReduxProps;
 
 function IngredientsModal(props: Props) {
     const focusRef = useRef<HTMLInputElement>(null);
-    const [name, setName] = useState(props.ingredientInputs.name);
+    const [ingredient, setIngredient] = useState<QuantifiedIngredient>(props.ingredientInputs);
     const [quantityNumber, setQuantityNumber] = useState(props.ingredientInputs.quantity_number);
-    const [quantityDescription, setQuantityDescription] = useState<string>(props.ingredientInputs.quantity_description);
-    const [categoryId, setCategoryId] = useState<number>(props.ingredientInputs.categoryId);
-    const canBeSubmitted = name && quantityNumber;
+    const [forceShowExtraOptions, setForceShowExtraOptions] = useState(false);
+    const shouldShowExtraOptions = ingredient.id < 0 || forceShowExtraOptions; // negative id = new
+    const hasName = Boolean(ingredient?.name || focusRef.current?.value);
+    const canBeSubmitted = Boolean(shouldShowExtraOptions ? hasName && quantityNumber : ingredient);
+    const [searchIsActive, setSearchIsActive] = useState(false);
+
+    useEffect(() => {
+        if (!focusRef.current) {
+            return;
+        }
+
+        function onFocus() {
+            setSearchIsActive(true);
+        }
+
+        function onBlur() {
+            const value = focusRef.current?.value || '';
+            if (value && ingredient.name !== value) {
+                const ingredient = createEmptyIngredient();
+                ingredient.name = value;
+                setIngredient(ingredient);
+            }
+
+            setSearchIsActive(false);
+        }
+
+        focusRef.current.addEventListener('focus', onFocus);
+        focusRef.current.addEventListener('blur', onBlur);
+        return () => {
+            focusRef.current?.removeEventListener('focus', onFocus)
+            focusRef.current?.removeEventListener('blur', onBlur);
+        }
+    });
 
     return (<Modal isOpen={true} onClose={props.onCancel} initialFocusRef={focusRef}>
         <ModalOverlay />
@@ -40,13 +76,28 @@ function IngredientsModal(props: Props) {
             <ModalCloseButton onClick={props.onCancel} />
             <ModalBody className="add-ingredients-modal">
                 <Heading as="h3">{Localisation.EDIT_INGREDIENT}</Heading>
-                <label>
-                    {Localisation.INGREDIENT_NAME}
-                    <Input ref={focusRef}
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder={Localisation.INGREDIENT_NAME}
-                    /></label>
+                {Localisation.INGREDIENT_NAME}
+                <SearchInput<BaseIngredient>
+                    selection={ingredient}
+                    onRender={(ingredient) => ingredient.name}
+                    items={props.availableIngredients}
+                    onSelectionChange={(draftIngredient) => {
+                        if (!draftIngredient) {
+                            draftIngredient = createEmptyIngredient();
+                            draftIngredient.name = focusRef.current?.value || '';
+                        } else {
+                            draftIngredient = {
+                                ...createEmptyIngredient(),
+                                ...draftIngredient
+                            }
+                        }
+
+                        setIngredient(draftIngredient as Ingredient);
+                    }}
+                    inputRef={focusRef}
+                    renderResults={searchIsActive}
+                    defaultValue={props.ingredientInputs.name}
+                />
 
                 <label>
                     {Localisation.QUANTITY}
@@ -56,35 +107,60 @@ function IngredientsModal(props: Props) {
                         placeholder={Localisation.QUANTITY}
                     />
                 </label>
-                <label>
+
+                {!shouldShowExtraOptions && <div
+                    className="edit-full"
+                    tabIndex={0}
+                    onClick={() => setForceShowExtraOptions(true)}
+                    onKeyUpCapture={(event) => {
+                        if (event.key === 'Enter') {
+                            setForceShowExtraOptions(true);
+                        }
+                    }}
+                >   <FontAwesomeIcon icon={faPencilAlt} /> {Localisation.EDIT_DETAILS}
+                </div>}
+
+                {shouldShowExtraOptions && <div><label>
                     {Localisation.QUANTITY_KIND}
-                    <Select value={quantityDescription} onChange={(e) => setQuantityDescription(e.target.selectedOptions[0].value)}>
+                    <Select disabled={!shouldShowExtraOptions} value={ingredient.quantity_description} onChange={(e) => {
+                        setIngredient({
+                            ...ingredient,
+                            quantity_description: e.target.selectedOptions[0].value
+                        })
+                    }}>
                         {quantityDescriptions.map((description, index) => {
                             const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
                             return <option key={index} value={description}>{capitalizedText}</option>
                         })}
                     </Select>
                 </label>
-                <label>
-                    {Localisation.CATEGORY_INGREDIENT}
-                    <Select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.selectedOptions[0].value))}>
-                        {props.categories.map((category) => {
-                            return <React.Fragment key={category.categoryId}>
-                                <option value={category.categoryId}>
-                                    {category.translations.nl}
-                                </option>
-                            </React.Fragment>
-                        })}
-                    </Select>
-                </label>
+
+                    <label>
+                        {Localisation.CATEGORY_INGREDIENT}
+                        <Select disabled={!shouldShowExtraOptions} value={ingredient.categoryId} onChange={(e) => {
+                            setIngredient({
+                                ...ingredient,
+                                categoryId: Number(e.target.selectedOptions[0].value)
+                            });
+                        }}>
+                            {props.categories.map((category) => {
+                                return <React.Fragment key={category.categoryId}>
+                                    <option value={category.categoryId}>
+                                        {category.translations.nl}
+                                    </option>
+                                </React.Fragment>
+                            })}
+                        </Select>
+                    </label>
+                </div>}
             </ModalBody>
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
-                    name,
+                    name: ingredient.name,
                     quantity_number: quantityNumber,
-                    quantity_description: quantityDescription,
-                    id: props.ingredientInputs.id,
-                    categoryId,
+                    quantity_description: ingredient.quantity_description,
+                    id: ingredient.id,
+                    categoryId: ingredient.categoryId
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>

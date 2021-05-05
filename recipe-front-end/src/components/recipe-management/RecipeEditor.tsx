@@ -43,7 +43,7 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeActio
     };
 }
 
-function createEmptyIngredient(): QuantifiedIngredient {
+export function createEmptyIngredient(): QuantifiedIngredient {
     return {
         name: '',
         id: ++index,
@@ -51,6 +51,11 @@ function createEmptyIngredient(): QuantifiedIngredient {
         quantity_description: quantityDescriptions[0],
         categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding
     };
+}
+
+interface IngredientModificationKind {
+    action: 'add' | 'edit';
+    ingredient: QuantifiedIngredient;
 }
 
 export function RecipeEditor(props: Props) {
@@ -108,7 +113,7 @@ export function RecipeEditor(props: Props) {
         setTitle(props.defaultState.title);
         setSteps(props.defaultState.steps);
         setImagePath(props.defaultState.image);
-        setEditingIngredient(undefined);
+        setEditingType(undefined);
         close();
     }
 
@@ -119,6 +124,7 @@ export function RecipeEditor(props: Props) {
     const [steps, setSteps] = useState(defaultState.steps);
     const [imagePath, setImagePath] = useState(defaultState.image);
     const [editingIngredient, setEditingIngredient] = useState<QuantifiedIngredient>()
+    const [editingType, setEditingType] = useState<IngredientModificationKind>();
     const ref = useRef<HTMLInputElement>(null);
 
     const baseFilled = Boolean(ingredients.length && title && steps)
@@ -138,7 +144,12 @@ export function RecipeEditor(props: Props) {
                 return (<Box className="edit-ingredient-container" key={ingredient.id}>
                     <label>
                         <Tooltip label={Localisation.EDIT_INGREDIENT} fontSize="md">
-                            <Button onClick={() => setEditingIngredient(ingredient)}><FontAwesomeIcon icon={faPencilAlt} /></Button>
+                            <Button onClick={() => {
+                                setEditingType({
+                                    action: 'edit',
+                                    ingredient
+                                });
+                            }}><FontAwesomeIcon icon={faPencilAlt} /></Button>
                         </Tooltip>
                         <Tooltip label={Localisation.REMOVE_INGREDIENT} fontSize="md">
                             <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
@@ -149,9 +160,13 @@ export function RecipeEditor(props: Props) {
             })}</Box>
 
 
-            {editingIngredient && <IngredientsModal
+            {editingType && <IngredientsModal
                 onConfirm={(ingredient: QuantifiedIngredient) => {
-                    const identifier = ingredient.id;
+                    if (!editingType) {
+                        return;
+                    }
+
+                    const identifier = editingType.ingredient.id;
                     const shallowCopy = [...ingredients];
                     const entryToReplace = shallowCopy.filter((ingredient) => ingredient.id === identifier);
                     const indexOfEntryToReplace = shallowCopy.indexOf(entryToReplace[0]);
@@ -162,15 +177,21 @@ export function RecipeEditor(props: Props) {
                         shallowCopy.push(ingredient);
                     }
 
-                    setEditingIngredient(undefined);
+                    setEditingType(undefined);
                     setIngredients(shallowCopy);
                 }}
                 onCancel={() => {
-                    setEditingIngredient(undefined)
+                    setEditingType(undefined);
                 }}
-                ingredientInputs={editingIngredient} />}
+                ingredientInputs={editingType.ingredient} />}
 
-            <Button onClick={() => setEditingIngredient(createEmptyIngredient())}><FontAwesomeIcon icon={faPlus} /></Button>
+            <Button onClick={() => {
+                const newIngredient = createEmptyIngredient();
+                setEditingType({
+                    action: 'add',
+                    ingredient: newIngredient
+                });
+            }}><FontAwesomeIcon icon={faPlus} /></Button>
         </Box>
 
         <Box className="box">
@@ -190,7 +211,7 @@ export function RecipeEditor(props: Props) {
             <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={() => postRecipe()}>
                 {props.editingExisting ? Localisation.EDIT_RECIPE : Localisation.ADD_RECIPE }
             </Button>
-            <Button variant="ghost" onClick={() => close()}>{Localisation.CANCEL}</Button>
+            <Button variant="ghost" onClick={close}>{Localisation.CANCEL}</Button>
         </Box>
     </div>)
 }

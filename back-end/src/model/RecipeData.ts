@@ -3,17 +3,20 @@ export interface ApplicationData {
     recipes: Recipe[];
 }
 
-export interface Ingredient {
+export interface QuantityLessIngredient {
     id: number;
     name: string;
-    quantity_number: number | null;
-    quantity_description: string;
     categoryId: number;
     categoryName: string | undefined;
 }
 
 export interface LocalizedCategory {
     [key: string]: string;
+}
+
+export interface Ingredient extends QuantityLessIngredient {
+    quantity_number: number | null;
+    quantity_description: string;
 }
 
 export interface Category {

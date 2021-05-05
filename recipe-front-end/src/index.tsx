@@ -86,6 +86,12 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
         nl
       }
     }
+    ingredients {
+      id
+      name
+      categoryId
+      categoryName
+    }
   }`);
 
   const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
@@ -109,7 +115,8 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     activeDay: calculateStartOfDate(new Date()).getTime(), // use today as starting date
     recipes: linkedRecipes,
     categories: applicationData.categories,
-    menuPlanning: linkedMenu
+    menuPlanning: linkedMenu,
+    ingredients: applicationData.ingredients
   }, applyMiddleware(thunk));
 
   ReactDOM.render(

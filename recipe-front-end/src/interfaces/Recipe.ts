@@ -2,7 +2,7 @@ export interface ApplicationData {
     menus: RawDayMenu[];
     recipes: RawRecipe[];
     categories: Category[];
-    ingredients: BaseIngredient;
+    ingredients: BaseIngredient[];
 }
 
 export interface BaseIngredient {
@@ -20,6 +20,13 @@ export interface Ingredient extends QuantifiedIngredient {
     category: Category;
 }
 
+// interface BaseRecipe<IngredientType> {
+// export interface Ingredient extends QuantityLessIngredient {
+//     quantity_number: number | null;
+//     quantity_description: string;
+// }
+
+// export interface Recipe {
 interface BaseRecipe<IngredientType> {
     title: string;
     steps: string;
