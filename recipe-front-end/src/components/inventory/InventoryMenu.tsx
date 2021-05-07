@@ -1,4 +1,6 @@
 import { Heading } from '@chakra-ui/react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -24,6 +26,9 @@ function InventoryMenu(props: ReduxProps) {
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
+        <div tabIndex={0} style={{ cursor: 'pointer' }}>
+            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
+        </div>
     </ContentContainer>
 }
 
