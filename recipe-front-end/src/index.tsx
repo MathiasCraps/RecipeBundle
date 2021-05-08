@@ -28,7 +28,7 @@ function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] 
       ingredients: recipe.ingredients.map((ingredient) => {
         return {
           ...ingredient,
-          category: linkedMap[ingredient.id]
+          category: linkedMap[ingredient.categoryId]
         } as Ingredient;
       })
     };
