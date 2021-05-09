@@ -6,17 +6,19 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
-import { ReduxModel } from '../../redux/Store';
+import { InventoryItem, ReduxModel } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
-import { InventoryModal } from './InventoryModal';
+import InventoryModal from './InventoryModal';
 
 interface ReduxProps {
     loggedIn: boolean;
+    inventory: InventoryItem[];
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
-        loggedIn: reduxModel.user.loggedIn
+        loggedIn: reduxModel.user.loggedIn,
+        inventory: reduxModel.inventory
     };
 }
 
@@ -29,6 +31,10 @@ function InventoryMenu(props: ReduxProps) {
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
+        {props.inventory.map((inventoryItem) => <div key={inventoryItem.ingredient.id}>
+            {inventoryItem.ingredient.name}: <strong>{inventoryItem.quantity}</strong>
+        </div>)}
+
         <div tabIndex={0} style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
         </div>
