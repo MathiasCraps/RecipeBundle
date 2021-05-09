@@ -25,6 +25,11 @@ export interface DateRange {
     end: Date;
 }
 
+export interface InventoryItem {
+    ingredient: BaseIngredient;
+    quantity: number;
+}
+
 export interface ReduxModel {
     recipes: Recipe[];
     openedMenu: OpenedMenu;
@@ -35,6 +40,7 @@ export interface ReduxModel {
     shoppingDateRange: DateRange;
     categories: Category[];
     ingredients: BaseIngredient[];
+    inventory: InventoryItem[];
 }
 
 export enum Actions {
@@ -131,7 +137,8 @@ export const defaultState: ReduxModel = {
         end: nextWeek
     },
     categories: [],
-    ingredients: []
+    ingredients: [],
+    inventory: []
 }
 
 export type ReduxAction = ToggleMenuAction | 
