@@ -55,7 +55,8 @@ export enum Actions {
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE',
-    TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT'
+    TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT',
+    UPDATE_INVENTORY = 'UPDATE_INVENTORY'
 }
 
 export interface ToggleMenuAction {
@@ -119,6 +120,12 @@ export interface ToggleMenuIngredientsBoughtAction {
     bought: boolean;
 }
 
+export interface UpdateInventoryAction {
+    type: Actions.UPDATE_INVENTORY;
+    action: 'add' | 'remove' | 'update';
+    item: InventoryItem;
+}
+
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
 
@@ -152,7 +159,8 @@ export type ReduxAction = ToggleMenuAction |
     UpdateMenuDayAction |
     UpdateMobileFapOpenedAction |
     UpdateShoppingRangeAction |
-    ToggleMenuIngredientsBoughtAction;
+    ToggleMenuIngredientsBoughtAction |
+    UpdateInventoryAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
