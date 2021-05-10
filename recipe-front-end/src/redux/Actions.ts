@@ -6,7 +6,7 @@ import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -233,10 +233,13 @@ export function toggleMenuIngredientsBought(dispatch: Dispatch<ToggleMenuIngredi
     }
 }
 
-export type updateInventoryActionReturn = (inventoryItem: InventoryItem) => Promise<void>;
+export type updateInventoryActionReturn = (item: InventoryItem,  action: UpdateInventoryModification) => Promise<void>;
 export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>): updateInventoryActionReturn {
-    return async function (inventoryItem: InventoryItem) {
-        // todo: implement
-        console.log(inventoryItem);
+    return async function (item: InventoryItem, action: UpdateInventoryModification) {
+        dispatch({
+            type: Actions.UPDATE_INVENTORY,
+            action,
+            item
+        });
     }
 }

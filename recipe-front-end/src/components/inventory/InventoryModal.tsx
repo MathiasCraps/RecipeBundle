@@ -71,10 +71,11 @@ function InventoryModal(props: Props) {
                     if (!selection || quantity === undefined) {
                         return;
                     }
+                    // todo: should also support editing
                     props.updateInventoryAction({
                         ingredient: selection,
                         quantity
-                    })
+                    }, 'add')
                     props.onConfirm();
                 }}>
                     {Localisation.ADD}
