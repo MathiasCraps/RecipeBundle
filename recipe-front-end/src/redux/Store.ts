@@ -229,6 +229,12 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 ...oldState,
                 recipes: replaceRecipe(oldState.recipes, action.recipe)
             };
+        case Actions.UPDATE_INVENTORY:
+            // todo: this is only additions, should also support deleting and updating
+            return {
+                ...oldState,
+                inventory: oldState.inventory.concat([action.item])
+            }
         default:
             // not supported yet
     }
