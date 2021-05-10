@@ -120,9 +120,10 @@ export interface ToggleMenuIngredientsBoughtAction {
     bought: boolean;
 }
 
+export type UpdateInventoryModification = 'add' | 'remove'| 'update';
 export interface UpdateInventoryAction {
     type: Actions.UPDATE_INVENTORY;
-    action: 'add' | 'remove' | 'update';
+    action: UpdateInventoryModification;
     item: InventoryItem;
 }
 
