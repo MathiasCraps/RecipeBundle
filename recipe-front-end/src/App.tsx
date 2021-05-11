@@ -26,7 +26,7 @@ function mapStateToProps(props: ReduxModel): AppProps {
   };
 }
 
-function App(props: AppProps) {
+function App() {
   return (<Box><header>
     <Center className="top-header">
       <Heading as="h1">
