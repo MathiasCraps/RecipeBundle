@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { BaseIngredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
-import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/Store';
+import { ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
 
 interface OwnProps {
