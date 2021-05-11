@@ -1,18 +1,32 @@
-import { Heading } from '@chakra-ui/react';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Heading, Tooltip } from '@chakra-ui/react';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
-import { InventoryItem, ReduxModel } from '../../redux/Store';
+import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
+import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
 import InventoryModal from './InventoryModal';
 
 interface ReduxProps {
     loggedIn: boolean;
     inventory: InventoryItem[];
+}
+
+interface ReduxActions {
+    updateInventoryAction: updateInventoryActionReturn;
+}
+
+type Props = ReduxProps & ReduxActions;
+
+function mapDispatchToProps(dispatch: Dispatch<UpdateInventoryAction>): ReduxActions {
+    return {
+        updateInventoryAction: updateInventoryAction(dispatch)
+    }
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
@@ -22,7 +36,7 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     };
 }
 
-function InventoryMenu(props: ReduxProps) {
+function InventoryMenu(props: Props) {
     if (!props.loggedIn) {
         return <Redirect to={Paths.BASE} />
     }
@@ -32,7 +46,12 @@ function InventoryMenu(props: ReduxProps) {
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
         {props.inventory.map((inventoryItem) => <div key={inventoryItem.ingredient.id}>
-            {inventoryItem.ingredient.name}: <strong>{inventoryItem.quantity}</strong>
+            <Tooltip label={Localisation.REMOVE}>
+                <FontAwesomeIcon 
+                tabIndex={0} 
+                icon={faTrash} 
+                onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
+            </Tooltip> {inventoryItem.ingredient.name}: <strong>{inventoryItem.quantity}</strong>
         </div>)}
 
         <div tabIndex={0} style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
@@ -43,8 +62,8 @@ function InventoryMenu(props: ReduxProps) {
             setModalIsOpened(false);
         }} onCancel={() => {
             setModalIsOpened(false);
-        }}/>
+        }} />
     </ContentContainer>
 }
 
-export default connect(mapStateToProps)(InventoryMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(InventoryMenu);
