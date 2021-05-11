@@ -41,7 +41,7 @@ function InventoryModal(props: Props) {
     const ref = useRef<HTMLInputElement>(null);
     const [selection, setSelection] = useState<BaseIngredient>();
     const [quantity, setQuantity] = useState<number>(0);
-    return <Modal isOpen={props.isOpened} onClose={props.onCancel}>
+    return <Modal isOpen={props.isOpened} onClose={props.onCancel} initialFocusRef={ref}>
         <ModalOverlay />
         <ModalContent>
             <ModalHeader>{Localisation.ADD_RECIPE}</ModalHeader>
