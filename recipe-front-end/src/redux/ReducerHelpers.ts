@@ -1,5 +1,6 @@
 import { Recipe } from '../interfaces/Recipe';
-import { DayMenu } from './Store';
+import { removeFromArray } from '../utils/ArrayUtils';
+import { DayMenu, InventoryItem, UpdateInventoryModification } from './Store';
 
 export function toggleIngredientsBoughtForMenus(allMenus: DayMenu[], impactedMenus: DayMenu[], ingredientsBought: boolean) {
     return allMenus.map((menu) => {
@@ -25,4 +26,16 @@ export function replaceRecipe(allRecipes: Recipe[], withRecipe: Recipe): Recipe[
     }
 
     return allRecipes;
+}
+
+export function modifyInventory(
+    oldInventory: InventoryItem[], 
+    item: InventoryItem, 
+    action: UpdateInventoryModification) {
+
+    if (action === 'add') {
+        return oldInventory.concat([item]);
+    }
+
+    return removeFromArray(item, [... oldInventory]);
 }

@@ -1,7 +1,7 @@
-import { BaseIngredient, Category, Ingredient, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
-import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
+import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -233,7 +233,7 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             // todo: this is only additions, should also support deleting and updating
             return {
                 ...oldState,
-                inventory: oldState.inventory.concat([action.item])
+                inventory: modifyInventory(oldState.inventory, action.item, action.action)
             }
         default:
             // not supported yet
