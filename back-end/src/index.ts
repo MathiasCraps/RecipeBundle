@@ -201,8 +201,8 @@ pool.connect(async (error, client, done) => {
 
     // ensure tables are created
     try {
-        const hasBeenCreated = await createTables(pool);
-        if (hasBeenCreated) {
+        const initialSetUp = await createTables(pool);
+        if (initialSetUp) {
             const data: Category[] = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
             createCategories(pool, data)
         }
