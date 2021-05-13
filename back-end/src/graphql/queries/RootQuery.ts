@@ -6,6 +6,7 @@ import { getAllIngredients } from '../../sql/GetIngredients';
 import { getMenus } from '../../sql/GetMenu';
 import { getAllRecipes } from '../../sql/GetRecipes';
 import { Category } from './Category';
+import { InventoryItem } from './Inventory';
 import { MenuType } from './Menus';
 import { QuantityLessIngredient, RecipeType } from './Recipes';
 
@@ -42,6 +43,13 @@ export const RootQuery = new GraphQLObjectType({
             description: 'All the currently existing ingredients', 
             async resolve() {
                 return await getAllIngredients(pool);
+            }
+        },
+        inventories: {
+            type: new GraphQLNonNull(new GraphQLList(InventoryItem)),
+            description: 'All the inventory items for current user.',
+            async resolve() {
+                return Promise.resolve([]);
             }
         }
     }
