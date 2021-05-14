@@ -1,12 +1,12 @@
 import { Pool } from "pg";
-import { Ingredient, QuantityLessIngredient, Recipe } from "../model/RecipeData";
-import { executeQuery } from '../sql-utils/Database';
-import { addIngredients } from './AddIngredients';
-import { coupleExistingIngredients } from './CoupleExistingIngredients';
-import { updateIngredients } from './EditIngredients';
-import { getAllIngredients } from './GetIngredients';
+import { Ingredient, QuantityLessIngredient, Recipe } from "../../model/RecipeData";
+import { executeQuery } from '../../sql-utils/Database';
+import { addIngredients } from '../ingredient/AddIngredients';
+import { coupleExistingIngredients } from '../ingredient/CoupleExistingIngredients';
+import { updateIngredients } from '../ingredient/EditIngredients';
+import { getAllIngredients } from '../ingredient/GetIngredients';
 import { getRecipeById } from './GetRecipeById';
-import { removeIngredients } from './RemoveIngredients';
+import { removeIngredients } from '../ingredient/RemoveIngredients';
 
 type ModifiedIngredientsMap = {
     addedAndNew: Ingredient[];

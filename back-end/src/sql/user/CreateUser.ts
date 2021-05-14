@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { executeQuery } from "../sql-utils/Database";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function createUser(pool: Pool, name: string, email: string): Promise<number> {
     const result = await executeQuery(pool, {

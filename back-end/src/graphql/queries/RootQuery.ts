@@ -1,10 +1,10 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
-import { getIngredientCategories } from '../../sql/GetIngredientCategories';
-import { getAllIngredients } from '../../sql/GetIngredients';
-import { getMenus } from '../../sql/GetMenu';
-import { getAllRecipes } from '../../sql/GetRecipes';
+import { getIngredientCategories } from '../../sql/ingredient/GetIngredientCategories';
+import { getAllIngredients } from '../../sql/ingredient/GetIngredients';
+import { getMenus } from '../../sql/menu/GetMenu';
+import { getAllRecipes } from '../../sql/recipe/GetRecipes';
 import { Category } from './Category';
 import { InventoryItem } from './Inventory';
 import { MenuType } from './Menus';

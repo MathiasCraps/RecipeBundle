@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Category } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { Category } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function createCategories(pool: Pool, categories: Category[]): Promise<void> {
     for (const category of categories) {

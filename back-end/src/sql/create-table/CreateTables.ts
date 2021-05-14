@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { executeQuery } from "../sql-utils/Database";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function createTables(pool: Pool) {
     const initialSetUp = (await executeQuery(pool, `SELECT to_regclass('recipes')`)).rows[0].to_regclass === null;

@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Category, LocalizedCategory } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { Category, LocalizedCategory } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 let cachedCategories: Category[] = [];
 interface LocalisationLookupMap {

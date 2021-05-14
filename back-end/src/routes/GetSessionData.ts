@@ -4,8 +4,8 @@ import { requestUserApi } from "../github-api/UserApiRequest";
 import { UserMailScope } from "../model/github-api/UserMailScope";
 import { UserScope } from "../model/github-api/UserScope";
 import { SessionData } from "../model/SessionData";
-import { createUser } from "../sql/CreateUser";
-import { getUser } from "../sql/GetUser";
+import { createUser } from "../sql/user/CreateUser";
+import { getUser } from "../sql/user/GetUser";
 
 export async function getSessionData(pool: Pool, session: SessionData, auth: string | undefined): Promise<SessionData> {
     if (session.loggedIn) {

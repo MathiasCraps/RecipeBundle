@@ -1,6 +1,6 @@
-import { pool } from '..';
-import { DayMenu } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { pool } from '../..';
+import { DayMenu } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function getMenus(userId: number | undefined): Promise<DayMenu[]> {
     if (userId === undefined) {

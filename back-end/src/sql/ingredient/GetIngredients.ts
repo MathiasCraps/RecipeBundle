@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { QuantityLessIngredient } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { QuantityLessIngredient } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function getAllIngredients(pool: Pool): Promise<QuantityLessIngredient[]> {
     const results = await executeQuery(pool, {

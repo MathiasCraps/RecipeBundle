@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Ingredient, Recipe } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { Ingredient, Recipe } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function getRecipeById(pool: Pool, recipeId: number): Promise<Recipe> {
     const recipe = (await executeQuery(pool, {
