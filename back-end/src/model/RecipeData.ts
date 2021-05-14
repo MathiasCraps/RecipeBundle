@@ -44,3 +44,8 @@ export interface DayMenu {
     recipeId: number;
     ingredientsBought: boolean;
 }
+
+export interface InventoryItem {
+    ingredientId: number;
+    quantity: number;
+}
