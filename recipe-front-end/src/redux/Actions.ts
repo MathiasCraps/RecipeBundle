@@ -233,13 +233,30 @@ export function toggleMenuIngredientsBought(dispatch: Dispatch<ToggleMenuIngredi
     }
 }
 
-export type updateInventoryActionReturn = (item: InventoryItem,  action: UpdateInventoryModification) => Promise<void>;
+export type updateInventoryActionReturn = (item: InventoryItem,  action: UpdateInventoryModification) => Promise<boolean>;
 export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>): updateInventoryActionReturn {
     return async function (item: InventoryItem, action: UpdateInventoryModification) {
-        dispatch({
-            type: Actions.UPDATE_INVENTORY,
-            action,
-            item
-        });
+        try {
+            const success = (await fetchGraphQL<{updateInventory: {success: boolean}}>(`mutation { 
+                updateInventory(type: "${action}", ingredientId: ${item.ingredient.id}, quantity: ${item.quantity}) {
+                    success
+                }
+            }`)).updateInventory.success;
+    
+            if (!success) {
+                throw new Error('failed');
+            }
+    
+            dispatch({
+                type: Actions.UPDATE_INVENTORY,
+                action,
+                item
+            });
+
+            return success;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
     }
 }

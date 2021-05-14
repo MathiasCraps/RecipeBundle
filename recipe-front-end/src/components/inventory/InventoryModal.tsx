@@ -67,15 +67,16 @@ function InventoryModal(props: Props) {
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={() => {
+                <Button colorScheme="blue" mr={3} onClick={async () => {
                     if (!selection || quantity === undefined) {
                         return;
                     }
                     // todo: should also support editing
-                    props.updateInventoryAction({
+                    await props.updateInventoryAction({
                         ingredient: selection,
                         quantity
-                    }, 'add')
+                    }, 'add');
+                    
                     props.onConfirm();
                 }}>
                     {Localisation.ADD}
