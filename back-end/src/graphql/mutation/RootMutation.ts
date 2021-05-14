@@ -2,8 +2,9 @@ import fs from 'fs';
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
 import { SessionData } from '../../model/SessionData';
-import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
+import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
 import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
+import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
 import { ModifyStorage } from './ModifyStorageResponse';
@@ -143,8 +144,37 @@ export const RootMutation = new GraphQLObjectType({
                 type: { type: new GraphQLNonNull(GraphQLString), description: 'The type of action. Accepted values: "add", "update" and "remove".' },
                 ingredientId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the ingredient' },
                 quantity: { type: GraphQLInt, description: 'Quantity of storage. Only needed for add and update actions.' }
-            }, async resolve() {
-                // todo
+            }, async resolve(parentValue, args, request) {
+                try {
+                    const session: SessionData = request.session;
+                    if (!session.loggedIn || typeof session.userId !== 'number') {
+                        throw new Error('Not logged in');
+                    }
+
+                    const inventoryItem = {
+                        ingredientId: args.ingredientId,
+                        quantity: args.quantity
+                    };
+
+                    if (typeof inventoryItem.ingredientId !== 'number' || typeof inventoryItem.quantity !== 'number') {
+                        throw new Error('Not a valid inventory item');
+                    }
+
+                    if (args.type === 'add') {
+                        await addInventoryItem(pool, inventoryItem, session.userId)
+                    } else {
+                        throw new Error('Not yet implemented');
+                    }
+
+                    return {
+                        success: true
+                    };
+                } catch (err) {
+                    return {
+                        success: false,
+                        error: err
+                    };
+                }
             }
         }
     }
