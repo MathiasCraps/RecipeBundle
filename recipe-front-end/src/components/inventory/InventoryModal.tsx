@@ -1,5 +1,5 @@
 import { Modal } from '@chakra-ui/modal';
-import { Button, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { Button, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -41,6 +41,7 @@ function InventoryModal(props: Props) {
     const ref = useRef<HTMLInputElement>(null);
     const [selection, setSelection] = useState<BaseIngredient>();
     const [quantity, setQuantity] = useState<number>(0);
+    const toast = useToast();
     return <Modal isOpen={props.isOpened} onClose={props.onCancel} initialFocusRef={ref}>
         <ModalOverlay />
         <ModalContent>
@@ -72,12 +73,24 @@ function InventoryModal(props: Props) {
                         return;
                     }
                     // todo: should also support editing
-                    await props.updateInventoryAction({
+                    const success = await props.updateInventoryAction({
                         ingredient: selection,
                         quantity
                     }, 'add');
-                    
-                    props.onConfirm();
+
+                    if (success) {
+                        toast({
+                            description: Localisation.ADDING_WAS_SUCCESS,
+                            status: 'success'
+                        });
+
+                        props.onConfirm();
+                    } else {
+                        toast({
+                            description: Localisation.ADDING_FAILED,
+                            status: 'error'
+                        });
+                    }
                 }}>
                     {Localisation.ADD}
                 </Button>
