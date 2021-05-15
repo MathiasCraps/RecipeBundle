@@ -11,16 +11,13 @@ import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
 import { DayMenu, defaultState, handleState } from './redux/Store';
+import { convertArrayToLinkedMap } from './utils/ArrayUtils';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
 
-type LinkedMap = { [key: string]: Category };
 function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] {
-  const linkedMap: LinkedMap = categories.reduce((previous: LinkedMap, next: Category) => {
-    previous[next.categoryId] = next;
-    return previous;
-  }, {});
+  const linkedMap = convertArrayToLinkedMap(categories, 'categoryId');
 
   return recipes.map((recipe) => {
     return {
