@@ -3,6 +3,7 @@ import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
 import { getIngredientCategories } from '../../sql/ingredient/GetIngredientCategories';
 import { getAllIngredients } from '../../sql/ingredient/GetIngredients';
+import { getInventoryOfUser } from '../../sql/inventory/GetInventoryOfUser';
 import { getMenus } from '../../sql/menu/GetMenu';
 import { getAllRecipes } from '../../sql/recipe/GetRecipes';
 import { Category } from './Category';
@@ -48,8 +49,12 @@ export const RootQuery = new GraphQLObjectType({
         inventories: {
             type: new GraphQLNonNull(new GraphQLList(InventoryItem)),
             description: 'All the inventory items for current user.',
-            async resolve() {
-                return Promise.resolve([]);
+            async resolve(parentValue, args, request) {
+                const session = request.session as SessionData;
+                if (!session.userId) {
+                    return [];
+                }
+                return await getInventoryOfUser(pool, session.userId);
             }
         }
     }
