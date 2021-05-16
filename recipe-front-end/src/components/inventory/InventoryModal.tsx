@@ -63,6 +63,7 @@ function InventoryModal(props: Props) {
                 <div>
                     <Input
                         type="number"
+                        placeholder={Localisation.QUANTITY}
                         value={quantity || ''}
                         onChange={(e) => setQuantity(Number(e.target.value))}
                     />
