@@ -116,8 +116,6 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   const shoppingDateRange = parseDateRange(shoppingRangeFromStorage, Number(new Date()))
     || defaultState.shoppingDateRange;
 
-  console.log(inventory);
-
   const store = createStore(handleState, {
     ...defaultState,
     ...{ shoppingDateRange },
