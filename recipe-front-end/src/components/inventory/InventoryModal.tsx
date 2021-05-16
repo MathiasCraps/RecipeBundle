@@ -8,7 +8,6 @@ import { Localisation } from '../../localisation/AppTexts';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
 import { ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
-import { quantityDescriptions } from '../recipe-management/IngredientsModal';
 
 interface OwnProps {
     isOpened: boolean;
@@ -64,7 +63,7 @@ function InventoryModal(props: Props) {
                 <div>
                     <Input
                         type="number"
-                        value={quantity}
+                        value={quantity || ''}
                         onChange={(e) => setQuantity(Number(e.target.value))}
                     />
                 </div>
@@ -72,12 +71,12 @@ function InventoryModal(props: Props) {
 
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={async () => {
-                    if (!canBeSubmitted || !selection || quantity === undefined) {
+                    if (!canBeSubmitted) {
                         return;
                     }
                     // todo: should also support editing
                     const success = await props.updateInventoryAction({
-                        ingredient: selection,
+                        ingredient: selection!,
                         quantity
                     }, 'add');
 
