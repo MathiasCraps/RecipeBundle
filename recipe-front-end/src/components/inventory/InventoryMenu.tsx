@@ -46,12 +46,14 @@ function InventoryMenu(props: Props) {
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
         {props.inventory.map((inventoryItem) => <div key={inventoryItem.ingredient.id}>
-            <Tooltip label={Localisation.REMOVE}>
-                <FontAwesomeIcon 
-                tabIndex={0} 
-                icon={faTrash} 
-                onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
-            </Tooltip> {inventoryItem.ingredient.name}: <strong>{inventoryItem.quantity}</strong>
+            {inventoryItem.ingredient.name}: <strong>
+                {inventoryItem.quantity}
+            </strong> <Tooltip label={Localisation.REMOVE}>
+                <FontAwesomeIcon
+                    tabIndex={0}
+                    icon={faTrash}
+                    onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
+            </Tooltip>
         </div>)}
 
         <div tabIndex={0} style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
