@@ -8,6 +8,7 @@ import { Localisation } from '../../localisation/AppTexts';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
 import { ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
+import { quantityDescriptions } from '../recipe-management/IngredientsModal';
 
 interface OwnProps {
     isOpened: boolean;
@@ -42,6 +43,8 @@ function InventoryModal(props: Props) {
     const [selection, setSelection] = useState<BaseIngredient>();
     const [quantity, setQuantity] = useState<number>(0);
     const toast = useToast();
+    const canBeSubmitted = Boolean(selection && quantity && quantity > 0);
+
     return <Modal isOpen={props.isOpened} onClose={props.onCancel} initialFocusRef={ref}>
         <ModalOverlay />
         <ModalContent>
@@ -68,8 +71,8 @@ function InventoryModal(props: Props) {
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={async () => {
-                    if (!selection || quantity === undefined) {
+                <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={async () => {
+                    if (!canBeSubmitted || !selection || quantity === undefined) {
                         return;
                     }
                     // todo: should also support editing
