@@ -49,16 +49,16 @@ function InventoryMenu(props: Props) {
             {inventoryItem.ingredient.name}: <strong>
                 {inventoryItem.quantity}
             </strong> <Tooltip label={Localisation.REMOVE}>
-                <FontAwesomeIcon
-                    tabIndex={0}
+                <button><FontAwesomeIcon
                     icon={faTrash}
                     onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
+                </button>
             </Tooltip>
         </div>)}
 
-        <div tabIndex={0} style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
+        <button style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
-        </div>
+        </button>
 
         <InventoryModal isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);
