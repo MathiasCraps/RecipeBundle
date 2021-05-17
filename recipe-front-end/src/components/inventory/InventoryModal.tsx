@@ -76,11 +76,12 @@ function InventoryModal(props: Props) {
                     if (!canBeSubmitted) {
                         return;
                     }
-                    // todo: should also support editing
+                    
+                    const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
                     const success = await props.updateInventoryAction({
                         ingredient: selection!,
                         quantity
-                    }, 'add');
+                    }, action);
 
                     if (success) {
                         toast({
