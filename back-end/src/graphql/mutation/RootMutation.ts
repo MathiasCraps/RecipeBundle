@@ -4,6 +4,7 @@ import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
 import { SessionData } from '../../model/SessionData';
 import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
 import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
+import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
 import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
 import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
@@ -165,6 +166,9 @@ export const RootMutation = new GraphQLObjectType({
                         await addInventoryItem(pool, inventoryItem, session.userId);
                     } else if (args.type === 'remove') {
                         await removeInventoryItem(pool, inventoryItem.ingredientId, session.userId);
+                    } else if (args.type === 'update') {
+                        await updateInventoryItem(pool, inventoryItem.ingredientId, session.userId, inventoryItem.quantity);
+
                     } else {
                         throw new Error('Not yet implemented');
                     }
