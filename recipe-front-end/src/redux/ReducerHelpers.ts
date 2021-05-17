@@ -32,10 +32,22 @@ export function modifyInventory(
     oldInventory: InventoryItem[], 
     item: InventoryItem, 
     action: UpdateInventoryModification) {
+    const shallowCopy = [... oldInventory];
 
     if (action === 'add') {
-        return oldInventory.concat([item]);
+        return shallowCopy.concat([item]);
     }
 
-    return removeFromArray(item, [... oldInventory]);
+    if (action === 'update') {
+        for (let i = 0; i < shallowCopy.length; i++) {
+            const inventoryItem = shallowCopy[i];
+            if (inventoryItem.ingredient.id === item.ingredient.id) {
+                shallowCopy[i] = item;
+                break;
+            }
+        }
+        return shallowCopy;
+    }
+
+    return removeFromArray(item, shallowCopy);
 }

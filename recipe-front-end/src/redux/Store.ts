@@ -230,7 +230,6 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 recipes: replaceRecipe(oldState.recipes, action.recipe)
             };
         case Actions.UPDATE_INVENTORY:
-            // todo: this is only additions, should also support deleting and updating
             return {
                 ...oldState,
                 inventory: modifyInventory(oldState.inventory, action.item, action.action)
