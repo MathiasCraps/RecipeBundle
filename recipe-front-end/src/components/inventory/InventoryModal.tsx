@@ -6,11 +6,12 @@ import { Dispatch } from 'redux';
 import { BaseIngredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
-import { ReduxModel, UpdateInventoryAction } from '../../redux/Store';
+import { InventoryItem, ReduxModel, UpdateInventoryAction, UpdateInventoryModification } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
 
 interface OwnProps {
     isOpened: boolean;
+    initialValue: InventoryItem | undefined;
     onConfirm: () => void;
     onCancel: () => void;
 }
@@ -39,8 +40,8 @@ type Props = OwnProps & ReduxProps & ReduxActions;
 
 function InventoryModal(props: Props) {
     const ref = useRef<HTMLInputElement>(null);
-    const [selection, setSelection] = useState<BaseIngredient>();
-    const [quantity, setQuantity] = useState<number>(0);
+    const [selection, setSelection] = useState<BaseIngredient | undefined>(props.initialValue?.ingredient);
+    const [quantity, setQuantity] = useState<number>(props.initialValue?.quantity || 0);
     const toast = useToast();
     const canBeSubmitted = Boolean(selection && quantity && quantity > 0);
 
@@ -57,7 +58,7 @@ function InventoryModal(props: Props) {
                     inputRef={ref}
                     onSelectionChange={setSelection}
                     onRender={(value) => value.name}
-                    defaultValue={undefined}
+                    defaultValue={props.initialValue?.ingredient.name}
                     renderResults={true}
                 />
 

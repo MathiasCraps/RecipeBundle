@@ -1,5 +1,5 @@
 import { Heading, Tooltip } from '@chakra-ui/react';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from "react";
 import { connect } from 'react-redux';
@@ -42,13 +42,25 @@ function InventoryMenu(props: Props) {
     }
 
     const [modalIsOpened, setModalIsOpened] = useState(false);
+    const [
+        inventoryItemToEdit,
+        setInventoryItemToEdit
+    ] = useState<InventoryItem | undefined>(undefined);
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
         {props.inventory.map((inventoryItem) => <div key={inventoryItem.ingredient.id}>
             {inventoryItem.ingredient.name}: <strong>
                 {inventoryItem.quantity}
-            </strong> <Tooltip label={Localisation.REMOVE}>
+            </strong> <Tooltip label={Localisation.EDIT_DETAILS}>
+                <button><FontAwesomeIcon
+                    icon={faPencilAlt}
+                    onClick={() => {
+                        setInventoryItemToEdit(inventoryItem);
+                        setModalIsOpened(true)
+                    }} />
+                </button>
+            </Tooltip> <Tooltip label={Localisation.REMOVE}>
                 <button><FontAwesomeIcon
                     icon={faTrash}
                     onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
@@ -60,11 +72,13 @@ function InventoryMenu(props: Props) {
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
         </button>
 
-        <InventoryModal isOpened={modalIsOpened} onConfirm={() => {
+        {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && {...inventoryItemToEdit}} isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);
+            setInventoryItemToEdit(undefined);
         }} onCancel={() => {
             setModalIsOpened(false);
-        }} />
+            setInventoryItemToEdit(undefined);
+        }} />}
     </ContentContainer>
 }
 
