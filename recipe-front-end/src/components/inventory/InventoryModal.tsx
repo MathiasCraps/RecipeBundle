@@ -52,6 +52,7 @@ function InventoryModal(props: Props) {
             <ModalBody>
                 <SearchInput<BaseIngredient>
                     selection={selection}
+                    disabled={Boolean(props.initialValue)}
                     items={props.ingredients}
                     inputRef={ref}
                     onSelectionChange={setSelection}
