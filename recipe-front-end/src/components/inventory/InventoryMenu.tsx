@@ -49,30 +49,28 @@ function InventoryMenu(props: Props) {
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
-        {props.inventory.map((inventoryItem) => <div style={{paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
+        {props.inventory.map((inventoryItem) => <div style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
             {inventoryItem.ingredient.name}: <strong>
                 {inventoryItem.quantity}
-            </strong> <div style={{marginLeft: '0.5em' }}><Tooltip label={Localisation.EDIT_DETAILS}>
-                <button><FontAwesomeIcon
-                    icon={faPencilAlt}
-                    onClick={() => {
-                        setInventoryItemToEdit(inventoryItem);
-                        setModalIsOpened(true)
-                    }} />
+            </strong> <div style={{ marginLeft: '0.5em' }}><Tooltip label={Localisation.EDIT_DETAILS}>
+                <button onClick={() => {
+                    setInventoryItemToEdit(inventoryItem);
+                    setModalIsOpened(true)
+                }}>
+                    <FontAwesomeIcon icon={faPencilAlt} />
                 </button>
             </Tooltip> <Tooltip label={Localisation.REMOVE}>
-                <button><FontAwesomeIcon
-                    icon={faTrash}
-                    onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
-                </button>
-            </Tooltip></div>
+                    <button onClick={() => props.updateInventoryAction(inventoryItem, 'remove')}>
+                        <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                </Tooltip></div>
         </div>)}
 
-        <button style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
+        <button style={{ cursor: 'pointer' }} onClick={() => setModalIsOpened(true)}>
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
         </button>
 
-        {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && {...inventoryItemToEdit}} isOpened={modalIsOpened} onConfirm={() => {
+        {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && { ...inventoryItemToEdit }} isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);
             setInventoryItemToEdit(undefined);
         }} onCancel={() => {
