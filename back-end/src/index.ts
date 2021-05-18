@@ -11,10 +11,10 @@ import { Category, Recipe } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { executeQuery } from './sql-utils/Database';
-import { addRecipe } from "./sql/AddRecipe";
-import { createCategories } from './sql/CreateCategories';
-import { createTables } from "./sql/CreateTables";
-import { editRecipe } from './sql/EditRecipe';
+import { addRecipe } from "./sql/recipe/AddRecipe";
+import { createCategories } from './sql/ingredient/CreateCategories';
+import { createTables } from "./sql/create-table/CreateTables";
+import { editRecipe } from './sql/recipe/EditRecipe';
 import { isRecipe } from "./validation/TypeGuards";
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -201,8 +201,8 @@ pool.connect(async (error, client, done) => {
 
     // ensure tables are created
     try {
-        const hasBeenCreated = await createTables(pool);
-        if (hasBeenCreated) {
+        const initialSetUp = await createTables(pool);
+        if (initialSetUp) {
             const data: Category[] = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
             createCategories(pool, data)
         }

@@ -1,13 +1,17 @@
-import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import fs from 'fs';
+import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
 import { SessionData } from '../../model/SessionData';
-import { removeRecipe } from '../../sql/RemoveRecipe';
-import { updatePurchaseState } from '../../sql/UpdatePurchaseState';
+import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
+import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
+import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
+import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
+import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
+import { ModifyStorage } from './ModifyStorageResponse';
 import { RemoveRecipeResponse } from './RemoveRecipeResponse';
 import { updateIngredientsPurchasedResponse } from './UpdateIngredientsPurchasedResponse';
-import fs from 'fs';
 
 export const RootMutation = new GraphQLObjectType({
     name: 'menuManagement',
@@ -104,14 +108,14 @@ export const RootMutation = new GraphQLObjectType({
             },
             async resolve(parentValue, args, request) {
                 const success = await updatePurchaseState(pool, args.menuIds, args.isBought, (request.session as SessionData).userId!);
-                return { success };                
+                return { success };
             }
         },
         removeRecipe: {
             type: RemoveRecipeResponse,
             description: 'Remove the recipe',
             args: {
-                recipeId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the recipe to remove'}
+                recipeId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the recipe to remove' }
             },
             async resolve(parentValue, args, request) {
                 try {
@@ -132,6 +136,51 @@ export const RootMutation = new GraphQLObjectType({
                         success: false,
                         error: err
                     }
+                }
+            }
+        },
+        updateInventory: {
+            type: ModifyStorage,
+            description: 'Add, remove or delete an inventory item',
+            args: {
+                type: { type: new GraphQLNonNull(GraphQLString), description: 'The type of action. Accepted values: "add", "update" and "remove".' },
+                ingredientId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the ingredient' },
+                quantity: { type: GraphQLInt, description: 'Quantity of storage. Only needed for add and update actions.' }
+            }, async resolve(parentValue, args, request) {
+                try {
+                    const session: SessionData = request.session;
+                    if (!session.loggedIn || typeof session.userId !== 'number') {
+                        throw new Error('Not logged in');
+                    }
+
+                    const inventoryItem = {
+                        ingredientId: args.ingredientId,
+                        quantity: args.quantity
+                    };
+
+                    if (typeof inventoryItem.ingredientId !== 'number' || typeof inventoryItem.quantity !== 'number') {
+                        throw new Error('Not a valid inventory item');
+                    }
+
+                    if (args.type === 'add') {
+                        await addInventoryItem(pool, inventoryItem, session.userId);
+                    } else if (args.type === 'remove') {
+                        await removeInventoryItem(pool, inventoryItem.ingredientId, session.userId);
+                    } else if (args.type === 'update') {
+                        await updateInventoryItem(pool, inventoryItem.ingredientId, session.userId, inventoryItem.quantity);
+
+                    } else {
+                        throw new Error('Not yet implemented');
+                    }
+
+                    return {
+                        success: true
+                    };
+                } catch (err) {
+                    return {
+                        success: false,
+                        error: err
+                    };
                 }
             }
         }

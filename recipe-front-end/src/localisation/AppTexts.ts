@@ -36,6 +36,7 @@ export enum Localisation {
     ADDING_WAS_SUCCESS = 'Gelukt! Bedankt voor je inzending.',
     ADDING_MENU_WAS_SUCCESS = 'Je menu staat ingepland',
     ADDING_FAILED = 'Jammer! We konden je gerecht niet toevoegen. Probeer later opnieuw.',
+    INVENTORY = 'Vooraad',
     MENU_PLANNER = 'Menuplanner',
     DISH_SINGULAR = 'Gerecht',
     DISH_PLURAL = 'Gerechten',

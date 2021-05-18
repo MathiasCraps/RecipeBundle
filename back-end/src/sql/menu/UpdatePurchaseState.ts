@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { executeQuery } from '../sql-utils/Database';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function updatePurchaseState(pool: Pool, menuIds: number[], isPurchased: boolean, userId: number): Promise<boolean> {
     try {

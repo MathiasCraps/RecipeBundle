@@ -6,21 +6,18 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, Category, Ingredient, RawDayMenu, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, Ingredient, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
-import { DayMenu, defaultState, handleState } from './redux/Store';
+import { DayMenu, defaultState, handleState, InventoryItem } from './redux/Store';
+import { convertArrayToLinkedMap } from './utils/ArrayUtils';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
 
-type LinkedMap = { [key: string]: Category };
 function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] {
-  const linkedMap: LinkedMap = categories.reduce((previous: LinkedMap, next: Category) => {
-    previous[next.categoryId] = next;
-    return previous;
-  }, {});
+  const linkedMap = convertArrayToLinkedMap(categories, 'categoryId');
 
   return recipes.map((recipe) => {
     return {
@@ -28,10 +25,20 @@ function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] 
       ingredients: recipe.ingredients.map((ingredient) => {
         return {
           ...ingredient,
-          category: linkedMap[ingredient.id]
+          category: linkedMap[ingredient.categoryId]
         } as Ingredient;
       })
     };
+  });
+}
+
+function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[]): InventoryItem[] {
+  const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
+  return rawInventory.map((inventoryItem) => {
+    return {
+      ingredient: linkedMap[inventoryItem.ingredientId],
+      quantity: inventoryItem.quantity
+    }
   });
 }
 
@@ -92,14 +99,18 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       categoryId
       categoryName
     }
+    inventories {
+      ingredientId
+      quantity
+    }
   }`);
 
   const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
+  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients);
 
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, linkedRecipes))
     .filter((value) => value !== undefined) as DayMenu[];
-
 
   const shoppingRangeFromStorage = localStorage.getItem(LOCAL_STORAGE_RANGE_NAME);
   const shoppingDateRange = parseDateRange(shoppingRangeFromStorage, Number(new Date()))
@@ -116,7 +127,8 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     recipes: linkedRecipes,
     categories: applicationData.categories,
     menuPlanning: linkedMenu,
-    ingredients: applicationData.ingredients
+    ingredients: applicationData.ingredients,
+    inventory: inventory
   }, applyMiddleware(thunk));
 
   ReactDOM.render(

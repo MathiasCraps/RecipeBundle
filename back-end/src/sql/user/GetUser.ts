@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { executeQuery } from "../sql-utils/Database";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function getUser(pool: Pool, email: string): Promise<number | undefined> {
     try {

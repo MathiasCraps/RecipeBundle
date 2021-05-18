@@ -6,7 +6,7 @@ import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -230,5 +230,33 @@ export function toggleMenuIngredientsBought(dispatch: Dispatch<ToggleMenuIngredi
             menus,
             bought
         });
+    }
+}
+
+export type updateInventoryActionReturn = (item: InventoryItem,  action: UpdateInventoryModification) => Promise<boolean>;
+export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>): updateInventoryActionReturn {
+    return async function (item: InventoryItem, action: UpdateInventoryModification) {
+        try {
+            const success = (await fetchGraphQL<{updateInventory: {success: boolean}}>(`mutation { 
+                updateInventory(type: "${action}", ingredientId: ${item.ingredient.id}, quantity: ${item.quantity}) {
+                    success
+                }
+            }`)).updateInventory.success;
+    
+            if (!success) {
+                throw new Error('failed');
+            }
+    
+            dispatch({
+                type: Actions.UPDATE_INVENTORY,
+                action,
+                item
+            });
+
+            return success;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
     }
 }

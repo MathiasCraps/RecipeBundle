@@ -1,7 +1,7 @@
-import { BaseIngredient, Category, Ingredient, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
-import { replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
+import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
     loggedIn: boolean;
@@ -25,6 +25,11 @@ export interface DateRange {
     end: Date;
 }
 
+export interface InventoryItem {
+    ingredient: BaseIngredient;
+    quantity: number;
+}
+
 export interface ReduxModel {
     recipes: Recipe[];
     openedMenu: OpenedMenu;
@@ -35,6 +40,7 @@ export interface ReduxModel {
     shoppingDateRange: DateRange;
     categories: Category[];
     ingredients: BaseIngredient[];
+    inventory: InventoryItem[];
 }
 
 export enum Actions {
@@ -49,7 +55,8 @@ export enum Actions {
     UPDATE_MENU_DAY = 'UPDATE_MENU_DAY',
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE',
-    TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT'
+    TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT',
+    UPDATE_INVENTORY = 'UPDATE_INVENTORY'
 }
 
 export interface ToggleMenuAction {
@@ -113,6 +120,13 @@ export interface ToggleMenuIngredientsBoughtAction {
     bought: boolean;
 }
 
+export type UpdateInventoryModification = 'add' | 'remove'| 'update';
+export interface UpdateInventoryAction {
+    type: Actions.UPDATE_INVENTORY;
+    action: UpdateInventoryModification;
+    item: InventoryItem;
+}
+
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
 
@@ -131,7 +145,8 @@ export const defaultState: ReduxModel = {
         end: nextWeek
     },
     categories: [],
-    ingredients: []
+    ingredients: [],
+    inventory: []
 }
 
 export type ReduxAction = ToggleMenuAction | 
@@ -145,7 +160,8 @@ export type ReduxAction = ToggleMenuAction |
     UpdateMenuDayAction |
     UpdateMobileFapOpenedAction |
     UpdateShoppingRangeAction |
-    ToggleMenuIngredientsBoughtAction;
+    ToggleMenuIngredientsBoughtAction |
+    UpdateInventoryAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -213,6 +229,11 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                 ...oldState,
                 recipes: replaceRecipe(oldState.recipes, action.recipe)
             };
+        case Actions.UPDATE_INVENTORY:
+            return {
+                ...oldState,
+                inventory: modifyInventory(oldState.inventory, action.item, action.action)
+            }
         default:
             // not supported yet
     }

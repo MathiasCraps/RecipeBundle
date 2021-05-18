@@ -1,7 +1,7 @@
 import { Pool } from "pg";
-import { Recipe } from "../model/RecipeData";
-import { executeQuery } from "../sql-utils/Database";
-import { addIngredients } from './AddIngredients';
+import { Recipe } from "../../model/RecipeData";
+import { executeQuery } from "../../sql-utils/Database";
+import { addIngredients } from '../ingredient/AddIngredients';
 
 export async function addRecipe(pool: Pool, recipeData: Recipe) {
     const insertedRecipe = await executeQuery(pool, {

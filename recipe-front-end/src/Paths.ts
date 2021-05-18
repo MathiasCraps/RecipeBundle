@@ -4,5 +4,6 @@ export enum Paths {
     RECIPE_OVERVIEW = '/recipe',
     PLANNER = '/menuplanner',
     LIST = '/shoppinglist',
-    EDIT_RECIPE = '/edit-recipe'
+    EDIT_RECIPE = '/edit-recipe',
+    INVENTORY = '/inventory'
 }

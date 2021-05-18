@@ -3,6 +3,7 @@ export interface ApplicationData {
     recipes: RawRecipe[];
     categories: Category[];
     ingredients: BaseIngredient[];
+    inventories: RawInventoryItem[];
 }
 
 export interface BaseIngredient {
@@ -20,13 +21,6 @@ export interface Ingredient extends QuantifiedIngredient {
     category: Category;
 }
 
-// interface BaseRecipe<IngredientType> {
-// export interface Ingredient extends QuantityLessIngredient {
-//     quantity_number: number | null;
-//     quantity_description: string;
-// }
-
-// export interface Recipe {
 interface BaseRecipe<IngredientType> {
     title: string;
     steps: string;
@@ -58,4 +52,9 @@ export interface RawDayMenu {
     menuId: number;
     recipeId: number;
     ingredientsBought: boolean;
+}
+
+export interface RawInventoryItem {
+    ingredientId: number;
+    quantity: number;
 }

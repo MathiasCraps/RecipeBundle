@@ -24,3 +24,12 @@ export function updateDayMenuWithDate(dayMenu: DayMenu[], menuId: number, toDate
 export function flatArray<T>(array: T[][]): T[] {
     return Array.prototype.concat.apply([], array);
 }
+
+export type LinkedMap<T> = { [key: string]: T };
+export function convertArrayToLinkedMap<T>(items: T[], queryKey: keyof T): LinkedMap<T> {
+    return items.reduce((previous: LinkedMap<T>, next: T) => {
+        const key = next[queryKey];
+        previous[key as any] = next;
+        return previous;
+      }, {});
+}

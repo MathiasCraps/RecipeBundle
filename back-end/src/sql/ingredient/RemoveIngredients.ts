@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Ingredient } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { Ingredient } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 export async function removeIngredients(pool: Pool, ingredients: Ingredient[], recipeId: number): Promise<void> {
     for (const { id: ingredientId } of ingredients) {

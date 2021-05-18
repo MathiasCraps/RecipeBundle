@@ -9,6 +9,7 @@ import AddRecipeMenuButton from '../recipe-management/AddRecipeMenuButton';
 import ShoppingListMenuButton from '../shopping-list/ShoppingListMenuButton';
 import HamburgerMain from './HamburgerMain';
 import './ActionsContainer.scss';
+import InventoryButton from '../inventory/InventoryButton';
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -34,6 +35,7 @@ function ActionsContainer(props: ReduxProps) {
                 <MenuPlannerButton />
                 <AddRecipeMenuButton />
                 <ShoppingListMenuButton />
+                <InventoryButton />
             </div>
         </AppearAnimation>}
     </div>

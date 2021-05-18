@@ -13,6 +13,7 @@ interface OwnProps<ItemType> {
     items: ItemType[];
     defaultValue: string | undefined;
     renderResults: boolean;
+    disabled?: boolean;
 }
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
@@ -62,7 +63,8 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
                 setResults(results);
             }}
             value={inputValue}
-            placeholder={Localisation.DO_SEARCH} />
+            placeholder={Localisation.DO_SEARCH}
+            disabled={props.disabled || false} />
         {(props.renderResults || isHovering) && <Box
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}

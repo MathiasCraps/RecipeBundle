@@ -1,6 +1,6 @@
 import { Pool } from "pg";
-import { DayMenu } from "../model/RecipeData";
-import { executeQuery } from "../sql-utils/Database";
+import { DayMenu } from "../../model/RecipeData";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function modifyMenu(pool: Pool, menu: DayMenu, userId: number, action: 'add' | 'update' | 'remove'): Promise<number> {  
     try {  

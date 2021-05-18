@@ -1,6 +1,6 @@
 import { pool } from '../../..';
 import { DayMenu } from '../../../model/RecipeData';
-import { modifyMenu } from '../../../sql/UpdateMenu';
+import { modifyMenu } from '../../../sql/menu/UpdateMenu';
 
 export async function writeMenuChangeToDatabase(userId: number | undefined, menu: DayMenu, type: 'add' | 'update' | 'remove'): Promise<number> {
     if (userId === undefined) {

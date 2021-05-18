@@ -1,11 +1,8 @@
 import { Pool } from "pg";
-import { executeQuery } from "../sql-utils/Database";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function createTables(pool: Pool) {
-    const hasAlreadyBeenSetUp = (await executeQuery(pool, `SELECT to_regclass('recipes')`)).rows[0].to_regclass !== null;
-    if (hasAlreadyBeenSetUp) {
-        return false;
-    }
+    const initialSetUp = (await executeQuery(pool, `SELECT to_regclass('recipes')`)).rows[0].to_regclass === null;
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Users (
         id serial PRIMARY KEY,
@@ -61,5 +58,13 @@ export async function createTables(pool: Pool) {
         FOREIGN KEY (recipe_id) REFERENCES Recipes (id)
     )`);
 
-    return true;
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Inventory (
+        ingredient_id INT NOT NULL,
+        user_id INT NOT NULL,
+        quantity INT NOT NULL,
+        FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id),
+        FOREIGN KEY (user_id) REFERENCES Users (id)
+    )`);
+
+    return initialSetUp;
 }

@@ -1,5 +1,6 @@
 import { Recipe } from '../interfaces/Recipe';
-import { DayMenu } from './Store';
+import { removeFromArray } from '../utils/ArrayUtils';
+import { DayMenu, InventoryItem, UpdateInventoryModification } from './Store';
 
 export function toggleIngredientsBoughtForMenus(allMenus: DayMenu[], impactedMenus: DayMenu[], ingredientsBought: boolean) {
     return allMenus.map((menu) => {
@@ -25,4 +26,28 @@ export function replaceRecipe(allRecipes: Recipe[], withRecipe: Recipe): Recipe[
     }
 
     return allRecipes;
+}
+
+export function modifyInventory(
+    oldInventory: InventoryItem[], 
+    item: InventoryItem, 
+    action: UpdateInventoryModification) {
+    const shallowCopy = [... oldInventory];
+
+    if (action === 'add') {
+        return shallowCopy.concat([item]);
+    }
+
+    if (action === 'update') {
+        for (let i = 0; i < shallowCopy.length; i++) {
+            const inventoryItem = shallowCopy[i];
+            if (inventoryItem.ingredient.id === item.ingredient.id) {
+                shallowCopy[i] = item;
+                break;
+            }
+        }
+        return shallowCopy;
+    }
+
+    return removeFromArray(item, shallowCopy);
 }

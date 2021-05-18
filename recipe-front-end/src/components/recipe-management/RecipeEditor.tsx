@@ -123,7 +123,6 @@ export function RecipeEditor(props: Props) {
     const [title, setTitle] = useState(defaultState.title);
     const [steps, setSteps] = useState(defaultState.steps);
     const [imagePath, setImagePath] = useState(defaultState.image);
-    const [editingIngredient, setEditingIngredient] = useState<QuantifiedIngredient>()
     const [editingType, setEditingType] = useState<IngredientModificationKind>();
     const ref = useRef<HTMLInputElement>(null);
 

@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Category, LocalizedCategory } from '../model/RecipeData';
-import { executeQuery } from '../sql-utils/Database';
+import { Category, LocalizedCategory } from '../../model/RecipeData';
+import { executeQuery } from '../../sql-utils/Database';
 
 let cachedCategories: Category[] = [];
 interface LocalisationLookupMap {
@@ -10,7 +10,7 @@ interface LocalisationLookupMap {
 export async function getIngredientCategories(pool: Pool): Promise<Category[]> {
     if (!cachedCategories.length || true) {
         const categories = (await executeQuery(pool, {
-            name: 'get-all-ingredients',
+            name: 'get-all-ingredients-categories-base',
             text: 'SELECT * from IngredientCategory',
             values: []
         })).rows;

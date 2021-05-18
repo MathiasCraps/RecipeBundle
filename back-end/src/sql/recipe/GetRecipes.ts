@@ -1,6 +1,6 @@
-import { pool } from "..";
-import { Recipe } from "../model/RecipeData";
-import { executeQuery } from "../sql-utils/Database";
+import { pool } from "../..";
+import { Recipe } from "../../model/RecipeData";
+import { executeQuery } from "../../sql-utils/Database";
 import { getRecipeById } from './GetRecipeById';
 
 export async function getAllRecipes(): Promise<Recipe[]> {

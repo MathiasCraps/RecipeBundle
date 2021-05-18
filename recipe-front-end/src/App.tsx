@@ -5,6 +5,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import './App.scss';
 import AccountMenu from "./components/account/AccountMenu";
 import ActionsContainer from './components/common/ActionsContainer';
+import InventoryMenu from './components/inventory/InventoryMenu';
 import MenuPlanner from "./components/menu-planner/MenuPlanner";
 import RecipeList from "./components/recipe-displays/RecipeList";
 import RecipeOverview from "./components/recipe-displays/RecipeOverview";
@@ -25,7 +26,7 @@ function mapStateToProps(props: ReduxModel): AppProps {
   };
 }
 
-function App(props: AppProps) {
+function App() {
   return (<Box><header>
     <Center className="top-header">
       <Heading as="h1">
@@ -45,6 +46,7 @@ function App(props: AppProps) {
         <Route path={Paths.PLANNER}><MenuPlanner /></Route>
         <Route path={Paths.LIST}><ShoppingListMain /></Route>
         <Route path={Paths.EDIT_RECIPE}><EditRecipeMenu /></Route>
+        <Route path={Paths.INVENTORY}><InventoryMenu /></Route>
         <Route path={Paths.BASE}><RecipeList /></Route>
       </Switch>
   </header></Box>)

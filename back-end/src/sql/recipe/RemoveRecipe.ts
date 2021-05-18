@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { executeQuery } from "../sql-utils/Database";
+import { executeQuery } from "../../sql-utils/Database";
 
 export async function removeRecipe(pool: Pool, recipeId: number): Promise<string> {
     const imagePath = (await executeQuery(pool, {
