@@ -49,10 +49,10 @@ function InventoryMenu(props: Props) {
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
-        {props.inventory.map((inventoryItem) => <div key={inventoryItem.ingredient.id}>
+        {props.inventory.map((inventoryItem) => <div style={{paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
             {inventoryItem.ingredient.name}: <strong>
                 {inventoryItem.quantity}
-            </strong> <Tooltip label={Localisation.EDIT_DETAILS}>
+            </strong> <div style={{marginLeft: '0.5em' }}><Tooltip label={Localisation.EDIT_DETAILS}>
                 <button><FontAwesomeIcon
                     icon={faPencilAlt}
                     onClick={() => {
@@ -65,7 +65,7 @@ function InventoryMenu(props: Props) {
                     icon={faTrash}
                     onClick={() => props.updateInventoryAction(inventoryItem, 'remove')} />
                 </button>
-            </Tooltip>
+            </Tooltip></div>
         </div>)}
 
         <button style={{ cursor: 'pointer' }} onClickCapture={() => setModalIsOpened(true)}>
