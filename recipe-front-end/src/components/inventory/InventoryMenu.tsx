@@ -49,6 +49,10 @@ function InventoryMenu(props: Props) {
 
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
+        <button style={{ cursor: 'pointer' }} onClick={() => setModalIsOpened(true)}>
+            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
+        </button>
+
         {props.inventory.map((inventoryItem) => <div style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
             {inventoryItem.ingredient.name}: <strong>
                 {inventoryItem.quantity}
@@ -65,10 +69,6 @@ function InventoryMenu(props: Props) {
                     </button>
                 </Tooltip></div>
         </div>)}
-
-        <button style={{ cursor: 'pointer' }} onClick={() => setModalIsOpened(true)}>
-            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
-        </button>
 
         {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && { ...inventoryItemToEdit }} isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);
