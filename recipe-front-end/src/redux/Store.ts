@@ -28,6 +28,7 @@ export interface DateRange {
 export interface InventoryItem {
     ingredient: BaseIngredient;
     quantity: number;
+    desiredQuantity: number;
 }
 
 export interface ReduxModel {

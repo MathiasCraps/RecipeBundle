@@ -91,7 +91,8 @@ function InventoryModal(props: Props) {
                     const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
                     const success = await props.updateInventoryAction({
                         ingredient: selection!,
-                        quantity
+                        quantity,
+                        desiredQuantity
                     }, action);
 
                     if (success) {

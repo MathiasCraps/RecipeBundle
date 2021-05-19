@@ -37,7 +37,8 @@ function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngred
   return rawInventory.map((inventoryItem) => {
     return {
       ingredient: linkedMap[inventoryItem.ingredientId],
-      quantity: inventoryItem.quantity
+      quantity: inventoryItem.quantity,
+      desiredQuantity: 0
     }
   });
 }
