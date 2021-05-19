@@ -48,4 +48,5 @@ export interface DayMenu {
 export interface InventoryItem {
     ingredientId: number;
     quantity: number;
+    desiredQuantity: number;
 }
