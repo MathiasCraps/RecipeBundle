@@ -145,7 +145,8 @@ export const RootMutation = new GraphQLObjectType({
             args: {
                 type: { type: new GraphQLNonNull(GraphQLString), description: 'The type of action. Accepted values: "add", "update" and "remove".' },
                 ingredientId: { type: new GraphQLNonNull(GraphQLInt), description: 'Identifier of the ingredient' },
-                quantity: { type: GraphQLInt, description: 'Quantity of storage. Only needed for add and update actions.' }
+                quantity: { type: GraphQLInt, description: 'Quantity of storage. Only needed for add and update actions.' },
+                desiredQuantity: { type: GraphQLInt, description: 'Desired reserve stock when selected menu items have been made.'}
             }, async resolve(parentValue, args, request) {
                 try {
                     const session: SessionData = request.session;
@@ -156,9 +157,10 @@ export const RootMutation = new GraphQLObjectType({
                     const inventoryItem = {
                         ingredientId: args.ingredientId,
                         quantity: args.quantity,
-                        desiredQuantity: 0
+                        desiredQuantity: args.desiredQuantity
                     };
 
+                    // todo: make stricter with desiredQuantity
                     if (typeof inventoryItem.ingredientId !== 'number' || typeof inventoryItem.quantity !== 'number') {
                         throw new Error('Not a valid inventory item');
                     }
