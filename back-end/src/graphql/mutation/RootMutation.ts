@@ -155,7 +155,8 @@ export const RootMutation = new GraphQLObjectType({
 
                     const inventoryItem = {
                         ingredientId: args.ingredientId,
-                        quantity: args.quantity
+                        quantity: args.quantity,
+                        desiredQuantity: 0
                     };
 
                     if (typeof inventoryItem.ingredientId !== 'number' || typeof inventoryItem.quantity !== 'number') {
@@ -167,7 +168,7 @@ export const RootMutation = new GraphQLObjectType({
                     } else if (args.type === 'remove') {
                         await removeInventoryItem(pool, inventoryItem.ingredientId, session.userId);
                     } else if (args.type === 'update') {
-                        await updateInventoryItem(pool, inventoryItem.ingredientId, session.userId, inventoryItem.quantity);
+                        await updateInventoryItem(pool, inventoryItem, session.userId);
 
                     } else {
                         throw new Error('Not yet implemented');

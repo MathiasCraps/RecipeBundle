@@ -1,10 +1,11 @@
 import { Pool } from 'pg';
+import { InventoryItem } from '../../model/RecipeData';
 import { executeQuery } from '../../sql-utils/Database';
 
-export async function updateInventoryItem(pool: Pool, ingredientId: number, userId: number, quantity: number): Promise<void> {
+export async function updateInventoryItem(pool: Pool, inventoryItem: InventoryItem, userId: number): Promise<void> {
     executeQuery(pool, {
         name: 'update-inventory-item',
-        text: `UPDATE Inventory SET quantity = $1 WHERE ingredient_id = $2 AND user_id = $3`,
-        values: [quantity, ingredientId, userId]
+        text: `UPDATE Inventory SET quantity = $1 AND desired_quantity = $2 WHERE ingredient_id = $3 AND user_id = $4`,
+        values: [inventoryItem.quantity, inventoryItem.desiredQuantity, inventoryItem.ingredientId,  userId]
     });
 }
