@@ -23,6 +23,7 @@ export enum Localisation {
     QUANTITY_KIND = 'Type hoeveelheid',
     CATEGORY_INGREDIENT = 'Categorie ingrediënt',
     QUANTITY = 'Hoeveelheid',
+    DESIRED_QUANTITY = 'Gewenste hoeveelheid',
     ADD_PHOTO = 'Foto toevoegen',
     EDIT_INGREDIENT = 'Ingrediënt bewerken',
     EDIT_DETAILS = 'Bewerk details',
