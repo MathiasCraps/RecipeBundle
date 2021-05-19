@@ -62,6 +62,7 @@ export async function createTables(pool: Pool) {
         ingredient_id INT NOT NULL,
         user_id INT NOT NULL,
         quantity INT NOT NULL,
+        desired_quantity INT NOT NULL,
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id),
         FOREIGN KEY (user_id) REFERENCES Users (id)
     )`);
