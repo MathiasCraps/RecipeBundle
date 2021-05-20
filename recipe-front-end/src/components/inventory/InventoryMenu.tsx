@@ -55,7 +55,7 @@ function InventoryMenu(props: Props) {
 
         {props.inventory.map((inventoryItem) => <div style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
             {inventoryItem.ingredient.name}: <strong>
-                {inventoryItem.quantity}
+                {inventoryItem.quantity} / {inventoryItem.desiredQuantity}
             </strong> <div style={{ marginLeft: '0.5em' }}><Tooltip label={Localisation.EDIT_DETAILS}>
                 <button onClick={() => {
                     setInventoryItemToEdit(inventoryItem);
