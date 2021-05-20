@@ -36,9 +36,8 @@ function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngred
   const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
   return rawInventory.map((inventoryItem) => {
     return {
-      ingredient: linkedMap[inventoryItem.ingredientId],
-      quantity: inventoryItem.quantity,
-      desiredQuantity: 0
+      ...inventoryItem,
+      ingredient: linkedMap[inventoryItem.ingredientId]
     }
   });
 }
@@ -103,6 +102,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     inventories {
       ingredientId
       quantity
+      desiredQuantity
     }
   }`);
 

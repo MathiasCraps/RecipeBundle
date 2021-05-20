@@ -57,4 +57,5 @@ export interface RawDayMenu {
 export interface RawInventoryItem {
     ingredientId: number;
     quantity: number;
+    desiredQuantity: number;
 }
