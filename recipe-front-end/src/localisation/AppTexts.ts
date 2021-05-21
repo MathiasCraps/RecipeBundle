@@ -24,6 +24,7 @@ export enum Localisation {
     CATEGORY_INGREDIENT = 'Categorie ingrediënt',
     QUANTITY = 'Hoeveelheid',
     DESIRED_QUANTITY = 'Gewenste hoeveelheid',
+    ACTIONS = 'Acties',
     ADD_PHOTO = 'Foto toevoegen',
     EDIT_INGREDIENT = 'Ingrediënt bewerken',
     EDIT_DETAILS = 'Bewerk details',
