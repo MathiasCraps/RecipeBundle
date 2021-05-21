@@ -1,0 +1,21 @@
+.inventory-table {
+    td {
+        width: 25%;
+    }
+
+    th {
+        padding-right: 1em;
+
+        &:nth-child(1) {
+            text-align: left;
+        }
+    }
+
+    tbody td {
+        text-align: center;
+
+        &:nth-child(1) {
+            text-align: left;
+        }
+    }
+}

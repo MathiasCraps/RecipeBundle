@@ -11,6 +11,7 @@ import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/
 import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
 import InventoryModal from './InventoryModal';
+import './InventoryMenu.scss';
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -53,22 +54,36 @@ function InventoryMenu(props: Props) {
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
         </button>
 
-        {props.inventory.map((inventoryItem) => <div style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
-            {inventoryItem.ingredient.name}: <strong>
-                {inventoryItem.quantity}
-            </strong> <div style={{ marginLeft: '0.5em' }}><Tooltip label={Localisation.EDIT_DETAILS}>
-                <button onClick={() => {
-                    setInventoryItemToEdit(inventoryItem);
-                    setModalIsOpened(true)
-                }}>
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                </button>
-            </Tooltip> <Tooltip label={Localisation.REMOVE}>
-                    <button onClick={() => props.updateInventoryAction(inventoryItem, 'remove')}>
-                        <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                </Tooltip></div>
-        </div>)}
+        <table className="inventory-table">
+            <thead>
+                <th>{Localisation.INGREDIENT_NAME}</th>
+                <th>{Localisation.QUANTITY}</th>
+                <th>{Localisation.DESIRED_QUANTITY}</th>
+                <th>{Localisation.ACTIONS}</th>
+            </thead>
+
+            <tbody>
+                {props.inventory.map((inventoryItem) => {
+                    return <tr style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
+                        <td><strong>{inventoryItem.ingredient.name}</strong></td>
+                        <td>{inventoryItem.quantity}</td>
+                        <td>{inventoryItem.desiredQuantity}</td>
+                        <td><Tooltip label={Localisation.EDIT_DETAILS}>
+                            <button onClick={() => {
+                                setInventoryItemToEdit(inventoryItem);
+                                setModalIsOpened(true)
+                            }}>
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </button>
+                        </Tooltip> <Tooltip label={Localisation.REMOVE}>
+                                <button onClick={() => props.updateInventoryAction(inventoryItem, 'remove')}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </Tooltip></td>
+                    </tr>
+                })}
+            </tbody>
+        </table>
 
         {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && { ...inventoryItemToEdit }} isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);

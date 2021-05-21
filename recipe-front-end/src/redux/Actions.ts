@@ -238,7 +238,7 @@ export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>)
     return async function (item: InventoryItem, action: UpdateInventoryModification) {
         try {
             const success = (await fetchGraphQL<{updateInventory: {success: boolean}}>(`mutation { 
-                updateInventory(type: "${action}", ingredientId: ${item.ingredient.id}, quantity: ${item.quantity}) {
+                updateInventory(type: "${action}", ingredientId: ${item.ingredient.id}, quantity: ${item.quantity}, desiredQuantity: ${item.desiredQuantity}) {
                     success
                 }
             }`)).updateInventory.success;
