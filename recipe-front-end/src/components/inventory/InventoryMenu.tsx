@@ -11,6 +11,7 @@ import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/
 import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/Store';
 import ContentContainer from '../common/ContentContainer';
 import InventoryModal from './InventoryModal';
+import './InventoryMenu.scss';
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -53,7 +54,7 @@ function InventoryMenu(props: Props) {
             <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD}
         </button>
 
-        <table>
+        <table className="inventory-table">
             <thead>
                 <th>{Localisation.INGREDIENT_NAME}</th>
                 <th>{Localisation.QUANTITY}</th>
