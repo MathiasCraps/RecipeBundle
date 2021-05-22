@@ -31,11 +31,11 @@ function ActionsContainer(props: ReduxProps) {
         {!isBigScreen && props.loggedIn && <HamburgerMain isOpened={props.actionsOpened} />}
         {showActions && <AppearAnimation>
             <div className='burger-more-options'>
-                <UserMenuButton />
-                <MenuPlannerButton />
                 <AddRecipeMenuButton />
-                <ShoppingListMenuButton />
+                <MenuPlannerButton />
                 <InventoryButton />
+                <ShoppingListMenuButton />
+                <UserMenuButton />
             </div>
         </AppearAnimation>}
     </div>

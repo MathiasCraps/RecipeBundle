@@ -1,10 +1,19 @@
+$light-gray: #EDF2F7;
+$medium-gray: #E2E8F0;
+
 .inventory-table {
-    td {
+    margin-top: 1em;
+    border: 1px solid $medium-gray;
+
+    td, th {
         width: 25%;
+        padding: 0.5em;
+        border: 1px solid $medium-gray;
     }
 
     th {
-        padding-right: 1em;
+        background-color: $light-gray;
+        border: none;
 
         &:nth-child(1) {
             text-align: left;
@@ -16,6 +25,8 @@
 
         &:nth-child(1) {
             text-align: left;
+            border: none;
+            background-color: $light-gray;
         }
     }
 }
