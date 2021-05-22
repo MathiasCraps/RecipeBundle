@@ -65,20 +65,24 @@ function InventoryModal(props: Props) {
                 />
 
                 <div>
-                    <Input
-                        type="number"
-                        placeholder={Localisation.QUANTITY}
-                        value={quantity || ''}
-                        ref={fallbackRef}
-                        onChange={(e) => setQuantity(Number(e.target.value))}
-                    />
+                    <label>{Localisation.QUANTITY}<br />
+                        <Input
+                            type="number"
+                            placeholder={Localisation.QUANTITY}
+                            value={quantity || ''}
+                            ref={fallbackRef}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                        />
+                    </label>
 
-                    <Input
-                        type="number"
-                        placeholder={Localisation.DESIRED_QUANTITY}
-                        value={desiredQuantity || ''}
-                        onChange={(e) => setDesiredQuantity(Number(e.target.value))}
-                    />
+                    <label>{Localisation.DESIRED_QUANTITY}<br />
+                        <Input
+                            type="number"
+                            placeholder={Localisation.DESIRED_QUANTITY}
+                            value={desiredQuantity || ''}
+                            onChange={(e) => setDesiredQuantity(Number(e.target.value))}
+                        />
+                    </label>
                 </div>
             </ModalBody>
 
@@ -87,7 +91,7 @@ function InventoryModal(props: Props) {
                     if (!canBeSubmitted) {
                         return;
                     }
-                    
+
                     const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
                     const success = await props.updateInventoryAction({
                         ingredient: selection!,
