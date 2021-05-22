@@ -43,7 +43,7 @@ function InventoryModal(props: Props) {
     const fallbackRef = useRef<HTMLInputElement>(null);
     const [selection, setSelection] = useState<BaseIngredient | undefined>(props.initialValue?.ingredient);
     const [quantity, setQuantity] = useState<number>(props.initialValue?.quantity || 0);
-    const [desiredQuantity, setDesiredQuantity] = useState<number>(0);
+    const [desiredQuantity, setDesiredQuantity] = useState<number>(props.initialValue?.desiredQuantity || 0);
     const toast = useToast();
     const canBeSubmitted = Boolean(selection && quantity && quantity > 0);
 
