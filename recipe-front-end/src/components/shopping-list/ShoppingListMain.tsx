@@ -7,8 +7,8 @@ import { Ingredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
-import { DateRange, DayMenu, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
-import { flatArray } from '../../utils/ArrayUtils';
+import { DateRange, DayMenu, InventoryItem, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
+import { convertArrayToLinkedMapWithPredicate, flatArray, LinkedMap } from '../../utils/ArrayUtils';
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
@@ -24,14 +24,18 @@ import './ShoppingListMain.scss';
 interface ReduxProps {
     menus: DayMenu[];
     dateRange: DateRange;
-    loggedIn: boolean
+    loggedIn: boolean;
+    inventoryMap: LinkedMap<InventoryItem>;
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
         menus: reduxModel.menuPlanning,
         dateRange: reduxModel.shoppingDateRange,
-        loggedIn: reduxModel.user.loggedIn
+        loggedIn: reduxModel.user.loggedIn,
+        inventoryMap: convertArrayToLinkedMapWithPredicate<InventoryItem>(reduxModel.inventory, 
+            (inventoryItem) => String(inventoryItem.ingredient.id)
+        )
     };
 }
 
