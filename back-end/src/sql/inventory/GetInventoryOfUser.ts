@@ -4,7 +4,7 @@ import { executeQuery } from '../../sql-utils/Database';
 
 export async function getInventoryOfUser(pool: Pool, userId: number): Promise<InventoryItem[]> {
     const results = (await executeQuery(pool, {
-        name: 'get-menus',
+        name: 'get-inventory',
         text: `SELECT ingredient_id, quantity, desired_quantity FROM Inventory WHERE user_id = $1`,
         values: [userId]
     })).rows;
