@@ -1,3 +1,4 @@
+import { TranslationMap } from '../interfaces/Recipe';
 import { DayMenu } from "../redux/Store";
 
 export function removeFromArray<T>(item: T, fromArray: T[]): T[] {
@@ -30,6 +31,13 @@ export function convertArrayToLinkedMap<T>(items: T[], queryKey: keyof T): Linke
     return items.reduce((previous: LinkedMap<T>, next: T) => {
         const key = next[queryKey];
         previous[key as any] = next;
+        return previous;
+      }, {});
+}
+
+export function convertArrayToLinkedMapWithPredicate<T>(items: T[], predicate: (item: T) => string): LinkedMap<T> {
+    return items.reduce((previous: LinkedMap<T>, next: T) => {
+        previous[predicate(next)] = next;
         return previous;
       }, {});
 }
