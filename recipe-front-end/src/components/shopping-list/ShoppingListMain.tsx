@@ -12,6 +12,7 @@ import { convertArrayToLinkedMapWithPredicate, flatArray, LinkedMap } from '../.
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
+import { applyInventory } from './normalization/ApplyInventory';
 import { combineToSingleValue } from './normalization/Combiner';
 import { groupByCategory } from './normalization/GroupByCategory';
 import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
@@ -74,7 +75,8 @@ export function ShoppingListMain(props: Props) {
     const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
-    const sumsInGroups = groupByCategory(sumsToRender);
+    const storageApplied = applyInventory(sumsToRender, props.inventoryMap);
+    const sumsInGroups = groupByCategory(storageApplied);
     const sortedCategoryKeys = Object.keys(sumsInGroups)
     const [pickerVisible, setPickerVisible] = useState(false);
     const triggerRef = React.useRef<HTMLButtonElement>(null);
