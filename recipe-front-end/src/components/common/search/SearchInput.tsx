@@ -33,12 +33,14 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
             event.preventDefault();
             setSelectedValue(results[currentIndex - 1]);
             return;
-        }
-
-        if (event.code === 'ArrowDown' && currentIndex < results.length - 1) {
+        } else if (event.code === 'ArrowDown' && currentIndex < results.length - 1) {
             event.preventDefault();
             setSelectedValue(results[currentIndex + 1]);
             return
+        }
+
+        if (results.length === 1) {
+            setSelectedValue(results[0]);
         }
 
         if (selectedValue && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
