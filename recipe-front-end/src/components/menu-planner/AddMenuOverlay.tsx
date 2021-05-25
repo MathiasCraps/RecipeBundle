@@ -78,6 +78,7 @@ function AddMenuOverlay(props: Props) {
                     inputRef={inputRef}
                     renderResults={true}
                     defaultValue={''}
+                    label={Localisation.RECIPE}
                 />
             </ModalBody>
 

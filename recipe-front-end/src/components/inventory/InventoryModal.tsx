@@ -62,6 +62,7 @@ function InventoryModal(props: Props) {
                     onRender={(value) => value.name}
                     defaultValue={props.initialValue?.ingredient.name}
                     renderResults={true}
+                    label={Localisation.INGREDIENT}
                 />
 
                 <div>
