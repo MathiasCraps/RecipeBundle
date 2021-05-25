@@ -2,6 +2,7 @@
 export enum Localisation {
     PREVIOUS_RECIPE = "Naar vorig recept",
     NEXT_RECIPE = "Naar volgend recept",
+    RECIPE = "Recept",
     PLAN_IN = 'Plan dit in',
     INGREDIENT = "Ingrediënt",
     INGREDIENTS = "Ingrediënten",
