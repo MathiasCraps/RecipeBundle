@@ -14,6 +14,7 @@ interface OwnProps<ItemType> {
     defaultValue: string | undefined;
     renderResults: boolean;
     disabled?: boolean;
+    label: string;
 }
 
 export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
@@ -55,18 +56,19 @@ export default function SearchInput<ItemType>(props: OwnProps<ItemType>) {
     }
 
     return (<div>
+        <label>{props.label}<br/>
         <Input ref={inputRef}
             onKeyUp={handleQueryType}
             onChange={(e) => {
                 const query = e.target.value;
                 const results = props.items.filter((item) => query && props.onRender(item).toLowerCase().indexOf(query.toLowerCase()) !== -1);
-
                 setInputValue(query);
                 setResults(results);
             }}
             value={inputValue}
             placeholder={Localisation.DO_SEARCH}
             disabled={props.disabled || false} />
+        </label>
         {(props.renderResults || isHovering) && <Box
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}

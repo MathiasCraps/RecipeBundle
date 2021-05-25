@@ -97,6 +97,7 @@ function IngredientsModal(props: Props) {
                     inputRef={focusRef}
                     renderResults={searchIsActive}
                     defaultValue={props.ingredientInputs.name}
+                    label={Localisation.INGREDIENT}
                 />
 
                 <label>
