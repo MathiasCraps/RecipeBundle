@@ -7,7 +7,8 @@ interface OwnProps {
     isOpened: boolean;
     children: React.ReactNode;
     onClose:() => void;
-    initialFocusRef: React.RefObject<HTMLDivElement>
+    initialFocusRef: React.RefObject<HTMLDivElement>;
+    className?: string;
 }
 
 export default function SimplePopover(props: OwnProps) {
@@ -22,7 +23,7 @@ export default function SimplePopover(props: OwnProps) {
     <PopoverTrigger>
         {props.trigger}
     </PopoverTrigger>
-    <PopoverContent>
+    <PopoverContent className={props.className || ''}>
         <PopoverHeader paddingTop="0.5em" fontWeight="bold" border="0">
             {props.title}
         </PopoverHeader>

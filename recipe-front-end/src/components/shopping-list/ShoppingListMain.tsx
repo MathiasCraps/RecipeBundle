@@ -91,11 +91,11 @@ export function ShoppingListMain(props: Props) {
     return <ContentContainer classes="shopping-list">
         <h2>{Localisation.SHOPPING_LIST}</h2>
 
-        <SimplePopover trigger={<div>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD} : <PopoverTrigger>
+        <SimplePopover className="float-left" trigger={<div>{Localisation.YOUR_SHOPPING_LIST_FOR_THE_PERIOD}: <PopoverTrigger>
             <button ref={triggerRef}
                 className="date-range-initiator"
                 onClick={() => setPickerVisible(!pickerVisible)}>
-                {`${formatDate(props.dateRange.start)} ${formatDate(props.dateRange.end)}`}
+                {`${formatDate(props.dateRange.start)} - ${formatDate(props.dateRange.end)}`}
             </button></PopoverTrigger></div>}
             isOpened={pickerVisible}
             onClose={handleClosingPicker}
