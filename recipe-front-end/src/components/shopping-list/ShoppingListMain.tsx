@@ -71,11 +71,11 @@ export function ShoppingListMain(props: Props) {
     }
 
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
-    const hasMenus = Boolean(menusToConsider.length)
     const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
     const storageApplied = applyInventory(sumsToRender, props.inventoryMap);
+    const hasMenus = Boolean(storageApplied.length)
     const sumsInGroups = groupByCategory(storageApplied);
     const sortedCategoryKeys = Object.keys(sumsInGroups)
     const [pickerVisible, setPickerVisible] = useState(false);
