@@ -2,8 +2,17 @@ import { Ingredient } from '../../../interfaces/Recipe';
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
-export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMap<InventoryItem>): Ingredient[] {   
-    const normalResults =  ingredients.map((ingredient) => {
+const baseQuantityAndCategory = {// to be replaced in follow-up with linked data = {
+    quantity_description: 'stuk', // todo: link
+    category: {
+        categoryId: 99999,
+        categoryName: 'Varia',
+        translations: { nl: 'Divers' }
+    }
+};
+
+export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMap<InventoryItem>): Ingredient[] {
+    const normalResults = ingredients.map((ingredient) => {
         const entry = inventoryMap[ingredient.id];
         delete inventoryMap[ingredient.id];
 
@@ -28,12 +37,7 @@ export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMa
             extraResults.push({
                 ...ingredient,
                 quantity_number: difference,
-                quantity_description: 'stuk', // todo: link
-                category: {
-                    categoryId: 99999,
-                    categoryName: 'Varia',
-                    translations: {nl: 'Divers'}
-                }
+                ...baseQuantityAndCategory // to be replaced in follow-up with linked data
             });
         }
     }
