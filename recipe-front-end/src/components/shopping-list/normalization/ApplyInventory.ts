@@ -28,13 +28,13 @@ export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMa
             extraResults.push({
                 ...ingredient,
                 quantity_number: difference,
-                quantity_description: '', // todo: link
+                quantity_description: 'stuk', // todo: link
                 category: {
                     categoryId: 99999,
                     categoryName: 'Varia',
                     translations: {nl: 'Divers'}
                 }
-            })
+            });
         }
     }
 
