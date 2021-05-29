@@ -1,11 +1,11 @@
-import { Ingredient } from '../../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../../interfaces/Recipe';
 import { RulesHandler } from './RulesHandler';
 import { SortedRecipeMap } from './SortRecipeMap';
 
-export function combineToSingleValue(sortedRecipeMap: SortedRecipeMap, rulesHandler: RulesHandler): Ingredient[] {
+export function combineToSingleValue(sortedRecipeMap: SortedRecipeMap, rulesHandler: RulesHandler): QuantifiedIngredient[] {
     const keys = Object.keys(sortedRecipeMap);
     return keys.map((key) => {
-        const recipeMap: Ingredient[] = sortedRecipeMap[key];
+        const recipeMap: QuantifiedIngredient[] = sortedRecipeMap[key];
         const ingredients = rulesHandler.normalize(recipeMap);
         return {
             name: key.toLowerCase(),

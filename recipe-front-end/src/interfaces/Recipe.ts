@@ -18,10 +18,6 @@ export interface QuantifiedIngredient extends BaseIngredient {
     quantity_description: string;
 }
 
-export interface Ingredient extends QuantifiedIngredient {
-    category: Category;
-}
-
 interface BaseRecipe<IngredientType> {
     title: string;
     steps: string;
@@ -34,7 +30,7 @@ export interface RawRecipe extends BaseRecipe<QuantifiedIngredient> {
 
 }
 
-export interface Recipe extends BaseRecipe<Ingredient> {
+export interface Recipe extends BaseRecipe<QuantifiedIngredient> {
 
 }
 

@@ -1,12 +1,16 @@
 import { RulesHandler } from '../../components/shopping-list/normalization/RulesHandler';
-import { Ingredient } from '../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../interfaces/Recipe';
 import { QUANTITY_DESCRIPTION_NAME, TestIngredientRule, TEST_RULE_QUANTIFY_FACTOR, TEST_RULE_TO_UNIT_NAME } from '../mock/TestIngredientRule';
+import { EMPTY_TEST_CATEGORY } from './SortRecipeMap.test';
 
 const TEST_INGREDIENT_NAME = 'testing-ingredient';
-const TEST_INGREDIENT: Ingredient = {
+const TEST_INGREDIENT: QuantifiedIngredient = {
     name: TEST_INGREDIENT_NAME,
     quantity_description: QUANTITY_DESCRIPTION_NAME,
-    quantity_number: 1
+    quantity_number: 1,
+    id: -1,
+    categoryId: -1,
+    category: EMPTY_TEST_CATEGORY
 };
 
 describe('RulesHandler', () => {
@@ -17,7 +21,7 @@ describe('RulesHandler', () => {
         })
         
         describe('calls normalize_ with one test ingredient', () => {
-            let result: Ingredient[];
+            let result: QuantifiedIngredient[];
 
             beforeEach(() => {
                 result = rulesHandler.normalize([TEST_INGREDIENT]);

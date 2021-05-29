@@ -1,12 +1,12 @@
 import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Ingredient } from '../../interfaces/Recipe';
+import { BaseIngredient, QuantifiedIngredient } from '../../interfaces/Recipe';
 import './ShoppingCategory.scss';
 import { ShoppingIngredient } from './ShoppingIngredient';
 
 interface OwnProps {
-    ingredients: Ingredient[];
+    ingredients: QuantifiedIngredient[];
 }
 
 export function ShoppingCategory(props: OwnProps) {

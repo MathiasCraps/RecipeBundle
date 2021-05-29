@@ -1,4 +1,4 @@
-import { Ingredient } from '../../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../../interfaces/Recipe';
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
@@ -11,7 +11,7 @@ const baseQuantityAndCategory = {// to be replaced in follow-up with linked data
     }
 };
 
-export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMap<InventoryItem>): Ingredient[] {
+export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
     const normalResults = ingredients.map((ingredient) => {
         const entry = inventoryMap[ingredient.id];
         delete inventoryMap[ingredient.id];
@@ -28,7 +28,7 @@ export function applyInventory(ingredients: Ingredient[], inventoryMap: LinkedMa
     });
 
     const keys = Object.keys(inventoryMap);
-    const extraResults: Ingredient[] = [];
+    const extraResults: QuantifiedIngredient[] = [];
     for (const key of keys) {
         const { ingredient, desiredQuantity, quantity } = inventoryMap[key];
         const difference = desiredQuantity - quantity;

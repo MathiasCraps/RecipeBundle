@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 import { Dispatch } from 'redux';
-import { Ingredient } from '../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
@@ -71,7 +71,7 @@ export function ShoppingListMain(props: Props) {
     }
 
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
-    const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
+    const ingredientsFromRecipes = flatArray<QuantifiedIngredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
     const storageApplied = applyInventory(sumsToRender, props.inventoryMap);

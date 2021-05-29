@@ -3,7 +3,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { BaseIngredient, Category, Ingredient, QuantifiedIngredient } from '../../interfaces/Recipe';
+import { BaseIngredient, Category, QuantifiedIngredient } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { ReduxModel } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
@@ -89,10 +89,10 @@ function IngredientsModal(props: Props) {
                             draftIngredient = {
                                 ...createEmptyIngredient(),
                                 ...draftIngredient
-                            }
+                            };
                         }
 
-                        setIngredient(draftIngredient as Ingredient);
+                        setIngredient(draftIngredient as QuantifiedIngredient);
                     }}
                     inputRef={focusRef}
                     renderResults={searchIsActive}

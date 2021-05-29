@@ -1,11 +1,11 @@
-import { Ingredient } from '../../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../../interfaces/Recipe';
 
 export abstract class AbstractQuantityConversionRule {
     protected abstract toUnit: string;
     protected abstract quantifyFactor: number;
 
-    abstract canHandle(ingredient: Ingredient): boolean;
-    doHandle(ingredient: Ingredient): Ingredient {
+    abstract canHandle(ingredient: QuantifiedIngredient): boolean;
+    doHandle(ingredient: QuantifiedIngredient): QuantifiedIngredient {
         return {
             ...ingredient,
             quantity_description: this.toUnit,

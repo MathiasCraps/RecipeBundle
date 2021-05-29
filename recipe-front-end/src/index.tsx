@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, BaseIngredient, Category, Ingredient, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -26,7 +26,7 @@ function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] 
         return {
           ...ingredient,
           category: linkedMap[ingredient.categoryId]
-        } as Ingredient;
+        } as QuantifiedIngredient;
       })
     };
   });

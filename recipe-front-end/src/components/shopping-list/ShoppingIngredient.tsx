@@ -1,10 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
-import { Ingredient } from '../../interfaces/Recipe';
+import React, { useState } from 'react';
+import { QuantifiedIngredient } from '../../interfaces/Recipe';
 import './ShoppingIngredient.scss';
 
 interface props {
-    ingredient: Ingredient;
+    ingredient: QuantifiedIngredient;
 }
 
 export function ShoppingIngredient(props: props) {

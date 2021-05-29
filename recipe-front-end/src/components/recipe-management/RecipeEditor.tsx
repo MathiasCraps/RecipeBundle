@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
-import { Ingredient, QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
+import { QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
@@ -86,7 +86,7 @@ export function RecipeEditor(props: Props) {
 
         const recipeData: Recipe = {
             title,
-            ingredients: ingredients as unknown as Ingredient[],
+            ingredients: ingredients as QuantifiedIngredient[],
             steps,
             image: props.defaultState.image,
             id: props.defaultState.id || -1
