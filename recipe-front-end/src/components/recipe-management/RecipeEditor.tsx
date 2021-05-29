@@ -49,7 +49,12 @@ export function createEmptyIngredient(): QuantifiedIngredient {
         id: ++index,
         quantity_number: 0,
         quantity_description: quantityDescriptions[0],
-        categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding
+        categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding,
+        category: {
+            categoryId: 1,
+            categoryName: 'Test',
+            translations: {nl: 'wip'}
+        }
     };
 }
 
