@@ -6,10 +6,13 @@ export interface ApplicationData {
     inventories: RawInventoryItem[];
 }
 
-export interface BaseIngredient {
+interface RawIngredient {
     id: number;
     name: string;
     categoryId: number;
+}
+
+export interface BaseIngredient extends RawIngredient {
     category: Category;
 }
 
@@ -26,7 +29,7 @@ interface BaseRecipe<IngredientType> {
     ingredients: IngredientType[];
 }
 
-export interface RawRecipe extends BaseRecipe<QuantifiedIngredient> {
+export interface RawRecipe extends BaseRecipe<RawIngredient> {
 
 }
 
