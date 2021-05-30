@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
-import { QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
+import { Category, QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
@@ -21,6 +21,7 @@ interface OwnProps {
 
 interface ComponentProps {
     isLoggedIn: boolean;
+    firstCategory: Category;
 }
 
 interface ReduxProps {
@@ -32,7 +33,8 @@ type Props = OwnProps & ComponentProps & ReduxProps;
 
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
-        isLoggedIn: reduxModel.user.loggedIn
+        isLoggedIn: reduxModel.user.loggedIn,
+        firstCategory: reduxModel.categories[0]
     }
 }
 
@@ -43,18 +45,14 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeActio
     };
 }
 
-export function createEmptyIngredient(): QuantifiedIngredient {
+export function createEmptyIngredient(category: Category): QuantifiedIngredient {
     return {
         name: '',
         id: ++index,
         quantity_number: 0,
         quantity_description: quantityDescriptions[0],
-        categoryId: 1, // todo: make categories available via graphql so we can use the first value without hardcoding,
-        category: {
-            categoryId: 1,
-            categoryName: 'Test',
-            translations: {nl: 'wip'}
-        }
+        categoryId: category.categoryId,
+        category
     };
 }
 
@@ -190,7 +188,7 @@ export function RecipeEditor(props: Props) {
                 ingredientInputs={editingType.ingredient} />}
 
             <Button onClick={() => {
-                const newIngredient = createEmptyIngredient();
+                const newIngredient = createEmptyIngredient(props.firstCategory);
                 setEditingType({
                     action: 'add',
                     ingredient: newIngredient

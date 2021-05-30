@@ -19,6 +19,7 @@ interface OwnProps {
 interface ReduxProps {
     categories: Category[];
     availableIngredients: BaseIngredient[];
+    firstCategory: Category;
 }
 
 export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
@@ -26,7 +27,8 @@ export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 's
 function mapStateToProps(reduxState: ReduxModel): ReduxProps {
     return {
         categories: reduxState.categories,
-        availableIngredients: reduxState.ingredients
+        availableIngredients: reduxState.ingredients,
+        firstCategory: reduxState.categories[0]
     }
 }
 
@@ -54,7 +56,7 @@ function IngredientsModal(props: Props) {
         function onBlur() {
             const value = focusRef.current?.value || '';
             if (value && ingredient.name !== value) {
-                const ingredient = createEmptyIngredient();
+                const ingredient = createEmptyIngredient(props.firstCategory);
                 ingredient.name = value;
                 setIngredient(ingredient);
             }
@@ -83,11 +85,11 @@ function IngredientsModal(props: Props) {
                     items={props.availableIngredients}
                     onSelectionChange={(draftIngredient) => {
                         if (!draftIngredient) {
-                            draftIngredient = createEmptyIngredient();
+                            draftIngredient = createEmptyIngredient(props.firstCategory);
                             draftIngredient.name = focusRef.current?.value || '';
                         } else {
                             draftIngredient = {
-                                ...createEmptyIngredient(),
+                                ...createEmptyIngredient(props.firstCategory),
                                 ...draftIngredient
                             };
                         }
