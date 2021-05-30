@@ -1,3 +1,8 @@
+export interface StartData {
+    categories: Category[];
+    quantityDescriptions: QuantityDescription[];
+}
+
 export interface QuantityLessIngredient {
     id: number;
     name: string;
@@ -5,7 +10,7 @@ export interface QuantityLessIngredient {
     categoryName: string | undefined;
 }
 
-export interface LocalizedCategory {
+export interface LocalisedMap {
     [key: string]: string;
 }
 
@@ -17,7 +22,13 @@ export interface Ingredient extends QuantityLessIngredient {
 export interface Category {
     categoryId: number | undefined;
     categoryName: string;
-    translations: LocalizedCategory
+    translations: LocalisedMap
+}
+
+export interface QuantityDescription {
+    quantityDescriptorId: number | undefined;
+    name: string;
+    translations: LocalisedMap;
 }
 
 export interface Recipe {
