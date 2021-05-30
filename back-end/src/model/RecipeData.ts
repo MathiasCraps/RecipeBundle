@@ -1,8 +1,3 @@
-export interface ApplicationData {
-    menus: DayMenu[];
-    recipes: Recipe[];
-}
-
 export interface QuantityLessIngredient {
     id: number;
     name: string;
@@ -23,11 +18,6 @@ export interface Category {
     categoryId: number | undefined;
     categoryName: string;
     translations: LocalizedCategory
-}
-
-export interface TestData {
-    categories: string[];
-    recipes: Recipe[];
 }
 
 export interface Recipe {
