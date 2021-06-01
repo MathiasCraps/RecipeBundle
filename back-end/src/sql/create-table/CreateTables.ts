@@ -19,6 +19,18 @@ export async function createTables(pool: Pool) {
         created_at timestamp DEFAULT current_timestamp
     )`);
 
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientQuantityDescription (
+        id serial PRIMARY KEY,
+        category_name varchar(100) NOT NULL
+    )`);
+
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientQuantityDescriptionTranslation (
+        quantity_descriptor_id INT NOT NULL,
+        language_code varchar(2) NOT NULL,
+        localised_name varchar(100) NOT NULL,
+        FOREIGN KEY (quantity_descriptor_id) REFERENCES IngredientQuantityDescription (id)
+    )`);
+
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategory (
         id serial PRIMARY KEY,
         category_name varchar(100) NOT NULL
