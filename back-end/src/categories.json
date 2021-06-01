@@ -16,5 +16,11 @@
     { "categoryName": "freeze-wares", "translations": { "nl": "Diepvrieswaren" } },
     { "categoryName": "misc", "translations": { "nl": "Divers" } }
   ],
-  "quantityDescriptions": []
+  "quantityDescriptions": [
+    { "name": "unit", "translations": { "nl": "Stuk"} },
+    { "name": "gram", "translations": { "nl": "Gram"} },
+    { "name": "tablespoon", "translations": { "nl": "eetlepel"} },
+    { "name": "teaspoon", "translations": { "nl": "theelepel"} },
+    { "name": "pinch", "translations": { "nl": "Snufje"} }
+  ]
 }
