@@ -46,15 +46,16 @@ export async function createTables(pool: Pool) {
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Ingredients (
         id serial PRIMARY KEY,
         ingredient_name varchar(500) NOT NULL,
+        ingredient_quantity_id INT NOT NULL,
         ingredient_category_id INT,
-        FOREIGN KEY (ingredient_category_id) REFERENCES IngredientCategory (id)
+        FOREIGN KEY (ingredient_category_id) REFERENCES IngredientCategory (id),
+        FOREIGN KEY (ingredient_quantity_id) REFERENCES IngredientQuantityDescription (id)
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS RecipesIngredientsMatch (
         recipe_id INT NOT NULL,
         ingredient_id INT NOT NULL,
         quantity_number NUMERIC(10, 2) NOT NULL,
-        quantity_name varchar(500) NOT NULL,
         PRIMARY KEY (recipe_id, ingredient_id),
         FOREIGN KEY (recipe_id) REFERENCES Recipes (id),
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id)
