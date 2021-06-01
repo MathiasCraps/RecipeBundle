@@ -37,7 +37,7 @@ export async function createTables(pool: Pool) {
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategoryTranslation (
-        category_id INT,
+        category_id INT NOT NULL,
         language_code varchar(2) NOT NULL,
         localised_name varchar(100) NOT NULL,
         FOREIGN KEY (category_id) REFERENCES IngredientCategory (id)
