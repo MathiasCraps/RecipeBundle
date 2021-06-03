@@ -104,6 +104,13 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       quantity
       desiredQuantity
     }
+    quantityDescriptions {
+      quantityDescriptorId
+      name
+      translations {
+        nl
+      }
+    }
   }`);
 
   const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
