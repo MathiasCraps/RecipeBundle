@@ -17,7 +17,8 @@ export async function getAllIngredients(pool: Pool): Promise<QuantityLessIngredi
             id: entry.recipe_id,
             name: entry.ingredient_name,
             categoryId: entry.category_id,
-            categoryName: entry.category_name
+            categoryName: entry.category_name,
+            quantity_description_id: entry.quantity_description_id
         };
     });
 }
