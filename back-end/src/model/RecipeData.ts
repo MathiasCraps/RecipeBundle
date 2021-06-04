@@ -16,7 +16,7 @@ export interface LocalisedMap {
 
 export interface Ingredient extends QuantityLessIngredient {
     quantity_number: number | null;
-    quantity_description: string;
+    quantity_description_id: 1;
 }
 
 export interface Category {
