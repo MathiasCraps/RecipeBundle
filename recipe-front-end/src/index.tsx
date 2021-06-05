@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -16,8 +16,9 @@ import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
 
-function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] {
-  const linkedMap = convertArrayToLinkedMap(categories, 'categoryId');
+function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
+  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
+  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
 
   return recipes.map((recipe) => {
     return {
@@ -25,7 +26,8 @@ function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] 
       ingredients: recipe.ingredients.map((ingredient) => {
         return {
           ...ingredient,
-          category: linkedMap[ingredient.categoryId]
+          category: linkedMapCategories[ingredient.categoryId],
+          quantityDescription: linkedMapQuantityDescription[ingredient.quantity_description_id]
         } as QuantifiedIngredient;
       })
     };
@@ -114,7 +116,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     }
   }`);
 
-  const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
+  const linkedRecipes = linkRecipeData(applicationData.recipes, applicationData.categories, applicationData.quantityDescriptions);
   const inventory = linkInventory(applicationData.inventories, applicationData.ingredients);
 
   const linkedMenu: DayMenu[] = applicationData.menus

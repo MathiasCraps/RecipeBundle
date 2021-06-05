@@ -16,6 +16,7 @@ interface RawIngredient {
 
 export interface BaseIngredient extends RawIngredient {
     category: Category;
+    quantityDescription: QuantityDescription;
 }
 
 export interface QuantifiedIngredient extends BaseIngredient {
