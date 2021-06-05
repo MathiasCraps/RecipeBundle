@@ -4,6 +4,7 @@ export interface ApplicationData {
     categories: Category[];
     ingredients: BaseIngredient[];
     inventories: RawInventoryItem[];
+    quantityDescriptions: QuantityDescription[];
 }
 
 interface RawIngredient {
@@ -59,4 +60,10 @@ export interface RawInventoryItem {
     ingredientId: number;
     quantity: number;
     desiredQuantity: number;
+}
+
+export interface QuantityDescription {
+    quantityDescriptorId: number;
+    name: string;
+    translation: TranslationMap;
 }
