@@ -10,6 +10,7 @@ interface RawIngredient {
     id: number;
     name: string;
     categoryId: number;
+    quantity_description_id: number;
 }
 
 export interface BaseIngredient extends RawIngredient {

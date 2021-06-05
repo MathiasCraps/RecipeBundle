@@ -52,7 +52,8 @@ export function createEmptyIngredient(category: Category): QuantifiedIngredient 
         quantity_number: 0,
         quantity_description: quantityDescriptions[0],
         categoryId: category.categoryId,
-        category
+        category,
+        quantity_description_id: -1 // todo, fix later
     };
 }
 

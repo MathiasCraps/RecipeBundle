@@ -11,14 +11,16 @@ const input: SortedRecipeMap = {
       quantity_description: 'stuk',
       id: 1,
       categoryId: -1,
-      category: EMPTY_TEST_CATEGORY
+      category: EMPTY_TEST_CATEGORY,
+      quantity_description_id: -1
     }, {
         name: 'apple',
         quantity_number: 2,
         quantity_description: 'stuk',
         id: 1,
         categoryId: -1,
-        category: EMPTY_TEST_CATEGORY
+        category: EMPTY_TEST_CATEGORY,
+        quantity_description_id: -1
     }],
     floor: [{
         name: 'floor',
@@ -26,14 +28,16 @@ const input: SortedRecipeMap = {
         quantity_description: 'gram',
         id: 2,
         categoryId: -1,
-        category: EMPTY_TEST_CATEGORY
+        category: EMPTY_TEST_CATEGORY,
+        quantity_description_id: -1
     }, {
         name: 'floor',
         quantity_number: 750,
         quantity_description: 'gram',
         id: 3,
         categoryId: -1,
-        category: EMPTY_TEST_CATEGORY
+        category: EMPTY_TEST_CATEGORY,
+        quantity_description_id: -1
     }]
 }
 

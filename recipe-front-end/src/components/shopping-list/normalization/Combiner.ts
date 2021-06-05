@@ -15,7 +15,8 @@ export function combineToSingleValue(sortedRecipeMap: SortedRecipeMap, rulesHand
             quantity_description: ingredients[0].quantity_description,
             categoryId: ingredients[0].categoryId,
             id: ingredients[0].id,
-            category: ingredients[0].category
+            category: ingredients[0].category,
+            quantity_description_id: ingredients[0].quantity_description_id
         }
     })
 }

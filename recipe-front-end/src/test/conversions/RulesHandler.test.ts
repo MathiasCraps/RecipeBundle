@@ -10,7 +10,8 @@ const TEST_INGREDIENT: QuantifiedIngredient = {
     quantity_number: 1,
     id: -1,
     categoryId: -1,
-    category: EMPTY_TEST_CATEGORY
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1
 };
 
 describe('RulesHandler', () => {

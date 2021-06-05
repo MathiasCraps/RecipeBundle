@@ -13,7 +13,8 @@ const APPLE_INGREDIENTS: QuantifiedIngredient[] = [{
     quantity_number: 1,
     categoryId: -1,
     id: 1,
-    category: EMPTY_TEST_CATEGORY
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1
 },
 {
     name: 'apple',
@@ -21,7 +22,8 @@ const APPLE_INGREDIENTS: QuantifiedIngredient[] = [{
     quantity_number: 1,
     categoryId: -1,
     id: 1,
-    category: EMPTY_TEST_CATEGORY
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1
 }];
 
 const PEAR_INGREDIENTS: QuantifiedIngredient[] = [{
@@ -30,7 +32,8 @@ const PEAR_INGREDIENTS: QuantifiedIngredient[] = [{
     quantity_number: 1,
     categoryId: -1,
     id: 2,
-    category: EMPTY_TEST_CATEGORY
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1
 }];
 
 const TEST_INGREDIENTS: QuantifiedIngredient[] = [
