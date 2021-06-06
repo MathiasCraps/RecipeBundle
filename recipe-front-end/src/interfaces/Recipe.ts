@@ -21,7 +21,6 @@ export interface BaseIngredient extends RawIngredient {
 
 export interface QuantifiedIngredient extends BaseIngredient {
     quantity_number: number;
-    quantity_description: string;
 }
 
 interface BaseRecipe<IngredientType> {
@@ -61,6 +60,11 @@ export interface RawInventoryItem {
     ingredientId: number;
     quantity: number;
     desiredQuantity: number;
+    quantity_description_id: number;
+}
+
+export interface InventoryItem extends RawInventoryItem {
+    quantityDescription: QuantityDescription;
 }
 
 export interface QuantityDescription {
