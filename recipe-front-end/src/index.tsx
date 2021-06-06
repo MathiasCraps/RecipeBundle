@@ -34,12 +34,14 @@ function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDe
   });
 }
 
-function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[]): InventoryItem[] {
+function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[], quantityDescriptions: QuantityDescription[]): InventoryItem[] {
   const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
+  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
   return rawInventory.map((inventoryItem) => {
     return {
       ...inventoryItem,
-      ingredient: linkedMap[inventoryItem.ingredientId]
+      ingredient: linkedMap[inventoryItem.ingredientId],
+      quantityDescription: linkedMapQuantityDescription[inventoryItem.quantity_description_id]
     }
   });
 }
@@ -78,7 +80,6 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
         name
         id
         quantity_number
-        quantity_description
         categoryId
         quantity_description_id
       }
@@ -117,7 +118,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   }`);
 
   const linkedRecipes = linkRecipeData(applicationData.recipes, applicationData.categories, applicationData.quantityDescriptions);
-  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients);
+  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients, applicationData.quantityDescriptions);
 
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, linkedRecipes))
