@@ -7,16 +7,15 @@ export async function updateIngredients(pool: Pool, ingredients: Ingredient[], r
         await executeQuery(pool, {
             name: 'edit-ingredient-base',
             text: `UPDATE Ingredients SET ingredient_name = $1, ingredient_category_id = $2 WHERE id = $3`,
-            values: [ingredient.name, ingredient.categoryId, ingredient.id]
+            values: [ingredient.name, ingredient.categoryId, ingredient.id, ingredient.quantity_description_id]
         });
 
         await executeQuery(pool, {
             name: 'edit-ingredient-quantities',
-            text: `UPDATE RecipesIngredientsMatch SET quantity_number = $1, quantity_name = $2 
-                WHERE recipe_id = $3 AND ingredient_id = $4`,
+            text: `UPDATE RecipesIngredientsMatch SET quantity_number = $1 
+                WHERE recipe_id = $2 AND ingredient_id = $3`,
             values: [
                 ingredient.quantity_number, 
-                ingredient.quantity_description, 
                 recipeId, 
                 ingredient.id
             ]
