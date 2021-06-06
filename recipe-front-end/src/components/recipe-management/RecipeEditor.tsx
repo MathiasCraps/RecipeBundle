@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from "redux";
-import { Category, QuantifiedIngredient, Recipe } from "../../interfaces/Recipe";
+import { Category, QuantifiedIngredient, QuantityDescription, Recipe } from "../../interfaces/Recipe";
 import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
@@ -22,6 +22,7 @@ interface OwnProps {
 interface ComponentProps {
     isLoggedIn: boolean;
     firstCategory: Category;
+    quantityDescriptions: QuantityDescription[];
 }
 
 interface ReduxProps {
@@ -34,7 +35,8 @@ type Props = OwnProps & ComponentProps & ReduxProps;
 function mapStateToProps(reduxModel: ReduxModel): ComponentProps {
     return {
         isLoggedIn: reduxModel.user.loggedIn,
-        firstCategory: reduxModel.categories[0]
+        firstCategory: reduxModel.categories[0],
+        quantityDescriptions: reduxModel.quantityDescriptions
     }
 }
 
@@ -45,12 +47,12 @@ function mapDispatchToProps(dispatch: Dispatch<AddRecipeAction | EditRecipeActio
     };
 }
 
-export function createEmptyIngredient(category: Category): QuantifiedIngredient {
+export function createEmptyIngredient(category: Category, quantityDescription: QuantityDescription): QuantifiedIngredient {
     return {
         name: '',
         id: ++index,
         quantity_number: 0,
-        quantity_description: quantityDescriptions[0],
+        quantityDescription,
         categoryId: category.categoryId,
         category,
         quantity_description_id: -1 // todo, fix later
@@ -143,7 +145,7 @@ export function RecipeEditor(props: Props) {
 
         <Box className="box"><b>{Localisation.INGREDIENTS}</b>
             <Box>{ingredients.map((ingredient: QuantifiedIngredient) => {
-                const { name, quantity_number, quantity_description } = ingredient;
+                const { name, quantity_number, quantityDescription } = ingredient;
                 return (<Box className="edit-ingredient-container" key={ingredient.id}>
                     <label>
                         <Tooltip label={Localisation.EDIT_INGREDIENT} fontSize="md">
@@ -157,7 +159,7 @@ export function RecipeEditor(props: Props) {
                         <Tooltip label={Localisation.REMOVE_INGREDIENT} fontSize="md">
                             <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
                         </Tooltip>
-                        <strong>{name}</strong>, {quantity_number} {quantity_description}
+                        <strong>{name}</strong>, {quantity_number} {quantityDescription.translation['nl']}
                     </label>
                 </Box>)
             })}</Box>
@@ -189,7 +191,7 @@ export function RecipeEditor(props: Props) {
                 ingredientInputs={editingType.ingredient} />}
 
             <Button onClick={() => {
-                const newIngredient = createEmptyIngredient(props.firstCategory);
+                const newIngredient = createEmptyIngredient(props.firstCategory, props.quantityDescriptions[0]);
                 setEditingType({
                     action: 'add',
                     ingredient: newIngredient

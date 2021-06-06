@@ -8,7 +8,7 @@ export abstract class AbstractQuantityConversionRule {
     doHandle(ingredient: QuantifiedIngredient): QuantifiedIngredient {
         return {
             ...ingredient,
-            quantity_description: this.toUnit,
+            quantityDescription: this.toUnit, // todo: fix later
             quantity_number: ingredient.quantity_number! * this.quantifyFactor
         };
     }
