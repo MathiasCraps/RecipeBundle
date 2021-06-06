@@ -1,4 +1,4 @@
-import { BaseIngredient, Category, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, QuantityDescription, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
@@ -42,6 +42,7 @@ export interface ReduxModel {
     categories: Category[];
     ingredients: BaseIngredient[];
     inventory: InventoryItem[];
+    quantityDescriptions: QuantityDescription[];
 }
 
 export enum Actions {
@@ -147,7 +148,8 @@ export const defaultState: ReduxModel = {
     },
     categories: [],
     ingredients: [],
-    inventory: []
+    inventory: [],
+    quantityDescriptions: []
 }
 
 export type ReduxAction = ToggleMenuAction | 
