@@ -12,7 +12,7 @@ export function combineToSingleValue(sortedRecipeMap: SortedRecipeMap, rulesHand
             quantity_number: ingredients.reduce((previous, current) => {
                 return previous + current.quantity_number!;
             }, 0),
-            quantity_description: ingredients[0].quantity_description,
+            quantityDescription: ingredients[0].quantityDescription,
             categoryId: ingredients[0].categoryId,
             id: ingredients[0].id,
             category: ingredients[0].category,

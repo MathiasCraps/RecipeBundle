@@ -29,6 +29,6 @@ export function ShoppingIngredient(props: props) {
         onKeyUp={handleKeyUp}
         className={`menu-recipe ${isCancelled ? 'strike-through grayed' : ''}`}
         onClick={() => setIsCancelled(!isCancelled)}>
-        <strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantity_description.toLowerCase()})
+        <strong>{ingredient.name}</strong> ({ingredient.quantity_number} {ingredient.quantityDescription.translation['nl'].toLowerCase()})
     </li>
 }
