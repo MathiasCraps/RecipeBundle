@@ -1,10 +1,21 @@
-import { QuantifiedIngredient } from '../../../interfaces/Recipe';
+import { QuantifiedIngredient, QuantityDescription } from '../../../interfaces/Recipe';
 
-export abstract class AbstractQuantityConversionRule {
-    protected abstract toUnit: string;
-    protected abstract quantifyFactor: number;
+export class QuantityConversionRule {
+    private fromUnit: QuantityDescription;
+    private toUnit: QuantityDescription;
 
-    abstract canHandle(ingredient: QuantifiedIngredient): boolean;
+    private quantifyFactor: number;
+
+    constructor(fromQuantityDescription: QuantityDescription, toQuantityDescription: QuantityDescription, quantityFactor: number) {
+        this.fromUnit = fromQuantityDescription;
+        this.toUnit = toQuantityDescription;
+        this.quantifyFactor = quantityFactor;
+    }
+
+    canHandle(ingredient: QuantifiedIngredient): boolean {
+        return this.fromUnit.quantityDescriptorId === ingredient.quantityDescription.quantityDescriptorId;
+    }
+
     doHandle(ingredient: QuantifiedIngredient): QuantifiedIngredient {
         return {
             ...ingredient,

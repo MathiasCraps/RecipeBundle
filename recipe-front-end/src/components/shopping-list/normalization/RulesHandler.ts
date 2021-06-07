@@ -1,8 +1,8 @@
 import { QuantifiedIngredient } from '../../../interfaces/Recipe';
-import { AbstractQuantityConversionRule } from './AbstractQuantityConversionRule';
+import { QuantityConversionRule } from './AbstractQuantityConversionRule';
 
 export class RulesHandler {
-    constructor(private _rules: AbstractQuantityConversionRule[]) { }
+    constructor(private _rules: QuantityConversionRule[]) { }
 
     normalize(ingredients: QuantifiedIngredient[]) {
         return ingredients.map(this.doNormalizeIngredient);
