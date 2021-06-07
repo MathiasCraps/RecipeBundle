@@ -12,7 +12,7 @@ import { convertArrayToLinkedMapWithPredicate, flatArray, LinkedMap } from '../.
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
-import { QuantityConversionRule } from './normalization/AbstractQuantityConversionRule';
+import { QuantityConversionRule } from './normalization/QuantityConversionRule';
 import { applyInventory } from './normalization/ApplyInventory';
 import { combineToSingleValue } from './normalization/Combiner';
 import { groupByCategory } from './normalization/GroupByCategory';

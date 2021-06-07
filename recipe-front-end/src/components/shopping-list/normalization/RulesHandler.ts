@@ -1,5 +1,5 @@
 import { QuantifiedIngredient } from '../../../interfaces/Recipe';
-import { QuantityConversionRule } from './AbstractQuantityConversionRule';
+import { QuantityConversionRule } from './QuantityConversionRule';
 
 export class RulesHandler {
     constructor(private _rules: QuantityConversionRule[]) { }
