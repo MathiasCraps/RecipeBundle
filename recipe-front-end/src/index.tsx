@@ -140,6 +140,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     categories: applicationData.categories,
     menuPlanning: linkedMenu,
     ingredients: applicationData.ingredients,
+    quantityDescriptions: applicationData.quantityDescriptions,
     inventory: inventory
   }, applyMiddleware(thunk));
 
