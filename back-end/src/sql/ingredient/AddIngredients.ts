@@ -15,7 +15,7 @@ export async function addIngredients(pool: Pool, ingredients: Ingredient[], reci
         if (baseIngredientDoesNotExist) {
             let ingredientResult = await executeQuery(pool, {
                 name: 'add-ingredient',
-                text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id, ingredient_category_id) VALUES ($1, $2, $3) RETURNING id;',
+                text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id, ingredient_quantity_id) VALUES ($1, $2, $3) RETURNING id;',
                 values: [ingredient.name, ingredient.categoryId, ingredient.quantity_description_id]
             });
 
