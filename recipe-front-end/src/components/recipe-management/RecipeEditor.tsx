@@ -159,7 +159,7 @@ export function RecipeEditor(props: Props) {
                         <Tooltip label={Localisation.REMOVE_INGREDIENT} fontSize="md">
                             <Button onClick={() => removeIngredient(ingredient)}><FontAwesomeIcon icon={faTrash} /></Button>
                         </Tooltip>
-                        <strong>{name}</strong>, {quantity_number} {quantityDescription.translation['nl']}
+                        <strong>{name}</strong>, {quantity_number} {quantityDescription.translations['nl']}
                     </label>
                 </Box>)
             })}</Box>

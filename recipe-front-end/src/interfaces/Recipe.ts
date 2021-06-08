@@ -70,5 +70,5 @@ export interface InventoryItem extends RawInventoryItem {
 export interface QuantityDescription {
     quantityDescriptorId: number;
     name: string;
-    translation: TranslationMap;
+    translations: TranslationMap;
 }

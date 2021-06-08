@@ -139,7 +139,7 @@ function IngredientsModal(props: Props) {
                         }
                     }}>
                         {props.quantityDescriptions.map((description, index) => {
-                            const text = description.translation['nl'];
+                            const text = description.translations['nl'];
 
                             const capitalizedText = text.charAt(0).toUpperCase() + text.substr(1);
                             return <option key={index} value={description.quantityDescriptorId}>{capitalizedText}</option>

@@ -198,7 +198,7 @@ function RecipeOverview(props: Props) {
                 <div className="clearer"></div>
                 <Heading as="h3">{Localisation.INGREDIENTS}</Heading>
                 <ul>{recipe.ingredients.map((ingredient, index) => (
-                    <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantityDescription.translation['nl']}
+                    <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantityDescription.translations['nl']}
                     </li>))}</ul>
                 <Heading as="h3">{Localisation.STEPS}</Heading>
                 {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
