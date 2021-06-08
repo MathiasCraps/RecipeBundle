@@ -10,7 +10,7 @@ import { Localisation } from "../../localisation/AppTexts";
 import { Paths } from '../../Paths';
 import { addRecipe, AddRecipeReturn, editRecipe, EditRecipeReturn } from "../../redux/Actions";
 import { AddRecipeAction, EditRecipeAction, ReduxModel } from "../../redux/Store";
-import IngredientsModal, { quantityDescriptions } from "./IngredientsModal";
+import IngredientsModal from "./IngredientsModal";
 
 let index = -10e8;
 
