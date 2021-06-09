@@ -16,7 +16,7 @@ export async function addIngredients(pool: Pool, ingredients: Ingredient[], reci
             let ingredientResult = await executeQuery(pool, {
                 name: 'add-ingredient',
                 text: 'INSERT INTO Ingredients (ingredient_name, ingredient_category_id, ingredient_quantity_id) VALUES ($1, $2, $3) RETURNING id;',
-                values: [ingredient.name, ingredient.categoryId, ingredient.quantity_description_id]
+                values: [ingredient.name, ingredient.categoryId, ingredient.quantityDescription.quantityDescriptorId]
             });
 
             id = ingredientResult.rows[0].id;
@@ -24,8 +24,8 @@ export async function addIngredients(pool: Pool, ingredients: Ingredient[], reci
 
         await executeQuery(pool, {
             name: 'match-ingredient-and-recipe',
-            text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number, quantity_name) 
-                VALUES($1, $2, $3, $4);`,
+            text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number) 
+                VALUES($1, $2, $3);`,
             values: [recipeId, id, ingredient.quantity_number]
         });
     }
