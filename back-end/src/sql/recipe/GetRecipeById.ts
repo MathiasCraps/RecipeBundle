@@ -29,7 +29,7 @@ export async function getRecipeById(pool: Pool, recipeId: number): Promise<Recip
                 name: ingredient.ingredient_name,
                 categoryId: Number(ingredient.category_id),
                 categoryName: ingredient.category_name,
-                quantity_description_id: ingredient.quantity_description_id
+                quantity_description_id: ingredient.ingredient_quantity_id
             };
         }),
         image: `${process.env.DOMAIN}/${recipe.image}`,
