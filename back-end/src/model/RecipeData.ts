@@ -8,7 +8,7 @@ export interface QuantityLessIngredient {
     name: string;
     categoryId: number;
     categoryName: string | undefined;
-    quantityDescription: QuantityDescription;
+    quantity_description_id: number;
 }
 
 export interface LocalisedMap {

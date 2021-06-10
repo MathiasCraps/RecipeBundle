@@ -27,7 +27,7 @@ function ingredientIsModified(ingredientA: Ingredient, ingredientB: Ingredient):
     return Boolean(ingredientA.categoryName !== ingredientB.categoryName ||
         ingredientA.name !== ingredientB.name ||
         ingredientA.quantity_number !== ingredientB.quantity_number ||
-        ingredientA.quantityDescription.quantityDescriptorId !== ingredientB.quantityDescription.quantityDescriptorId);
+        ingredientA.quantity_description_id !== ingredientB.quantity_description_id);
 }
 
 function compareIngredientChanges(

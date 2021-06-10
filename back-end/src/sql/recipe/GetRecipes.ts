@@ -12,7 +12,7 @@ export async function getAllRecipes(): Promise<Recipe[]> {
             try {
                 recipes.push(await getRecipeById(pool, id));
             } catch (err) {
-
+                console.log('error getting recipes', err);
             }
         }
 
