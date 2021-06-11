@@ -60,10 +60,12 @@ function InventoryMenu(props: Props) {
 
         <table className="inventory-table">
             <thead>
-                <th>{Localisation.INGREDIENT_NAME}</th>
-                <th>{Localisation.QUANTITY}</th>
-                <th>{Localisation.DESIRED_QUANTITY}</th>
-                <th>{Localisation.ACTIONS}</th>
+                <tr>
+                    <th>{Localisation.INGREDIENT_NAME}</th>
+                    <th>{Localisation.QUANTITY}</th>
+                    <th>{Localisation.DESIRED_QUANTITY}</th>
+                    <th>{Localisation.ACTIONS}</th>
+                </tr>
             </thead>
 
             <tbody>
