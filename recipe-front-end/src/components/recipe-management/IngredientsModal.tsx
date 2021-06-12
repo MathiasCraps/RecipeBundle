@@ -134,7 +134,8 @@ function IngredientsModal(props: Props) {
                         if (match) {
                             setIngredient({
                                 ...ingredient,
-                                quantityDescription: match
+                                quantityDescription: match,
+                                quantity_description_id: match.quantityDescriptorId
                             })    
                         }
                     }}>
@@ -174,7 +175,7 @@ function IngredientsModal(props: Props) {
                     categoryId: ingredient.categoryId,
                     category: ingredient.category,
                     quantityDescription: ingredient.quantityDescription,
-                    quantity_description_id: ingredient.quantity_description_id
+                    quantity_description_id: ingredient.quantity_description_id,
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>
