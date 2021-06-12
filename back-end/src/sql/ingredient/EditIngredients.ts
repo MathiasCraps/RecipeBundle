@@ -6,8 +6,8 @@ export async function updateIngredients(pool: Pool, ingredients: Ingredient[], r
     for (const ingredient of ingredients) {
         await executeQuery(pool, {
             name: 'edit-ingredient-base',
-            text: `UPDATE Ingredients SET ingredient_name = $1, ingredient_category_id = $2 WHERE id = $3`,
-            values: [ingredient.name, ingredient.categoryId, ingredient.id, ingredient.quantity_description_id]
+            text: `UPDATE Ingredients SET ingredient_name = $1, ingredient_category_id = $2, ingredient_quantity_id = $3 WHERE id = $4`,
+            values: [ingredient.name, ingredient.categoryId, ingredient.quantity_description_id, ingredient.id]
         });
 
         await executeQuery(pool, {
