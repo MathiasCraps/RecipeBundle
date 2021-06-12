@@ -50,4 +50,5 @@ export interface InventoryItem {
     ingredientId: number;
     quantity: number;
     desiredQuantity: number;
+    quantity_description_id?: number;
 }
