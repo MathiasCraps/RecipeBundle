@@ -102,11 +102,13 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       name
       categoryId
       categoryName
+      quantity_description_id
     }
     inventories {
       ingredientId
       quantity
       desiredQuantity
+      quantity_description_id
     }
     quantityDescriptions {
       quantityDescriptorId
