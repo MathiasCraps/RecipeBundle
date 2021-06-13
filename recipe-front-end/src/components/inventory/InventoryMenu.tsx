@@ -70,8 +70,10 @@ function InventoryMenu(props: Props) {
 
             <tbody>
                 {props.inventory.map((inventoryItem) => {
+                    const quantityDescription = props.quantityDescriptions[inventoryItem.ingredient.quantity_description_id];
+                    
                     return <tr style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
-                        <td><strong>{inventoryItem.ingredient.name} ({props.quantityDescriptions[inventoryItem.ingredient.quantity_description_id]})</strong></td>
+                        <td><strong>{inventoryItem.ingredient.name} ({quantityDescription.translations['nl']})</strong></td>
                         <td>{inventoryItem.quantity}</td>
                         <td>{inventoryItem.desiredQuantity}</td>
                         <td><Tooltip label={Localisation.EDIT_DETAILS}>
