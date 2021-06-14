@@ -55,19 +55,11 @@ describe('combineToSingleValue', () => {
         });
 
         test('combines apples correctly', () => {
-            expect(ingredients[0]).toEqual({
-                name: 'apple',
-                quantity_description: 'stuk',
-                quantity_number: 3
-            });
+            expect(ingredients[0]).toEqual({"category": {"categoryId": -1, "categoryName": "test", "translations": {"nl": "unit-test"}}, "categoryId": -1, "id": 1, "name": "apple", "quantityDescription": {"name": "test", "quantityDescriptorId": 0, "translations": {"nl": "test-nl"}}, "quantity_description_id": -1, "quantity_number": 3});
         });
 
         test('combines floor correctly', () => {
-            expect(ingredients[1]).toEqual({
-                name: 'floor',
-                quantity_description: 'gram',
-                quantity_number: 1250
-            });
+            expect(ingredients[1]).toEqual({"category": {"categoryId": -1, "categoryName": "test", "translations": {"nl": "unit-test"}}, "categoryId": -1, "id": 2, "name": "floor", "quantityDescription": {"name": "gram", "quantityDescriptorId": 1, "translations": {"nl": "gram-nl"}}, "quantity_description_id": -1, "quantity_number": 1250});
         });
     });
 });

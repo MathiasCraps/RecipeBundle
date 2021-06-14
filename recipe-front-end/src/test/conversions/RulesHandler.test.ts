@@ -39,10 +39,6 @@ describe('RulesHandler', () => {
             test(`multiplies the quantity to ${TEST_RULE_QUANTIFY_FACTOR}`, () => {
                 expect(result[0].quantity_number).toBe(TEST_RULE_QUANTIFY_FACTOR);
             });
-
-            test(`updates to quantity name to ${TEST_RULE_TO_UNIT_NAME}`, () => {
-                expect(result[0].quantity_description).toBe(TEST_RULE_TO_UNIT_NAME)
-            })
         })
     })
 })
