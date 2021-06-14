@@ -1,7 +1,7 @@
-import { Ingredient } from '../../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../../interfaces/Recipe';
 
-export type SortedRecipeMap = { [key: string]: Ingredient[] };
-export function sortByIngredient(ingredients: Ingredient[]): SortedRecipeMap {
+export type SortedRecipeMap = { [key: string]: QuantifiedIngredient[] };
+export function sortByIngredient(ingredients: QuantifiedIngredient[]): SortedRecipeMap {
     const recipeMap: SortedRecipeMap = {};
     for (const ingredient of ingredients) {
         const ingredientName = ingredient.name.toLowerCase();

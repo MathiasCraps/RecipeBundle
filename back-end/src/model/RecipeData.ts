@@ -1,6 +1,6 @@
-export interface ApplicationData {
-    menus: DayMenu[];
-    recipes: Recipe[];
+export interface StartData {
+    categories: Category[];
+    quantityDescriptions: QuantityDescription[];
 }
 
 export interface QuantityLessIngredient {
@@ -8,26 +8,27 @@ export interface QuantityLessIngredient {
     name: string;
     categoryId: number;
     categoryName: string | undefined;
+    quantity_description_id: number;
 }
 
-export interface LocalizedCategory {
+export interface LocalisedMap {
     [key: string]: string;
 }
 
 export interface Ingredient extends QuantityLessIngredient {
     quantity_number: number | null;
-    quantity_description: string;
 }
 
 export interface Category {
     categoryId: number | undefined;
     categoryName: string;
-    translations: LocalizedCategory
+    translations: LocalisedMap
 }
 
-export interface TestData {
-    categories: string[];
-    recipes: Recipe[];
+export interface QuantityDescription {
+    quantityDescriptorId: number | undefined;
+    name: string;
+    translations: LocalisedMap;
 }
 
 export interface Recipe {
@@ -49,4 +50,5 @@ export interface InventoryItem {
     ingredientId: number;
     quantity: number;
     desiredQuantity: number;
+    quantity_description_id?: number;
 }

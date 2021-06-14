@@ -4,21 +4,23 @@ export interface ApplicationData {
     categories: Category[];
     ingredients: BaseIngredient[];
     inventories: RawInventoryItem[];
+    quantityDescriptions: QuantityDescription[];
 }
 
-export interface BaseIngredient {
+interface RawIngredient {
     id: number;
     name: string;
     categoryId: number;
+    quantity_description_id: number;
+}
+
+export interface BaseIngredient extends RawIngredient {
+    category: Category;
+    quantityDescription: QuantityDescription;
 }
 
 export interface QuantifiedIngredient extends BaseIngredient {
     quantity_number: number;
-    quantity_description: string;
-}
-
-export interface Ingredient extends QuantifiedIngredient {
-    category: Category;
 }
 
 interface BaseRecipe<IngredientType> {
@@ -29,11 +31,11 @@ interface BaseRecipe<IngredientType> {
     ingredients: IngredientType[];
 }
 
-export interface RawRecipe extends BaseRecipe<QuantifiedIngredient> {
+export interface RawRecipe extends BaseRecipe<RawIngredient> {
 
 }
 
-export interface Recipe extends BaseRecipe<Ingredient> {
+export interface Recipe extends BaseRecipe<QuantifiedIngredient> {
 
 }
 
@@ -58,4 +60,15 @@ export interface RawInventoryItem {
     ingredientId: number;
     quantity: number;
     desiredQuantity: number;
+    quantity_description_id: number;
+}
+
+export interface InventoryItem extends RawInventoryItem {
+    quantityDescription: QuantityDescription;
+}
+
+export interface QuantityDescription {
+    quantityDescriptorId: number;
+    name: string;
+    translations: TranslationMap;
 }

@@ -1,14 +1,14 @@
-import { Ingredient } from '../../../interfaces/Recipe';
-import { AbstractQuantityConversionRule } from './AbstractQuantityConversionRule';
+import { QuantifiedIngredient } from '../../../interfaces/Recipe';
+import { QuantityConversionRule } from './QuantityConversionRule';
 
 export class RulesHandler {
-    constructor(private _rules: AbstractQuantityConversionRule[]) { }
+    constructor(private _rules: QuantityConversionRule[]) { }
 
-    normalize(ingredients: Ingredient[]) {
+    normalize(ingredients: QuantifiedIngredient[]) {
         return ingredients.map(this.doNormalizeIngredient);
     }
 
-    private readonly doNormalizeIngredient = (ingredient: Ingredient): Ingredient => {
+    private readonly doNormalizeIngredient = (ingredient: QuantifiedIngredient): QuantifiedIngredient => {
         for (const rule of this._rules) {
             if (rule.canHandle(ingredient)) {
                 return rule.doHandle(ingredient);

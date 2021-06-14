@@ -3,7 +3,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
-import { BaseIngredient, Category, Ingredient, QuantifiedIngredient } from '../../interfaces/Recipe';
+import { BaseIngredient, Category, QuantifiedIngredient, QuantityDescription } from '../../interfaces/Recipe';
 import { Localisation } from "../../localisation/AppTexts";
 import { ReduxModel } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
@@ -19,6 +19,8 @@ interface OwnProps {
 interface ReduxProps {
     categories: Category[];
     availableIngredients: BaseIngredient[];
+    firstCategory: Category;
+    quantityDescriptions: QuantityDescription[];
 }
 
 export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 'snufje'];
@@ -26,7 +28,9 @@ export const quantityDescriptions = ['stuk', 'gram', 'eetlepel', 'theelepel', 's
 function mapStateToProps(reduxState: ReduxModel): ReduxProps {
     return {
         categories: reduxState.categories,
-        availableIngredients: reduxState.ingredients
+        availableIngredients: reduxState.ingredients,
+        firstCategory: reduxState.categories[0],
+        quantityDescriptions: reduxState.quantityDescriptions
     }
 }
 
@@ -54,7 +58,7 @@ function IngredientsModal(props: Props) {
         function onBlur() {
             const value = focusRef.current?.value || '';
             if (value && ingredient.name !== value) {
-                const ingredient = createEmptyIngredient();
+                const ingredient = createEmptyIngredient(props.firstCategory, props.quantityDescriptions[0]);
                 ingredient.name = value;
                 setIngredient(ingredient);
             }
@@ -83,16 +87,16 @@ function IngredientsModal(props: Props) {
                     items={props.availableIngredients}
                     onSelectionChange={(draftIngredient) => {
                         if (!draftIngredient) {
-                            draftIngredient = createEmptyIngredient();
+                            draftIngredient = createEmptyIngredient(props.firstCategory, props.quantityDescriptions[0]);
                             draftIngredient.name = focusRef.current?.value || '';
                         } else {
                             draftIngredient = {
-                                ...createEmptyIngredient(),
+                                ...createEmptyIngredient(props.firstCategory, props.quantityDescriptions[0]),
                                 ...draftIngredient
-                            }
+                            };
                         }
 
-                        setIngredient(draftIngredient as Ingredient);
+                        setIngredient(draftIngredient as QuantifiedIngredient);
                     }}
                     inputRef={focusRef}
                     renderResults={searchIsActive}
@@ -123,15 +127,23 @@ function IngredientsModal(props: Props) {
 
                 {shouldShowExtraOptions && <div><label>
                     {Localisation.QUANTITY_KIND}
-                    <Select disabled={!shouldShowExtraOptions} value={ingredient.quantity_description} onChange={(e) => {
-                        setIngredient({
-                            ...ingredient,
-                            quantity_description: e.target.selectedOptions[0].value
-                        })
+                    <Select disabled={!shouldShowExtraOptions} value={ingredient.quantityDescription.quantityDescriptorId} onChange={(e) => {
+                        const match = props.quantityDescriptions.find((entry) => {
+                            return String(entry.quantityDescriptorId) === e.target.selectedOptions[0].value
+                        });
+                        if (match) {
+                            setIngredient({
+                                ...ingredient,
+                                quantityDescription: match,
+                                quantity_description_id: match.quantityDescriptorId
+                            })    
+                        }
                     }}>
-                        {quantityDescriptions.map((description, index) => {
-                            const capitalizedText = description.charAt(0).toUpperCase() + description.substr(1);
-                            return <option key={index} value={description}>{capitalizedText}</option>
+                        {props.quantityDescriptions.map((description, index) => {
+                            const text = description.translations['nl'];
+
+                            const capitalizedText = text.charAt(0).toUpperCase() + text.substr(1);
+                            return <option key={index} value={description.quantityDescriptorId}>{capitalizedText}</option>
                         })}
                     </Select>
                 </label>
@@ -159,9 +171,11 @@ function IngredientsModal(props: Props) {
                 <Button colorScheme="blue" disabled={!canBeSubmitted} onClick={() => props.onConfirm({
                     name: ingredient.name,
                     quantity_number: quantityNumber,
-                    quantity_description: ingredient.quantity_description,
                     id: ingredient.id,
-                    categoryId: ingredient.categoryId
+                    categoryId: ingredient.categoryId,
+                    category: ingredient.category,
+                    quantityDescription: ingredient.quantityDescription,
+                    quantity_description_id: ingredient.quantity_description_id,
                 })}>{Localisation.ADD}</Button>
                 <Button variant="ghost" onClick={() => props.onCancel()}>{Localisation.CANCEL}</Button>
             </ModalFooter>

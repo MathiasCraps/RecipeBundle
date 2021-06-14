@@ -3,12 +3,14 @@ import { pool } from '../..';
 import { SessionData } from '../../model/SessionData';
 import { getIngredientCategories } from '../../sql/ingredient/GetIngredientCategories';
 import { getAllIngredients } from '../../sql/ingredient/GetIngredients';
+import { getQuantityDescription } from '../../sql/ingredient/GetQuantityDescriptions';
 import { getInventoryOfUser } from '../../sql/inventory/GetInventoryOfUser';
 import { getMenus } from '../../sql/menu/GetMenu';
 import { getAllRecipes } from '../../sql/recipe/GetRecipes';
 import { Category } from './Category';
 import { InventoryItem } from './Inventory';
 import { MenuType } from './Menus';
+import { QuantityDescriptionGql } from './QuantityDescription';
 import { QuantityLessIngredient, RecipeType } from './Recipes';
 
 export const RootQuery = new GraphQLObjectType({
@@ -44,6 +46,13 @@ export const RootQuery = new GraphQLObjectType({
             description: 'All the currently existing ingredients', 
             async resolve() {
                 return await getAllIngredients(pool);
+            }
+        },
+        quantityDescriptions: {
+            type: new GraphQLNonNull(new GraphQLList(QuantityDescriptionGql)),
+            description: 'All the currently existing quantity descriptions.', 
+            async resolve() {
+                return await getQuantityDescription(pool);
             }
         },
         inventories: {

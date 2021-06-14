@@ -1,4 +1,4 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const InventoryItem = new GraphQLObjectType({
     name: 'Inventory',
@@ -6,6 +6,7 @@ export const InventoryItem = new GraphQLObjectType({
     fields: () => ({
         ingredientId: { type: new GraphQLNonNull(GraphQLInt), description: 'The ingredient id that is in the storage.' },
         quantity: { type: new GraphQLNonNull(GraphQLString), description: 'The quantity of the storage item.' },
-        desiredQuantity: { type: GraphQLInt, description: 'The desired reserve stock the user wishes to keep after all menus have been made.'}
+        desiredQuantity: { type: GraphQLInt, description: 'The desired reserve stock the user wishes to keep after all menus have been made.'},
+        quantity_description_id: { type: GraphQLFloat, description: 'The identifier of a description quantity.'}
     })
 });

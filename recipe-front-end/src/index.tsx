@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, BaseIngredient, Category, Ingredient, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -16,8 +16,9 @@ import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
 
-function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] {
-  const linkedMap = convertArrayToLinkedMap(categories, 'categoryId');
+function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
+  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
+  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
 
   return recipes.map((recipe) => {
     return {
@@ -25,19 +26,26 @@ function linkCategories(recipes: RawRecipe[], categories: Category[]): Recipe[] 
       ingredients: recipe.ingredients.map((ingredient) => {
         return {
           ...ingredient,
-          category: linkedMap[ingredient.categoryId]
-        } as Ingredient;
+          category: linkedMapCategories[ingredient.categoryId],
+          quantityDescription: linkedMapQuantityDescription[ingredient.quantity_description_id]
+        } as QuantifiedIngredient;
       })
     };
   });
 }
 
-function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[]): InventoryItem[] {
+function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[], quantityDescriptions: QuantityDescription[]): InventoryItem[] {
   const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
+  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
   return rawInventory.map((inventoryItem) => {
+    const ingredient = {
+      ...linkedMap[inventoryItem.ingredientId],
+      quantityDescription: linkedMapQuantityDescription[inventoryItem.quantity_description_id]
+    };
+
     return {
       ...inventoryItem,
-      ingredient: linkedMap[inventoryItem.ingredientId]
+      ingredient
     }
   });
 }
@@ -76,8 +84,8 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
         name
         id
         quantity_number
-        quantity_description
         categoryId
+        quantity_description_id
       }
     }
     menus {
@@ -98,16 +106,25 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
       name
       categoryId
       categoryName
+      quantity_description_id
     }
     inventories {
       ingredientId
       quantity
       desiredQuantity
+      quantity_description_id
+    }
+    quantityDescriptions {
+      quantityDescriptorId
+      name
+      translations {
+        nl
+      }
     }
   }`);
 
-  const linkedRecipes = linkCategories(applicationData.recipes, applicationData.categories);
-  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients);
+  const linkedRecipes = linkRecipeData(applicationData.recipes, applicationData.categories, applicationData.quantityDescriptions);
+  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients, applicationData.quantityDescriptions);
 
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, linkedRecipes))
@@ -129,6 +146,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
     categories: applicationData.categories,
     menuPlanning: linkedMenu,
     ingredients: applicationData.ingredients,
+    quantityDescriptions: applicationData.quantityDescriptions,
     inventory: inventory
   }, applyMiddleware(thunk));
 

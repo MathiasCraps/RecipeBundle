@@ -1,14 +1,24 @@
-import { AbstractQuantityConversionRule } from '../../components/shopping-list/normalization/AbstractQuantityConversionRule';
-import { Ingredient } from '../../interfaces/Recipe';
+import { QuantityConversionRule } from '../../components/shopping-list/normalization/QuantityConversionRule';
+import { QuantityDescription } from '../../interfaces/Recipe';
 
 export const QUANTITY_DESCRIPTION_NAME = 'test';
 export const TEST_RULE_QUANTIFY_FACTOR = 100;
 export const TEST_RULE_TO_UNIT_NAME = 'test-converted';
-export class TestIngredientRule extends AbstractQuantityConversionRule {
-    quantifyFactor = TEST_RULE_QUANTIFY_FACTOR;
-    toUnit = TEST_RULE_TO_UNIT_NAME;
-    
-    canHandle(ingredient: Ingredient): boolean {
-        return ingredient.quantity_description === QUANTITY_DESCRIPTION_NAME;
+
+export const QUANTITY_DESCRIPTION_1: QuantityDescription = {
+    quantityDescriptorId: 0,
+    name: 'test',
+    translations: {
+        nl: 'test-nl'
     }
-}
+};
+
+export const QUANTITY_DESCRIPTION_2: QuantityDescription = {
+    quantityDescriptorId: 1,
+    name: 'gram',
+    translations: {
+        nl: 'gram-nl'
+    }
+};
+
+export const TEST_INGREDIENT_RULE = new QuantityConversionRule(QUANTITY_DESCRIPTION_1, QUANTITY_DESCRIPTION_2, TEST_RULE_QUANTIFY_FACTOR);

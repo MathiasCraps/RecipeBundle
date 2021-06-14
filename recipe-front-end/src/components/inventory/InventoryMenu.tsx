@@ -12,10 +12,13 @@ import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/St
 import ContentContainer from '../common/ContentContainer';
 import InventoryModal from './InventoryModal';
 import './InventoryMenu.scss';
+import { QuantityDescription } from '../../interfaces/Recipe';
+import { convertArrayToLinkedMap, LinkedMap } from '../../utils/ArrayUtils';
 
 interface ReduxProps {
     loggedIn: boolean;
     inventory: InventoryItem[];
+    quantityDescriptions: LinkedMap<QuantityDescription>;
 }
 
 interface ReduxActions {
@@ -33,7 +36,8 @@ function mapDispatchToProps(dispatch: Dispatch<UpdateInventoryAction>): ReduxAct
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
     return {
         loggedIn: reduxModel.user.loggedIn,
-        inventory: reduxModel.inventory
+        inventory: reduxModel.inventory,
+        quantityDescriptions: convertArrayToLinkedMap(reduxModel.quantityDescriptions, 'quantityDescriptorId')
     };
 }
 
@@ -56,16 +60,20 @@ function InventoryMenu(props: Props) {
 
         <table className="inventory-table">
             <thead>
-                <th>{Localisation.INGREDIENT_NAME}</th>
-                <th>{Localisation.QUANTITY}</th>
-                <th>{Localisation.DESIRED_QUANTITY}</th>
-                <th>{Localisation.ACTIONS}</th>
+                <tr>
+                    <th>{Localisation.INGREDIENT_NAME}</th>
+                    <th>{Localisation.QUANTITY}</th>
+                    <th>{Localisation.DESIRED_QUANTITY}</th>
+                    <th>{Localisation.ACTIONS}</th>
+                </tr>
             </thead>
 
             <tbody>
                 {props.inventory.map((inventoryItem) => {
+                    const quantityDescription = props.quantityDescriptions[inventoryItem.ingredient.quantity_description_id];
+                    
                     return <tr style={{ paddingTop: '0.5em' }} key={inventoryItem.ingredient.id}>
-                        <td><strong>{inventoryItem.ingredient.name}</strong></td>
+                        <td><strong>{inventoryItem.ingredient.name} ({quantityDescription.translations['nl']})</strong></td>
                         <td>{inventoryItem.quantity}</td>
                         <td>{inventoryItem.desiredQuantity}</td>
                         <td><Tooltip label={Localisation.EDIT_DETAILS}>

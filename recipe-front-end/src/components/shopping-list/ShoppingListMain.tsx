@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 import { Dispatch } from 'redux';
-import { Ingredient } from '../../interfaces/Recipe';
+import { QuantifiedIngredient, QuantityDescription } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
@@ -12,11 +12,10 @@ import { convertArrayToLinkedMapWithPredicate, flatArray, LinkedMap } from '../.
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
 import MultiRangePicker from '../range-picker/MultiRangePicker';
+import { QuantityConversionRule } from './normalization/QuantityConversionRule';
 import { applyInventory } from './normalization/ApplyInventory';
 import { combineToSingleValue } from './normalization/Combiner';
 import { groupByCategory } from './normalization/GroupByCategory';
-import { TableSpoonToGramRule } from './normalization/rules/TableSpoonToGramRule';
-import { TeaSpoonToGramRule } from './normalization/rules/TeaSpoonToGramRule';
 import { RulesHandler } from './normalization/RulesHandler';
 import { sortByIngredient } from './normalization/SortRecipeMap';
 import { ShoppingCategory } from './ShoppingCategory';
@@ -27,6 +26,7 @@ interface ReduxProps {
     dateRange: DateRange;
     loggedIn: boolean;
     inventoryMap: LinkedMap<InventoryItem>;
+    quantityDescriptions: QuantityDescription[];
 }
 
 function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
@@ -36,7 +36,8 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
         loggedIn: reduxModel.user.loggedIn,
         inventoryMap: convertArrayToLinkedMapWithPredicate<InventoryItem>(reduxModel.inventory, 
             (inventoryItem) => String(inventoryItem.ingredient.id)
-        )
+        ),
+        quantityDescriptions: reduxModel.quantityDescriptions
     };
 }
 
@@ -58,12 +59,15 @@ function formatDate(date: Date) {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
-const rulesHandler = new RulesHandler([
-    new TableSpoonToGramRule(),
-    new TeaSpoonToGramRule()
-]);
-
 type Props = ReduxProps & ReduxActions;
+
+function setUpConversionRules(quantityDescriptions: QuantityDescription[]) {
+    const gram = quantityDescriptions.find((e) => e.name === 'gram')!;
+    return new RulesHandler([
+        new QuantityConversionRule(quantityDescriptions.find((e) => e.name === 'tablespoon')!, gram, 15),
+        new QuantityConversionRule(quantityDescriptions.find((e) => e.name === 'teaspoon')!, gram, 3)
+    ]);
+}
 
 export function ShoppingListMain(props: Props) {
     if (!props.loggedIn) {
@@ -71,9 +75,9 @@ export function ShoppingListMain(props: Props) {
     }
 
     const menusToConsider = selectMenuFromRange(props.menus, props.dateRange.start, props.dateRange.end);
-    const ingredientsFromRecipes = flatArray<Ingredient>(menusToConsider.map(e => e.recipe.ingredients));
+    const ingredientsFromRecipes = flatArray<QuantifiedIngredient>(menusToConsider.map(e => e.recipe.ingredients));
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
-    const sumsToRender = combineToSingleValue(rawSorted, rulesHandler);
+    const sumsToRender = combineToSingleValue(rawSorted, setUpConversionRules(props.quantityDescriptions));
     const storageApplied = applyInventory(sumsToRender, props.inventoryMap);
     const hasMenus = Boolean(storageApplied.length)
     const sumsInGroups = groupByCategory(storageApplied);

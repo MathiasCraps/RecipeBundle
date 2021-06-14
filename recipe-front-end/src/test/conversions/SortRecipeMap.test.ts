@@ -1,24 +1,43 @@
 import { sortByIngredient, SortedRecipeMap } from '../../components/shopping-list/normalization/SortRecipeMap';
-import { Ingredient } from '../../interfaces/Recipe';
+import { Category, QuantifiedIngredient } from '../../interfaces/Recipe';
+import { QUANTITY_DESCRIPTION_1 } from '../mock/TestIngredientRule';
 
-const APPLE_INGREDIENTS: Ingredient[] = [{
+export const EMPTY_TEST_CATEGORY: Category = {
+    categoryId: -1,
+    categoryName: 'test',
+    translations: { nl: 'unit-test' }
+};
+
+const APPLE_INGREDIENTS: QuantifiedIngredient[] = [{
     name: 'apple',
-    quantity_description: 'stuk',
-    quantity_number: 1
+    quantity_number: 1,
+    categoryId: -1,
+    id: 1,
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1,
+    quantityDescription: QUANTITY_DESCRIPTION_1
 },
 {
     name: 'apple',
-    quantity_description: 'stuk',
-    quantity_number: 1
+    quantity_number: 1,
+    categoryId: -1,
+    id: 1,
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1,
+    quantityDescription: QUANTITY_DESCRIPTION_1
 }];
 
-const PEAR_INGREDIENTS: Ingredient[] = [{
+const PEAR_INGREDIENTS: QuantifiedIngredient[] = [{
     name: 'pear',
-    quantity_description: 'stuk',
-    quantity_number: 1
-}]
+    quantity_number: 1,
+    categoryId: -1,
+    id: 2,
+    category: EMPTY_TEST_CATEGORY,
+    quantity_description_id: -1,
+    quantityDescription: QUANTITY_DESCRIPTION_1
+}];
 
-const TEST_INGREDIENTS: Ingredient[] = [
+const TEST_INGREDIENTS: QuantifiedIngredient[] = [
     ...APPLE_INGREDIENTS,
     ...PEAR_INGREDIENTS
 ]

@@ -19,13 +19,25 @@ export async function createTables(pool: Pool) {
         created_at timestamp DEFAULT current_timestamp
     )`);
 
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientQuantityDescription (
+        id serial PRIMARY KEY,
+        category_name varchar(100) NOT NULL
+    )`);
+
+    await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientQuantityDescriptionTranslation (
+        quantity_descriptor_id INT NOT NULL,
+        language_code varchar(2) NOT NULL,
+        localised_name varchar(100) NOT NULL,
+        FOREIGN KEY (quantity_descriptor_id) REFERENCES IngredientQuantityDescription (id)
+    )`);
+
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategory (
         id serial PRIMARY KEY,
         category_name varchar(100) NOT NULL
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS IngredientCategoryTranslation (
-        category_id INT,
+        category_id INT NOT NULL,
         language_code varchar(2) NOT NULL,
         localised_name varchar(100) NOT NULL,
         FOREIGN KEY (category_id) REFERENCES IngredientCategory (id)
@@ -34,15 +46,16 @@ export async function createTables(pool: Pool) {
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS Ingredients (
         id serial PRIMARY KEY,
         ingredient_name varchar(500) NOT NULL,
+        ingredient_quantity_id INT NOT NULL,
         ingredient_category_id INT,
-        FOREIGN KEY (ingredient_category_id) REFERENCES IngredientCategory (id)
+        FOREIGN KEY (ingredient_category_id) REFERENCES IngredientCategory (id),
+        FOREIGN KEY (ingredient_quantity_id) REFERENCES IngredientQuantityDescription (id)
     )`);
 
     await executeQuery(pool, `CREATE TABLE IF NOT EXISTS RecipesIngredientsMatch (
         recipe_id INT NOT NULL,
         ingredient_id INT NOT NULL,
         quantity_number NUMERIC(10, 2) NOT NULL,
-        quantity_name varchar(500) NOT NULL,
         PRIMARY KEY (recipe_id, ingredient_id),
         FOREIGN KEY (recipe_id) REFERENCES Recipes (id),
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients (id)

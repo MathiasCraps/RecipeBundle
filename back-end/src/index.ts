@@ -7,7 +7,7 @@ import { Pool } from "pg";
 import sharp from 'sharp';
 import { schema } from './graphql/Setup';
 import { verifyLoggedIn } from "./middleware/VerifyLoggedIn";
-import { Category, Recipe } from "./model/RecipeData";
+import { Recipe, StartData } from "./model/RecipeData";
 import { SessionData } from "./model/SessionData";
 import { getSessionData } from "./routes/GetSessionData";
 import { executeQuery } from './sql-utils/Database';
@@ -16,6 +16,7 @@ import { createCategories } from './sql/ingredient/CreateCategories';
 import { createTables } from "./sql/create-table/CreateTables";
 import { editRecipe } from './sql/recipe/EditRecipe';
 import { isRecipe } from "./validation/TypeGuards";
+import { createQuantityDescriptions } from './sql/ingredient/CreateQuantityDescription';
 const multer = require('multer');
 const bodyParser = require('body-parser');
 
@@ -203,8 +204,9 @@ pool.connect(async (error, client, done) => {
     try {
         const initialSetUp = await createTables(pool);
         if (initialSetUp) {
-            const data: Category[] = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
-            createCategories(pool, data)
+            const startData: StartData = JSON.parse(fs.readFileSync(`${__dirname}/categories.json`, 'utf8'));
+            createCategories(pool, startData.categories);
+            createQuantityDescriptions(pool, startData.quantityDescriptions);
         }
     } catch (err) {
         console.log('error setting up tables', err);
