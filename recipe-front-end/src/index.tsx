@@ -38,10 +38,14 @@ function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngred
   const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
   const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
   return rawInventory.map((inventoryItem) => {
+    const ingredient = {
+      ...linkedMap[inventoryItem.ingredientId],
+      quantityDescription: linkedMapQuantityDescription[inventoryItem.quantity_description_id]
+    };
+
     return {
       ...inventoryItem,
-      ingredient: linkedMap[inventoryItem.ingredientId],
-      quantityDescription: linkedMapQuantityDescription[inventoryItem.quantity_description_id]
+      ingredient
     }
   });
 }
