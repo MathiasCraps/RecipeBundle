@@ -1,4 +1,3 @@
-import { TranslationMap } from '../interfaces/Recipe';
 import { DayMenu } from "../redux/Store";
 
 export function removeFromArray<T>(item: T, fromArray: T[]): T[] {

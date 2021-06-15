@@ -42,10 +42,10 @@ function InventoryModal(props: Props) {
     const ref = useRef<HTMLInputElement>(null);
     const fallbackRef = useRef<HTMLInputElement>(null);
     const [selection, setSelection] = useState<BaseIngredient | undefined>(props.initialValue?.ingredient);
-    const [quantity, setQuantity] = useState<number>(props.initialValue?.quantity || 0);
-    const [desiredQuantity, setDesiredQuantity] = useState<number>(props.initialValue?.desiredQuantity || 0);
+    const [quantity, setQuantity] = useState<number | undefined>(props.initialValue?.quantity);
+    const [desiredQuantity, setDesiredQuantity] = useState<number | undefined>(props.initialValue?.desiredQuantity);
     const toast = useToast();
-    const canBeSubmitted = Boolean(selection && quantity && quantity > 0);
+    const canBeSubmitted = Boolean(selection && (typeof quantity === 'number' && quantity >= 0) || (typeof desiredQuantity === 'number' && desiredQuantity >= 0));
 
     return <Modal isOpen={props.isOpened} onClose={props.onCancel} initialFocusRef={props.initialValue ? fallbackRef : ref}>
         <ModalOverlay />
@@ -70,9 +70,9 @@ function InventoryModal(props: Props) {
                         <Input
                             type="number"
                             placeholder={Localisation.QUANTITY}
-                            value={quantity || ''}
+                            value={typeof quantity === 'number' ? quantity : ''}
                             ref={fallbackRef}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            onChange={(e) => !Number.isNaN(e.target.value) && setQuantity(Number(e.target.value))}
                         />
                     </label>
 
@@ -80,8 +80,8 @@ function InventoryModal(props: Props) {
                         <Input
                             type="number"
                             placeholder={Localisation.DESIRED_QUANTITY}
-                            value={desiredQuantity || ''}
-                            onChange={(e) => setDesiredQuantity(Number(e.target.value))}
+                            value={typeof desiredQuantity === 'number' ? desiredQuantity : ''}
+                            onChange={(e) => !Number.isNaN(e.target.value) && setDesiredQuantity(Number(e.target.value))}
                         />
                     </label>
                 </div>
@@ -96,8 +96,8 @@ function InventoryModal(props: Props) {
                     const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
                     const success = await props.updateInventoryAction({
                         ingredient: selection!,
-                        quantity,
-                        desiredQuantity
+                        quantity: quantity!,
+                        desiredQuantity: desiredQuantity!
                     }, action);
 
                     if (success) {
