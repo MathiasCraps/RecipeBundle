@@ -1,7 +1,7 @@
 import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { BaseIngredient, QuantifiedIngredient } from '../../interfaces/Recipe';
+import { QuantifiedIngredient } from '../../interfaces/Recipe';
 import './ShoppingCategory.scss';
 import { ShoppingIngredient } from './ShoppingIngredient';
 
