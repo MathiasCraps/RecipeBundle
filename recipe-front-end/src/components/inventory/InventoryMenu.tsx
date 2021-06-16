@@ -14,6 +14,7 @@ import InventoryModal from './InventoryModal';
 import './InventoryMenu.scss';
 import { QuantityDescription } from '../../interfaces/Recipe';
 import { convertArrayToLinkedMap, LinkedMap } from '../../utils/ArrayUtils';
+import IngredientsModal from '../recipe-management/IngredientsModal';
 
 interface ReduxProps {
     loggedIn: boolean;
@@ -106,6 +107,12 @@ function InventoryMenu(props: Props) {
             setModalIsOpened(false);
             setInventoryItemToEdit(undefined);
         }} />}
+
+        {addIngredientModalOpened && <IngredientsModal 
+            onCancel={() => setAddIngredientModalOpened(false)} 
+            onConfirm={() =>setAddIngredientModalOpened(false)}
+            ingredientInputs={undefined!} // todo: fix
+        />}
     </ContentContainer>
 }
 
