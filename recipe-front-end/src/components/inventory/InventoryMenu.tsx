@@ -52,6 +52,8 @@ function InventoryMenu(props: Props) {
         setInventoryItemToEdit
     ] = useState<InventoryItem | undefined>(undefined);
 
+    const [addIngredientModalOpened, setAddIngredientModalOpened] = useState(false);
+
     return <ContentContainer>
         <Heading as="h2">{Localisation.INVENTORY}</Heading>
         <button style={{ cursor: 'pointer' }} onClick={() => setModalIsOpened(true)}>
@@ -92,6 +94,10 @@ function InventoryMenu(props: Props) {
                 })}
             </tbody>
         </table>
+
+        <button style={{ cursor: 'pointer' }} onClick={() => setAddIngredientModalOpened(true)}>
+            <FontAwesomeIcon icon={faPlus} /> {Localisation.ADD_INGREDIENT}
+        </button>
 
         {modalIsOpened && <InventoryModal initialValue={inventoryItemToEdit && { ...inventoryItemToEdit }} isOpened={modalIsOpened} onConfirm={() => {
             setModalIsOpened(false);
