@@ -1,7 +1,9 @@
 import fs from 'fs';
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
+import { Ingredient } from '../../model/RecipeData';
 import { SessionData } from '../../model/SessionData';
+import { addIngredients } from '../../sql/ingredient/AddIngredients';
 import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
 import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
 import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
@@ -185,6 +187,32 @@ export const RootMutation = new GraphQLObjectType({
                         error: err
                     };
                 }
+            }
+        },
+        addIngredient: {
+            type: ModifyStorage,
+            description: 'Add an ingredient.',
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
+                categoryId: { type: new GraphQLNonNull(GraphQLInt), description: 'The unique identifier of the ingredient category'},
+                quantity_description_id: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the quantity quantifier.'}
+            }, async resolve(parentValue, args, request) {
+                const session: SessionData = request.session;
+                if (!session.loggedIn || typeof session.userId !== 'number') {
+                    throw new Error('Not logged in');
+                }
+
+                const ingredient: Ingredient = { // todo: doublecheck if this does not add dummy values + clean up in model
+                    name: args.name,
+                    categoryId: args.categoryId,
+                    quantity_description_id: args.quantity_description_id,
+                    quantity_number: -1,
+                    id: -1,
+                    categoryName: 'deprecated'
+                };
+
+                await addIngredients(pool, [ingredient], undefined);
+                return 
             }
         }
     }
