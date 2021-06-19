@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { Ingredient } from "../../model/RecipeData";
 import { executeQuery } from '../../sql-utils/Database';
 
-export async function addIngredients(pool: Pool, ingredients: Ingredient[], recipeId: number) {
+export async function addIngredients(pool: Pool, ingredients: Ingredient[], recipeId: number | undefined) {
     for (let ingredient of ingredients) {
         let id = ingredient.id;
         let baseIngredientDoesNotExist = (ingredient.id < 0) || // assuming negative index = not existing
@@ -22,11 +22,13 @@ export async function addIngredients(pool: Pool, ingredients: Ingredient[], reci
             id = ingredientResult.rows[0].id;
         }
 
-        await executeQuery(pool, {
-            name: 'match-ingredient-and-recipe',
-            text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number) 
-                VALUES($1, $2, $3);`,
-            values: [recipeId, id, ingredient.quantity_number]
-        });
+        if (recipeId !== undefined) {
+            await executeQuery(pool, {
+                name: 'match-ingredient-and-recipe',
+                text: `INSERT INTO RecipesIngredientsMatch (recipe_id, ingredient_id, quantity_number) 
+                    VALUES($1, $2, $3);`,
+                values: [recipeId, id, ingredient.quantity_number]
+            });    
+        }
     }
 }
