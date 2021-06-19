@@ -197,22 +197,32 @@ export const RootMutation = new GraphQLObjectType({
                 categoryId: { type: new GraphQLNonNull(GraphQLInt), description: 'The unique identifier of the ingredient category'},
                 quantity_description_id: { type: new GraphQLNonNull(GraphQLInt), description: 'The identifier of the quantity quantifier.'}
             }, async resolve(parentValue, args, request) {
-                const session: SessionData = request.session;
-                if (!session.loggedIn || typeof session.userId !== 'number') {
-                    throw new Error('Not logged in');
+                try {
+                    const session: SessionData = request.session;
+                    if (!session.loggedIn || typeof session.userId !== 'number') {
+                        throw new Error('Not logged in');
+                    }
+    
+                    const ingredient: Ingredient = { // todo: doublecheck if this does not add dummy values + clean up in model
+                        name: args.name,
+                        categoryId: args.categoryId,
+                        quantity_description_id: args.quantity_description_id,
+                        quantity_number: -1,
+                        id: -1,
+                        categoryName: 'deprecated'
+                    };
+    
+                    await addIngredients(pool, [ingredient], undefined);
+                    return {
+                        success: true
+                    }
+                } catch(err) {
+                    return {
+                        error: err,
+                        success: false
+                    }
                 }
-
-                const ingredient: Ingredient = { // todo: doublecheck if this does not add dummy values + clean up in model
-                    name: args.name,
-                    categoryId: args.categoryId,
-                    quantity_description_id: args.quantity_description_id,
-                    quantity_number: -1,
-                    id: -1,
-                    categoryName: 'deprecated'
-                };
-
-                await addIngredients(pool, [ingredient], undefined);
-                return 
+ 
             }
         }
     }
