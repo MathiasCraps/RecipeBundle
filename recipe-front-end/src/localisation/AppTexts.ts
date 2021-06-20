@@ -20,6 +20,7 @@ export enum Localisation {
     EDIT_RECIPE = 'Recept bijwerken',
     ADD_RECIPE = 'Recept toevoegen',
     ADD_INGREDIENT = 'Ingredient toevoegen',
+    INGREDIENT_DOES_NOT_EXIST_ADDING = 'Dit ingrediënt bestaat nog niet. Je voegt er nu eentje toe.',
     INGREDIENT_NAME = 'Naam ingrediënt',
     ADD = 'Toevoegen',
     QUANTITY_KIND = 'Type hoeveelheid',
