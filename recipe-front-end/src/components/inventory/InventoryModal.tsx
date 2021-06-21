@@ -29,7 +29,9 @@ interface ReduxActions {
 
 function mapStateToProps(model: ReduxModel): ReduxProps {
     return {
-        ingredients: model.ingredients
+        ingredients: model.ingredients,
+        quantityDescriptions: model.quantityDescriptions,
+        categories: model.categories
     };
 }
 
