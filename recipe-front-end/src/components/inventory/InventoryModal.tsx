@@ -50,8 +50,31 @@ function InventoryModal(props: Props) {
     const [quantity, setQuantity] = useState<number | undefined>(props.initialValue?.quantity);
     const [desiredQuantity, setDesiredQuantity] = useState<number | undefined>(props.initialValue?.desiredQuantity);
     const toast = useToast();
-    const [creatingNewIngredient, setCreatingNewIngredient] = useState(true); // todo, make dynamic in follow-up
+    const [creatingNewIngredient, setCreatingNewIngredient] = useState(false);
     const canBeSubmitted = Boolean(selection && (typeof quantity === 'number' && quantity >= 0) || (typeof desiredQuantity === 'number' && desiredQuantity >= 0));
+
+    useEffect(() => {
+        const target = ref.current;
+        if (!target) {
+            return;
+        }
+
+        function handleCreatingNewIngredient() {
+            if (!target) {
+                return;
+            }
+
+            if (target.value && selection?.name.toLowerCase() !== target.value.toLocaleLowerCase()) {
+                setCreatingNewIngredient(true);
+            } else {
+                setCreatingNewIngredient(false);
+            }
+        }
+
+        target.addEventListener('keyup', handleCreatingNewIngredient);
+
+        return () => target.removeEventListener('keyup', handleCreatingNewIngredient);
+    });
 
     return <Modal isOpen={props.isOpened} onClose={props.onCancel} initialFocusRef={props.initialValue ? fallbackRef : ref}>
         <ModalOverlay />
