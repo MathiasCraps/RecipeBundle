@@ -9,6 +9,7 @@ import { Localisation } from '../../localisation/AppTexts';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
 import { InventoryItem, ReduxModel, UpdateInventoryAction, UpdateInventoryModification } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
+import './InventoryModal.scss';
 
 interface OwnProps {
     isOpened: boolean;
@@ -94,7 +95,8 @@ function InventoryModal(props: Props) {
                     label={Localisation.INGREDIENT}
                 />
 
-                {creatingNewIngredient && <div>
+                {creatingNewIngredient && <div className="extra-ingredient-options">
+                    <hr/>
                     <p>{Localisation.INGREDIENT_DOES_NOT_EXIST_ADDING}</p>
                     <label>
                         {Localisation.QUANTITY_KIND}
@@ -139,6 +141,7 @@ function InventoryModal(props: Props) {
                             })}
                         </Select>
                     </label>
+                    <hr/>
                 </div>}
 
 
