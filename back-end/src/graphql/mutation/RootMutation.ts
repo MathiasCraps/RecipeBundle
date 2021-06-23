@@ -3,7 +3,7 @@ import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, 
 import { BASE_FILE_UPLOAD_DIRECTORY, pool } from '../..';
 import { Ingredient } from '../../model/RecipeData';
 import { SessionData } from '../../model/SessionData';
-import { addIngredients } from '../../sql/ingredient/AddIngredients';
+import { addSingleIngredient } from '../../sql/ingredient/AddSingleIngredient';
 import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
 import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
 import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
@@ -212,9 +212,10 @@ export const RootMutation = new GraphQLObjectType({
                         categoryName: 'deprecated'
                     };
     
-                    await addIngredients(pool, [ingredient], undefined);
+                    const ingredientId = await addSingleIngredient(pool, ingredient, undefined);
                     return {
-                        success: true
+                        success: true,
+                        ingredientId
                     }
                 } catch(err) {
                     return {
