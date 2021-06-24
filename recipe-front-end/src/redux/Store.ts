@@ -1,4 +1,4 @@
-import { BaseIngredient, Category, QuantityDescription, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, QuantityDescription, RawIngredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
@@ -132,7 +132,7 @@ export interface UpdateInventoryAction {
 
 export interface AddIngredientAction {
     type: Actions.ADD_INGREDIENT;
-    ingredient: BaseIngredient;
+    ingredient: RawIngredient;
 }
 
 const today = calculateStartOfDate(new Date());
