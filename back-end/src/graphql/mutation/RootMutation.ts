@@ -9,6 +9,7 @@ import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
 import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
 import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
 import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
+import { AddIngredientResponse } from './AddIngredientResponse';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
 import { ModifyStorage } from './ModifyStorageResponse';
@@ -190,7 +191,7 @@ export const RootMutation = new GraphQLObjectType({
             }
         },
         addIngredient: {
-            type: ModifyStorage,
+            type: AddIngredientResponse,
             description: 'Add an ingredient.',
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString), description: 'The readable name of the ingredient.' },
