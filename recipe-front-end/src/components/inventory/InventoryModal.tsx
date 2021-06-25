@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { BaseIngredient, Category, QuantityDescription } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
-import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
-import { InventoryItem, ReduxModel, UpdateInventoryAction, UpdateInventoryModification } from '../../redux/Store';
+import { addIngredientAction, addIngredientReturn, updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
+import { AddIngredientAction, InventoryItem, ReduxModel, UpdateInventoryAction, UpdateInventoryModification } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
 import './InventoryModal.scss';
 
@@ -26,6 +26,7 @@ interface ReduxProps {
 
 interface ReduxActions {
     updateInventoryAction: updateInventoryActionReturn;
+    addIngredient: addIngredientReturn;
 }
 
 function mapStateToProps(model: ReduxModel): ReduxProps {
@@ -36,9 +37,10 @@ function mapStateToProps(model: ReduxModel): ReduxProps {
     };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<UpdateInventoryAction>): ReduxActions {
+function mapDispatchToProps(dispatch: Dispatch<UpdateInventoryAction|AddIngredientAction>): ReduxActions {
     return {
-        updateInventoryAction: updateInventoryAction(dispatch)
+        updateInventoryAction: updateInventoryAction(dispatch),
+        addIngredient: addIngredientAction(dispatch)
     }
 }
 
@@ -167,11 +169,21 @@ function InventoryModal(props: Props) {
 
             <ModalFooter>
                 <Button colorScheme="blue" disabled={!canBeSubmitted} mr={3} onClick={async () => {
-                    if (!canBeSubmitted) {
+                    if (!canBeSubmitted || !selection) {
                         return;
                     }
 
                     const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
+
+                    if (creatingNewIngredient) {
+                        const ingredientId = await props.addIngredient(selection);
+
+                        setSelection({
+                            ...selection,
+                            id: ingredientId
+                        });    
+                    }
+
                     const success = await props.updateInventoryAction({
                         ingredient: selection!,
                         quantity: quantity!,
