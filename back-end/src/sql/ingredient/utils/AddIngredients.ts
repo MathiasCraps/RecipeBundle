@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import { Ingredient } from "../../model/RecipeData";
-import { addSingleIngredient } from './AddSingleIngredient';
+import { Ingredient } from "../../../model/RecipeData";
+import { addSingleIngredient } from '../AddSingleIngredient';
 
 export async function addIngredients(pool: Pool, ingredients: Ingredient[], recipeId: number | undefined) {
     for (let ingredient of ingredients) {

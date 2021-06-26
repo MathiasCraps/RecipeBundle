@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { Ingredient, QuantityLessIngredient, Recipe } from "../../model/RecipeData";
 import { executeQuery } from '../../sql-utils/Database';
-import { addIngredients } from '../ingredient/AddIngredients';
+import { addIngredients } from '../ingredient/utils/AddIngredients';
 import { coupleExistingIngredients } from '../ingredient/CoupleExistingIngredients';
 import { updateIngredients } from '../ingredient/EditIngredients';
 import { getAllIngredients } from '../ingredient/GetIngredients';
