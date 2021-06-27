@@ -9,6 +9,7 @@ import { Localisation } from '../../localisation/AppTexts';
 import { addIngredientAction, addIngredientReturn, updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
 import { AddIngredientAction, InventoryItem, ReduxModel, UpdateInventoryAction, UpdateInventoryModification } from '../../redux/Store';
 import SearchInput from '../common/search/SearchInput';
+import { createEmptyIngredient } from '../recipe-management/RecipeEditor';
 import './InventoryModal.scss';
 
 interface OwnProps {
@@ -69,6 +70,10 @@ function InventoryModal(props: Props) {
 
             if (target.value && selection?.name.toLowerCase() !== target.value.toLocaleLowerCase()) {
                 setCreatingNewIngredient(true);
+                setSelection({
+                    ...createEmptyIngredient(props.categories[0], props.quantityDescriptions[0]),
+                    name: target.value
+                })
             } else {
                 setCreatingNewIngredient(false);
             }
