@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
-import { BaseIngredient, RawIngredient, Recipe } from "../interfaces/Recipe";
+import { RawIngredient, Recipe } from "../interfaces/Recipe";
 import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
