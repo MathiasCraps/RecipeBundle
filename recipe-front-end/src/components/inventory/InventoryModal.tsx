@@ -179,23 +179,27 @@ function InventoryModal(props: Props) {
                     }
 
                     const action: UpdateInventoryModification = props.initialValue ? 'update' : 'add';
+                    let modified = selection;
 
                     if (creatingNewIngredient) {
                         const ingredientId = await props.addIngredient(selection);
-
-                        setSelection({
+                        modified = {
                             ...selection,
                             id: ingredientId
-                        });    
+                        };    
                     }
 
                     const success = await props.updateInventoryAction({
-                        ingredient: selection!,
+                        ingredient: modified,
                         quantity: quantity!,
                         desiredQuantity: desiredQuantity!
                     }, action);
 
                     if (success) {
+                        if (creatingNewIngredient) {
+                            setSelection(modified);
+                        }
+
                         toast({
                             description: Localisation.ADDING_WAS_SUCCESS,
                             status: 'success'
