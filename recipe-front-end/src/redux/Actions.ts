@@ -1,12 +1,12 @@
 import { Dispatch } from "redux";
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
-import { Recipe } from "../interfaces/Recipe";
+import { RawIngredient, Recipe } from "../interfaces/Recipe";
 import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddIngredientAction, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -257,6 +257,40 @@ export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>)
         } catch (err) {
             console.log(err);
             return false;
+        }
+    }
+}
+
+export type addIngredientReturn = (ingredient: RawIngredient) => Promise<number>;
+export function addIngredientAction(dispatch: Dispatch<AddIngredientAction>): addIngredientReturn {
+    return async function (ingredient: RawIngredient): Promise<number> {
+        try {
+            const { ingredientId, success } = (await fetchGraphQL<{addIngredient: {success: boolean, ingredientId: number}}>(`mutation { 
+                addIngredient(name: "${ingredient.name}", categoryId: ${ingredient.categoryId}, quantity_description_id: ${ingredient.quantity_description_id}) {
+                    success
+                    ingredientId
+                }
+            }`)).addIngredient;
+
+    
+            if (!success) {
+                throw new Error('failed');
+            }
+
+            const updatedIngredient: RawIngredient = {
+                ...ingredient,
+                id: ingredientId
+            }
+
+
+            dispatch({
+                type: Actions.ADD_INGREDIENT,
+                ingredient: updatedIngredient
+            });
+
+            return ingredientId;
+        } catch (err) {
+            throw new Error('failed');
         }
     }
 }

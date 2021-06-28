@@ -5,15 +5,15 @@ import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from 'redux';
+import { QuantityDescription } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
 import { updateInventoryAction, updateInventoryActionReturn } from '../../redux/Actions';
 import { InventoryItem, ReduxModel, UpdateInventoryAction } from '../../redux/Store';
-import ContentContainer from '../common/ContentContainer';
-import InventoryModal from './InventoryModal';
-import './InventoryMenu.scss';
-import { QuantityDescription } from '../../interfaces/Recipe';
 import { convertArrayToLinkedMap, LinkedMap } from '../../utils/ArrayUtils';
+import ContentContainer from '../common/ContentContainer';
+import './InventoryMenu.scss';
+import InventoryModal from './InventoryModal';
 
 interface ReduxProps {
     loggedIn: boolean;

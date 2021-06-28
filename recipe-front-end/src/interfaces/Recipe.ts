@@ -7,7 +7,7 @@ export interface ApplicationData {
     quantityDescriptions: QuantityDescription[];
 }
 
-interface RawIngredient {
+export interface RawIngredient {
     id: number;
     name: string;
     categoryId: number;

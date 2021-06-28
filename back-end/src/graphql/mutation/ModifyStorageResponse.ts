@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLString, GraphQLObjectType, GraphQLNonNull } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const ModifyStorage = new GraphQLObjectType({
     name: 'modifyStorage',

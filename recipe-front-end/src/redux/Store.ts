@@ -1,4 +1,4 @@
-import { BaseIngredient, Category, QuantityDescription, Recipe } from '../interfaces/Recipe';
+import { BaseIngredient, Category, QuantityDescription, RawIngredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
 import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
@@ -58,7 +58,8 @@ export enum Actions {
     MOBILE_FAB_OPENED = 'MOBILE_FAB_OPENED',
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE',
     TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT',
-    UPDATE_INVENTORY = 'UPDATE_INVENTORY'
+    UPDATE_INVENTORY = 'UPDATE_INVENTORY',
+    ADD_INGREDIENT = 'ADD_INGREDIENT'
 }
 
 export interface ToggleMenuAction {
@@ -129,6 +130,11 @@ export interface UpdateInventoryAction {
     item: InventoryItem;
 }
 
+export interface AddIngredientAction {
+    type: Actions.ADD_INGREDIENT;
+    ingredient: RawIngredient;
+}
+
 const today = calculateStartOfDate(new Date());
 const nextWeek = addDays(today, 7);
 
@@ -164,7 +170,8 @@ export type ReduxAction = ToggleMenuAction |
     UpdateMobileFapOpenedAction |
     UpdateShoppingRangeAction |
     ToggleMenuIngredientsBoughtAction |
-    UpdateInventoryAction;
+    UpdateInventoryAction |
+    AddIngredientAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
