@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawIngredient, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -15,6 +15,17 @@ import { convertArrayToLinkedMap } from './utils/ArrayUtils';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
 import { parseGetParams } from "./utils/UrlUtils";
+
+export function rawToBaseIngredient(rawIngredient: RawIngredient, categories: Category[], quantityDescriptions: QuantityDescription[]): BaseIngredient {
+  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
+  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
+
+  return {
+    ...rawIngredient,
+    category: linkedMapCategories[rawIngredient.categoryId],
+    quantityDescription: linkedMapQuantityDescription[rawIngredient.quantity_description_id]
+  }
+}
 
 function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
   const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
