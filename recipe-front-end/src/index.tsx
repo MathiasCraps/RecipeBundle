@@ -28,16 +28,16 @@ export function rawToBaseIngredient(rawIngredient: RawIngredient, categories: Ca
 }
 
 function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
-  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
   const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
 
   return recipes.map((recipe) => {
     return {
       ...recipe,
       ingredients: recipe.ingredients.map((ingredient) => {
+        const baseIngredient = rawToBaseIngredient(ingredient, categories, quantityDescriptions);
+
         return {
-          ...ingredient,
-          category: linkedMapCategories[ingredient.categoryId],
+          ...baseIngredient,
           quantityDescription: linkedMapQuantityDescription[ingredient.quantity_description_id]
         } as QuantifiedIngredient;
       })
