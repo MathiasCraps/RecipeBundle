@@ -14,18 +14,8 @@ import { DayMenu, defaultState, handleState, InventoryItem } from './redux/Store
 import { convertArrayToLinkedMap } from './utils/ArrayUtils';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
+import { rawToBaseIngredient } from './utils/ModelUtils';
 import { parseGetParams } from "./utils/UrlUtils";
-
-export function rawToBaseIngredient(rawIngredient: RawIngredient, categories: Category[], quantityDescriptions: QuantityDescription[]): BaseIngredient {
-  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
-  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
-
-  return {
-    ...rawIngredient,
-    category: linkedMapCategories[rawIngredient.categoryId],
-    quantityDescription: linkedMapQuantityDescription[rawIngredient.quantity_description_id]
-  }
-}
 
 function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
   const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');

@@ -1,7 +1,7 @@
-import { rawToBaseIngredient } from '..';
 import { BaseIngredient, Category, QuantityDescription, RawIngredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
+import { rawToBaseIngredient } from '../utils/ModelUtils';
 import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
