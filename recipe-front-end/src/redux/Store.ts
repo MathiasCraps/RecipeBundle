@@ -1,6 +1,7 @@
 import { BaseIngredient, Category, QuantityDescription, RawIngredient, Recipe } from '../interfaces/Recipe';
 import { removeFromArray, updateDayMenuWithDate } from '../utils/ArrayUtils';
 import { addDays, calculateStartOfDate } from '../utils/DateUtils';
+import { rawToBaseIngredient } from '../utils/ModelUtils';
 import { modifyInventory, replaceRecipe, toggleIngredientsBoughtForMenus } from './ReducerHelpers';
 
 export interface UserData {
@@ -243,6 +244,15 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
             return {
                 ...oldState,
                 inventory: modifyInventory(oldState.inventory, action.item, action.action)
+            }
+        case Actions.ADD_INGREDIENT:
+            return {
+                ...oldState,
+                ingredients: oldState.ingredients.concat([
+                    rawToBaseIngredient(action.ingredient,
+                    oldState.categories,
+                    oldState.quantityDescriptions)
+                ])
             }
         default:
             // not supported yet

@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from "./App";
-import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
+import { ApplicationData, BaseIngredient, Category, QuantifiedIngredient, QuantityDescription, RawDayMenu, RawIngredient, RawInventoryItem, RawRecipe, Recipe } from "./interfaces/Recipe";
 import { BackEndUserData } from "./interfaces/UserData";
 import { Paths } from './Paths';
 import { LOCAL_STORAGE_RANGE_NAME } from './redux/Actions';
@@ -14,19 +14,20 @@ import { DayMenu, defaultState, handleState, InventoryItem } from './redux/Store
 import { convertArrayToLinkedMap } from './utils/ArrayUtils';
 import { calculateStartOfDate, parseDateRange } from "./utils/DateUtils";
 import fetchGraphQL from './utils/FetchGraphQL';
+import { rawToBaseIngredient } from './utils/ModelUtils';
 import { parseGetParams } from "./utils/UrlUtils";
 
 function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDescriptions: QuantityDescription[]): Recipe[] {
-  const linkedMapCategories = convertArrayToLinkedMap(categories, 'categoryId');
   const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
 
   return recipes.map((recipe) => {
     return {
       ...recipe,
       ingredients: recipe.ingredients.map((ingredient) => {
+        const baseIngredient = rawToBaseIngredient(ingredient, categories, quantityDescriptions);
+
         return {
-          ...ingredient,
-          category: linkedMapCategories[ingredient.categoryId],
+          ...baseIngredient,
           quantityDescription: linkedMapQuantityDescription[ingredient.quantity_description_id]
         } as QuantifiedIngredient;
       })
@@ -34,14 +35,10 @@ function linkRecipeData(recipes: RawRecipe[], categories: Category[], quantityDe
   });
 }
 
-function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[], quantityDescriptions: QuantityDescription[]): InventoryItem[] {
+function linkInventory(rawInventory: RawInventoryItem[], ingredients: BaseIngredient[], quantityDescriptions: QuantityDescription[], categories: Category[]): InventoryItem[] {
   const linkedMap = convertArrayToLinkedMap(ingredients, 'id');
-  const linkedMapQuantityDescription = convertArrayToLinkedMap(quantityDescriptions, 'quantityDescriptorId');
   return rawInventory.map((inventoryItem) => {
-    const ingredient = {
-      ...linkedMap[inventoryItem.ingredientId],
-      quantityDescription: linkedMapQuantityDescription[inventoryItem.quantity_description_id]
-    };
+    const ingredient = rawToBaseIngredient(linkedMap[inventoryItem.ingredientId] as RawIngredient, categories, quantityDescriptions);
 
     return {
       ...inventoryItem,
@@ -124,7 +121,7 @@ function findMenu(menu: RawDayMenu, recipes: Recipe[]): DayMenu | undefined {
   }`);
 
   const linkedRecipes = linkRecipeData(applicationData.recipes, applicationData.categories, applicationData.quantityDescriptions);
-  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients, applicationData.quantityDescriptions);
+  const inventory = linkInventory(applicationData.inventories, applicationData.ingredients, applicationData.quantityDescriptions, applicationData.categories);
 
   const linkedMenu: DayMenu[] = applicationData.menus
     .map((menu) => findMenu(menu, linkedRecipes))
