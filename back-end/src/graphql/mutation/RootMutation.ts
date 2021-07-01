@@ -10,6 +10,7 @@ import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
 import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
 import { removeRecipe } from '../../sql/recipe/RemoveRecipe';
 import { AddIngredientResponse } from './AddIngredientResponse';
+import { DefaultActionResponse } from './DefaultActionResponse';
 import { writeMenuChangeToDatabase } from './helpers/WriteMenuChangeToDatabase';
 import { ModifyMenuResponse } from './ModifyMenuResponse';
 import { ModifyStorage } from './ModifyStorageResponse';
@@ -225,6 +226,16 @@ export const RootMutation = new GraphQLObjectType({
                     }
                 }
  
+            }
+        },
+        updateInventoryAsPurchased: {
+            type: DefaultActionResponse,
+            description: 'Bring the actual inventory to the desired quantities where it was lower.', 
+            async resolve(parentValue, args, request) {
+                return {
+                    success: false,
+                    error: 'Not implemented'
+                };
             }
         }
     }
