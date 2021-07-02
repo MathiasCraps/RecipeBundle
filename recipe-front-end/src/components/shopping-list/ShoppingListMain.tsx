@@ -6,8 +6,8 @@ import { Dispatch } from 'redux';
 import { QuantifiedIngredient, QuantityDescription } from '../../interfaces/Recipe';
 import { Localisation } from '../../localisation/AppTexts';
 import { Paths } from '../../Paths';
-import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn } from '../../redux/Actions';
-import { DateRange, DayMenu, InventoryItem, ReduxModel, ToggleMenuIngredientsBoughtAction } from '../../redux/Store';
+import { toggleMenuIngredientsBought, toggleMenuIngredientsBoughtReturn, updateInventoryAsPurchased, updateInventoryAsPurchasedReturn } from '../../redux/Actions';
+import { DateRange, DayMenu, InventoryItem, ReduxModel, ToggleMenuIngredientsBoughtAction, UpdateInventoryQuantitiesToDesiredAction } from '../../redux/Store';
 import { convertArrayToLinkedMapWithPredicate, flatArray, LinkedMap } from '../../utils/ArrayUtils';
 import ContentContainer from '../common/ContentContainer';
 import SimplePopover from '../common/SimplePopover';
@@ -43,11 +43,13 @@ function mapStateToProps(reduxModel: ReduxModel): ReduxProps {
 
 interface ReduxActions {
     toggleMenuIngredientsBought: toggleMenuIngredientsBoughtReturn;
+    updateInventoryAsPurchased: updateInventoryAsPurchasedReturn;
 }
 
-function mapDispatchToProps(dispatch: Dispatch<ToggleMenuIngredientsBoughtAction>): ReduxActions {
+function mapDispatchToProps(dispatch: Dispatch<ToggleMenuIngredientsBoughtAction|UpdateInventoryQuantitiesToDesiredAction>): ReduxActions {
     return { 
-        toggleMenuIngredientsBought: toggleMenuIngredientsBought(dispatch) 
+        toggleMenuIngredientsBought: toggleMenuIngredientsBought(dispatch),
+        updateInventoryAsPurchased: updateInventoryAsPurchased(dispatch)
     }
 }
 
@@ -120,7 +122,7 @@ export function ShoppingListMain(props: Props) {
                 return <ShoppingCategory ingredients={sumsInGroups[category]} key={index} />
             })}
             <div className="clearer">
-                <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true)}>
+                <Button onClick={() => props.toggleMenuIngredientsBought(menusToConsider, true) && props.updateInventoryAsPurchased()}>
                     {Localisation.MARK_LIST_AS_PURCHASED}
                 </Button>
             </div>
