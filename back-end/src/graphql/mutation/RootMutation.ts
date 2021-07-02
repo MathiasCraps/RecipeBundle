@@ -5,6 +5,7 @@ import { Ingredient } from '../../model/RecipeData';
 import { SessionData } from '../../model/SessionData';
 import { addSingleIngredient } from '../../sql/ingredient/AddSingleIngredient';
 import { addInventoryItem } from '../../sql/inventory/AddInventoryItem';
+import { getInventoryOfUser } from '../../sql/inventory/GetInventoryOfUser';
 import { removeInventoryItem } from '../../sql/inventory/RemoveInventoryItem';
 import { updateInventoryItem } from '../../sql/inventory/UpdateInventoryItem';
 import { updatePurchaseState } from '../../sql/menu/UpdatePurchaseState';
@@ -232,10 +233,32 @@ export const RootMutation = new GraphQLObjectType({
             type: DefaultActionResponse,
             description: 'Bring the actual inventory to the desired quantities where it was lower.', 
             async resolve(parentValue, args, request) {
-                return {
-                    success: false,
-                    error: 'Not implemented'
-                };
+                try {
+                    const session: SessionData = request.session;
+                    if (!session.loggedIn || typeof session.userId !== 'number') {
+                        throw new Error('Not logged in');
+                    }
+
+                    const allMenuItemsOfUser = await getInventoryOfUser(pool, session.userId);
+                    const resultsThatRequireUpdate = allMenuItemsOfUser.filter((item) => item.desiredQuantity > item.quantity);
+    
+                    for (let inventoryItem of resultsThatRequireUpdate) {
+                        const toInventoryItem = {
+                            ...inventoryItem,
+                            quantity: inventoryItem.desiredQuantity
+                        }
+                        await updateInventoryItem(pool, toInventoryItem, session.userId);
+                    }
+
+                    return {
+                        success: true
+                    };
+                } catch (err) {
+                    return {
+                        success: false,
+                        error: err
+                    }
+                }
             }
         }
     }
