@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import ActionsContainer from '../components/common/ActionsContainer';
 import { AddMenuResponse } from "../interfaces/AddMenuResponse";
 import { AddRecipeResponse } from "../interfaces/AddRecipeResponse";
 import { RawIngredient, Recipe } from "../interfaces/Recipe";
@@ -6,7 +7,7 @@ import { RemoveRecipeResponse } from '../interfaces/RemoveRecipeResponse';
 import { UpdateMenuResponse } from "../interfaces/UpdateMenuResponse";
 import fetchGraphQL from '../utils/FetchGraphQL';
 import { waitForDataAsJson } from "../utils/FetchUtils";
-import { Actions, AddIngredientAction, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
+import { Actions, AddIngredientAction, AddMenuAction, AddRecipeAction, DateRange, DayMenu, EditRecipeAction, InventoryItem, LogoutAction, OpenedMenu, RemoveMenuAction, RemoveRecipeAction, ToggleMenuAction, ToggleMenuIngredientsBoughtAction, UpdateActiveDayAction, UpdateInventoryAction, UpdateInventoryModification, UpdateInventoryQuantitiesToDesiredAction, UpdateMenuDayAction, UpdateMobileFapOpenedAction, UpdateShoppingRangeAction } from "./Store";
 
 export function switchMenu(menu: OpenedMenu): ToggleMenuAction {
     return {
@@ -257,6 +258,29 @@ export function updateInventoryAction(dispatch: Dispatch<UpdateInventoryAction>)
         } catch (err) {
             console.log(err);
             return false;
+        }
+    }
+}
+
+export type updateInventoryAsPurchasedReturn = () => Promise<void>;
+export function updateInventoryAsPurchased(dispatch: Dispatch<UpdateInventoryQuantitiesToDesiredAction>): updateInventoryAsPurchasedReturn {
+    return async function () {
+        try {
+            const { success } = (await fetchGraphQL<{updateInventoryAsPurchased: {success: boolean}}>(`mutation { 
+                updateInventoryAsPurchased {
+                    success
+                }
+            }`)).updateInventoryAsPurchased;
+    
+            if (!success) {
+                throw new Error('Failed to update');
+            }
+
+            dispatch({
+                type: Actions.UPDATE_INVENTORY_QUANTITIES_TO_DESIRED,
+            });
+        } catch (err) {
+            console.log('failed', err);
         }
     }
 }

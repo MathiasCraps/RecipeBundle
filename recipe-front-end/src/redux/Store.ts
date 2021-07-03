@@ -60,6 +60,7 @@ export enum Actions {
     UPDATE_SHOPPING_RANGE = 'UPDATE_SHOPPING_RANGE',
     TOGGLE_MENU_INGREDIENTS_BOUGHT = 'TOGGLE_MENU_INGREDIENTS_BOUGHT',
     UPDATE_INVENTORY = 'UPDATE_INVENTORY',
+    UPDATE_INVENTORY_QUANTITIES_TO_DESIRED = 'UPDATE_INVENTORY_QUANTITIES_TO_DESIRED',
     ADD_INGREDIENT = 'ADD_INGREDIENT'
 }
 
@@ -131,6 +132,11 @@ export interface UpdateInventoryAction {
     item: InventoryItem;
 }
 
+export interface UpdateInventoryQuantitiesToDesiredAction {
+    type: Actions.UPDATE_INVENTORY_QUANTITIES_TO_DESIRED;
+}
+
+
 export interface AddIngredientAction {
     type: Actions.ADD_INGREDIENT;
     ingredient: RawIngredient;
@@ -172,7 +178,8 @@ export type ReduxAction = ToggleMenuAction |
     UpdateShoppingRangeAction |
     ToggleMenuIngredientsBoughtAction |
     UpdateInventoryAction |
-    AddIngredientAction;
+    AddIngredientAction | 
+    UpdateInventoryQuantitiesToDesiredAction;
 
 export function handleState(oldState: ReduxModel = defaultState, action: ReduxAction): ReduxModel {
     switch (action.type) {
@@ -254,6 +261,19 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                     oldState.quantityDescriptions)
                 ])
             }
+        case Actions.UPDATE_INVENTORY_QUANTITIES_TO_DESIRED:
+            return {
+                ...oldState,
+                inventory: oldState.inventory.map((oldInventory) => {
+                    if (oldInventory.quantity >= oldInventory.desiredQuantity) {
+                        return oldInventory;
+                    }
+                    return {
+                        ...oldInventory,
+                        quantity: oldInventory.desiredQuantity
+                    };
+                })
+            };
         default:
             // not supported yet
     }
