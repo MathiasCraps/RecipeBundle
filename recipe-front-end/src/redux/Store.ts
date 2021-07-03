@@ -261,6 +261,19 @@ export function handleState(oldState: ReduxModel = defaultState, action: ReduxAc
                     oldState.quantityDescriptions)
                 ])
             }
+        case Actions.UPDATE_INVENTORY_QUANTITIES_TO_DESIRED:
+            return {
+                ...oldState,
+                inventory: oldState.inventory.map((oldInventory) => {
+                    if (oldInventory.quantity >= oldInventory.desiredQuantity) {
+                        return oldInventory;
+                    }
+                    return {
+                        ...oldInventory,
+                        quantity: oldInventory.desiredQuantity
+                    };
+                })
+            };
         default:
             // not supported yet
     }
