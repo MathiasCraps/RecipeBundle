@@ -81,9 +81,9 @@ export function ShoppingListMain(props: Props) {
     const rawSorted = sortByIngredient(ingredientsFromRecipes);
     const sumsToRender = combineToSingleValue(rawSorted, setUpConversionRules(props.quantityDescriptions));
     const storageApplied = applyInventory(sumsToRender, props.inventoryMap);
-    const hasMenus = Boolean(storageApplied.length)
+    const hasMenus = Boolean(storageApplied.length);
     const sumsInGroups = groupByCategory(storageApplied);
-    const sortedCategoryKeys = Object.keys(sumsInGroups)
+    const sortedCategoryKeys = Object.keys(sumsInGroups);
     const [pickerVisible, setPickerVisible] = useState(false);
     const triggerRef = React.useRef<HTMLButtonElement>(null);
     const initialFocusRef = React.useRef(null);
