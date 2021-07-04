@@ -23,7 +23,7 @@ export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap
         const difference = entry.desiredQuantity - entry.quantity;
         return {
             ...ingredient,
-            quantity_number: ingredient.quantity_number + difference
+            quantity_number: ingredient.quantity_number - difference
         };
     });
 
