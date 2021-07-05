@@ -12,20 +12,25 @@ const baseQuantityAndCategory = {// to be replaced in follow-up with linked data
 };
 
 export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
-    const normalResults = ingredients.map((ingredient) => {
+    const normalResults = ingredients.reduce((previous: QuantifiedIngredient[], ingredient: QuantifiedIngredient) => {
         const entry = inventoryMap[ingredient.id];
         delete inventoryMap[ingredient.id];
 
         if (!entry) {
-            return ingredient;
+            return previous;
         }
 
-        const difference = entry.desiredQuantity - entry.quantity;
-        return {
-            ...ingredient,
-            quantity_number: ingredient.quantity_number - difference
-        };
-    });
+        const quantityNumber = ingredient.quantity_number -entry.desiredQuantity - entry.quantity;
+
+        if (quantityNumber > 0) {
+            return previous.concat([{
+                ...ingredient,
+                quantity_number: quantityNumber
+            }]);
+        }
+        
+        return previous;
+    }, []);
 
     const keys = Object.keys(inventoryMap);
     const extraResults: QuantifiedIngredient[] = [];
