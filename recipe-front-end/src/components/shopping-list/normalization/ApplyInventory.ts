@@ -12,19 +12,18 @@ const baseQuantityAndCategory = {// to be replaced in follow-up with linked data
 };
 
 function calculateIngredientDifference(
-    ingredient: QuantifiedIngredient | BaseIngredient, 
-    inventoryItem: InventoryItem
+    baseIngredient: BaseIngredient,
+    rawRequired: number,
+    { quantity: availableQuantity, desiredQuantity }: InventoryItem
 ): QuantifiedIngredient | undefined {
-    const quantityNumber = ((ingredient as QuantifiedIngredient).quantity_number || 0) 
-        - inventoryItem.desiredQuantity 
-        - inventoryItem.quantity;
+    const quantityNumber = rawRequired + (desiredQuantity - availableQuantity);
 
     if (quantityNumber <= 0) {
         return undefined;
     }
 
     return {
-        ...ingredient,
+        ...baseIngredient,
         quantity_number: quantityNumber,
         ...baseQuantityAndCategory
     }
@@ -35,11 +34,7 @@ export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap
         const inventoryEntry = inventoryMap[ingredient.id];
         delete inventoryMap[ingredient.id];
 
-        if (!inventoryEntry) {
-            return previous;
-        }
-
-        const presentableQuantifiedIngredient = calculateIngredientDifference(ingredient, inventoryEntry);
+        const presentableQuantifiedIngredient = calculateIngredientDifference(ingredient, ingredient.quantity_number, inventoryEntry);
 
         if (presentableQuantifiedIngredient) {
             return previous.concat([presentableQuantifiedIngredient]);
@@ -53,7 +48,7 @@ export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap
     const extraResults: QuantifiedIngredient[] = [];
     for (const key of keys) {
         const inventoryItem = inventoryMap[key];
-        const presentableQuantifiedIngredient = calculateIngredientDifference(inventoryItem.ingredient, inventoryItem)
+        const presentableQuantifiedIngredient = calculateIngredientDifference(inventoryItem.ingredient, 0, inventoryItem)
 
         if (presentableQuantifiedIngredient) {
             extraResults.push(presentableQuantifiedIngredient);
