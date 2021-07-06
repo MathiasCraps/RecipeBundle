@@ -1,4 +1,4 @@
-import { QuantifiedIngredient } from '../../../interfaces/Recipe';
+import { BaseIngredient, QuantifiedIngredient } from '../../../interfaces/Recipe';
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
@@ -11,39 +11,52 @@ const baseQuantityAndCategory = {// to be replaced in follow-up with linked data
     }
 };
 
+function calculateIngredientDifference(
+    ingredient: QuantifiedIngredient | BaseIngredient, 
+    inventoryItem: InventoryItem
+): QuantifiedIngredient | undefined {
+    const quantityNumber = ((ingredient as QuantifiedIngredient).quantity_number || 0) 
+        - inventoryItem.desiredQuantity 
+        - inventoryItem.quantity;
+
+    if (quantityNumber <= 0) {
+        return undefined;
+    }
+
+    return {
+        ...ingredient,
+        quantity_number: quantityNumber,
+        ...baseQuantityAndCategory
+    }
+}
+
 export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
     const normalResults = ingredients.reduce((previous: QuantifiedIngredient[], ingredient: QuantifiedIngredient) => {
-        const entry = inventoryMap[ingredient.id];
+        const inventoryEntry = inventoryMap[ingredient.id];
         delete inventoryMap[ingredient.id];
 
-        if (!entry) {
+        if (!inventoryEntry) {
             return previous;
         }
 
-        const quantityNumber = ingredient.quantity_number -entry.desiredQuantity - entry.quantity;
+        const presentableQuantifiedIngredient = calculateIngredientDifference(ingredient, inventoryEntry);
 
-        if (quantityNumber > 0) {
-            return previous.concat([{
-                ...ingredient,
-                quantity_number: quantityNumber
-            }]);
+        if (presentableQuantifiedIngredient) {
+            return previous.concat([presentableQuantifiedIngredient]);
         }
-        
+
         return previous;
     }, []);
 
+    // ingredients in inventory, but not in scheduled recipes
     const keys = Object.keys(inventoryMap);
     const extraResults: QuantifiedIngredient[] = [];
     for (const key of keys) {
-        const { ingredient, desiredQuantity, quantity } = inventoryMap[key];
-        const difference = desiredQuantity - quantity;
+        const inventoryItem = inventoryMap[key];
+        const presentableQuantifiedIngredient = calculateIngredientDifference(inventoryItem.ingredient, inventoryItem)
 
-        if (difference > 0) {
-            extraResults.push({
-                ...ingredient,
-                quantity_number: difference,
-                ...baseQuantityAndCategory // to be replaced in follow-up with linked data
-            });
+        if (presentableQuantifiedIngredient) {
+            extraResults.push(presentableQuantifiedIngredient);
         }
     }
 
