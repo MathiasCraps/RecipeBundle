@@ -29,31 +29,29 @@ function calculateIngredientDifference(
     }
 }
 
+
 export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
-    const normalResults = ingredients.reduce((previous: QuantifiedIngredient[], ingredient: QuantifiedIngredient) => {
-        const inventoryEntry = inventoryMap[ingredient.id];
+    const results: QuantifiedIngredient[] = [];
+
+    ingredients.forEach((ingredient: QuantifiedIngredient) => {
         delete inventoryMap[ingredient.id];
 
-        const presentableQuantifiedIngredient = calculateIngredientDifference(ingredient, ingredient.quantity_number, inventoryEntry);
-
+        const presentableQuantifiedIngredient = calculateIngredientDifference(ingredient, ingredient.quantity_number, inventoryMap[ingredient.id]);
         if (presentableQuantifiedIngredient) {
-            return previous.concat([presentableQuantifiedIngredient]);
+            results.push(presentableQuantifiedIngredient);
         }
-
-        return previous;
-    }, []);
+    });
 
     // ingredients in inventory, but not in scheduled recipes
     const keys = Object.keys(inventoryMap);
-    const extraResults: QuantifiedIngredient[] = [];
     for (const key of keys) {
         const inventoryItem = inventoryMap[key];
         const presentableQuantifiedIngredient = calculateIngredientDifference(inventoryItem.ingredient, 0, inventoryItem)
 
         if (presentableQuantifiedIngredient) {
-            extraResults.push(presentableQuantifiedIngredient);
+            results.push(presentableQuantifiedIngredient)
         }
     }
 
-    return normalResults.concat(extraResults);
+    return results;
 }
