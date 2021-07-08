@@ -1,10 +1,10 @@
-import { makeQueryString, parseGetParams } from '../../../utils/UrlUtils';
+import { GetParams, makeQueryString, parseGetParams } from '../../../utils/UrlUtils';
 
-fdescribe('UrlUtils', () => {
+describe('UrlUtils', () => {
     describe('parseGetParams', () => {
         describe('when called with key and value pairs', () => {
             const format = 'test=one&foo=two';
-            let result: Object;
+            let result: GetParams;
 
             beforeEach(() => {
                 result = parseGetParams(format);
@@ -22,7 +22,7 @@ fdescribe('UrlUtils', () => {
             const format = 'test&foo';
     
             describe('parseGetParams', () => {
-                let result: Object;
+                let result: GetParams;
                 beforeEach(() => {
                     result = parseGetParams(format);
                 });
@@ -38,7 +38,7 @@ fdescribe('UrlUtils', () => {
     
         describe('when called with mix of keys and values', () => {
             const format = 'test&foo=bar';
-            let result: Object;
+            let result: GetParams;
 
             beforeEach(() => {
                 result = parseGetParams(format);

@@ -31,13 +31,9 @@ interface BaseRecipe<IngredientType> {
     ingredients: IngredientType[];
 }
 
-export interface RawRecipe extends BaseRecipe<RawIngredient> {
+export type RawRecipe = BaseRecipe<RawIngredient>
 
-}
-
-export interface Recipe extends BaseRecipe<QuantifiedIngredient> {
-
-}
+export type Recipe = BaseRecipe<QuantifiedIngredient>
 
 export interface TranslationMap {
     [key: string]: string;

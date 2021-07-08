@@ -1,4 +1,4 @@
-import { QuantifiedIngredient } from '../../../interfaces/Recipe';
+import { BaseIngredient, QuantifiedIngredient } from '../../../interfaces/Recipe';
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
@@ -11,36 +11,41 @@ const baseQuantityAndCategory = {// to be replaced in follow-up with linked data
     }
 };
 
-export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
-    const normalResults = ingredients.map((ingredient) => {
-        const entry = inventoryMap[ingredient.id];
-        delete inventoryMap[ingredient.id];
+function applyInventoryAndPushUsableEntries(
+    baseIngredient: BaseIngredient,
+    rawRequired: number,
+    { quantity: availableQuantity, desiredQuantity }: InventoryItem,
+    existingEntries: QuantifiedIngredient[]
+): QuantifiedIngredient[] {
+    const quantityNumber = rawRequired + (desiredQuantity - availableQuantity);
 
-        if (!entry) {
-            return ingredient;
-        }
-
-        const difference = entry.desiredQuantity - entry.quantity;
-        return {
-            ...ingredient,
-            quantity_number: ingredient.quantity_number - difference
-        };
-    });
-
-    const keys = Object.keys(inventoryMap);
-    const extraResults: QuantifiedIngredient[] = [];
-    for (const key of keys) {
-        const { ingredient, desiredQuantity, quantity } = inventoryMap[key];
-        const difference = desiredQuantity - quantity;
-
-        if (difference > 0) {
-            extraResults.push({
-                ...ingredient,
-                quantity_number: difference,
-                ...baseQuantityAndCategory // to be replaced in follow-up with linked data
-            });
-        }
+    if (quantityNumber <= 0) {
+        return existingEntries;
     }
 
-    return normalResults.concat(extraResults);
+    return existingEntries.concat([{
+        ...baseIngredient,
+        quantity_number: quantityNumber,
+        ...baseQuantityAndCategory
+    }]);
+}
+
+
+export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap: LinkedMap<InventoryItem>): QuantifiedIngredient[] {
+    const results: QuantifiedIngredient[] = [];
+
+    // ingredients in scheduled recipes
+    ingredients.forEach((ingredient: QuantifiedIngredient) => {
+        delete inventoryMap[ingredient.id];
+        applyInventoryAndPushUsableEntries(ingredient, ingredient.quantity_number, inventoryMap[ingredient.id], results);
+    });
+
+    // ingredients in inventory, but not in scheduled recipes
+    const keys = Object.keys(inventoryMap);
+    for (const key of keys) {
+        const inventoryItem = inventoryMap[key];
+        applyInventoryAndPushUsableEntries(inventoryItem.ingredient, 0, inventoryItem, results);
+    }
+
+    return results;
 }
