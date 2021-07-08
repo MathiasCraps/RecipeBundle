@@ -1,6 +1,6 @@
 import { GetParams, makeQueryString, parseGetParams } from '../../../utils/UrlUtils';
 
-fdescribe('UrlUtils', () => {
+describe('UrlUtils', () => {
     describe('parseGetParams', () => {
         describe('when called with key and value pairs', () => {
             const format = 'test=one&foo=two';
