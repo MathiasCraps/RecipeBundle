@@ -16,17 +16,16 @@ function applyInventoryAndPushUsableEntries(
     rawRequired: number,
     inventoryItem: InventoryItem | undefined,
     existingEntries: QuantifiedIngredient[]
-): QuantifiedIngredient[] {
+): void {
 
     const { quantity: availableQuantity, desiredQuantity } = inventoryItem || { quantity: 0, desiredQuantity: 0 }
-
     const quantityNumber = rawRequired + (desiredQuantity - availableQuantity);
 
-    return existingEntries.concat([{
+    existingEntries.concat({
         ...baseIngredient,
         quantity_number: quantityNumber,
         ...baseQuantityAndCategory
-    }]);
+    });
 }
 
 
