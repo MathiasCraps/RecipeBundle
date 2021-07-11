@@ -2,30 +2,21 @@ import { BaseIngredient, QuantifiedIngredient } from '../../../interfaces/Recipe
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
-const baseQuantityAndCategory = {// to be replaced in follow-up with linked data = {
-    quantity_description: 'stuk', // todo: link
-    category: {
-        categoryId: 99999,
-        categoryName: 'Varia',
-        translations: { nl: 'Divers' }
-    }
-};
-
 function applyInventoryAndPushUsableEntries(
     baseIngredient: BaseIngredient,
     rawRequired: number,
     inventoryItem: InventoryItem | undefined,
     existingEntries: QuantifiedIngredient[]
 ): void {
-
     const { quantity: availableQuantity, desiredQuantity } = inventoryItem || { quantity: 0, desiredQuantity: 0 }
     const quantityNumber = rawRequired + (desiredQuantity - availableQuantity);
 
-    existingEntries.concat({
-        ...baseIngredient,
-        quantity_number: quantityNumber,
-        ...baseQuantityAndCategory
-    });
+    if (quantityNumber > 0) {
+        existingEntries.push({
+            ...baseIngredient,
+            quantity_number: quantityNumber
+        });
+    }
 }
 
 
