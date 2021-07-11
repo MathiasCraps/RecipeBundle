@@ -2,32 +2,21 @@ import { BaseIngredient, QuantifiedIngredient } from '../../../interfaces/Recipe
 import { InventoryItem } from '../../../redux/Store';
 import { LinkedMap } from '../../../utils/ArrayUtils';
 
-const baseQuantityAndCategory = {// to be replaced in follow-up with linked data = {
-    quantity_description: 'stuk', // todo: link
-    category: {
-        categoryId: 99999,
-        categoryName: 'Varia',
-        translations: { nl: 'Divers' }
-    }
-};
-
 function applyInventoryAndPushUsableEntries(
     baseIngredient: BaseIngredient,
     rawRequired: number,
-    { quantity: availableQuantity, desiredQuantity }: InventoryItem,
+    inventoryItem: InventoryItem | undefined,
     existingEntries: QuantifiedIngredient[]
-): QuantifiedIngredient[] {
+): void {
+    const { quantity: availableQuantity, desiredQuantity } = inventoryItem || { quantity: 0, desiredQuantity: 0 }
     const quantityNumber = rawRequired + (desiredQuantity - availableQuantity);
 
-    if (quantityNumber <= 0) {
-        return existingEntries;
+    if (quantityNumber > 0) {
+        existingEntries.push({
+            ...baseIngredient,
+            quantity_number: quantityNumber
+        });
     }
-
-    return existingEntries.concat([{
-        ...baseIngredient,
-        quantity_number: quantityNumber,
-        ...baseQuantityAndCategory
-    }]);
 }
 
 
@@ -36,8 +25,9 @@ export function applyInventory(ingredients: QuantifiedIngredient[], inventoryMap
 
     // ingredients in scheduled recipes
     ingredients.forEach((ingredient: QuantifiedIngredient) => {
-        delete inventoryMap[ingredient.id];
-        applyInventoryAndPushUsableEntries(ingredient, ingredient.quantity_number, inventoryMap[ingredient.id], results);
+        const entry = inventoryMap[ingredient.id];
+        applyInventoryAndPushUsableEntries(ingredient, ingredient.quantity_number, entry, results);
+        delete inventoryMap[ingredient.id];    
     });
 
     // ingredients in inventory, but not in scheduled recipes
