@@ -201,7 +201,9 @@ function RecipeOverview(props: Props) {
                     <li key={index}><strong>{ingredient.name}</strong>, {ingredient.quantity_number ? ingredient.quantity_number.toLocaleString() : ''} {ingredient.quantityDescription.translations['nl']}
                     </li>))}</ul>
                 <Heading as="h3">{Localisation.STEPS}</Heading>
+                <div className="recipe-container">
                 {recipe.steps.split('\\n').map((step, index) => <p key={index}>{step}</p>)}
+                </div>
             </div>
         </ContentContainer></div >);
 }
